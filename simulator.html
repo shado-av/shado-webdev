@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <!-- required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+        <!-- custom CSS -->
+        <link rel="stylesheet" href="css/style.css">
+        
+        <!-- title -->
+        <title>SHADO</title>
+
+    </head>
+    
+    <body>
+        
+        <!------------ NAVIGATION ------------>
+        
+        <nav class="navbar fixed-top">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/hal_light.png" height="60" alt="HAL Logo">
+                <span id="brand">Simulator of Human and Automation in Dispatch Operations</span>
+                <span id="brand-abbr">SHADO</span>
+            </a>
+            
+            <div class="ml-auto">
+                <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
+            </div>
+        </nav>
+        
+        <div class="spacer"></div>
+        
+        <div class="d-flex flex-column justify-content-between" id="sidebar">
+        
+        <button type="button" class="btn btn-primary" id="run-simulation">
+            Run Simulation
+        </button>
+        
+        <div class="nav flex-column justify-content-around" id="simulator-nav" role="tablist" aria-orientation="vertical">
+            <div class="nav-group">
+                <h6>Input Dispatch Settings</h6>
+                <a class="nav-link active" id="basic-settings-tab" data-toggle="pill" href="#basic-settings" role="tab" aria-controls="basic-settings" aria-selected="true">
+                    Basic Settings
+                </a>
+                <a class="nav-link" id="operator-settings-tab" data-toggle="pill" href="#operator-settings" role="tab" aria-controls="operator-settings" aria-selected="false">
+                    Operator Settings
+                </a>
+                <a class="nav-link" id="system-settings-tab" data-toggle="pill" href="#system-settings" role="tab" aria-controls="system-settings" aria-selected="false">
+                    System Settings
+                </a>
+            </div>
+            
+            <div class="dropdown-divider"></div>
+            
+            <div class="nav-group">
+                <a class="nav-link" id="view-results-tab" data-toggle="pill" href="#view-results" role="tab" aria-controls="view-results" aria-selected="false">
+                    View Results
+                </a>
+            </div>
+            
+            <div class="dropdown-divider"></div>
+            
+            <div class="nav-group">
+                <h6>View Detailed Analysis</h6>
+                <a class="nav-link" id="engineer-analysis-tab" data-toggle="pill" href="#engineer-analysis" role="tab" aria-controls="engineer-analysis" aria-selected="false">
+                    Engineer
+                </a>
+                <a class="nav-link" id="conductor-analysis-tab" data-toggle="pill" href="#conductor-analysis" role="tab" aria-controls="conductor-analysis" aria-selected="false">
+                    Conductor
+                </a>
+                <a class="nav-link" id="dispatcher-analysis-tab" data-toggle="pill" href="#dispatcher-analysis" role="tab" aria-controls="dispatcher-analysis" aria-selected="false">
+                    Dispatcher
+                </a>
+            </div>
+            
+            <div class="dropdown-divider"></div>
+            
+            <div class="nav-group">
+                <a class="nav-link" id="preview-report-tab" data-toggle="pill" href="#preview-report" role="tab" aria-controls="preview-report" aria-selected="false">
+                    Preview Report
+                </a>
+            </div> 
+        </div>
+            </div>
+        
+        <div class="tab-content" id="simulator-content">
+            <div class="tab-pane fade show active" id="basic-settings" role="tabpanel" aria-labelledby="basic-settings">
+                basic settings content
+            </div>
+            <div class="tab-pane fade" id="operator-settings" role="tabpanel" aria-labelledby="operator-settings">
+                operator settings content
+            </div>
+            <div class="tab-pane fade" id="system-settings" role="tabpanel" aria-labelledby="system-settings">
+                system settings content
+            </div>
+            <div class="tab-pane fade" id="view-results" role="tabpanel" aria-labelledby="view-results">
+                view results content
+            </div>
+            <div class="tab-pane fade" id="engineer-analysis" role="tabpanel" aria-labelledby="engineer-analysis">
+                engineer analysis content
+            </div>
+            <div class="tab-pane fade" id="conductor-analysis" role="tabpanel" aria-labelledby="conductor-analysis">
+                conductor analysis content
+            </div>
+            <div class="tab-pane fade" id="dispatcher-analysis" role="tabpanel" aria-labelledby="dispatcher-analysis">
+                dispatcher analysis content
+            </div>
+            <div class="tab-pane fade" id="preview-report" role="tabpanel" aria-labelledby="preview-report">
+                preview report content
+            </div>
+        </div>
+                
+                
+        
+        
+        
+        
+    
+    
+    
+    
+    
+        <!------------ SCRIPTS ------------>
+        
+        <!-- jQuery 3.2.1 -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        
+        <!-- Bootstrap JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
