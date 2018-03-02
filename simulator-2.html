@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <!-- required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+        <!-- custom CSS -->
+        <link rel="stylesheet" href="css/style.css">
+        
+        <!-- title -->
+        <title>SHADO</title>
+
+    </head>
+    
+    <body>
+        
+        <!------------ NAVIGATION ------------>
+        
+        <nav class="navbar fixed-top">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/hal_light.png" height="60" alt="HAL Logo">
+                <span id="brand">Simulator of Human and Automation in Dispatch Operations</span>
+                <span id="brand-abbr">SHADO</span>
+            </a>
+            
+            <div class="ml-auto">
+                <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
+            </div>
+        </nav>
+        
+        <div class="spacer"></div>
+        
+        <div class="d-flex flex-column justify-content-between" id="sidebar">
+        
+            <button type="button" class="btn btn-primary" id="run-simulation">
+                Run Simulation
+            </button>
+        
+            <div class="nav flex-column justify-content-around" id="simulator-nav" role="tablist" aria-orientation="vertical">
+                <div class="nav-group">
+                    <h6>Simulation Settings</h6>
+                    <a class="nav-link active" id="basic-settings-tab" data-toggle="pill" href="#basic-settings" role="tab" aria-controls="basic-settings" aria-selected="true">
+                        Basic Settings
+                    </a>
+                    <a class="nav-link" id="fleet-settings-tab" data-toggle="pill" href="#fleet-settings" role="tab" aria-controls="fleet-settings" aria-selected="false">
+                        Fleets
+                    </a>
+                    <a class="nav-link" id="operator-settings-tab" data-toggle="pill" href="#operator-settings" role="tab" aria-controls="operator-settings" aria-selected="false">
+                        Operators
+                    </a>
+                    <a class="nav-link" id="task-settings-tab" data-toggle="pill" href="#task-settings" role="tab" aria-controls="task-settings" aria-selected="false">
+                        Tasks
+                    </a>
+                    <a class="nav-link" id="advanced-settings-tab" data-toggle="pill" href="#advanced-settings" role="tab" aria-controls="advanced-settings" aria-selected="false">
+                        Advanced
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="simulator-content">
+            
+            <div class="tab-pane fade show active" id="basic-settings" role="tabpanel" aria-labelledby="basic-settings">
+                <form>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-md-3">
+                                Simulation Type
+                            </legend>
+                            <div class="col-md-9">
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="sim-type-options" id="sim-type-aviation" value="aviation" checked>
+                                    <label class="custom-control-label" for="sim-type-aviation">
+                                        Aviation
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="sim-type-options" id="sim-type-rail" value="rail">
+                                    <label class="custom-control-label" for="sim-type-rail">
+                                        Rail
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="sim-type-options" id="sim-type-ground" value="ground">
+                                    <label class="custom-control-label" for="sim-type-ground">
+                                        Ground Logistics
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="num-reps">
+                                Replications
+                            </label>
+                            <input type="number" min="1" max="100" class="form-control" id="num-reps" placeholder="Enter #">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="num-phases">
+                                Phases
+                            </label>
+                            <input type="number" min="1" max="100" class="form-control" id="num-phases" placeholder="Enter #">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row form-group d-flex align-items-center">
+                        <label for="num-hours" class="col-sm-3 col-form-label">
+                            Number of Hours
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="range" min="1" max="8" value="1" step="1" class="slider" id="num-hours">
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            [# value]
+                        </div>
+                    </div>
+                    
+                    <div class="form-row form-group">
+                        <label for="traff-levels" class="col-sm-3 col-form-label">
+                            Traffic Levels
+                        </label>
+                        <div id="traff-levels d-flex flex-row">
+                            <div class="traff-levels-value input-group">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="traff-levels-0">
+                                        1
+                                    </label>
+                                </div>
+                                <select class="custom-select" id="traff-levels-0">
+                                    <option value="l">Low</option>
+                                    <option value="m">Medium</option>
+                                    <option value="h">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="autonomy-lvl">
+                                Level of Autonomy
+                            </label>
+                            <select class="custom-select" id="autonomy-lvl">
+                                <option value="0">None</option>
+                                <option value="1">Some</option>
+                                <option value="2">Full</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fail-thresh">
+                                Fail Threshold
+                            </label>
+                            <input type="number" min="1" max="100" class="form-control" id="fail-thresh" placeholder="Enter #">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" id="fleet-settings" role="tabpanel" aria-labelledby="fleet-settings">
+                
+                <form>
+                    <div class="form-group form-row">
+                        <label for="fleet-types" class="col-sm-3 col-form-label">
+                            Fleet Types
+                        </label>
+                        <div class="col-9">
+                            <input type="number" min="0" max="5" class="form-control" id="fleet-types" placeholder="Enter #">
+                        </div>
+                    </div>
+                </form>
+                
+                <div id="fleets">
+                    <div class="card">
+                        <div class="card-header d-flex flex-row justify-content-between">
+                            <h5 class="mb-0">
+                                Fleet Type #
+                            </h5>
+                            <button type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form class="p-3">
+                                <div class="form-group form-row">
+                                    <label for="fleet-vehicles-0" class="col-3 col-form-label">
+                                        Vehicles
+                                    </label>
+                                    <div class="col-9">
+                                        <input type="number" min="1" max="5" class="form-control" id="fleet-vehicles-0" placeholder="Enter #">
+                                    </div>
+                                </div>
+                                <label class="form-row" for="fleet-tasks-0">
+                                    Tasks Produced by this Fleet Type
+                                </label>
+                                <div id="fleet-tasks-0">
+                                    <div class="custom-control custom-checkbox custom-control-inline mb-3">
+                                        <input class="custom-control-input" type="checkbox" value="0" id="fleet-tasks-0-0"> 
+                                        <label class="custom-control-label" for="fleet-tasks-0-0">
+                                            Task #
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            
+            <div class="tab-pane fade" id="operator-settings" role="tabpanel" aria-labelledby="operator-settings">
+                
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="num-operators">
+                                Number of Operators
+                            </label>
+                            <input type="number" min="0" max="5" class="form-control" id="num-operators" placeholder="Enter #">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="op-strats">
+                                Operator Strategies
+                            </label>
+                            <select class="custom-select" id="op-strats">
+                                <option value="FIFO">First In First Out</option>
+                                <option value="STF">Shortest Task First</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                
+                <div id="operators">
+                    <div class="card">
+                        <div class="card-header d-flex flex-row justify-content-between">
+                            <h5 class="mb-0">
+                                Operator #
+                            </h5>
+                            <button type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form class="p-3">
+                                <div class="form-group form-row">
+                                    <label for="op-name-0" class="col-3 col-form-label">
+                                        Name
+                                    </label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="op-name-0" placeholder="Enter Operator Name">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-size-0">
+                                            Team Size
+                                        </label>
+                                        <input type="number" min="0" max="5" class="form-control" id="op-team-size-0" placeholder="Enter #">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-comms-0">
+                                            Team Comms
+                                        </label>
+                                        <select class="custom-select" id="op-team-comms-0">
+                                            <option value="N">None</option>
+                                            <option value="S">Some</option>
+                                            <option value="F">Full</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label class="form-row" for="fleet-tasks-0">
+                                    Tasks Done by this Operator
+                                </label>
+                                <div id="op-tasks-0">
+                                    <div class="custom-control custom-checkbox custom-control-inline mb-3">
+                                        <input class="custom-control-input" type="checkbox" value="0" id="op-tasks-0-0"> 
+                                        <label class="custom-control-label" for="op-tasks-0-0">
+                                            Task #
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="task-settings" role="tabpanel" aria-labelledby="task-settings">
+                
+                <form>
+                    <div class="form-group form-row">
+                        <label for="task-types" class="col-sm-3 col-form-label">
+                            Task Types
+                        </label>
+                        <div class="col-9">
+                            <input type="number" min="0" max="10" class="form-control" id="task-types" placeholder="Enter #">
+                        </div>
+                    </div>
+                </form>
+                
+                <div id="tasks">
+                    <div class="card">
+                        <div class="card-header d-flex flex-row justify-content-between">
+                            <h5 class="mb-0">
+                                Task Type #
+                            </h5>
+                            <button type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form class="p-3">
+                                
+                                <div class="form-group form-row">
+                                    <label for="task-name-0" class="col-3 col-form-label">
+                                        Name
+                                    </label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="task-name-0" placeholder="Enter Task Name">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="col form-group">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <label for="task-priorities-0">
+                                                Task Priority
+                                            </label>
+                                            <small id="task-priorities-help-0" class="form-text text-muted">
+                                                Enter priority value per phase.
+                                            </small>
+                                        </div>
+                                        <div class="d-flex flex-row" id="task-priorities-0">
+                                    <div class="task-priority-value input-group">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="task-priority-0-0">
+                                                1
+                                            </label>
+                                        </div>
+                                        <select class="custom-select" id="traff-levels-0">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                    
+                                    
+                                    
+                                    
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                
+                                
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-comms-0">
+                                            Arrival Time Distribution
+                                        </label>
+                                        <select class="custom-select" id="op-team-comms-0">
+                                            <option value="E">Exponential</option>
+                                            <option value="L">Log Normal</option>
+                                            <option value="U">Uniform</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-size-0">
+                                            Arrival Distribution Vars
+                                        </label>
+                                        <input type="number" min="0" max="5" class="form-control" id="op-team-size-0" placeholder="What goes here?">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-comms-0">
+                                            Service Time Distribution
+                                        </label>
+                                        <select class="custom-select" id="op-team-comms-0">
+                                            <option value="E">Exponential</option>
+                                            <option value="L">Log Normal</option>
+                                            <option value="U">Uniform</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-size-0">
+                                            Service Distribution Vars
+                                        </label>
+                                        <input type="number" min="0" max="5" class="form-control" id="op-team-size-0" placeholder="What goes here?">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-comms-0">
+                                            Expiration Time Distribution
+                                        </label>
+                                        <select class="custom-select" id="op-team-comms-0">
+                                            <option value="E">Exponential</option>
+                                            <option value="L">Log Normal</option>
+                                            <option value="U">Uniform</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="op-team-size-0">
+                                            Expiration Distribution Vars
+                                        </label>
+                                        <input type="number" min="0" max="5" class="form-control" id="op-team-size-0" placeholder="What goes here?">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col form-group">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <label for="task-priorities-0">
+                                                Task Affected by Traffic
+                                            </label>
+                                            <small id="task-priorities-help-0" class="form-text text-muted">
+                                                Enter traffic effects per phase.
+                                            </small>
+                                        </div>
+                                        <div class="d-flex flex-row" id="task-priorities-0">
+                                    <div class="task-priority-value input-group">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="task-priority-0-0">
+                                                1
+                                            </label>
+                                        </div>
+                                        <select class="custom-select" id="traff-levels-0">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                    
+                                    
+                                    
+                                    
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                <div class="form-row form-group">
+                                    <label class="col-sm-8">
+                                        Facilitated by Team Coordination
+                                    </label>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="custom-control custom-control-inline custom-radio">
+                                            <input class="custom-control-input" type="radio" name="team-coord-aff" id="team-coord-aff-n" value="0">
+                                            <label class="custom-control-label" for="team-coord-aff-n">No</label>
+                                    
+                                    
+                                    
+                                    </div>
+                                        <div class="custom-control custom-control-inline custom-radio">
+                                            <input class="custom-control-input" type="radio" name="team-coord-aff" id="team-coord-aff-y" value="1">
+                                            <label class="custom-control-label" for="team-coord-aff-y">Yes</label>
+                                    
+                                    
+                                    
+                                    </div>
+                                    
+</div>
+                                
+                                
+                                
+                                
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="col form-group mb-0">
+                                        <label>
+                                            Human Error Probability
+                                        </label>
+                                        <div class="form-row">
+                                            <div class="col-sm-4">
+                                                <input type="number" min="0" max="1" class="form-control" id="task-types" placeholder="Enter #">
+                                                <small id="task-priorities-help-0" class="form-text text-muted">
+                                                Mode
+                                            </small>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="number" min="0" max="1" class="form-control" id="task-types" placeholder="Enter #">
+                                                <small id="task-priorities-help-0" class="form-text text-muted">
+                                                Lower Bound
+                                            </small>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="number" min="0" max="1" class="form-control" id="task-types" placeholder="Enter #">
+                                                <small id="task-priorities-help-0" class="form-text text-muted">
+                                                Upper Bound
+                                            </small>
+                                            </div>
+                                            
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    </div>
+                                
+                                
+                                
+                                </div>
+                                
+                                
+                                
+                                
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                
+                
+            </div>
+            
+            
+            
+            
+            
+            <div class="tab-pane fade" id="advanced-settings" role="tabpanel" aria-labelledby="advanced-settings">
+                advanced settings content
+            </div>
+        </div>
+        
+        
+                
+                
+        
+        
+        
+        
+    
+    
+    
+    
+    
+        <!------------ SCRIPTS ------------>
+        
+        <!-- jQuery 3.2.1 -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        
+        <!-- Bootstrap JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

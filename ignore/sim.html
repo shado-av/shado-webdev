@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <!-- required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+        <!-- custom CSS -->
+        <link rel="stylesheet" href="css/style.css">
+        
+        <!-- title -->
+        <title>SHADO</title>
+
+    </head>
+    
+    <body>
+        
+        <form>
+            
+            <!-- TYPE OF SIMULATION -->
+            <div class="form-group row">
+                <label for="sim-type" class="col-3 col-form-label">
+                    Type of Simulation
+                </label>
+                <div class="col-9">
+                    <div class="custom-control custom-control-inline custom-radio">
+                        <input class="custom-control-input" type="radio" name="sim-type-options" id="sim-type-aviation" value="aviation" checked>
+                        <label class="custom-control-label" for="sim-type-aviation">
+                            Aviation
+                        </label>
+                    </div>
+                    <div class="custom-control custom-control-inline custom-radio">
+                        <input class="custom-control-input" type="radio" name="sim-type-options" id="sim-type-rail" value="rail">
+                        <label class="custom-control-label" for="sim-type-rail">
+                            Rail
+                        </label>
+                    </div>
+                    <div class="custom-control custom-control-inline custom-radio">
+                        <input class="custom-control-input" type="radio" name="sim-type-options" id="sim-type-ground" value="ground">
+                        <label class="custom-control-label" for="sim-type-ground">
+                            Ground Logistics
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- NUMBER OF HOURS -->
+            <div class="form-group row">
+                <label for="num-hours" class="col-3 col-form-label">
+                    Number of Hours
+                </label>
+                <div class="col-9">
+                    <input type="range" min="1" max="8" value="1" step="1" class="slider" id="num-hours">
+                </div>
+            </div>
+            
+            <!-- TRAFFIC LEVELS -->
+            <div class="form-group row">
+                <label for="traff-levels" class="col-3 col-form-label">
+                    Traffic Levels
+                </label>
+                <div id="traff-levels">
+                    <div class="traff-levels-value input-group col">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="traff-levels-0">
+                                1
+                            </label>
+                        </div>
+                        <select class="custom-select" id="traff-levels-0">
+                            <option value="l">Low</option>
+                            <option value="m">Medium</option>
+                            <option value="h">High</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- REPLICATIONS -->
+            <div class="form-group row">
+                <label for="num-reps" class="col-3 col-form-label">
+                    Replications
+                </label>
+                <div class="col-9">
+                    <input type="number" min="1" max="100" class="form-control" id="num-reps" placeholder="Enter #">
+                </div>
+            </div>
+            
+            
+            
+            <!-- VEHICLES 
+            <div class="form-group row">
+                <label for="num-vehicles" class="col-3 col-form-label">
+                    Vehicles
+                </label>
+                <div id="num-vehicles">
+                    <div class="num-vehicles-value input-group col">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="num-vehicles-0">
+                                1
+                            </label>
+                        </div>
+                        <input type="number" min="0" max="5" class="form-control" id="num-vehicles-0" placeholder="#">
+                    </div>
+                </div>
+            </div> -->
+            
+            <!-- OPERATORS 
+            <div class="form-group row">
+                <label for="num-ops" class="col-3 col-form-label">
+                    Operators
+                </label>
+                <div class="col-9">
+                    <input type="number" min="0" max="5" class="form-control" id="num-ops" placeholder="Enter #">
+                </div>
+            </div> -->
+            
+            <!-- TASK TYPES 
+            <div class="form-group row">
+                <label for="num-task-types" class="col-3 col-form-label">
+                    Task Types
+                </label>
+                <div class="col-9">
+                    <input type="number" min="0" max="10" class="form-control" id="num-task-types" placeholder="Enter #">
+                </div>
+            </div> -->
+            
+            <!-- PHASES -->
+            <div class="form-group row">
+                <label for="num-phases" class="col-3 col-form-label">
+                    Phases
+                </label>
+                <div class="col-9">
+                    <input type="number" min="1" max="10" class="form-control" id="num-phases" placeholder="Enter #">
+                </div>
+            </div>
+            
+            <!-- LEVEL OF AUTONOMY -->
+            <div class="form-group row">
+                <label for="autonomy-lvl" class="col-3 col-form-label">
+                    Level of Autonomy
+                </label>
+                <div class="col-9">
+                    <select class="custom-select" id="autonomy-lvl">
+                        <option value="0">None</option>
+                        <option value="1">Some</option>
+                        <option value="2">Full</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- EXOGENOUS FACTORS 
+            <div class="form-group row">
+                <label for="num-exo-factors" class="col-3 col-form-label">
+                    Exogenous Factors
+                </label>
+                <div class="col-9">
+                    <input type="number" min="0" max="5" class="form-control" id="num-exo-factors" placeholder="Enter #">
+                </div>
+            </div> -->
+            
+            <!-- OPERATOR STRATEGIES 
+            <div class="form-group row">
+                <label for="op-strats" class="col-3 col-form-label">
+                    Operator Strategies
+                </label>
+                <div class="col-9">
+                    <select class="custom-select" id="op-strats">
+                        <option value="FIFO">FIFO (first in first out)</option>
+                        <option value="STF">STF (shortest task first)</option>
+                    </select>
+                </div>
+            </div> -->
+            
+            <!-- FAIL THRESHOLD -->
+            <div class="form-group row">
+                <label for="fail-threshold" class="col-3 col-form-label">
+                    Fail Threshold
+                </label>
+                <div class="col-9">
+                    <input type="range" min="0" max="1" value="0" step="0.1" class="slider" id="fail-threshold">
+                </div>
+            </div>
+        </form>
+        
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        
+        
+        <form>
+            
+            <!-- FLEET TYPES -->
+            <div class="form-group row">
+                <label for="fleet-types" class="col-3 col-form-label">
+                    Fleet Types
+                </label>
+                <div class="col-9">
+                    <input type="number" min="0" max="5" class="form-control" id="fleet-types" placeholder="Enter #">
+                </div>
+            </div>
+            
+        
+        
+        
+        
+        
+        </form>
+        
+    </body>
+</html>
