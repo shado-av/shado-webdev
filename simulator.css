@@ -1,0 +1,128 @@
+.container-fluid {
+    padding: 4%;
+}
+
+.navbar {
+    background-color: #4981C7;
+    box-sizing: border-box;
+    height: 64px;
+}
+
+.spacer {
+    height: 64px;
+}
+
+.navbar-brand {
+    color: white;
+    transition: 0.3s;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.navbar-brand:hover {
+    color: #2B6298;   
+}
+
+#brand {
+    display: none;
+}
+
+@media screen and (min-width: 912px) {
+    #brand {
+        display: initial;
+    }
+    
+    #brand-abbr {
+        display: none;
+    }
+}
+
+#simulator-link:hover {
+    color: #4B82C5;
+}
+
+#settings-sidebar {
+    width: 250px;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    height: calc(100vh - 64px);
+    transition: all 0.3s;
+    background-color: #f8f9fa;
+    padding: 30px 0;
+}
+
+#settings-nav {
+    overflow-y: scroll;
+}
+
+.nav-pills .nav-link {
+    border-radius: 0px;
+}
+
+#settings-sidebar .nav-link {
+    color: #6C757D;
+    transition: all 0.3s;
+}
+
+#settings-sidebar .nav-link:hover, #settings-sidebar .nav-link.active {
+    background-color: #DEE2E6;
+    color: #212529;
+}
+
+#settings-nav .nav-item li .nav-link {
+    padding-left: 32px;
+}
+
+#run-sim {
+    padding: 0 16px;
+}
+
+#settings-content {
+    margin-left: 250px;
+    padding: 30px 5%;
+}
+
+
+.slider {
+    -webkit-appearance: none;
+            appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #DEE2E6;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+            appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #343a40;
+    cursor: pointer;
+    -webkit-transition: background .15s ease-in-out;
+            transition: background .15s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:hover, .slider::-webkit-slider-thumb:active {
+    background: #007bff;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: #343a40;
+    cursor: pointer;
+    -webkit-transition: background .15s ease-in-out;
+            transition: background .15s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:hover, .slider::-moz-range-thumb:hover, .slider::-webkit-slider-thumb:active, .slider::-moz-range-thumb:active {
+    background: #007bff;
+}
