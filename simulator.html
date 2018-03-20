@@ -1,58 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
-        <!-- required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
-        <!-- custom CSS -->
-        <link rel="stylesheet" href="simulator.css">
-        
-        <!-- title -->
-        <title>SHADO</title>
 
-    </head>
-    
-    <body>
-       
-        <!------------ NAVIGATION ------------>
-        
-        <nav class="navbar fixed-top">
-            
-            <!-- HAL logo and SHADO title -->
-            <a class="navbar-brand" href="index.html">
+    <!-- required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Bootstrap 4.0.0 libraries -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vue.js and Firebase libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+
+    <!-- custom CSS and JavaScript -->
+    <link rel="stylesheet" href="simulator.css">
+    <script src="sim.js" async></script>
+
+    <!-- title -->
+    <title>SHADO</title>
+
+</head>
+
+<body>
+
+    <!------------ NAVIGATION ------------>
+
+    <nav class="navbar fixed-top">
+
+        <!-- HAL logo and SHADO title -->
+        <a class="navbar-brand" href="index.html">
                 <img src="images/hal_light.png" height="38" alt="HAL Logo">
                 <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
                 <span id="brand-abbr">SHADO</span>
             </a>
-            
-            <!-- simulator link -->
-            <div class="ml-auto">
-                <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
-            </div>
-        </nav>
-        
-        <div class="spacer"></div>
 
-        <!------------ SIDEBAR NAVIGATION ------------>
-        
+        <!-- simulator link -->
+        <div class="ml-auto">
+            <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
+        </div>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <!------------ SIDEBAR NAVIGATION ------------>
+
+    <div id="shado-sim">
+
         <div class="d-flex flex-column justify-content-between" id="settings-sidebar">
-            
+
             <!-- links to different settings tabs -->
             <ul class="nav flex-column nav-pills" id="settings-nav" role="tablist">
-                
+
                 <!-- basic settings -->
                 <li class="nav-item">
                     <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings" selected="true">Basic Settings</a>
                 </li>
-                
+
                 <!-- tasks -->
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#tasks-submenu"  aria-expanded="false">
+                    <a class="nav-link" data-toggle="collapse" href="#tasks-submenu" aria-expanded="false">
                     Tasks</a>
                     <!-- collapse submenu of tasks -->
                     <ul class="flex-column nav-pills collapse list-unstyled" role="tablist" aria-orientation="vertical" id="tasks-submenu">
@@ -64,10 +75,10 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <!-- operators -->
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#operators-submenu"  aria-expanded="false">Operators</a>
+                    <a class="nav-link" data-toggle="collapse" href="#operators-submenu" aria-expanded="false">Operators</a>
                     <!-- collapse submenu of operators -->
                     <ul class="flex-column nav-pills collapse list-unstyled" role="tablist" aria-orientation="vertical" id="operators-submenu">
                         <li class="nav-item">
@@ -76,10 +87,10 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <!-- fleets -->
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#fleets-submenu"  aria-expanded="false">
+                    <a class="nav-link" data-toggle="collapse" href="#fleets-submenu" aria-expanded="false">
                     Fleets</a>
                     <!-- collapse submenu of fleets -->
                     <ul class="flex-column nav-pills collapse list-unstyled" role="tablist" aria-orientation="vertical" id="fleets-submenu">
@@ -90,7 +101,7 @@
                     </ul>
                 </li>
             </ul>
-            
+
             <!-- run simulation -->
             <form id="run-sim">
                 <!-- number of replications -->
@@ -101,21 +112,21 @@
                 <!-- run sim button -->
                 <div class="form-row justify-content-center">
                     <button class="btn btn-primary" type="button">Run Simulation</button>
-                </div> 
+                </div>
             </form>
         </div>
-        
+
         <!------------ TAB CONTENT ------------>
-        
+
         <div class="tab-content" id="settings-content">
-            
+
             <!------------ BASIC SETTINGS ------------>
             <div class="tab-pane fade active show" id="basic-settings" role="tabpanel" aria-lablledby="basic-settings-tab">
-                
+
                 <h3 class="mb-4">Basic Settings</h3>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- type of simulation -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Type of Simulation</label>
@@ -134,54 +145,81 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- hours in shift -->
                     <div class="form-group">
-                        <label for="num-hours">How many hours are in this shift?</label>
-                        <input type="range" min="1" max="8" value="1" step="1" class="slider" id="num-hours">
+                        <label for="num-hours">
+                            How many hours are in this shift?
+                        </label>
+                        <input type="number"
+                               min="1"
+                               max="12"
+                               step="1"
+                               class="form-control"
+                               id="num-hours"
+                               v-model="globalSettings.numHours"
+                               @input="updateTrafficLvls">
                     </div>
-                    
                 </form>
-                
+
                 <h5 class="mb-3">Traffic</h5>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- different traffic levels -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Are there different traffic levels during this shift?</label>
                         <div class="text-right">
                             <div class="custom-control custom-control-inline custom-radio">
-                                <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-y" value="1">
+                                <input 
+                                       class="custom-control-input" type="radio" 
+                                       name="diff-traff-levels"
+                                       id="diff-traff-levels-y"
+                                       value="y"
+                                       v-model="globalSettings.diffTrafficLevels"
+                                       @change="updateTrafficLvls">
                                 <label class="custom-control-label" for="diff-traff-levels-y">Yes</label>
                             </div>
                             <div class="custom-control custom-control-inline custom-radio mr-0">
-                                <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-n" value="0" checked>
+                                <input class="custom-control-input" 
+                                       type="radio" 
+                                       name="diff-traff-levels" 
+                                       id="diff-traff-levels-n" 
+                                       value="n"
+                                       v-model="globalSettings.diffTrafficLevels"
+                                       @change="updateTrafficLvls">
                                 <label class="custom-control-label" for="diff-traff-levels-n">No</label>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- adjust traffic levels per hour -->
-                    <div class="form-group">
+                    <div class="form-group" v-show="globalSettings.diffTrafficLevels === 'y'">
                         <label>Adjust traffic levels per hour:</label>
-                        <div class="input-group">
+                        <div class="traffic-levels">
+                            <div class="input-group traffic-level" v-for="(traffLvl, index) in globalSettings.trafficLevels">
                             <div class="input-group-prepend">
-                                <div class="input-group-text">1</div>
+                                <div class="input-group-text">
+                                    {{ index + 1 }}
+                                </div>
                             </div>
-                            <select class="custom-select">
-                                <option value="l" selected>Low</option>
+                            <select class="custom-select" v-model="globalSettings.trafficLevels[index]">
+                                <option value="l">Low</option>
                                 <option value="m">Medium</option>
                                 <option value="h">High</option>
                             </select>
                         </div>
+                        
+                        
+                        </div>
+                        
                     </div>
                 </form>
-                
+
                 <h5 class="mb-3">Exogenous Factors</h5>
-                
+
                 <form>
-                    
+
                     <!-- include exogenous factors -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Do you want to include exogenous factors?</label>
@@ -196,49 +234,49 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- type of exogenous factors -->
                     <div class="form-group">
                         <label>Select the type of exogenous factor:</label>
-                            <select class="custom-select">
+                        <select class="custom-select">
                                 <option value="1" selected>Type 1</option>
                                 <option value="2">Type 2</option>
                             </select>
                     </div>
                 </form>
             </div>
-            
+
             <!------------ TASKS SETTINGS ------------>
             <div class="tab-pane fade" id="tasks-settings" role="tabpanel" aria-lablledby="tasks-settings-tab">
-                
+
                 <h3 class="mb-4">Tasks Settings</h3>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- number of phases -->
                     <div class="form-group">
                         <label for="num-phases">How many different phases do the operators have in their shift?</label>
                         <input type="range" min="1" max="3" value="1" step="1" class="slider" id="num-phases">
-                    </div>   
+                    </div>
                 </form>
-                
+
                 <h5 class="mb-3">Task Types</h5>
-                
+
                 <form>
-                    
+
                     <!-- number of tasks -->
                     <div class="form-group form-inline justify-content-between">
                         <label for="num-tasks">How many different tasks are the operators able to handle?</label>
                         <input class="form-control" type="number" min="1" max="15" step="1" value="0" readonly>
                     </div>
-                    
+
                     <!-- tasks checklist -->
                     <div class="form-group">
                         <label class="mb-0">Select the tasks the operators can perform:</label>
                         <small id="task-checklist-help" class="form-text text-muted mt-0">You can select up to 15 tasks.</small>
-                        
+
                         <div class="form-row mt-3">
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-1">
@@ -253,7 +291,7 @@
                                     <label class="custom-control-label" for="task-type-3">Task Type 3</label>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-4">
@@ -268,44 +306,44 @@
                                     <label class="custom-control-label" for="task-type-6">Task Type 6</label>
                                 </div>
                             </div>
-                            
+
                             <!-- add custom tasks -->
                             <div class="col">
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="task-type-custom">
                                     <label class="custom-control-label" for="task-type-custom">Add custom tasks...</label>
                                 </div>
-                                
+
                                 <div class="pl-4">
                                     <small class="form-text text-muted">How many?</small>
                                     <input class="form-control" type="number" min="1" max="15" step="1" value="1" disabled>
-                                </div> 
-                            </div> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
-            
+
             <!------------ TASKS DETAILS ------------>
             <div class="tab-pane fade" id="tasks-type" role="tabpanel" aria-labelledby="tasks-type-tab">
-                
+
                 <h3 class="mb-4">Task Details</h3>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- task name -->
                     <div class="form-group form-row">
                         <label class="col-md-3 col-lg-2 col-form-label">Task Name</label>
                         <div class="col-md-9 col-lg-10">
                             <input class="form-control" type="text">
                         </div>
-                    </div>  
+                    </div>
                 </form>
-                
+
                 <h5 class="mb-3">Distributions</h5>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- arrival time distribution -->
                     <div class="form-group form-row">
                         <div class="col-6">
@@ -324,7 +362,7 @@
                             <small class="form-text text-muted">Mean</small>
                         </div>
                     </div>
-                    
+
                     <!-- service time distribution -->
                     <div class="form-group form-row">
                         <div class="col-6">
@@ -348,10 +386,10 @@
                                     <input class="form-control" type="number" placeholder="Enter SD #">
                                     <small class="form-text text-muted">Standard Deviation</small>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- expiration time distribution -->
                     <div class="form-group form-row">
                         <div class="col-6">
@@ -375,15 +413,15 @@
                                     <input class="form-control" type="number" placeholder="Enter max #">
                                     <small class="form-text text-muted">Maximum</small>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </form>
-                
+
                 <h5 class="mb-3">Traffic</h5>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- task affected by traffic -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Is this task affected by traffic?</label>
@@ -398,7 +436,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- traffic different over different phases -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Does this task behave differently across phases?</label>
@@ -414,9 +452,9 @@
                         </div>
                     </div>
                 </form>
-                
+
                 <h5 class="mb-3">Human Error Probability</h5>
-                
+
                 <!-- human error probability numbers -->
                 <form>
                     <div class="form-group form-row">
@@ -438,17 +476,17 @@
                                 Upper Bound
                             </small>
                         </div>
-                    </div>  
+                    </div>
                 </form>
             </div>
-            
+
             <!------------ OPERATORS SETTINGS ------------>
             <div class="tab-pane fade" id="operators-settings" role="tabpanel" aria-lablledby="operators-settings-tab">
-                
+
                 <h3 class="mb-4">Operators Settings</h3>
-                
+
                 <form>
-                    
+
                     <!-- operator teams -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Are there different teams of operators?</label>
@@ -463,22 +501,22 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- number of operator teams -->
                     <div class="form-group">
                         <label for="num-operators">How many different teams of operators are there?</label>
                         <input type="range" min="2" max="5" value="2" step="1" class="slider" id="num-operators">
-                    </div>  
+                    </div>
                 </form>
             </div>
-            
+
             <!------------ OPERATORS DETAILS ------------>
             <div class="tab-pane fade" id="operators-team" role="tabpanel" aria-labelledby="operators-team-tab">
-                
+
                 <h3 class="mb-4">Operator Team Details</h3>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- operator team name -->
                     <div class="form-group form-row">
                         <label class="col-md-3 col-lg-2 col-form-label">Team Name</label>
@@ -486,16 +524,16 @@
                             <input class="form-control" type="text">
                         </div>
                     </div>
-                    
-                    
+
+
                     <div class="form-group form-row">
-                        
+
                         <!-- team size -->
                         <div class="col">
                             <label>How large is the team?</label>
                             <input class="form-control" type="number" min="1" max="10" value="1">
                         </div>
-                        
+
                         <!-- operator strategies -->
                         <div class="col">
                             <label>Operator Strategies</label>
@@ -506,7 +544,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- team communications -->
                     <div class="form-group">
                         <label>Does this team have some level of communications?</label>
@@ -516,18 +554,18 @@
                             <option value="F">Full</option>
                         </select>
                     </div>
- 
+
                 </form>
-                
+
                 <h5 class="mb-3">Operator Tasks</h5>
-                
+
                 <!-- operator task checklist -->
                 <form class="mb-5">
                     <div class="form-group">
                         <label class="mb-0">What tasks are these operators responsible for?</label>
-                        
+
                         <div class="form-row mt-3">
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-1">
@@ -542,7 +580,7 @@
                                     <label class="custom-control-label" for="task-type-3">Task Type 3</label>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-4">
@@ -557,7 +595,7 @@
                                     <label class="custom-control-label" for="task-type-6">Task Type 6</label>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-7">
@@ -570,16 +608,16 @@
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="task-type-9">
                                     <label class="custom-control-label" for="task-type-9">Task Type 9</label>
-                                </div>  
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
-                
+
                 <h5 class="mb-3">Team Autonomy</h5>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- team autonomy -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Does this team have some level of autonomy?</label>
@@ -594,7 +632,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- equal operator -->
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -602,7 +640,7 @@
                             <label class="custom-control-label">Equal Operator</label>
                         </div>
                     </div>
-                    
+
                     <!-- assisting individuals -->
                     <div class="form-group form-row align-items-center">
                         <div class="col">
@@ -617,10 +655,10 @@
                                 Some</option>
                                 <option value="2">
                                 Full</option>
-                            </select>     
+                            </select>
                         </div>
                     </div>
-                    
+
                     <!-- assisting in team coordinations -->
                     <div class="form-group form-row align-items-center">
                         <div class="col">
@@ -637,27 +675,27 @@
                                 Full</option> 
                             </select>
                         </div>
-                    </div> 
+                    </div>
                 </form>
-                
+
                 <h5 class="mb-3">Fail Threshold</h5>
-                
+
                 <!-- fail threshold -->
                 <form>
                     <div class="form-group">
                         <label for="fail-thresh">For every error, what is the chance that the team will catch it?</label>
                         <input type="range" min="0" max="100" value="50" step="1" class="slider" id="fail-thresh">
-                    </div>  
+                    </div>
                 </form>
             </div>
-            
+
             <!------------ FLEETS SETTINGS ------------>
             <div class="tab-pane fade" id="fleets-settings" role="tabpanel" aria-lablledby="fleets-settings-tab">
-                
+
                 <h3 class="mb-4">Fleets Settings</h3>
-                
+
                 <form>
-                    
+
                     <!-- different fleets -->
                     <div class="form-group form-inline justify-content-between">
                         <label class="col-form-label">Are there different fleets that the operators manage?</label>
@@ -672,7 +710,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- number of fleets -->
                     <div class="form-group">
                         <label for="num-fleets">How many different fleets are there?</label>
@@ -680,14 +718,14 @@
                     </div>
                 </form>
             </div>
-            
+
             <!------------ FLEETS DETAILS ------------>
             <div class="tab-pane fade" id="fleets-details" role="tabpanel" aria-labelledby="fleets-details-tab">
-                
+
                 <h3 class="mb-4">Fleet Details</h3>
-                
+
                 <form class="mb-5">
-                    
+
                     <!-- fleet name -->
                     <div class="form-group form-row">
                         <label class="col-md-3 col-lg-2 col-form-label">Fleet Name</label>
@@ -695,13 +733,13 @@
                             <input class="form-control" type="text">
                         </div>
                     </div>
-                    
+
                     <!-- number of vehicles -->
                     <div class="form-group">
                         <label for="num-vehicles">How many vehicles are in this fleet?</label>
                         <input type="range" min="1" max="100" value="1" step="1" class="slider" id="num-vehicles">
                     </div>
-                    
+
                     <!-- fleet communications -->
                     <div class="form-group">
                         <label>Does this fleet have some level of vehicle-to-vehicle communication?</label>
@@ -712,16 +750,16 @@
                         </select>
                     </div>
                 </form>
-                
+
                 <h5 class="mb-3">Fleet Tasks</h5>
-                
+
                 <!-- fleet task checklist -->
                 <form>
                     <div class="form-group">
                         <label class="mb-0">What tasks are these operators responsible for?</label>
-                        
+
                         <div class="form-row mt-3">
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-1">
@@ -736,7 +774,7 @@
                                     <label class="custom-control-label" for="task-type-3">Task Type 3</label>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-4">
@@ -751,7 +789,7 @@
                                     <label class="custom-control-label" for="task-type-6">Task Type 6</label>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input class="custom-control-input" type="checkbox" id="task-type-7">
@@ -764,21 +802,13 @@
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="task-type-9">
                                     <label class="custom-control-label" for="task-type-9">Task Type 9</label>
-                                </div>  
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-
-        <!------------ SCRIPTS ------------>
-        
-        <!-- jQuery 3.2.1 -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        
-        <!-- Bootstrap JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    </body>
+    </div>
+</body>
 </html>

@@ -126,3 +126,19 @@
 .slider::-webkit-slider-thumb:hover, .slider::-moz-range-thumb:hover, .slider::-webkit-slider-thumb:active, .slider::-moz-range-thumb:active {
     background: #007bff;
 }
+
+
+
+
+
+.traffic-levels {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+
+.traffic-level {
+    flex: 0 0 150px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
