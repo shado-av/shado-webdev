@@ -27,6 +27,16 @@
     display: none;
 }
 
+@media screen and (min-width: 800px) {
+    #sim-nav #brand {
+        display: initial;
+    }
+    
+    #sim-nav #brand-abbr {
+        display: none;
+    }
+}
+
 @media screen and (min-width: 912px) {
     #brand {
         display: initial;
@@ -42,7 +52,7 @@
 }
 
 #settings-sidebar {
-    width: 250px;
+    width: 150px;
     position: fixed;
     top: 64px;
     left: 0;
@@ -79,8 +89,9 @@
 }
 
 #settings-content {
-    margin-left: 250px;
-    padding: 30px 5%;
+    margin-left: 150px;
+    padding: 30px;
+    position: relative;
 }
 
 
@@ -128,7 +139,10 @@
 }
 
 
-
+#tasks-settings-content, #operators-settings-content, #fleets-settings-content {
+    margin-left: 150px;
+    padding-left: 30px;
+}
 
 
 .traffic-levels {
@@ -141,4 +155,43 @@
     flex: 0 0 150px;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.tabs-left {
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    left: 30px;
+    width: 150px;
+    border-bottom: none;
+    border-right: 1px solid #dee2e6;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.tabs-left .nav-item {
+    float: none;
+    margin-bottom: 2px;
+    margin-right: -1px;
+}
+
+.tabs-left .nav-link {
+    border-radius: 4px 0 0 4px;
+    margin-right: 0;
+    display:block;
+}
+
+.tabs-left .nav-link:hover, .tabs-left .nav-link:focus {
+    border-color: #e9ecef transparent #e9ecef #dee2e6;
+}
+
+.tabs-left .nav-link.active,
+.tabs-left .nav-item.show .nav-link {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #fff #dee2e6 #dee2e6;
+}
+
+.delete {
+    float: right;
 }
