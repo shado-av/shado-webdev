@@ -8,7 +8,7 @@ var sim = new Vue({
             numHours: 8,
             diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"],
-            exoFactors: 0,
+            exoFactors: "n",
             exoFactorsType: 1
         },
         taskSettings: {

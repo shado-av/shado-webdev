@@ -188,18 +188,18 @@
                         <label class="col-form-label">Do you want to include exogenous factors?</label>
                         <div class="text-right">
                             <div class="custom-control custom-control-inline custom-radio">
-                                <input class="custom-control-input" type="radio" name="exo-factors" id="exo-factors-y" value="1" v-model="globalSettings.exoFactors">
+                                <input class="custom-control-input" type="radio" name="exo-factors" id="exo-factors-y" value="y" v-model="globalSettings.exoFactors">
                                 <label class="custom-control-label" for="exo-factors-y">Yes</label>
                             </div>
                             <div class="custom-control custom-control-inline custom-radio mr-0">
-                                <input class="custom-control-input" type="radio" name="exo-factors" id="exo-factors-n" value="0" v-model="globalSettings.exoFactors">
+                                <input class="custom-control-input" type="radio" name="exo-factors" id="exo-factors-n" value="n" v-model="globalSettings.exoFactors">
                                 <label class="custom-control-label" for="exo-factors-n">No</label>
                             </div>
                         </div>
                     </div>
 
                     <!-- type of exogenous factors -->
-                    <div class="form-group" v-show="globalSettings.exoFactors !== 0">
+                    <div class="form-group" v-show="globalSettings.exoFactors === 'y'">
                         <label>Select the type of exogenous factor:</label>
                         <select class="custom-select" v-model="globalSettings.exoFactorsType" placeholder="Select a type...">
                                 <option value="1">Type 1</option>
