@@ -491,97 +491,127 @@ var sim = new Vue({
     
     
 })
-function submit() {
-    var out = {
-        "numHours": this.globalSettings.numHours,
-        "traffic": this.computed.traffic,
-        "numReps": this.numRep,
-        "numRemoteOp": this.computed.numRemoteOp,
-        "numTeams": this.operatorSettings.numTeams,
-        "numvehicles": this.computed.numVehicles,
-        "autolvl": 1,
-        "numPhases": this.taskSettings.numPhases,
+$(document).ready(function () {
+    $("#sumbitBtn").click(function (e) {
+        var out = {
+            "numHours": sim.globalSettings.numHours,
+            "traffic": sim.traffic,
+            "numReps": sim.numRep,
+            "numRemoteOp": sim.numRemoteOp,
+            "numTeams": sim.operatorSettings.numTeams,
+            "numvehicles": sim.numVehicles,
+            "autolvl": 1,
+            "numPhases": sim.taskSettings.numPhases,
 
-        "hasExogenous": this.computed.hasExogenous,
-        "exNames": ["Medical", "Weather"],
-        "exTypes": ["add_task", "long_serv"],
+            "hasExogenous": sim.hasExogenous,
+            "exNames": ["Medical", "Weather"],
+            "exTypes": ["add_task", "long_serv"],
 
-        "failThreshold": 0.5,
-        "opStrats": op_strats,
-        "opNames": this.computed.opNames,
-        "opTasks": this.computed.opTasks,
-        "teamComm": this.computed.teamComm,
-        "teamSize": this.computed.teamSize,
-        "fleetTypes": this.fleetSettings.fleetTypes,
-        "fleetHetero": this.computed.fleetHetero,
+            "failThreshold": 0.5,
+            "opStrats": "STF",
+            "opNames": sim.opNames,
+            "opTasks": sim.opTasks,
+            "teamComm": sim.teamComm,
+            "teamSize": sim.teamSize,
+            "fleetTypes": sim.fleetSettings.fleetTypes,
+            "fleetHetero": sim.fleetHetero,
 
-        "numTaskTypes": this.computed.numTaskTypes,
-        "taskNames": this.computed.taskNames,
-        "taskPrty": task_prty,
-        "arrDists": this.computed.arrDists,
-        "arrPms": this.computed.arrPms,
-        "serDists": this.computed.serDists,
-        "serPms": this.computed.serPms,
-        "expDists": this.computed.expDists,
-        "expPmsLo": this.computed.expPmsHi,
-        "expPmsHi": this.computed.expPmsHi,
-        "affByTraff": this.computed.affByTraff,
-        "teamCoordAff": team_coord_aff,
-        "humanError": this.computed.humanError
-    };
-    //Download Json
-    $("#container").empty();
-    var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
-    $('<a href="data:' + data + '" download="shadoParams.json">download input JSON</a>').appendTo('#container');
+            "numTaskTypes": sim.numTaskTypes,
+            "taskNames": sim.taskNames,
+            "taskPrty": [[3, 5], [2, 2], [3, 4], [4, 3]],
+            "arrDists": sim.arrDists,
+            "arrPms": sim.arrPms,
+            "serDists": sim.serDists,
+            "serPms": sim.serPms,
+            "expDists": sim.expDists,
+            "expPmsLo": sim.expPmsHi,
+            "expPmsHi": sim.expPmsHi,
+            "affByTraff": sim.affByTraff,
+            "teamCoordAff": [0, 1, 0, 1],
+            "humanError": sim.humanError
+        };
+        console.log(out);
+        //hide download
+        document.getElementById("downloadBtn").style.display = "none";
+        document.getElementById("downloadSummary").style.display = "none";
 
-    $.ajax({
-        type: "POST",
-        url: "http://apps.hal.pratt.duke.edu:8080/shado/testpost",
-        // The key needs to match your method's input parameter (case-sensitive).
-        data: JSON.stringify(out),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (msg) {
-            alert(msg);
-            console.log("response received");
-            console.log(msg);
-            // move(100);
-            //  var obj = JSON.stringify(msg)
-            // // var tempParseData = obj;
-            // obj = JSON.parse(obj);
-            // console.log(obj);
-            // alert(obj);
-            // if(msg.status == 'success')
-            alert("PARAMETERS SUBMITTED!");
-        },
-        complete: function (msg) {
-            console.log("response received");
-            console.log(msg);
-            var obj = JSON.stringify(msg);
+        //Download Json
+        $("#container").empty();
+        var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
+        $('<a href="data:' + data + '" download="shadoParams.json">Download <br> Input JSON</a>').appendTo('#container');
+        $.ajax({
+            type: "POST",
+            url: "http://apps.hal.pratt.duke.edu:8080/shado/testpost",
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: JSON.stringify(out),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                alert(msg);
+                console.log("response received");
+                console.log(msg);
+                // move(100);
+                //  var obj = JSON.stringify(msg)
+                // // var tempParseData = obj;
+                // obj = JSON.parse(obj);
+                // console.log(obj);
+                // alert(obj);
+                // if(msg.status == 'success')
+                alert("PARAMETERS SUBMITTED!");
+            },
+            complete: function (msg) {
+                console.log("response received");
+                console.log(msg);
+                var obj = JSON.stringify(msg);
 
-            if (msg.status == 500) {
-                alert("Server Error: Check parameters(maybe not enough tasks)!")
-                alert(msg.responseText);
+                if (msg.status == 500) {
+                    alert("Server Error: Check parameters(maybe not enough tasks)!")
+                    alert(msg.responseText);
+                }
+                if (msg.status == 200) {
+                    alert(msg.responseText);
+                    //Allow Download
+                    //Show download button
+                    showDownloadBtn();
+                    // downloadRepCSV();
+                    // downloadSummary();
+                }
+                hideProgress();
+                document.getElementById("sumbitBtn").textContent = "Submit Again";
+
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
             }
-            if (msg.status == 200) {
-                alert(msg.responseText);
-                //Allow Download
-                //Show download button
-                showDownloadBtn();
-                // downloadRepCSV();
-                // downloadSummary();
-            }
-            hideProgress();
-            document.getElementById("sumbitBtn").textContent = "Submit Again";
-
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
-        }
+        });
     });
-
     // alert("SHADO params SUBMITTED!");
+});
+function showDownloadBtn() {
+    document.getElementById("downloadBtn").style.display = "block";
+    // document.getElementById("downloadSummary").style.display = "block";
+}
+function downloadRepCSV() {
+    // $.get("http://localhost:8080/shado/getRepDetail");
+    var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
+    win.focus();
+    console.log("GET request 'getRepDetail' sent");
+}
 
+function downloadSummary() {
+    var xhttp = new XMLHttpRequest();
+    // $.get("http://localhost:8080/shado/getSummary");
+    // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
+    var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
+    win.focus();
+    console.log("GET request 'getSummary' sent");
+}
+function showProgress() {
+    document.getElementById("progress").style.display = 'block';
+}
+function hideProgress() {
+    document.getElementById("progress").style.display = 'none';
 
 }
+
 sim.$mount("#shado-sim");

@@ -23,7 +23,7 @@
 
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="simulator.css">
-    <script src="sim.js" async></script>
+    <script type="text/javascript" src="sim.js" async></script>
 
     <!-- title -->
     <title>SHADO</title>
@@ -69,40 +69,58 @@
                 <!-- tasks -->
                 <li class="nav-item">
                     <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings" selected="false">
-                    Tasks</a>
+                        Tasks
+                    </a>
                 </li>
 
                 <!-- operators -->
                 <li class="nav-item">
                     <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings" selected="false">
-                    Operators</a>
+                        Operators
+                    </a>
                 </li>
 
                 <!-- fleets -->
                 <li class="nav-item">
                     <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings" selected="false">
-                    Fleets</a>
+                        Fleets
+                    </a>
                 </li>
 
                 <!-- overview -->
                 <li class="nav-item">
                     <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false">
-                    Review Settings</a>
+                        Review Settings
+                    </a>
                 </li>
             </ul>
 
             <!-- run simulation -->
-            <form id="run-sim">
+            <form id="run-sim" onsubmit="return false">
                 <!-- number of replications -->
                 <div class="form-group">
                     <label for="num-reps"># Replications</label>
                     <input class="form-control" type="number" id="num-reps" min="1" max="1000" step="1" v-model.number="numReps">
                 </div>
-                <!-- run sim button -->
-                <div class="form-row justify-content-center">
-                    <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" onclick="submit()">Run Simulation</button>
-                </div>
             </form>
+            <!-- Download Buttons -->
+            <div class="form-row justify-content-center">
+                <div id="container"></div><br>
+            </div>
+
+            <div id="downloadBtn" style="display: none" align="center">
+                <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
+            </div><br>
+            <div id="downloadBtn" style="display: none" align="center">
+                <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
+            </div><br>
+
+
+            <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
+            <!-- run sim button -->
+            <div class="form-row justify-content-center">
+                <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="">Run Simulation</button>
+            </div>
         </div>
 
         <!----------------------------------------- 
@@ -801,76 +819,84 @@
             ------------------------------------------>
 
             <div class="tab-pane fade" id="review-settings" role="tabpanel" aria-lablledby="review-settings-tab">
-            
-            <h3 class="mb-4">Review Settings</h3>
-            <h5>Global Settings</h5>
-				<ul>
-					<li>Type of simulation: <b>{{globalSettings.simType}}</b> </li>
-					<li>Number of Hours: <b>{{globalSettings.numHours }}</b></li>
-					<li>Traffic Levels: <b>{{globalSettings.trafficLevels}}</b></li>
-					<li>Exogenous Factors: <b>{{globalSettings.exoFactors}}</b></li>
-					<li>Type of exogenous factor: <b>{{globalSettings.exoFactorsType}}</b></li>
-				</ul>
-            <h5>Tasks</h5>
-				<ul>
+
+                <h3 class="mb-4">Review Settings</h3>
+                <h5>Global Settings</h5>
+                <ul>
+                    <li>Type of simulation: <b>{{globalSettings.simType}}</b> </li>
+                    <li>Number of Hours: <b>{{globalSettings.numHours }}</b></li>
+                    <li>Traffic Levels: <b>{{globalSettings.trafficLevels}}</b></li>
+                    <li>Exogenous Factors: <b>{{globalSettings.exoFactors}}</b></li>
+                    <li>Type of exogenous factor: <b>{{globalSettings.exoFactorsType}}</b></li>
+                </ul>
+                <h5>Tasks</h5>
+                <ul>
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
                         <a class="nav-link disabled" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'" role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
-							<ul>
-								<li>Distributions</li>
-									<ul>
-										<li>Arrival Time: <b>{{task.arrivalDistribution}}</b>, Parameters: <b>{{task.arrivalParam}}</b></li>
-										<li>Service Time: <b>{{task.serviceDistribution}}</b>, Parameters: <b>{{task.serviceParam}}</b></li>
-										<li>Expiration Time: <b>{{task.expireDistribution}}</b>, Parameters: <b>{{task.expireParamExo}}</b></li>
-									</ul>
-								<li>Traffic</li>							
-									<ul>							
-										<li>Is task altered by traffic: <b>{{task.affectedByTraffic}}</b></li>
-										<li>Phase(s) where task is affected: <b>{{task.affectByIROPS}}</b></li>
-									</ul>
-								<li>Human Error Probability</li>
-									<ul>
-										<li><b>{{task.humanErrorProb}}</b></li>
-									</ul>
-							</ul>
+                            <ul>
+                                <li>Distributions</li>
+                                <ul>
+                                    <li>Arrival Time: <b>{{task.arrivalDistribution}}</b>, Parameters: <b>{{task.arrivalParam}}</b></li>
+                                    <li>Service Time: <b>{{task.serviceDistribution}}</b>, Parameters: <b>{{task.serviceParam}}</b></li>
+                                    <li>Expiration Time: <b>{{task.expireDistribution}}</b>, Parameters: <b>{{task.expireParamExo}}</b></li>
+                                </ul>
+                                <li>Traffic</li>
+                                <ul>
+                                    <li>Is task altered by traffic: <b>{{task.affectedByTraffic}}</b></li>
+                                    <li>Phase(s) where task is affected: <b>{{task.affectByIROPS}}</b></li>
+                                </ul>
+                                <li>Human Error Probability</li>
+                                <ul>
+                                    <li><b>{{task.humanErrorProb}}</b></li>
+                                </ul>
+                            </ul>
                         </a>
                     </li>
                 </ul>
-			<h5>Operators</h5>
-				<ul>
+                <h5>Operators</h5>
+                <ul>
                     <li class="nav-item" v-for="(team, index) in operatorSettings.teams">
                         <a class="nav-link disabled" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'" role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
                             {{ team.name }}
-							<ul>
-								<li>Team Size: <b>{{team.size}}</b></li>
-								<li>Operator Strategy: <b>{{team.strategy}}</b></li>
-								<li>Communications: <b>{{team.comms}}</b></li>
-								<li>Operator Tasks: <b>{{team.tasks}}</b></li>
-								<li>Fail Threshold: <b>{{team.failTresh}}%</b></li>
-								<li>Artifical Intellegence</li>
-									<ul>
-										<li>Equal Operator: <b>{{team.AIDA.equalOperator}}</b></li>
-										<li>Assisting Individuals: <b>{{team.AIDA.assistingIndividuals}}</b></li>
-										<li>Assisting Team Coordination: <b>{{team.AIDA.assistingTeamCoord}}</b></li>
-									</ul>
-							</ul>
-						
-                        </a>				
-                    </li>
-                </ul>
-			<h5>Fleets</h5>
-				<ul>
-                    <li class="nav-item" v-for="(fleet, index) in fleetSettings.fleets">
-                        <a class="nav-link disabled" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'" role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
-                            {{ fleet.name }}
-							<ul>
-								<li>Number of vehicles in fleet: <b>{{fleet.numVehicles}}</b></li>
-								<li>Vehivle to Vehicle Communications: <b>{{fleet.comms}}</b></li>
-								<li>Tasks Associated with Fleet: <b>{{fleet.tasks}}</b></li>
-							</ul>
+                            <ul>
+                                <li>Team Size: <b>{{team.size}}</b></li>
+                                <li>Operator Strategy: <b>{{team.strategy}}</b></li>
+                                <li>Communications: <b>{{team.comms}}</b></li>
+                                <li>Operator Tasks: <b>{{team.tasks}}</b></li>
+                                <li>Fail Threshold: <b>{{team.failTresh}}%</b></li>
+                                <li>Artifical Intellegence</li>
+                                <ul>
+                                    <li>Equal Operator: <b>{{team.AIDA.equalOperator}}</b></li>
+                                    <li>Assisting Individuals: <b>{{team.AIDA.assistingIndividuals}}</b></li>
+                                    <li>Assisting Team Coordination: <b>{{team.AIDA.assistingTeamCoord}}</b></li>
+                                </ul>
+                            </ul>
+
                         </a>
                     </li>
                 </ul>
+                <h5>Fleets</h5>
+                <ul>
+                    <li class="nav-item" v-for="(fleet, index) in fleetSettings.fleets">
+                        <a class="nav-link disabled" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'" role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
+                            {{ fleet.name }}
+                            <ul>
+                                <li>Number of vehicles in fleet: <b>{{fleet.numVehicles}}</b></li>
+                                <li>Vehivle to Vehicle Communications: <b>{{fleet.comms}}</b></li>
+                                <li>Tasks Associated with Fleet: <b>{{fleet.tasks}}</b></li>
+                            </ul>
+                        </a>
+                    </li>
+                </ul>
+                <div id="container"></div><br>
+                <div id="downloadBtn" style="display: none">
+                    <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
+                    <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
+                </div><br>
+                <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div><br>
+       
+            
             </div>
 
         <!-- // tab content -->
