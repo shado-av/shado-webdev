@@ -491,5 +491,97 @@ var sim = new Vue({
     
     
 })
+function submit() {
+    var out = {
+        "numHours": this.globalSettings.numHours,
+        "traffic": this.computed.traffic,
+        "numReps": this.numRep,
+        "numRemoteOp": this.computed.numRemoteOp,
+        "numTeams": this.operatorSettings.numTeams,
+        "numvehicles": this.computed.numVehicles,
+        "autolvl": 1,
+        "numPhases": this.taskSettings.numPhases,
 
+        "hasExogenous": this.computed.hasExogenous,
+        "exNames": ["Medical", "Weather"],
+        "exTypes": ["add_task", "long_serv"],
+
+        "failThreshold": 0.5,
+        "opStrats": op_strats,
+        "opNames": this.computed.opNames,
+        "opTasks": this.computed.opTasks,
+        "teamComm": this.computed.teamComm,
+        "teamSize": this.computed.teamSize,
+        "fleetTypes": this.fleetSettings.fleetTypes,
+        "fleetHetero": this.computed.fleetHetero,
+
+        "numTaskTypes": this.computed.numTaskTypes,
+        "taskNames": this.computed.taskNames,
+        "taskPrty": task_prty,
+        "arrDists": this.computed.arrDists,
+        "arrPms": this.computed.arrPms,
+        "serDists": this.computed.serDists,
+        "serPms": this.computed.serPms,
+        "expDists": this.computed.expDists,
+        "expPmsLo": this.computed.expPmsHi,
+        "expPmsHi": this.computed.expPmsHi,
+        "affByTraff": this.computed.affByTraff,
+        "teamCoordAff": team_coord_aff,
+        "humanError": this.computed.humanError
+    };
+    //Download Json
+    $("#container").empty();
+    var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
+    $('<a href="data:' + data + '" download="shadoParams.json">download input JSON</a>').appendTo('#container');
+
+    $.ajax({
+        type: "POST",
+        url: "http://apps.hal.pratt.duke.edu:8080/shado/testpost",
+        // The key needs to match your method's input parameter (case-sensitive).
+        data: JSON.stringify(out),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            alert(msg);
+            console.log("response received");
+            console.log(msg);
+            // move(100);
+            //  var obj = JSON.stringify(msg)
+            // // var tempParseData = obj;
+            // obj = JSON.parse(obj);
+            // console.log(obj);
+            // alert(obj);
+            // if(msg.status == 'success')
+            alert("PARAMETERS SUBMITTED!");
+        },
+        complete: function (msg) {
+            console.log("response received");
+            console.log(msg);
+            var obj = JSON.stringify(msg);
+
+            if (msg.status == 500) {
+                alert("Server Error: Check parameters(maybe not enough tasks)!")
+                alert(msg.responseText);
+            }
+            if (msg.status == 200) {
+                alert(msg.responseText);
+                //Allow Download
+                //Show download button
+                showDownloadBtn();
+                // downloadRepCSV();
+                // downloadSummary();
+            }
+            hideProgress();
+            document.getElementById("sumbitBtn").textContent = "Submit Again";
+
+        },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+
+    // alert("SHADO params SUBMITTED!");
+
+
+}
 sim.$mount("#shado-sim");
