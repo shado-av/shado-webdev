@@ -1,4 +1,5 @@
 # shado-webdev
 
 Link to the current build is [here](https://shado-av.github.io/shado-webdev/)
-alt link shado.nech.co
+
+alt link [shado.nech.co](shado.nech.co)
