@@ -3,7 +3,7 @@
 
 <head>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <!-- required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -66,85 +66,134 @@
             SIDEBAR NAVIGATION
         ------------------------------------------>
 
-        <div class="d-flex flex-column justify-content-between" id="settings-sidebar">
+        <div class="d-flex flex-column justify-content-between" id="sim-sidebar">
+            
+            <!-- navigation -->
+            <div id="sim-nav-submenus">
 
-            <!-- links to different settings tabs -->
-            <ul class="nav flex-column nav-pills" id="settings-nav" role="tablist">
+                <!-- links to different tabs -->
+                <ul class="nav nav-pills" id="sim-nav" role="tablist" aria-orientation="vertical">
 
-                <!-- basic settings -->
-                <li class="nav-item">
-                    <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings"
-                        selected="true">Basic Settings</a>
-                </li>
+                    <!-- links to different settings tabs -->
+                    <li class="nav-item mb-3">
+                        <a id="settings-menu-toggle" class="nav-link nav-header" data-toggle="collapse" href="#settings-nav" aria-expanded="true"
+                            aria-controls="settings-nav">
+                            Settings
+                            <span class="arrow">
+                                <i class="fas fa-angle-down"></i>
+                                <i class="fas fa-angle-up"></i>
+                            </span>
+                        </a>
+                        <div id="settings-nav" class="collapse show" data-parent="#sim-nav-submenus">
+                            <ul class="nav nav-pills">
 
-                <!-- tasks -->
-                <li class="nav-item">
-                    <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings"
-                        selected="false">
-                        Tasks
-                    </a>
-                </li>
+                                <!-- basic settings -->
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings"
+                                        selected="true">Basic Settings</a>
+                                </li>
 
-                <!-- operators -->
-                <li class="nav-item">
-                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
-                        selected="false">
-                        Operators
-                    </a>
-                </li>
+                                <!-- tasks -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings"
+                                        selected="false">
+                                        Tasks
+                                    </a>
+                                </li>
 
-                <!-- fleets -->
-                <li class="nav-item">
-                    <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
-                        selected="false">
-                        Fleets
-                    </a>
-                </li>
+                                <!-- operators -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
+                                        selected="false">
+                                        Operators
+                                    </a>
+                                </li>
 
-                <!-- overview -->
-                <li class="nav-item">
-                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings"
-                        selected="false">
-                        Review Settings
-                    </a>
-                </li>
-            </ul>
+                                <!-- fleets -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
+                                        selected="false">
+                                        Fleets
+                                    </a>
+                                </li>
 
-            <!-- run simulation -->
-            <form id="run-sim" onsubmit="return false">
-                <!-- number of replications -->
-                <div class="form-group">
-                    <label for="num-reps"># Replications</label>
-                    <input class="form-control" type="number" id="num-reps" min="1" max="1000" step="1" v-model.number="numReps">
+                                <!-- overview -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings"
+                                        selected="false">
+                                        Review Settings
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- links to different results tabs -->
+                    <li class="nav-item">
+                        <a id="results-menu-toggle" class="nav-link nav-header" data-toggle="collapse" href="#results-nav" aria-expanded="false"
+                            aria-controls="results-nav">
+                            Results
+                            <span class="arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                    <i class="fas fa-angle-up"></i>
+                                </span>
+                        </a>
+                        <div id="results-nav" class="collapse" data-parent="#sim-nav-submenus">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="results-test-tab" data-toggle="tab" href="#results-test" role="tab" aria-controls="results-test"
+                                        selected="false">
+                                        Results Test
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- run simulation controls -->
+            <div>
+
+                <!-- Download Buttons -->
+                <div class="form-row justify-content-center">
+                    <div id="container"></div>
+                    <br>
                 </div>
-            </form>
-            <!-- Download Buttons -->
-            <div class="form-row justify-content-center">
-                <div id="container"></div>
-                <br>
-            </div>
 
-            <div id="downloadBtn" style="display: none" align="center">
-                <button id="downloadCSV" class="btn btn-secondary btn-sm" title="" onclick="downloadRepCSV()">Download CSV</button>
-                <div class="spacer"></div>
-                <button id="downloadSummary" class="btn btn-secondary btn-sm" title="" onclick="downloadSummary()">Download
-                    <br> Summary</button>
-            </div>
-            <br>
+                <div id="downloadBtn" style="display: none" align="center">
+                        <button id="downloadCSV" class="btn btn-secondary btn-sm" title="" onclick="downloadRepCSV()">Download CSV</button>
+                        <div class="spacer"></div>
+                        <button id="downloadSummary" class="btn btn-secondary btn-sm" title="" onclick="downloadSummary()">Download
+                            <br> Summary</button>
+                    </div>
+                    <br>
+                <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
 
+                <!-- run simulation -->
+                <form id="run-sim" onsubmit="return false">
 
-            <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
-            <!-- run sim button -->
-            <div class="form-row justify-content-center">
-                <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="">Run Simulation</button>
+                    <!-- number of replications -->
+                    <div class="form-group">
+                        <label for="num-reps"># Replications</label>
+                        <input class="form-control" type="number" id="num-reps" min="1" max="1000" step="1" v-model.number="numReps">
+                    </div>
+                </form>
+
+                <!-- run sim button -->
+                <div class="form-row justify-content-center">
+                    <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="">Run Simulation</button>
+                </div>
             </div>
         </div>
 
         <!----------------------------------------- 
-            SETTINGS TAB CONTENT
+            SIMULATOR TAB CONTENT
         ------------------------------------------>
 
-        <div class="tab-content" id="settings-content">
+        <div class="tab-content" id="sim-content">
 
             <!----------------------------------------- 
                 BASIC/GLOBAL SETTINGS
@@ -982,6 +1031,14 @@
                 <br>
 
 
+            </div>
+
+            <!----------------------------------------- 
+                RESULTS TEST
+            ------------------------------------------>
+
+            <div class="tab-pane fade" id="results-test" role="tabpanel" aria-lablledby="results-test-tab">
+                Testing results visualizations here  
             </div>
 
             <!-- // tab content -->
