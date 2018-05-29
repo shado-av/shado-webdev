@@ -1,10 +1,10 @@
 var i;
 
 var sim = new Vue({
-   
+
     data: {
 
-        numReps: 1, // number of replications (1 - 1000)
+        numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
          * GLOBAL/BASIC SETTINGS
@@ -13,7 +13,7 @@ var sim = new Vue({
         globalSettings: {
             simType: "railroad", // simulation type (aviation, railroad, ground)
             numHours: 8, // number of hours in shift (1 - 12)
-            diffTrafficLevels: "n", 
+            diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
             exoFactors: "n",
             exoFactorsType: 1
@@ -26,56 +26,55 @@ var sim = new Vue({
         taskSettings: {
             numPhases: 2, // number of phases
             tasks: // array of individual task objects
-            [
-                {
-                    name: "Communicating",
-                    include: false,
-                    isCustom: false,
-                    priority: [4, 7],
-                    arrivalDistribution: "E",
-                    arrivalParam: [0.033333,0.1],
-                    serviceDistribution: "U",
-                    serviceParam: [0.5,2],
-                    expireDistribution: "E",
-                    expireParamDefault: [0,0.184],
-                    expireParamExo: [0,0.184],
-                    affectedByTraffic: "y",
-                    affectByIROPS: [0,1],
-                    humanErrorProb: [0.0004,0.00008,0.007]
-                },
-                {
-                    name: "Actuation",
-                    include: false,
-                    isCustom: false,
-                    priority: [5,5],
-                    arrivalDistribution: "E",
-                    arrivalParam: [0.033333,0.1],
-                    serviceDistribution: "U",
-                    serviceParam: [0.5,2],
-                    expireDistribution: "E",
-                    expireParamDefault: [0,0.184],
-                    expireParamExo: [0,0.184],
-                    affectedByTraffic: "y",
-                    affectByIROPS: [0,1],
-                    humanErrorProb:[0.0004,0.00008,0.007]
-                },
-                {
-                    name: "Directive Mandatory",
-                    include: false,
-                    isCustom: false,
-                    priority: [5,5],
-                    arrivalDistribution: "E",
-                    arrivalParam: [0.033333,0.1],
-                    serviceDistribution: "U",
-                    serviceParam: [0.5,2],
-                    expireDistribution: "E",
-                    expireParamDefault: [0,0.184],
-                    expireParamExo: [0,0.184],
-                    affectedByTraffic: "y",
-                    affectByIROPS: [0,1],
-                    humanErrorProb: [0.0004,0.00008,0.007]
-                }
-            ]
+                [{
+                        name: "Communicating",
+                        include: true,
+                        isCustom: false,
+                        priority: [4, 7],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
+                        affectedByTraffic: "y",
+                        affectByIROPS: [0, 1],
+                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                    },
+                    {
+                        name: "Actuation",
+                        include: true,
+                        isCustom: false,
+                        priority: [5, 5],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
+                        affectedByTraffic: "y",
+                        affectByIROPS: [0, 1],
+                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                    },
+                    {
+                        name: "Directive Mandatory",
+                        include: true,
+                        isCustom: false,
+                        priority: [5, 5],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
+                        affectedByTraffic: "y",
+                        affectByIROPS: [0, 1],
+                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                    }
+                ]
         },
 
         /* ------------------------------
@@ -85,34 +84,33 @@ var sim = new Vue({
         operatorSettings: {
             numTeams: 2, // number of teams (2 - 5)
             teams: // array of individual team objects
-            [
-                {
-                    name: "Operator Team",
-                    size: 1,
-                    strategy: "FIFO",
-                    comms: "N",
-                    tasks: [],
-                    AIDA: {
-                        equalOperator: false,
-                        assistingIndividuals: "N",
-                        assistingTeamCoord: "N"  
+                [{
+                        name: "Operator Team",
+                        size: 1,
+                        strategy: "FIFO",
+                        comms: "N",
+                        tasks: [],
+                        AIDA: {
+                            equalOperator: false,
+                            assistingIndividuals: "N",
+                            assistingTeamCoord: "N"
+                        },
+                        failTresh: 50
                     },
-                    failTresh: 50
-                },
-                {
-                    name: "Operator Team",
-                    size: 1,
-                    strategy: "FIFO",
-                    comms: "N",
-                    tasks: [],
-                    AIDA: {
-                        equalOperator: false,
-                        assistingIndividuals: "N",
-                        assistingTeamCoord: "N"  
-                    },
-                    failThresh: 50
-                } 
-            ]
+                    {
+                        name: "Operator Team",
+                        size: 1,
+                        strategy: "FIFO",
+                        comms: "N",
+                        tasks: [],
+                        AIDA: {
+                            equalOperator: false,
+                            assistingIndividuals: "N",
+                            assistingTeamCoord: "N"
+                        },
+                        failThresh: 50
+                    }
+                ]
         },
 
         /* ------------------------------
@@ -121,18 +119,15 @@ var sim = new Vue({
 
         fleetSettings: {
             fleetTypes: 1, // number of fleets (2 - 5)
-            fleets: 
-            [
-                {
-                    name: "Fleet",
-                    numVehicles: 1,
-                    comms: "N",
-                    tasks: []
-                } 
-            ]
+            fleets: [{
+                name: "Fleet",
+                numVehicles: 1,
+                comms: "N",
+                tasks: []
+            }]
         }
     },
-    
+
     computed: {
 
         /* ------------------------------
@@ -140,7 +135,7 @@ var sim = new Vue({
          * ------------------------------ */
 
         // array of traffic levels per hour of 0, 0.5, or 1
-        traffic () {
+        traffic() {
             var traff = this.globalSettings.trafficLevels;
             for (i = 0; i < traff.length; i++) {
                 if (traff[i] === "l") {
@@ -155,7 +150,7 @@ var sim = new Vue({
         },
 
         // array of existence of exo factors and type of exo factor
-        hasExogenous () {
+        hasExogenous() {
             if (this.globalSettings.exoFactors === "y") {
                 return [1, parseInt(this.globalSettings.exoFactorsType, 10)];
             }
@@ -167,12 +162,12 @@ var sim = new Vue({
          * ------------------------------ */
 
         // true if 15 tasks
-        maxTasksReached () {
+        maxTasksReached() {
             return this.numTaskTypes >= 15;
         },
 
         // number of tasks
-        numTaskTypes () {
+        numTaskTypes() {
             var num = 0;
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].include) {
@@ -183,7 +178,7 @@ var sim = new Vue({
         },
 
         // array containing task names
-        taskNames () {
+        taskNames() {
             var names = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].name && this.taskSettings.tasks[i].include) {
@@ -194,7 +189,7 @@ var sim = new Vue({
         },
 
         // array containing all task arrival time distributions
-        arrDists () {
+        arrDists() {
             var dists = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].arrivalDistribution && this.taskSettings.tasks[i].include) {
@@ -205,7 +200,7 @@ var sim = new Vue({
         },
 
         // array containing all task arrival time parameters
-        arrPms () {
+        arrPms() {
             var params = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].arrivalParam && this.taskSettings.tasks[i].include) {
@@ -216,7 +211,7 @@ var sim = new Vue({
         },
 
         // array containing all task service time distributions
-        serDists () {
+        serDists() {
             var dists = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].serviceDistribution && this.taskSettings.tasks[i].include) {
@@ -227,7 +222,7 @@ var sim = new Vue({
         },
 
         // array containing all task service time parameters
-        serPms () {
+        serPms() {
             var params = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].serviceParam && this.taskSettings.tasks[i].include) {
@@ -238,7 +233,7 @@ var sim = new Vue({
         },
 
         // array containing all task expiration time distributions
-        expDists () {
+        expDists() {
             var dists = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].expireDistribution && this.taskSettings.tasks[i].include) {
@@ -249,7 +244,7 @@ var sim = new Vue({
         },
 
         // array containing all task expiration time parameters
-        expPmsHi () {
+        expPmsHi() {
             var params = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].expireParamDefault && this.taskSettings.tasks[i].include) {
@@ -260,7 +255,7 @@ var sim = new Vue({
         },
 
         // array containing all tasks affected by traffic
-        affByTraff () {
+        affByTraff() {
             var traff = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].affectedByTraffic && this.taskSettings.tasks[i].affectByIROPS && this.taskSettings.tasks[i].include) {
@@ -281,7 +276,7 @@ var sim = new Vue({
         },
 
         // array containing all task human error probabilities
-        humanError () {
+        humanError() {
             var probs = [];
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {
@@ -296,7 +291,7 @@ var sim = new Vue({
          * ------------------------------ */
 
         // sum of all operator team sizes
-        numRemoteOp () {
+        numRemoteOp() {
             var sum = 0;
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].size) {
@@ -305,9 +300,9 @@ var sim = new Vue({
             }
             return sum;
         },
-        
+
         // array containing operator team names
-        opNames () {
+        opNames() {
             var names = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].name) {
@@ -318,7 +313,7 @@ var sim = new Vue({
         },
 
         // array containing operator team sizes
-        teamSize () {
+        teamSize() {
             var sizes = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].size) {
@@ -329,7 +324,7 @@ var sim = new Vue({
         },
 
         // array containing operator team tasks arrays
-        opTasks () {
+        opTasks() {
             var tasks = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].tasks) {
@@ -340,9 +335,9 @@ var sim = new Vue({
             }
             return tasks;
         },
-        
+
         // array containing operator team communication types
-        teamComm () {
+        teamComm() {
             var comms = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].comms) {
@@ -357,7 +352,7 @@ var sim = new Vue({
          * ------------------------------ */
 
         // array with number of vehicles per fleet
-        numVehicles () {
+        numVehicles() {
             var vehicles = [];
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
                 if (this.fleetSettings.fleets[i].numVehicles) {
@@ -370,7 +365,7 @@ var sim = new Vue({
         },
 
         // array containing fleet tasks arrays
-        fleetHetero () {
+        fleetHetero() {
             var tasks = [];
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
                 if (this.fleetSettings.fleets[i].tasks) {
@@ -381,17 +376,17 @@ var sim = new Vue({
             }
             return tasks;
         }
-           
+
     },
-    
+
     methods: {
-        
-        updateTrafficLvls () {
+
+        updateTrafficLvls() {
             var lvls = this.globalSettings.trafficLevels;
             if (this.globalSettings.diffTrafficLevels === "n") {
                 lvls.splice(0);
             }
-            
+
             var l = lvls.length;
             if (this.globalSettings.numHours > l) {
                 while (l < this.globalSettings.numHours) {
@@ -402,15 +397,15 @@ var sim = new Vue({
                 lvls.splice(this.globalSettings.numHours);
             }
         },
-        
-        disableAddTask (task) {
+
+        disableAddTask(task) {
             if (task.include || !this.maxTasksReached) {
                 return false;
-            } 
+            }
             return true;
         },
-        
-        addCustomTask () {
+
+        addCustomTask() {
             this.taskSettings.tasks.push({
                 name: "Custom Task",
                 include: true,
@@ -428,18 +423,18 @@ var sim = new Vue({
                 humanErrorProb: []
             })
         },
-        
-        removeCustomTask (task) {
+
+        removeCustomTask(task) {
             if (confirm("Are you sure you want to delete this custom task?")) {
-                this.taskSettings.tasks.splice(this.taskSettings.tasks.indexOf(task), 1); 
+                this.taskSettings.tasks.splice(this.taskSettings.tasks.indexOf(task), 1);
             }
         },
-        
-        isAffectedByTrafficPhases (task) {
+
+        isAffectedByTrafficPhases(task) {
             return task.affectedByTraffic === "y" && this.taskSettings.numPhases > 1;
         },
-        
-        updateOperatorTeams () {
+
+        updateOperatorTeams() {
             var teams = this.operatorSettings.teams;
             if (this.operatorSettings.numTeams > teams.length) {
                 while (teams.length < this.operatorSettings.numTeams) {
@@ -452,7 +447,7 @@ var sim = new Vue({
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
-                            assistingTeamCoord: "N"  
+                            assistingTeamCoord: "N"
                         },
                         failTresh: 50
                     })
@@ -461,15 +456,15 @@ var sim = new Vue({
                 teams.splice(this.operatorSettings.numTeams);
             }
         },
-        
-        removeOperatorTeam (team) {
+
+        removeOperatorTeam(team) {
             if (confirm("Are you sure you want to delete this operator team?")) {
-                this.operatorSettings.teams.splice(this.operatorSettings.teams.indexOf(team), 1); 
+                this.operatorSettings.teams.splice(this.operatorSettings.teams.indexOf(team), 1);
             }
             this.operatorSettings.numTeams = this.operatorSettings.teams.length;
         },
-        
-        updateFleets () {
+
+        updateFleets() {
             var fleets = this.fleetSettings.fleets;
             if (this.fleetSettings.numFleets > fleets.length) {
                 while (fleets.length < this.fleetSettings.numFleets) {
@@ -483,19 +478,19 @@ var sim = new Vue({
             } else {
                 fleets.splice(this.fleetSettings.numFleets);
             }
-            
+
         },
-        
-        removeFleet (fleet) {
+
+        removeFleet(fleet) {
             if (confirm("Are you sure you want to delete this fleet?")) {
-                this.fleetSettings.fleets.splice(this.fleetSettings.fleets.indexOf(fleet), 1); 
+                this.fleetSettings.fleets.splice(this.fleetSettings.fleets.indexOf(fleet), 1);
             }
             this.fleetSettings.numFleets = this.fleetSettings.fleets.length;
-            
+
         }
     }
-    
-    
+
+
 })
 $(document).ready(function () {
     $("#sumbitBtn").click(function () {
@@ -524,7 +519,12 @@ $(document).ready(function () {
 
             "numTaskTypes": sim.numTaskTypes,
             "taskNames": sim.taskNames,
-            "taskPrty": [[3, 5], [2, 2], [3, 4], [4, 3]],
+            "taskPrty": [
+                [3, 5],
+                [2, 2],
+                [3, 4],
+                [4, 3]
+            ],
             "arrDists": sim.arrDists,
             "arrPms": sim.arrPms,
             "serDists": sim.serDists,
@@ -592,27 +592,28 @@ $(document).ready(function () {
         });
     });
     $("#downloadCSV").click(function () {
-        $.get("http://localhost:8080/shado/getRepDetail");
+        //  $.get("http://localhost:8080/shado/getRepDetail");
         var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
 
+    $("#downloadSummary").click(function () {
+        var xhttp = new XMLHttpRequest();
+        // $.get("http://localhost:8080/shado/getSummary");
+        // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
+        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
+        win.focus();
+        console.log("GET request 'getSummary' sent");
+    });
+
 
     // alert("SHADO params SUBMITTED!");
 });
+
 function showDownloadBtn() {
     document.getElementById("downloadBtn").style.display = "block";
     document.getElementById("downloadSummary").style.display = "block";
 }
-function downloadSummary() {
-    var xhttp = new XMLHttpRequest();
-    // $.get("http://localhost:8080/shado/getSummary");
-    // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-    var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
-    win.focus();
-    console.log("GET request 'getSummary' sent");
-}
-
 
 sim.$mount("#shado-sim");

@@ -28,6 +28,9 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
         crossorigin="anonymous"></script>
 
+    <!--D3 Libraries-->
+    <script src="https://d3js.org/d3.v5.js"></script>
+
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="simulator.css">
     <script type="text/javascript" src="sim.js" async></script>
@@ -161,13 +164,12 @@
                 </div>
 
                 <div id="downloadBtn" style="display: none" align="center">
-                    <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
-                </div>
-                <br>
-                <div id="downloadBtn" style="display: none" align="center">
-                    <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
-                </div>
-                <br>
+                        <button id="downloadCSV" class="btn btn-secondary btn-sm" title="" onclick="downloadRepCSV()">Download CSV</button>
+                        <div class="spacer"></div>
+                        <button id="downloadSummary" class="btn btn-secondary btn-sm" title="" onclick="downloadSummary()">Download
+                            <br> Summary</button>
+                    </div>
+                    <br>
                 <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
 
                 <!-- run simulation -->
@@ -836,7 +838,7 @@
                             <!-- number of fleets (fleetTypes) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many different fleets do the operators manage?</label>
-                                <input type="number" class="form-control" min="1" max="100" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
+                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
                                     @change="updateFleets">
                             </div>
                         </form>
@@ -1024,11 +1026,6 @@
                     </li>
                 </ul>
                 <div id="container"></div>
-                <br>
-                <div id="downloadBtn" style="display: none">
-                    <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
-                    <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
-                </div>
                 <br>
                 <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div>
                 <br>
