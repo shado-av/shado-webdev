@@ -1,173 +1,190 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <!-- required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
-        <!-- custom CSS -->
-        <link rel="stylesheet" href="simulator.css">
-        
-        <!-- title -->
-        <title>SHADO</title>
 
-    </head>
-    
-    <body>
-        
-        <!------------ NAVIGATION ------------>
-        
-        <nav class="navbar fixed-top">
-            <a class="navbar-brand" href="index.html">
-                <img src="images/hal_light.png" height="40" alt="HAL Logo">
-                <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
-                <span id="brand-abbr">SHADO</span>
-            </a>
-            
-            <div class="ml-auto">
-                <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
+<head>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="simulator.css">
+
+    <!-- title -->
+    <title>SHADO</title>
+
+</head>
+
+<body>
+
+    <!------------ NAVIGATION ------------>
+
+    <nav class="navbar fixed-top">
+        <a class="navbar-brand" href="index.html">
+            <img src="images/hal_light.png" height="40" alt="HAL Logo">
+            <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
+            <span id="brand-abbr">SHADO</span>
+        </a>
+
+        <div class="ml-auto">
+            <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
+        </div>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>Welcome to SHADO!</h1>
+                <p>
+                    Welcome to the Simulator of Humans and Automation in Dispatch Operations (SHADO)! This tool, designed by Duke University
+                    researchers, simulates the workload of a dispatch operator and associated freight rail operators across
+                    the duration of a given shift. With SHADO, you can choose a trip with unique conditions and then see
+                    the operators' average workload after thousands of similar shifts.
+                </p>
+
+                <h5>You should use this tool to answer the following questions:</h5>
+                <ul>
+                    <li>
+                        <em>When</em> are my operators over or under-utilized at work?
+                    </li>
+                    <li>
+                        <em>Why</em> are my operators over or under-utilized at work?
+                    </li>
+                    <li>
+                        <em>How</em> might we improve operator workload, as well as overall system efficiency and safety?
+                    </li>
+                </ul>
+                <p>NOTE: This decision support tool is intended to inform rather than dictate decisions.</p>
             </div>
-        </nav>
-        
-        <div class="spacer"></div>
-        
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <h1>Welcome to SHADO!</h1>
-                    <p>
-                        Welcome to the Simulator of Humans and Automation in Dispatch Operations (SHADO)! This tool, designed by Duke University researchers, simulates the workload of a dispatch operator and associated freight rail operators across the duration of a given shift. With SHADO, you can choose a trip with unique conditions and then see the operators' average workload after thousands of similar shifts.
-                    </p>
-                    
-                    <h5>You should use this tool to answer the following questions:</h5>
-                    <ul>
-                        <li>
-                            <em>When</em> are my operators over or under-utilized at work?
-                        </li>
-                        <li>
-                            <em>Why</em> are my operators over or under-utilized at work?
-                        </li>
-                        <li>
-                            <em>How</em> might we improve operator workload, as well as overall system efficiency and safety?
-                        </li>
-                    </ul>
-                    <p>NOTE: This decision support tool is intended to inform rather than dictate decisions.</p>
-                </div>
-                
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Get Started</h5>
-                            <p class="card-text">
-                                If you're ready to get started, then run the simulator! And if you encounter any issues or have questions about the simulation, please 
-                                <a href="#contact" class="card-link">contact us!</a>
-                            </p>
-                            <a href="simulator.html" class="btn btn-primary">Run Simulator</a>
-                        </div>
-                        <div class="card-footer">
-                            NOTE: This site is currently only compatible with Chrome and Firefox.
-                        </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Get Started</h5>
+                        <p class="card-text">
+                            If you're ready to get started, then run the simulator! And if you encounter any issues or have questions about the simulation,
+                            please
+                            <a href="#contact" class="card-link">contact us!</a>
+                        </p>
+                        <a href="simulator.html" class="btn btn-primary">Run Simulator</a>
+                    </div>
+                    <div class="card-footer">
+                        NOTE: This site is currently only compatible with Chrome and Firefox.
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="container-fluid">
-            <div class="row">
-                <h2>Background</h2>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <h2>Background</h2>
+            <p>
+                A core set of tasks has been defined and implemented to encompass tasks that crew members may encounter during their trip.
+                These tasks and their descriptions are summarized below. To see more underlying assumptions, visit advanced
+                settings.
+            </p>
+        </div>
+
+        <div class="row">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Task Type</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Communicating</td>
+                        <td>Filtering through relevant information for the operation and communicating information that may impact
+                            the macro-level network of operations</td>
+                    </tr>
+                    <tr>
+                        <td>Exception Handling</td>
+                        <td>Attending to unexpected or unusual situations that must be handled in order to continue with the
+                            trip</td>
+                    </tr>
+                    <tr>
+                        <td>Paperwork</td>
+                        <td>Reviewing and recording operating conditions</td>
+                    </tr>
+                    <tr>
+                        <td>Maintenance Of Way Interactions</td>
+                        <td>Maintaining situational awareness of other crews along the track</td>
+                    </tr>
+                    <tr>
+                        <td>Temporary Speed Restrictions</td>
+                        <td>Recalling information issued on track bulletins and adapting to updates while train is in motion</td>
+                    </tr>
+                    <tr>
+                        <td>Signal Response Management</td>
+                        <td>Maintaining attentiveness to direction from track signaling system and responsive to proper control
+                            system within a safely allotted time</td>
+                    </tr>
+                    <tr>
+                        <td>Monitoring Inside</td>
+                        <td>Maintaining attentiveness to informational displays and to engineer's performance to maintain a safe
+                            operation</td>
+                    </tr>
+                    <tr>
+                        <td>Monitoring Outside</td>
+                        <td>Maintaining attentiveness to warnings and environmental conditions that may affect operations</td>
+                    </tr>
+                    <tr>
+                        <td>Planning Ahead</td>
+                        <td>Maneuvering locomotive control system for throttle, braking and other subtasks like horn-blowing
+                            before railroad crossing</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-light">
+        <div class="row">
+
+            <div id="contact" class="col">
+                <h5>Contact Us</h5>
                 <p>
-                    A core set of tasks has been defined and implemented to encompass tasks that crew members may encounter during their trip. These tasks and their descriptions are summarized below. To see more underlying assumptions, visit advanced settings.
+                    We highly value any questions or comments. To reach us, send us a message
+                    <a href="mailto:dukehalapps@gmail.com?subject=SHADO:">here</a>!
+                </p>
+                <p>
+                    If you're experiencing any issues, we recommend using the latest version of Chrome.
                 </p>
             </div>
-            
-            <div class="row">
-               
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Task Type</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Communicating</td>
-                            <td>Filtering through relevant information for the operation and communicating information that may impact the macro-level network of operations</td>
-                        </tr>
-                        <tr>
-                            <td>Exception Handling</td>
-                            <td>Attending to unexpected or unusual situations that must be handled in order to continue with the trip</td>
-                        </tr>
-                        <tr>
-                            <td>Paperwork</td>
-                            <td>Reviewing and recording operating conditions</td>
-                        </tr>
-                        <tr>
-                            <td>Maintenance Of Way Interactions</td>
-                            <td>Maintaining situational awareness of other crews along the track</td>
-                        </tr>
-                        <tr>
-                            <td>Temporary Speed Restrictions</td>
-                            <td>Recalling information issued on track bulletins and adapting to updates while train is in motion</td>
-                        </tr>
-                        <tr>
-                            <td>Signal Response Management</td>
-                            <td>Maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time</td>
-                        </tr>
-                        <tr>
-                            <td>Monitoring Inside</td>
-                            <td>Maintaining attentiveness to informational displays and to engineer's performance to maintain a safe operation</td>
-                        </tr>
-                        <tr>
-                            <td>Monitoring Outside</td>
-                            <td>Maintaining attentiveness to warnings and environmental conditions that may affect operations</td>
-                        </tr>
-                        <tr>
-                            <td>Planning Ahead</td>
-                            <td>Maneuvering locomotive control system for throttle, braking and other subtasks like horn-blowing before railroad crossing</td>
-                        </tr>
 
-                    </tbody>
-                </table>
+            <div class="col">
+                <h5>Version</h5>
+                <p>Version Beta: Released 9/26/17</p>
             </div>
         </div>
-        
-        <div class="container-fluid bg-light">
-            <div class="row">
-                
-                <div id="contact" class="col">
-                    <h5>Contact Us</h5>
-                    <p>
-                        We highly value any questions or comments. To reach us, send us a message <a href="mailto:dukehalapps@gmail.com?subject=SHADO:">here</a>!
-                    </p>
-                    <p>
-                        If you're experiencing any issues, we recommend using the latest version of Chrome.
-                    </p>
-                </div>
-                
-                <div class="col">
-                    <h5>Version</h5>
-                    <p>Version Beta: Released 9/26/17</p>
-                    <a href="version-history.html">Version History</a>
-                </div>
-            </div>
-        </div>
-    
-    
-    
-    
-    
-        <!------------ SCRIPTS ------------>
-        
-        <!-- jQuery 3.2.1 -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        
-        <!-- Bootstrap JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    </body>
+    </div>
+
+
+
+
+
+    <!------------ SCRIPTS ------------>
+
+    <!-- jQuery 3.2.1 -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>
