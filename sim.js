@@ -592,10 +592,19 @@ $(document).ready(function () {
         });
     });
     $("#downloadCSV").click(function () {
-        $.get("http://localhost:8080/shado/getRepDetail");
+        //  $.get("http://localhost:8080/shado/getRepDetail");
         var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
         win.focus();
         console.log("GET request 'getRepDetail' sent");
+    });
+
+    $("#downloadSummary").click(function () {
+        var xhttp = new XMLHttpRequest();
+        // $.get("http://localhost:8080/shado/getSummary");
+        // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
+        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
+        win.focus();
+        console.log("GET request 'getSummary' sent");
     });
 
 
@@ -607,14 +616,6 @@ function showDownloadBtn() {
     document.getElementById("downloadSummary").style.display = "block";
 }
 
-function downloadSummary() {
-    var xhttp = new XMLHttpRequest();
-    $.get("http://localhost:8080/shado/getSummary");
-    xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-    var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
-    win.focus();
-    console.log("GET request 'getSummary' sent");
-}
 
 
 sim.$mount("#shado-sim");
