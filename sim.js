@@ -4,7 +4,7 @@ var sim = new Vue({
    
     data: {
 
-        numReps: 1, // number of replications (1 - 1000)
+        numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
          * GLOBAL/BASIC SETTINGS
