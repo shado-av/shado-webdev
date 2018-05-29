@@ -28,12 +28,12 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
         crossorigin="anonymous"></script>
 
+    <!--D3 Libraries-->
+    <script src="https://d3js.org/d3.v5.js"></script>
+
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="simulator.css">
     <script type="text/javascript" src="sim.js" async></script>
-
-    <!--D3 Libraries-->
-    <script src="https://d3js.org/d3.v5.js"></script>
 
     <!-- title -->
     <title>SHADO</title>
@@ -125,11 +125,8 @@
             </div>
 
             <div id="downloadBtn" style="display: none" align="center">
-                <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
-            </div>
-            <br>
-            <div id="downloadBtn" style="display: none" align="center">
-                <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
+                <button id="downloadCSV" style="font-size: larger" title="" onclick="downloadRepCSV()">Download CSV</button>
+                <button id="downloadSummary" style="font-size: larger" title="" onclick="downloadSummary()">Download Summary</button>
             </div>
             <br>
 
