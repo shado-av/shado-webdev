@@ -334,6 +334,8 @@ var sim = new Vue({
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].tasks) {
                     tasks.push(this.operatorSettings.teams[i].tasks);
+                } else {
+                    tasks.push([]);
                 }
             }
             return tasks;
@@ -360,6 +362,8 @@ var sim = new Vue({
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
                 if (this.fleetSettings.fleets[i].numVehicles) {
                     vehicles.push(this.fleetSettings.fleets[i].numVehicles);
+                } else {
+                    vehicles.push(0);
                 }
             }
             return vehicles;
@@ -371,6 +375,8 @@ var sim = new Vue({
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
                 if (this.fleetSettings.fleets[i].tasks) {
                     tasks.push(this.fleetSettings.fleets[i].tasks);
+                } else {
+                    tasks.push([]);
                 }
             }
             return tasks;
