@@ -496,7 +496,7 @@ $(document).ready(function () {
         var out = {
             "numHours": sim.globalSettings.numHours,
             "traffic": sim.traffic,
-            "numReps": sim.numRep,
+            "numReps": sim.numReps,
             "numRemoteOp": sim.numRemoteOp,
             "numTeams": sim.operatorSettings.numTeams,
             "numvehicles": sim.numVehicles,
@@ -533,7 +533,7 @@ $(document).ready(function () {
         console.log(out);
         //hide download
         document.getElementById("downloadBtn").style.display = "none";
-        document.getElementById("downloadSummary").style.display = "none";
+        // document.getElementById("downloadSummary").style.display = "none";
 
         //Download Json
         $("#container").empty();
@@ -585,19 +585,20 @@ $(document).ready(function () {
             }
         });
     });
+    $("#downloadCSV").click(function () {
+        $.get("http://localhost:8080/shado/getRepDetail");
+        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
+        win.focus();
+        console.log("GET request 'getRepDetail' sent");
+    });
+
+
     // alert("SHADO params SUBMITTED!");
 });
 function showDownloadBtn() {
     document.getElementById("downloadBtn").style.display = "block";
-    // document.getElementById("downloadSummary").style.display = "block";
+    document.getElementById("downloadSummary").style.display = "block";
 }
-function downloadRepCSV() {
-    // $.get("http://localhost:8080/shado/getRepDetail");
-    var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
-    win.focus();
-    console.log("GET request 'getRepDetail' sent");
-}
-
 function downloadSummary() {
     var xhttp = new XMLHttpRequest();
     // $.get("http://localhost:8080/shado/getSummary");
@@ -606,12 +607,6 @@ function downloadSummary() {
     win.focus();
     console.log("GET request 'getSummary' sent");
 }
-function showProgress() {
-    document.getElementById("progress").style.display = 'block';
-}
-function hideProgress() {
-    document.getElementById("progress").style.display = 'none';
 
-}
 
 sim.$mount("#shado-sim");
