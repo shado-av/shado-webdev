@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -8,10 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap 4.1.1 libraries -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
 
     <!-- Vue.js libraries -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
@@ -20,7 +25,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Fontawesome Icons -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+        crossorigin="anonymous"></script>
 
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="simulator.css">
@@ -41,10 +47,10 @@
 
         <!-- HAL logo and SHADO title -->
         <a class="navbar-brand" href="index.html">
-                <img src="images/hal_light.png" height="38" alt="HAL Logo">
-                <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
-                <span id="brand-abbr">SHADO</span>
-            </a>
+            <img src="images/hal_light.png" height="38" alt="HAL Logo">
+            <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
+            <span id="brand-abbr">SHADO</span>
+        </a>
     </nav>
 
     <!-- navigation spacer -->
@@ -57,78 +63,135 @@
             SIDEBAR NAVIGATION
         ------------------------------------------>
 
-        <div class="d-flex flex-column justify-content-between" id="settings-sidebar">
+        <div class="d-flex flex-column justify-content-between" id="sim-sidebar">
+            
+            <!-- navigation -->
+            <div id="sim-nav-submenus">
 
-            <!-- links to different settings tabs -->
-            <ul class="nav flex-column nav-pills" id="settings-nav" role="tablist">
+                <!-- links to different tabs -->
+                <ul class="nav nav-pills" id="sim-nav" role="tablist" aria-orientation="vertical">
 
-                <!-- basic settings -->
-                <li class="nav-item">
-                    <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings" selected="true">Basic Settings</a>
-                </li>
+                    <!-- links to different settings tabs -->
+                    <li class="nav-item mb-3">
+                        <a id="settings-menu-toggle" class="nav-link nav-header" data-toggle="collapse" href="#settings-nav" aria-expanded="true"
+                            aria-controls="settings-nav">
+                            Settings
+                            <span class="arrow">
+                                <i class="fas fa-angle-down"></i>
+                                <i class="fas fa-angle-up"></i>
+                            </span>
+                        </a>
+                        <div id="settings-nav" class="collapse show" data-parent="#sim-nav-submenus">
+                            <ul class="nav nav-pills">
 
-                <!-- tasks -->
-                <li class="nav-item">
-                    <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings" selected="false">
-                        Tasks
-                    </a>
-                </li>
+                                <!-- basic settings -->
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings"
+                                        selected="true">Basic Settings</a>
+                                </li>
 
-                <!-- operators -->
-                <li class="nav-item">
-                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings" selected="false">
-                        Operators
-                    </a>
-                </li>
+                                <!-- tasks -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings"
+                                        selected="false">
+                                        Tasks
+                                    </a>
+                                </li>
 
-                <!-- fleets -->
-                <li class="nav-item">
-                    <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings" selected="false">
-                        Fleets
-                    </a>
-                </li>
+                                <!-- operators -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
+                                        selected="false">
+                                        Operators
+                                    </a>
+                                </li>
 
-                <!-- overview -->
-                <li class="nav-item">
-                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false">
-                        Review Settings
-                    </a>
-                </li>
-            </ul>
+                                <!-- fleets -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
+                                        selected="false">
+                                        Fleets
+                                    </a>
+                                </li>
 
-            <!-- run simulation -->
-            <form id="run-sim" onsubmit="return false">
-                <!-- number of replications -->
-                <div class="form-group">
-                    <label for="num-reps"># Replications</label>
-                    <input class="form-control" type="number" id="num-reps" min="1" max="1000" step="1" v-model.number="numReps">
-                </div>
-            </form>
-            <!-- Download Buttons -->
-            <div class="form-row justify-content-center">
-                <div id="container"></div><br>
+                                <!-- overview -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings"
+                                        selected="false">
+                                        Review Settings
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- links to different results tabs -->
+                    <li class="nav-item">
+                        <a id="results-menu-toggle" class="nav-link nav-header" data-toggle="collapse" href="#results-nav" aria-expanded="false"
+                            aria-controls="results-nav">
+                            Results
+                            <span class="arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                    <i class="fas fa-angle-up"></i>
+                                </span>
+                        </a>
+                        <div id="results-nav" class="collapse" data-parent="#sim-nav-submenus">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="results-test-tab" data-toggle="tab" href="#results-test" role="tab" aria-controls="results-test"
+                                        selected="false">
+                                        Results Test
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </div>
 
-            <div id="downloadBtn" style="display: none" align="center">
-                <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
-            </div><br>
-            <div id="downloadBtn" style="display: none" align="center">
-                <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
-            </div><br>
+            <!-- run simulation controls -->
+            <div>
 
+                <!-- Download Buttons -->
+                <div class="form-row justify-content-center">
+                    <div id="container"></div>
+                    <br>
+                </div>
 
-            <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
-            <!-- run sim button -->
-            <div class="form-row justify-content-center">
-                <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="">Run Simulation</button>
+                <div id="downloadBtn" style="display: none" align="center">
+                    <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
+                </div>
+                <br>
+                <div id="downloadBtn" style="display: none" align="center">
+                    <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
+                </div>
+                <br>
+                <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
+
+                <!-- run simulation -->
+                <form id="run-sim" onsubmit="return false">
+
+                    <!-- number of replications -->
+                    <div class="form-group">
+                        <label for="num-reps"># Replications</label>
+                        <input class="form-control" type="number" id="num-reps" min="1" max="1000" step="1" v-model.number="numReps">
+                    </div>
+                </form>
+
+                <!-- run sim button -->
+                <div class="form-row justify-content-center">
+                    <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="">Run Simulation</button>
+                </div>
             </div>
         </div>
 
         <!----------------------------------------- 
-            SETTINGS TAB CONTENT
+            SIMULATOR TAB CONTENT
         ------------------------------------------>
 
-        <div class="tab-content" id="settings-content">
+        <div class="tab-content" id="sim-content">
 
             <!----------------------------------------- 
                 BASIC/GLOBAL SETTINGS
@@ -165,7 +228,8 @@
                         <label for="num-hours">
                             How many hours are in this shift?
                         </label>
-                        <input type="number" min="1" max="12" step="1" class="form-control" id="num-hours" v-model.number="globalSettings.numHours" @input="updateTrafficLvls">
+                        <input type="number" min="1" max="12" step="1" class="form-control" id="num-hours" v-model.number="globalSettings.numHours"
+                            @input="updateTrafficLvls">
                     </div>
                 </form>
 
@@ -178,11 +242,13 @@
                         <label class="col-form-label">Are there different traffic levels during this shift?</label>
                         <div class="text-right">
                             <div class="custom-control custom-control-inline custom-radio">
-                                <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-y" value="y" v-model="globalSettings.diffTrafficLevels" @change="updateTrafficLvls">
+                                <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-y" value="y" v-model="globalSettings.diffTrafficLevels"
+                                    @change="updateTrafficLvls">
                                 <label class="custom-control-label" for="diff-traff-levels-y">Yes</label>
                             </div>
                             <div class="custom-control custom-control-inline custom-radio mr-0">
-                                <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-n" value="n" v-model="globalSettings.diffTrafficLevels" @change="updateTrafficLvls">
+                                <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-n" value="n" v-model="globalSettings.diffTrafficLevels"
+                                    @change="updateTrafficLvls">
                                 <label class="custom-control-label" for="diff-traff-levels-n">No</label>
                             </div>
                         </div>
@@ -231,9 +297,9 @@
                     <div class="form-group" v-show="globalSettings.exoFactors === 'y'">
                         <label>Select the type of exogenous factor:</label>
                         <select class="custom-select" v-model="globalSettings.exoFactorsType" placeholder="Select a type...">
-                                <option value="1">Type 1</option>
-                                <option value="2">Type 2</option>
-                            </select>
+                            <option value="1">Type 1</option>
+                            <option value="2">Type 2</option>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -242,7 +308,7 @@
                 TASK SETTINGS
                 (taskSettings)
             ------------------------------------------>
-    
+
             <div class="tab-pane fade" id="tasks-settings" role="tabpanel" aria-lablledby="tasks-settings-tab">
 
                 <!-- TASK SIDEBAR NAVIGATION -->
@@ -250,14 +316,16 @@
 
                     <!-- all tasks global settings -->
                     <li class="nav-item">
-                        <a class="nav-link active" id="tasks-global-settings-tab" data-toggle="tab" href="#tasks-global-settings" role="tab" aria-controls="tasks-global-settings" selected="true">
-                                All Tasks
-                            </a>
+                        <a class="nav-link active" id="tasks-global-settings-tab" data-toggle="tab" href="#tasks-global-settings" role="tab" aria-controls="tasks-global-settings"
+                            selected="true">
+                            All Tasks
+                        </a>
                     </li>
 
                     <!-- tab for each task -->
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
-                        <a class="nav-link" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'" role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
+                        <a class="nav-link" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'" role="tab"
+                            :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
                         </a>
                     </li>
@@ -275,15 +343,16 @@
                             <!-- number of phases (numPhases) -->
                             <div class="form-group">
                                 <label for="num-hours">
-                                        How many different phases do the operators have in their shift?
-                                    </label>
+                                    How many different phases do the operators have in their shift?
+                                </label>
                                 <input type="number" min="1" max="2" step="1" class="form-control" id="num-phases" v-model.number="taskSettings.numPhases">
                             </div>
                         </form>
 
                         <!-- tasks assigned to operators (task.include) -->
                         <h5>Which tasks are assigned to the operators?</h5>
-                        <p class="text-muted small">Include up to <b>15</b> task types from the list of provided tasks or add custom tasks.</p>
+                        <p class="text-muted small">Include up to
+                            <b>15</b> task types from the list of provided tasks or add custom tasks.</p>
 
                         <!-- LIST OF TASKS -->
                         <div class="custom-control custom-checkbox mb-4 task" v-for="(task, index) in taskSettings.tasks">
@@ -296,17 +365,19 @@
                         </div>
 
                         <!-- ADD A CUSTOM TASK -->
-                        <button type="button" class="btn btn-secondary btn-sm" @click="addCustomTask" :disabled="maxTasksReached"><i class="fas fa-plus fa-xs"></i> Custom Task</button>
+                        <button type="button" class="btn btn-secondary btn-sm" @click="addCustomTask" :disabled="maxTasksReached">
+                            <i class="fas fa-plus fa-xs"></i> Custom Task</button>
                     </div>
 
                     <!-- INDIVIDUAL TASK SETTINGS -->
-                    <div class="tab-pane fade" v-for="(task, index) in taskSettings.tasks" v-if="task.include" :id="'tasks-' + index + '-settings'" role="tabpanel" :aria-labelledby="'tasks-' + index + '-settings-tab'">
+                    <div class="tab-pane fade" v-for="(task, index) in taskSettings.tasks" v-if="task.include" :id="'tasks-' + index + '-settings'"
+                        role="tabpanel" :aria-labelledby="'tasks-' + index + '-settings-tab'">
 
                         <!-- DELETE TASK -->
                         <button type="button" class="delete badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
                         <!-- NAME -->
                         <h3 class="mb-4">{{ task.name }}</h3>
                         <form class="mb-5">
@@ -572,14 +643,16 @@
 
                     <!-- all operator teams global settings -->
                     <li class="nav-item">
-                        <a class="nav-link active" id="operators-global-settings-tab" data-toggle="tab" href="#operators-global-settings" role="tab" aria-controls="operators-global-settings" selected="true">
-                                All Teams
-                            </a>
+                        <a class="nav-link active" id="operators-global-settings-tab" data-toggle="tab" href="#operators-global-settings" role="tab"
+                            aria-controls="operators-global-settings" selected="true">
+                            All Teams
+                        </a>
                     </li>
 
                     <!-- tab for each operator team -->
                     <li class="nav-item" v-for="(team, index) in operatorSettings.teams">
-                        <a class="nav-link" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'" role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
+                        <a class="nav-link" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'"
+                            role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
                             {{ team.name }}
                         </a>
                     </li>
@@ -596,17 +669,20 @@
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
                                 <label for="num-operators">How many different teams of operators are there?</label>
-                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-operators" v-model.number="operatorSettings.numTeams" @change="updateOperatorTeams">
+                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
+                                    @change="updateOperatorTeams">
                             </div>
                         </form>
                     </div>
 
                     <!-- INDIVIDUAL OP TEAM SETTINGS -->
-                    <div class="tab-pane fade" v-for="(team, index) in operatorSettings.teams" :id="'opteam-' + index + '-settings'" role="tabpanel" :aria-labelledby="'opteam-' + index + '-settings-tab'">
+                    <div class="tab-pane fade" v-for="(team, index) in operatorSettings.teams" :id="'opteam-' + index + '-settings'" role="tabpanel"
+                        :aria-labelledby="'opteam-' + index + '-settings-tab'">
 
                         <!-- DELETE TEAM -->
-                        <button type="button" class="delete badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                        <button type="button" class="delete badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                         <h3 class="mb-4">{{ team.name }}</h3>
 
@@ -712,7 +788,9 @@
                         <form>
                             <div class="form-group">
                                 <label>For every error, what is the chance that the team will catch it?</label>
-                                <h5 class="float-right mb-0"><span class="badge badge-secondary">{{ team.failThresh }}%</span></h5>
+                                <h5 class="float-right mb-0">
+                                    <span class="badge badge-secondary">{{ team.failThresh }}%</span>
+                                </h5>
                                 <input type="range" min="0" max="100" v-model="team.failThresh" step="1" class="slider">
                             </div>
                         </form>
@@ -729,17 +807,19 @@
 
                 <!-- FLEETS SIDEBAR NAVIGATION -->
                 <ul class="nav nav-tabs tabs-left">
-                    
+
                     <!-- all fleets global settings -->
                     <li class="nav-item">
-                        <a class="nav-link active" id="fleets-global-settings-tab" data-toggle="tab" href="#fleets-global-settings" role="tab" aria-controls="fleets-global-settings" selected="true">
-                                All Fleets
-                            </a>
+                        <a class="nav-link active" id="fleets-global-settings-tab" data-toggle="tab" href="#fleets-global-settings" role="tab" aria-controls="fleets-global-settings"
+                            selected="true">
+                            All Fleets
+                        </a>
                     </li>
 
                     <!-- tab for each individual fleet -->
                     <li class="nav-item" v-for="(fleet, index) in fleetSettings.fleets">
-                        <a class="nav-link" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'" role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
+                        <a class="nav-link" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'" role="tab"
+                            :aria-controls="'fleet-' + index + '-settings'" selected="false">
                             {{ fleet.name }}
                         </a>
                     </li>
@@ -756,17 +836,20 @@
                             <!-- number of fleets (fleetTypes) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many different fleets do the operators manage?</label>
-                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes" @change="updateFleets">
+                                <input type="number" class="form-control" min="1" max="100" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
+                                    @change="updateFleets">
                             </div>
                         </form>
                     </div>
 
                     <!-- INDIVIDUAL FLEET SETTINGS -->
-                    <div class="tab-pane fade" v-for="(fleet, index) in fleetSettings.fleets" :id="'fleet-' + index + '-settings'" role="tabpanel" :aria-labelledby="'fleet-' + index + '-settings-tab'">
+                    <div class="tab-pane fade" v-for="(fleet, index) in fleetSettings.fleets" :id="'fleet-' + index + '-settings'" role="tabpanel"
+                        :aria-labelledby="'fleet-' + index + '-settings-tab'">
 
                         <!-- DELETE FLEET -->
-                        <button type="button" class="delete badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                        <button type="button" class="delete badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                         <h3 class="mb-4">{{ fleet.name }}</h3>
 
@@ -797,7 +880,7 @@
                                 </select>
                             </div>
                         </form>
-                    
+
                         <!-- FLEET TASKS -->
                         <h5 class="mb-3">Fleet Tasks</h5>
 
@@ -824,32 +907,58 @@
                 <h3 class="mb-4">Review Settings</h3>
                 <h5>Global Settings</h5>
                 <ul>
-                    <li>Type of simulation: <b>{{globalSettings.simType}}</b> </li>
-                    <li>Number of Hours: <b>{{globalSettings.numHours }}</b></li>
-                    <li>Traffic Levels: <b>{{globalSettings.trafficLevels}}</b></li>
-                    <li>Exogenous Factors: <b>{{globalSettings.exoFactors}}</b></li>
-                    <li>Type of exogenous factor: <b>{{globalSettings.exoFactorsType}}</b></li>
+                    <li>Type of simulation:
+                        <b>{{globalSettings.simType}}</b>
+                    </li>
+                    <li>Number of Hours:
+                        <b>{{globalSettings.numHours }}</b>
+                    </li>
+                    <li>Traffic Levels:
+                        <b>{{globalSettings.trafficLevels}}</b>
+                    </li>
+                    <li>Exogenous Factors:
+                        <b>{{globalSettings.exoFactors}}</b>
+                    </li>
+                    <li>Type of exogenous factor:
+                        <b>{{globalSettings.exoFactorsType}}</b>
+                    </li>
                 </ul>
                 <h5>Tasks</h5>
                 <ul>
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
-                        <a class="nav-link disabled" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'" role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
+                        <a class="nav-link disabled" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'"
+                            role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
                             <ul>
                                 <li>Distributions</li>
                                 <ul>
-                                    <li>Arrival Time: <b>{{task.arrivalDistribution}}</b>, Parameters: <b>{{task.arrivalParam}}</b></li>
-                                    <li>Service Time: <b>{{task.serviceDistribution}}</b>, Parameters: <b>{{task.serviceParam}}</b></li>
-                                    <li>Expiration Time: <b>{{task.expireDistribution}}</b>, Parameters: <b>{{task.expireParamExo}}</b></li>
+                                    <li>Arrival Time:
+                                        <b>{{task.arrivalDistribution}}</b>, Parameters:
+                                        <b>{{task.arrivalParam}}</b>
+                                    </li>
+                                    <li>Service Time:
+                                        <b>{{task.serviceDistribution}}</b>, Parameters:
+                                        <b>{{task.serviceParam}}</b>
+                                    </li>
+                                    <li>Expiration Time:
+                                        <b>{{task.expireDistribution}}</b>, Parameters:
+                                        <b>{{task.expireParamExo}}</b>
+                                    </li>
                                 </ul>
                                 <li>Traffic</li>
                                 <ul>
-                                    <li>Is task altered by traffic: <b>{{task.affectedByTraffic}}</b></li>
-                                    <li>Phase(s) where task is affected: <b>{{task.affectByIROPS}}</b></li>
+                                    <li>Is task altered by traffic:
+                                        <b>{{task.affectedByTraffic}}</b>
+                                    </li>
+                                    <li>Phase(s) where task is affected:
+                                        <b>{{task.affectByIROPS}}</b>
+                                    </li>
                                 </ul>
                                 <li>Human Error Probability</li>
                                 <ul>
-                                    <li><b>{{task.humanErrorProb}}</b></li>
+                                    <li>
+                                        <b>{{task.humanErrorProb}}</b>
+                                    </li>
                                 </ul>
                             </ul>
                         </a>
@@ -858,19 +967,36 @@
                 <h5>Operators</h5>
                 <ul>
                     <li class="nav-item" v-for="(team, index) in operatorSettings.teams">
-                        <a class="nav-link disabled" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'" role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
+                        <a class="nav-link disabled" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'"
+                            role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
                             {{ team.name }}
                             <ul>
-                                <li>Team Size: <b>{{team.size}}</b></li>
-                                <li>Operator Strategy: <b>{{team.strategy}}</b></li>
-                                <li>Communications: <b>{{team.comms}}</b></li>
-                                <li>Operator Tasks: <b>{{team.tasks}}</b></li>
-                                <li>Fail Threshold: <b>{{team.failTresh}}%</b></li>
+                                <li>Team Size:
+                                    <b>{{team.size}}</b>
+                                </li>
+                                <li>Operator Strategy:
+                                    <b>{{team.strategy}}</b>
+                                </li>
+                                <li>Communications:
+                                    <b>{{team.comms}}</b>
+                                </li>
+                                <li>Operator Tasks:
+                                    <b>{{team.tasks}}</b>
+                                </li>
+                                <li>Fail Threshold:
+                                    <b>{{team.failTresh}}%</b>
+                                </li>
                                 <li>Artifical Intellegence</li>
                                 <ul>
-                                    <li>Equal Operator: <b>{{team.AIDA.equalOperator}}</b></li>
-                                    <li>Assisting Individuals: <b>{{team.AIDA.assistingIndividuals}}</b></li>
-                                    <li>Assisting Team Coordination: <b>{{team.AIDA.assistingTeamCoord}}</b></li>
+                                    <li>Equal Operator:
+                                        <b>{{team.AIDA.equalOperator}}</b>
+                                    </li>
+                                    <li>Assisting Individuals:
+                                        <b>{{team.AIDA.assistingIndividuals}}</b>
+                                    </li>
+                                    <li>Assisting Team Coordination:
+                                        <b>{{team.AIDA.assistingTeamCoord}}</b>
+                                    </li>
                                 </ul>
                             </ul>
 
@@ -880,29 +1006,48 @@
                 <h5>Fleets</h5>
                 <ul>
                     <li class="nav-item" v-for="(fleet, index) in fleetSettings.fleets">
-                        <a class="nav-link disabled" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'" role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
+                        <a class="nav-link disabled" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'"
+                            role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
                             {{ fleet.name }}
                             <ul>
-                                <li>Number of vehicles in fleet: <b>{{fleet.numVehicles}}</b></li>
-                                <li>Vehivle to Vehicle Communications: <b>{{fleet.comms}}</b></li>
-                                <li>Tasks Associated with Fleet: <b>{{fleet.tasks}}</b></li>
+                                <li>Number of vehicles in fleet:
+                                    <b>{{fleet.numVehicles}}</b>
+                                </li>
+                                <li>Vehivle to Vehicle Communications:
+                                    <b>{{fleet.comms}}</b>
+                                </li>
+                                <li>Tasks Associated with Fleet:
+                                    <b>{{fleet.tasks}}</b>
+                                </li>
                             </ul>
                         </a>
                     </li>
                 </ul>
-                <div id="container"></div><br>
+                <div id="container"></div>
+                <br>
                 <div id="downloadBtn" style="display: none">
                     <button id="downloadCSV" style="font-size: larger" class=" pure-button" title="" onclick="downloadRepCSV()">Download CSV</button>
                     <button id="downloadSummary" style="font-size: larger" class=" pure-button" title="" onclick="downloadSummary()">Download Summary</button>
-                </div><br>
-                <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div><br>
-       
-            
+                </div>
+                <br>
+                <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div>
+                <br>
+
+
             </div>
 
-        <!-- // tab content -->
+            <!----------------------------------------- 
+                RESULTS TEST
+            ------------------------------------------>
+
+            <div class="tab-pane fade" id="results-test" role="tabpanel" aria-lablledby="results-test-tab">
+                Testing results visualizations here  
+            </div>
+
+            <!-- // tab content -->
         </div>
-    <!-- // Vue app --> 
+        <!-- // Vue app -->
     </div>
 </body>
+
 </html>

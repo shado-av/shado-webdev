@@ -51,8 +51,8 @@
     color: #4B82C5;
 }
 
-#settings-sidebar {
-    width: 150px;
+#sim-sidebar {
+    width: 200px;
     position: fixed;
     top: 64px;
     left: 0;
@@ -62,7 +62,7 @@
     padding: 30px 0;
 }
 
-#settings-nav {
+#sim-nav {
     overflow-y: scroll;
 }
 
@@ -70,26 +70,52 @@
     border-radius: 0px;
 }
 
-#settings-sidebar .nav-link {
+#sim-sidebar .nav-link {
     color: #6C757D;
     transition: all 0.3s;
 }
 
-#settings-sidebar .nav-link:hover, #settings-sidebar .nav-link.active {
+#sim-sidebar .nav-link:not(.nav-header):hover, #sim-sidebar .nav-link.active {
     background-color: #DEE2E6;
     color: #212529;
 }
 
-#settings-nav .nav-item li .nav-link {
+#sim-nav .nav-item li .nav-link {
     padding-left: 32px;
+}
+
+#sim-nav .nav-item {
+    width: 100%;
+}
+
+#sim-nav .nav-header {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+#sim-nav .nav-header[aria-expanded="true"], #sim-nav .nav-header:hover {
+    color: #212529;
+}
+
+#sim-nav .arrow {
+    float: right;
+    line-height: 25px;
+}
+
+#sim-nav .nav-header[aria-expanded="true"] .arrow .fa-angle-down {
+    display: none;
+}
+
+#sim-nav .nav-header[aria-expanded="false"] .arrow .fa-angle-up {
+    display: none;
 }
 
 #run-sim {
     padding: 0 16px;
 }
 
-#settings-content {
-    margin-left: 150px;
+#sim-content {
+    margin-left: 200px;
     padding: 30px;
     position: relative;
 }
