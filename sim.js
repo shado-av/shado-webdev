@@ -492,7 +492,7 @@ var sim = new Vue({
     
 })
 $(document).ready(function () {
-    $("#sumbitBtn").click(function (e) {
+    $("#sumbitBtn").click(function () {
         var out = {
             "numHours": sim.globalSettings.numHours,
             "traffic": sim.traffic,
