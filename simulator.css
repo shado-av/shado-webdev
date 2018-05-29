@@ -2,6 +2,10 @@
     padding: 4%;
 }
 
+.downloadBtn {
+    padding: 5%
+}
+
 .navbar {
     background-color: #4981C7;
     box-sizing: border-box;
@@ -20,7 +24,7 @@
 }
 
 .navbar-brand:hover {
-    color: #2B6298;   
+    color: #2B6298;
 }
 
 #brand {
@@ -31,7 +35,6 @@
     #sim-nav #brand {
         display: initial;
     }
-    
     #sim-nav #brand-abbr {
         display: none;
     }
@@ -41,7 +44,6 @@
     #brand {
         display: initial;
     }
-    
     #brand-abbr {
         display: none;
     }
@@ -75,7 +77,8 @@
     transition: all 0.3s;
 }
 
-#settings-sidebar .nav-link:hover, #settings-sidebar .nav-link.active {
+#settings-sidebar .nav-link:hover,
+#settings-sidebar .nav-link.active {
     background-color: #DEE2E6;
     color: #212529;
 }
@@ -94,10 +97,9 @@
     position: relative;
 }
 
-
 .slider {
     -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
     width: 100%;
     height: 10px;
     border-radius: 5px;
@@ -109,17 +111,18 @@
 
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background: #343a40;
     cursor: pointer;
     -webkit-transition: background .15s ease-in-out;
-            transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out;
 }
 
-.slider::-webkit-slider-thumb:hover, .slider::-webkit-slider-thumb:active {
+.slider::-webkit-slider-thumb:hover,
+.slider::-webkit-slider-thumb:active {
     background: #007bff;
 }
 
@@ -131,25 +134,27 @@
     background: #343a40;
     cursor: pointer;
     -webkit-transition: background .15s ease-in-out;
-            transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out;
 }
 
-.slider::-webkit-slider-thumb:hover, .slider::-moz-range-thumb:hover, .slider::-webkit-slider-thumb:active, .slider::-moz-range-thumb:active {
+.slider::-webkit-slider-thumb:hover,
+.slider::-moz-range-thumb:hover,
+.slider::-webkit-slider-thumb:active,
+.slider::-moz-range-thumb:active {
     background: #007bff;
 }
 
-
-#tasks-settings-content, #operators-settings-content, #fleets-settings-content {
+#tasks-settings-content,
+#operators-settings-content,
+#fleets-settings-content {
     margin-left: 150px;
     padding-left: 30px;
 }
-
 
 .traffic-levels {
     display: flex;
     flex-flow: row wrap;
 }
-
 
 .traffic-level {
     flex: 0 0 150px;
@@ -178,18 +183,19 @@
 .tabs-left .nav-link {
     border-radius: 4px 0 0 4px;
     margin-right: 0;
-    display:block;
+    display: block;
 }
 
-.tabs-left .nav-link:hover, .tabs-left .nav-link:focus {
+.tabs-left .nav-link:hover,
+.tabs-left .nav-link:focus {
     border-color: #e9ecef transparent #e9ecef #dee2e6;
 }
 
 .tabs-left .nav-link.active,
 .tabs-left .nav-item.show .nav-link {
-  color: #495057;
-  background-color: #fff;
-  border-color: #dee2e6 #fff #dee2e6 #dee2e6;
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #fff #dee2e6 #dee2e6;
 }
 
 .delete {

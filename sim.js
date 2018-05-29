@@ -28,7 +28,7 @@ var sim = new Vue({
             tasks: // array of individual task objects
                 [{
                         name: "Communicating",
-                        include: false,
+                        include: true,
                         isCustom: false,
                         priority: [4, 7],
                         arrivalDistribution: "E",
@@ -44,7 +44,7 @@ var sim = new Vue({
                     },
                     {
                         name: "Actuation",
-                        include: false,
+                        include: true,
                         isCustom: false,
                         priority: [5, 5],
                         arrivalDistribution: "E",
@@ -60,7 +60,7 @@ var sim = new Vue({
                     },
                     {
                         name: "Directive Mandatory",
-                        include: false,
+                        include: true,
                         isCustom: false,
                         priority: [5, 5],
                         arrivalDistribution: "E",
@@ -615,7 +615,5 @@ function showDownloadBtn() {
     document.getElementById("downloadBtn").style.display = "block";
     document.getElementById("downloadSummary").style.display = "block";
 }
-
-
 
 sim.$mount("#shado-sim");
