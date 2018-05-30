@@ -630,6 +630,11 @@ $(document).ready(function () {
         win.focus();
         console.log("GET request 'getUtilizationJSON' sent");
     });
+    $(function () {
+        $("form").submit(function () {
+            return false;
+        });
+    });
 });
 
 function showDownloadBtn() {
