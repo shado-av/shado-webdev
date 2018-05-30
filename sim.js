@@ -31,6 +31,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         priority: [4, 7],
+                        affTeamCoord: "n",
                         arrivalDistribution: "E",
                         arrivalParam: [0.033333, 0.1],
                         serviceDistribution: "U",
@@ -47,6 +48,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         priority: [5, 5],
+                        affTeamCoord: "n",
                         arrivalDistribution: "E",
                         arrivalParam: [0.033333, 0.1],
                         serviceDistribution: "U",
@@ -63,6 +65,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         priority: [5, 5],
+                        affTeamCoord: "n",
                         arrivalDistribution: "E",
                         arrivalParam: [0.033333, 0.1],
                         serviceDistribution: "U",
@@ -186,6 +189,21 @@ var sim = new Vue({
                 }
             }
             return names;
+        },
+
+        // array containing tasks affected by team coordination values
+        teamCoordAff() {
+            var coords = [];
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].affTeamCoord && this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[i].affTeamCoord === "y") {
+                        coords.push(1);
+                    } else {
+                        coords.push(0);
+                    }
+                }
+            }
+            return coords;
         },
 
         // array containing all task arrival time distributions
@@ -411,6 +429,7 @@ var sim = new Vue({
                 include: true,
                 isCustom: true,
                 priority: [],
+                affTeamCoord: "n",
                 arrivalDistribution: "E",
                 arrivalParam: [],
                 serviceDistribution: "E",

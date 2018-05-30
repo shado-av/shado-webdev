@@ -391,6 +391,22 @@
                                     <input class="form-control" type="text" v-model="task.name">
                                 </div>
                             </div>
+
+                            <!-- task affected by team coordination (task.affTeamCoord) -->
+                            <div class="form-group form-inline justify-content-between">
+                                <label class="col-form-label">Is this task affected by team coordination?</label>
+                                <div class="text-right">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input class="custom-control-input" type="radio" name="team-coord-affects" id="team-coord-affects-y" value="y" v-model="task.affTeamCoord">
+                                        <label class="custom-control-label" for="team-coord-affects-y">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-0">
+                                        <input class="custom-control-input" type="radio" name="team-coord-affects" id="team-coord-affects-n" value="n" v-model="task.affTeamCoord">
+                                        <label class="custom-control-label" for="team-coord-affects-n">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
                         </form>
 
                         <!-- DISTRIBUTIONS -->
