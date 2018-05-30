@@ -601,7 +601,6 @@ $(document).ready(function () {
                     // downloadRepCSV();
                     // downloadSummary();
                 }
-                hideProgress();
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
             },
@@ -626,8 +625,11 @@ $(document).ready(function () {
         console.log("GET request 'getSummary' sent");
     });
 
-
-    // alert("SHADO params SUBMITTED!");
+    $("#downloadJSON").click(function () {
+        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON");
+        win.focus();
+        console.log("GET request 'getUtilizationJSON' sent");
+    });
 });
 
 function showDownloadBtn() {

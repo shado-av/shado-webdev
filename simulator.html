@@ -67,7 +67,7 @@
         ------------------------------------------>
 
         <div class="d-flex flex-column justify-content-between" id="sim-sidebar">
-            
+
             <!-- navigation -->
             <div id="sim-nav-submenus">
 
@@ -136,9 +136,9 @@
                             aria-controls="results-nav">
                             Results
                             <span class="arrow">
-                                    <i class="fas fa-angle-down"></i>
-                                    <i class="fas fa-angle-up"></i>
-                                </span>
+                                <i class="fas fa-angle-down"></i>
+                                <i class="fas fa-angle-up"></i>
+                            </span>
                         </a>
                         <div id="results-nav" class="collapse" data-parent="#sim-nav-submenus">
                             <ul class="nav nav-pills">
@@ -164,12 +164,13 @@
                 </div>
 
                 <div id="downloadBtn" style="display: none" align="center">
-                        <button id="downloadCSV" class="btn btn-secondary btn-sm" title="" onclick="downloadRepCSV()">Download CSV</button>
-                        <div class="spacer"></div>
-                        <button id="downloadSummary" class="btn btn-secondary btn-sm" title="" onclick="downloadSummary()">Download
-                            <br> Summary</button>
-                    </div>
-                    <br>
+                    <button id="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
+                    <button id="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
+                        <br> Output JSON</button>
+                    <button id="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
+                        <br> Summary</button>
+                </div>
+                <br>
                 <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
 
                 <!-- run simulation -->
@@ -397,11 +398,13 @@
                                 <label class="col-form-label">Is this task affected by team coordination?</label>
                                 <div class="text-right">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'" value="y" v-model="task.affTeamCoord">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
+                                            value="y" v-model="task.affTeamCoord">
                                         <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-n'" value="n" v-model="task.affTeamCoord">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-n'"
+                                            value="n" v-model="task.affTeamCoord">
                                         <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-n'">No</label>
                                     </div>
                                 </div>
@@ -592,11 +595,13 @@
                                 <label class="col-form-label">Is this task affected by traffic?</label>
                                 <div class="text-right">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-y'" value="y" v-model="task.affectedByTraffic">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-y'"
+                                            value="y" v-model="task.affectedByTraffic">
                                         <label class="custom-control-label" :for="'task-' + index + 'traff-affects-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-n'" value="n" v-model="task.affectedByTraffic">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-n'"
+                                            value="n" v-model="task.affectedByTraffic">
                                         <label class="custom-control-label" :for="'task-' + index + 'traff-affects-n'">No</label>
                                     </div>
                                 </div>
@@ -1051,7 +1056,7 @@
             ------------------------------------------>
 
             <div class="tab-pane fade" id="results-test" role="tabpanel" aria-lablledby="results-test-tab">
-                Testing results visualizations here  
+                Testing results visualizations here
             </div>
 
             <!-- // tab content -->
