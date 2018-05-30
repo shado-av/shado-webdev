@@ -279,29 +279,19 @@
                 <!-- EXOGENOUS FACTORS -->
                 <h5 class="mb-3">Exogenous Factors</h5>
                 <form>
-
-                    <!-- include exogenous factors (exoFactors) -->
-                    <div class="form-group form-inline justify-content-between">
-                        <label class="col-form-label">Do you want to include exogenous factors?</label>
-                        <div class="text-right">
-                            <div class="custom-control custom-control-inline custom-radio">
-                                <input class="custom-control-input" type="radio" name="exo-factors" id="exo-factors-y" value="y" v-model="globalSettings.exoFactors">
-                                <label class="custom-control-label" for="exo-factors-y">Yes</label>
+                    <!-- type of exogenous factors (exoFactorsType) -->
+                    <div class="form-group">
+                        <label>Select the type of exogenous factor:</label>
+                        <div>
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
+                                <label class="custom-control-label" for="exo-type-1">Type 1</label>
                             </div>
-                            <div class="custom-control custom-control-inline custom-radio mr-0">
-                                <input class="custom-control-input" type="radio" name="exo-factors" id="exo-factors-n" value="n" v-model="globalSettings.exoFactors">
-                                <label class="custom-control-label" for="exo-factors-n">No</label>
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
+                                <label class="custom-control-label" for="exo-type-2">Type 2</label>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- type of exogenous factors (exoFactorsType) -->
-                    <div class="form-group" v-show="globalSettings.exoFactors === 'y'">
-                        <label>Select the type of exogenous factor:</label>
-                        <select class="custom-select" v-model="globalSettings.exoFactorsType" placeholder="Select a type...">
-                            <option value="1">Type 1</option>
-                            <option value="2">Type 2</option>
-                        </select>
                     </div>
                 </form>
             </div>

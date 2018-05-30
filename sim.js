@@ -16,7 +16,7 @@ var sim = new Vue({
             diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
             exoFactors: "n",
-            exoFactorsType: 1
+            exoFactorsType: [0, 0]
         },
 
         /* ------------------------------
@@ -151,10 +151,13 @@ var sim = new Vue({
 
         // array of existence of exo factors and type of exo factor
         hasExogenous() {
-            if (this.globalSettings.exoFactors === "y") {
-                return [1, parseInt(this.globalSettings.exoFactorsType, 10)];
+            var exoFT = this.globalSettings.exoFactorsType;
+            for (var j = 0; j < 2; j++) {
+                if (typeof exoFT[j] !== "number") {
+                    exoFT[j] = exoFT[j] ? 1 : 0;
+                }
             }
-            return [0, 0];
+            return exoFT;
         },
 
         /* ------------------------------
