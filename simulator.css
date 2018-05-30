@@ -69,16 +69,9 @@
     padding: 30px 0;
 }
 
-<<<<<<< HEAD <<<<<<< HEAD
-/*#settings-nav {
-=======
 #sim-nav {
->>>>>>> 7bd1a61744cb9288d2db4db623b09fce7ac313ed
-=======
-#sim-nav {
->>>>>>> 7bd1a61744cb9288d2db4db623b09fce7ac313ed
-    overflow-y: scroll;
-}*/
+    >>>>>>>7bd1a61744cb9288d2db4db623b09fce7ac313ed overflow-y: scroll;
+}
 
 .nav-pills .nav-link {
     border-radius: 0px;
