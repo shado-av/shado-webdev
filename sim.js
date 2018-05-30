@@ -552,7 +552,7 @@ $(document).ready(function () {
             "expPmsLo": sim.expPmsHi,
             "expPmsHi": sim.expPmsHi,
             "affByTraff": sim.affByTraff,
-            "teamCoordAff": [0, 1, 0, 1],
+            "teamCoordAff": sim.teamCoordAff,
             "humanError": sim.humanError
         };
         console.log(out);
