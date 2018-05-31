@@ -40,7 +40,7 @@ var sim = new Vue({
                         expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     },
                     {
                         name: "Actuation",
@@ -48,7 +48,7 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [5, 5],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
+                        arrivalDistribution: "E",
                         arrivalParam: [0.033333, 0.1],
                         serviceDistribution: "U",
                         serviceParam: [0.5, 2],
@@ -57,7 +57,7 @@ var sim = new Vue({
                         expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     },
                     {
                         name: "Directive Mandatory",
@@ -65,7 +65,7 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [5, 5],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
+                        arrivalDistribution: "E",
                         arrivalParam: [0.033333, 0.1],
                         serviceDistribution: "U",
                         serviceParam: [0.5, 2],
@@ -74,7 +74,7 @@ var sim = new Vue({
                         expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     }
                 ]
         },
@@ -441,8 +441,8 @@ var sim = new Vue({
                 expireParamExo: [],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
-                humanErrorProb: []
-            })
+                humanErrorProb: [[],[]]
+            });
         },
 
         removeCustomTask(task) {

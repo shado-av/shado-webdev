@@ -425,8 +425,15 @@
                                 <!-- arrival time distribution parameters (task.arrivalParam) -->
                                 <div class="col-9">
                                     <label>Distribution Parameters</label>
-                                    <div v-for="n in taskSettings.numPhases" v-if="task.arrivalDistribution === 'E'">             <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1]">
-                                        <small class="form-text text-muted">Mean Phase {{ n }}</small>
+                                    <div v-if="task.arrivalDistribution === 'E'" class="row no-gutters">
+                                        <div class="col">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
+                                            <small class="form-text text-muted">Mean Phase 1</small>
+                                        </div>
+                                        <div class="col ml-2" v-show="taskSettings.numPhases > 1">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[1]">
+                                            <small class="form-text text-muted">Mean Phase 2</small>
+                                        </div>
                                     </div>
                                     <div v-if="task.arrivalDistribution === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
@@ -466,7 +473,7 @@
                             </div>
 
                             <!-- service time distribution (task.serviceDistribution) -->
-                            <div class="form-group form-row" v-for="n in taskSettings.numPhases">
+                            <div class="form-group form-row">
                                 <div class="col-3">
                                     <label :for="'task-' + index + 'ser-dist'">Service Time</label>
                                     <select class="custom-select" :id="'task-' + index + 'ser-dist'" v-model="task.serviceDistribution" @change="task.serviceParam.splice(0)">
@@ -480,8 +487,15 @@
                                 <!-- service time distribution parameters (task.serviceParam) -->
                                 <div class="col-9">
                                     <label>Distribution Parameters</label>
-                                    <div v-for="n in taskSettings.numPhases" v-if="task.arrivalDistribution === 'E'">               <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1]">
-                                        <small class="form-text text-muted">Mean Phase {{ n }}</small>
+                                    <div v-if="task.serviceDistribution === 'E'" class="row no-gutters">
+                                        <div class="col">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[0]">
+                                            <small class="form-text text-muted">Mean Phase 1</small>
+                                        </div>
+                                        <div class="col ml-2" v-show="taskSettings.numPhases > 1">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[1]">
+                                            <small class="form-text text-muted">Mean Phase 2</small>
+                                        </div>
                                     </div>
                                     <div v-if="task.serviceDistribution === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
@@ -521,7 +535,7 @@
                             </div>
 
                             <!-- expiration time distribution (task.expireDistribution) -->
-                            <div class="form-group form-row" v-for="n in taskSettings.numPhases">
+                            <div class="form-group form-row">
                                 <div class="col-3">
                                     <label :for="'task-' + index + 'exp-dist'">Expiration Time</label>
                                     <select class="custom-select" :id="'task-' + index + 'exp-dist'" v-model="task.expireDistribution" @change="task.expireParamDefault.splice(0)">
@@ -535,8 +549,15 @@
                                 <!-- expiration time distribution parameters (task.expireParamDefault) -->
                                 <div class="col-9">
                                     <label>Distribution Parameters</label>
-                                    <div v-for="n in taskSettings.numPhases" v-if="task.arrivalDistribution === 'E'">               <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1]">
-                                        <small class="form-text text-muted">Mean Phase {{ n }}</small>
+                                    <div v-if="task.expireDistribution === 'E'" class="row no-gutters">
+                                        <div class="col">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[0]">
+                                            <small class="form-text text-muted">Mean Phase 1</small>
+                                        </div>
+                                        <div class="col ml-2" v-show="taskSettings.numPhases > 1">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[1]">
+                                            <small class="form-text text-muted">Mean Phase 2</small>
+                                        </div>
                                     </div>
                                     <div v-if="task.expireDistribution === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
