@@ -611,7 +611,7 @@ $(document).ready(function () {
     });
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail";
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
@@ -620,14 +620,13 @@ $(document).ready(function () {
         var xhttp = new XMLHttpRequest();
         // $.get("http://localhost:8080/shado/getSummary");
         // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getSummary";
         win.focus();
         console.log("GET request 'getSummary' sent");
     });
 
     $("#downloadJSON").click(function () {
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON");
-        win.focus();
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON";
         console.log("GET request 'getUtilizationJSON' sent");
     });
     $(function () {
