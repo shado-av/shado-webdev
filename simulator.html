@@ -67,7 +67,7 @@
         ------------------------------------------>
 
         <div class="d-flex flex-column justify-content-between" id="sim-sidebar">
-            
+
             <!-- navigation -->
             <div id="sim-nav-submenus">
 
@@ -136,9 +136,9 @@
                             aria-controls="results-nav">
                             Results
                             <span class="arrow">
-                                    <i class="fas fa-angle-down"></i>
-                                    <i class="fas fa-angle-up"></i>
-                                </span>
+                                <i class="fas fa-angle-down"></i>
+                                <i class="fas fa-angle-up"></i>
+                            </span>
                         </a>
                         <div id="results-nav" class="collapse" data-parent="#sim-nav-submenus">
                             <ul class="nav nav-pills">
@@ -164,12 +164,16 @@
                 </div>
 
                 <div id="downloadBtn" style="display: none" align="center">
-                        <button id="downloadCSV" class="btn btn-secondary btn-sm" title="" onclick="downloadRepCSV()">Download CSV</button>
-                        <div class="spacer"></div>
-                        <button id="downloadSummary" class="btn btn-secondary btn-sm" title="" onclick="downloadSummary()">Download
-                            <br> Summary</button>
-                    </div>
-                    <br>
+                    <div class="divider"></div>
+                    <button id="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
+                    <div class="divider"></div>
+                    <button id="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
+                        <br> Output JSON</button>
+                    <div class="divider"></div>
+                    <button id="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
+                        <br> Summary</button>
+                </div>
+                <br>
                 <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
 
                 <!-- run simulation -->
@@ -387,12 +391,14 @@
                                 <label class="col-form-label">Is this task affected by team coordination?</label>
                                 <div class="text-right">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="team-coord-affects" id="team-coord-affects-y" value="y" v-model="task.affTeamCoord">
-                                        <label class="custom-control-label" for="team-coord-affects-y">Yes</label>
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
+                                            value="y" v-model="task.affTeamCoord">
+                                        <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="team-coord-affects" id="team-coord-affects-n" value="n" v-model="task.affTeamCoord">
-                                        <label class="custom-control-label" for="team-coord-affects-n">No</label>
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-n'"
+                                            value="n" v-model="task.affTeamCoord">
+                                        <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-n'">No</label>
                                     </div>
                                 </div>
                             </div>
@@ -405,10 +411,10 @@
                         <form class="mb-5" @submit.prevent>
 
                             <!-- arrival time distribution (task.arrivalDistribution) -->
-                            <div class="form-group form-row" v-for="n in taskSettings.numPhases">
+                            <div class="form-group form-row">
                                 <div class="col-3">
-                                    <label for="arr-dist">Arrival Time {{ n }}</label>
-                                    <select class="custom-select" id="arr-dist" v-model="task.arrivalDistribution[n-1]" @change="task.arrivalParam[n-1].splice(0)">
+                                    <label :for="'task-' + index + 'arr-dist'">Arrival Time</label>
+                                    <select class="custom-select" :id="'task-' + index + 'arr-dist'" v-model="task.arrivalDistribution" @change="task.arrivalParam.splice(0)">
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
@@ -418,42 +424,48 @@
 
                                 <!-- arrival time distribution parameters (task.arrivalParam) -->
                                 <div class="col-9">
-                                    <label>Distribution Parameters {{ n }}</label>
-                                    <div v-if="task.arrivalDistribution[n-1] === 'E'">
-                                        <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][0]">
-                                        <small class="form-text text-muted">Mean</small>
+                                    <label>Distribution Parameters</label>
+                                    <div v-if="task.arrivalDistribution === 'E'" class="row no-gutters">
+                                        <div class="col">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
+                                            <small class="form-text text-muted">Mean Phase 1</small>
+                                        </div>
+                                        <div class="col ml-2" v-show="taskSettings.numPhases > 1">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[1]">
+                                            <small class="form-text text-muted">Mean Phase 2</small>
+                                        </div>
                                     </div>
-                                    <div v-if="task.arrivalDistribution[n-1] === 'L'" class="row no-gutters">
+                                    <div v-if="task.arrivalDistribution === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
                                             <small class="form-text text-muted">Mean</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[1]">
                                             <small class="form-text text-muted">Standard Deviation</small>
                                         </div>
                                     </div>
-                                    <div v-if="task.arrivalDistribution[n-1] === 'U'" class="row no-gutters">
+                                    <div v-if="task.arrivalDistribution === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[1]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
                                     <div v-if="task.arrivalDistribution === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
                                             <small class="form-text text-muted">Mode</small>
                                         </div>
                                         <div class="col mx-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[1]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[n-1][2]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.arrivalParam[2]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
@@ -461,10 +473,10 @@
                             </div>
 
                             <!-- service time distribution (task.serviceDistribution) -->
-                            <div class="form-group form-row" v-for="n in taskSettings.numPhases">
+                            <div class="form-group form-row">
                                 <div class="col-3">
-                                    <label for="arr-dist">Service Time {{ n }}</label>
-                                    <select class="custom-select" id="arr-dist" v-model="task.serviceDistribution[n-1]" @change="task.serviceParam[n-1].splice(0)">
+                                    <label :for="'task-' + index + 'ser-dist'">Service Time</label>
+                                    <select class="custom-select" :id="'task-' + index + 'ser-dist'" v-model="task.serviceDistribution" @change="task.serviceParam.splice(0)">
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
@@ -474,42 +486,48 @@
 
                                 <!-- service time distribution parameters (task.serviceParam) -->
                                 <div class="col-9">
-                                    <label>Distribution Parameters {{ n }}</label>
-                                    <div v-if="task.serviceDistribution[n-1] === 'E'">
-                                        <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
-                                        <small class="form-text text-muted">Mean</small>
+                                    <label>Distribution Parameters</label>
+                                    <div v-if="task.serviceDistribution === 'E'" class="row no-gutters">
+                                        <div class="col">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[0]">
+                                            <small class="form-text text-muted">Mean Phase 1</small>
+                                        </div>
+                                        <div class="col ml-2" v-show="taskSettings.numPhases > 1">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[1]">
+                                            <small class="form-text text-muted">Mean Phase 2</small>
+                                        </div>
                                     </div>
-                                    <div v-if="task.serviceDistribution[n-1] === 'L'" class="row no-gutters">
+                                    <div v-if="task.serviceDistribution === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[0]">
                                             <small class="form-text text-muted">Mean</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[1]">
                                             <small class="form-text text-muted">Standard Deviation</small>
                                         </div>
                                     </div>
-                                    <div v-if="task.serviceDistribution[n-1] === 'U'" class="row no-gutters">
+                                    <div v-if="task.serviceDistribution === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[0]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[1]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
-                                    <div v-if="task.serviceDistribution[n-1] === 'T'" class="row no-gutters">
+                                    <div v-if="task.serviceDistribution === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[0]">
                                             <small class="form-text text-muted">Mode</small>
                                         </div>
                                         <div class="col mx-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[1]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[n-1][2]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.serviceParam[2]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
@@ -517,10 +535,10 @@
                             </div>
 
                             <!-- expiration time distribution (task.expireDistribution) -->
-                            <div class="form-group form-row" v-for="n in taskSettings.numPhases">
+                            <div class="form-group form-row">
                                 <div class="col-3">
-                                    <label for="arr-dist">Expiration Time {{n}}</label>
-                                    <select class="custom-select" id="arr-dist" v-model="task.expireDistribution[n-1]" @change="task.expireParamDefault[n-1].splice(0)">
+                                    <label :for="'task-' + index + 'exp-dist'">Expiration Time</label>
+                                    <select class="custom-select" :id="'task-' + index + 'exp-dist'" v-model="task.expireDistribution" @change="task.expireParamDefault.splice(0)">
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
@@ -530,42 +548,48 @@
 
                                 <!-- expiration time distribution parameters (task.expireParamDefault) -->
                                 <div class="col-9">
-                                    <label>Distribution Parameters {{n}}</label>
-                                    <div v-if="task.expireDistribution[n-1] === 'E'">
-                                        <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
-                                        <small class="form-text text-muted">Mean</small>
+                                    <label>Distribution Parameters</label>
+                                    <div v-if="task.expireDistribution === 'E'" class="row no-gutters">
+                                        <div class="col">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[0]">
+                                            <small class="form-text text-muted">Mean Phase 1</small>
+                                        </div>
+                                        <div class="col ml-2" v-show="taskSettings.numPhases > 1">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[1]">
+                                            <small class="form-text text-muted">Mean Phase 2</small>
+                                        </div>
                                     </div>
-                                    <div v-if="task.expireDistribution[n-1] === 'L'" class="row no-gutters">
+                                    <div v-if="task.expireDistribution === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[0]">
                                             <small class="form-text text-muted">Mean</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[1]">
                                             <small class="form-text text-muted">Standard Deviation</small>
                                         </div>
                                     </div>
-                                    <div v-if="task.expireDistribution[n-1] === 'U'" class="row no-gutters">
+                                    <div v-if="task.expireDistribution === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[0]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[1]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
-                                    <div v-if="task.expireDistribution[n-1] === 'T'" class="row no-gutters">
+                                    <div v-if="task.expireDistribution === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[0]">
                                             <small class="form-text text-muted">Mode</small>
                                         </div>
                                         <div class="col mx-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][1]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[1]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][2]">
+                                            <input class="form-control" type="number" placeholder="Enter #" v-model.number="task.expireParamDefault[2]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
@@ -575,7 +599,6 @@
 
                         <!-- TASK TRAFFIC -->
                         <h5 class="mb-3">Traffic</h5>
-
                         <form class="mb-5">
 
                             <!-- task affected by traffic (task.affectedByTraffic) -->
@@ -583,12 +606,14 @@
                                 <label class="col-form-label">Is this task affected by traffic?</label>
                                 <div class="text-right">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="traff-affects" id="traff-affects-y" value="y" v-model="task.affectedByTraffic">
-                                        <label class="custom-control-label" for="traff-affects-y">Yes</label>
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-y'"
+                                            value="y" v-model="task.affectedByTraffic">
+                                        <label class="custom-control-label" :for="'task-' + index + 'traff-affects-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="traff-affects" id="traff-affects-n" value="n" v-model="task.affectedByTraffic">
-                                        <label class="custom-control-label" for="traff-affects-n">No</label>
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-n'"
+                                            value="n" v-model="task.affectedByTraffic">
+                                        <label class="custom-control-label" :for="'task-' + index + 'traff-affects-n'">No</label>
                                     </div>
                                 </div>
                             </div>
@@ -606,29 +631,31 @@
                                         <label class="custom-control-label" :for="'task-' + index + 'traffic-phase-2'">Affected During Phase 2</label>
                                     </div>
                                 </div>
-
                             </div>
                         </form>
 
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <form @submit.prevent>
+
+                        <form @submit.prevent v-for="n in taskSettings.numPhases">
+                            <label>Phase {{n}}</label>
+
                             <div class="form-group form-row">
                                 <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0]">
+                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[n-1][0]">
                                     <small class="form-text text-muted">
                                         Mode
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[1]">
+                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[n-1][1]">
                                     <small class="form-text text-muted">
                                         Lower Bound
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="0.1" class="form-control" v-model.number="task.humanErrorProb[2]" placeholder="Enter #">
+                                    <input type="number" min="0" max="1" step="0.1" class="form-control" v-model.number="task.humanErrorProb[n-1][2]" placeholder="Enter #">
                                     <small class="form-text text-muted">
                                         Upper Bound
                                     </small>
@@ -742,7 +769,6 @@
                         <form class="mb-5">
                             <div class="form-group">
                                 <label class="mb-3">What tasks are these operators responsible for?</label>
-
                                 <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
                                     <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ task.name }}</label>
@@ -1041,7 +1067,7 @@
             ------------------------------------------>
 
             <div class="tab-pane fade" id="results-test" role="tabpanel" aria-lablledby="results-test-tab">
-                Testing results visualizations here  
+                Testing results visualizations here
             </div>
 
             <!-- // tab content -->

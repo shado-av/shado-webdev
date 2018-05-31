@@ -27,6 +27,11 @@
     color: #2B6298;
 }
 
+.divider {
+    width: auto;
+    height: 10px;
+}
+
 #brand {
     display: none;
 }
@@ -64,6 +69,10 @@
     padding: 30px 0;
 }
 
+#sim-nav {
+    overflow-y: scroll;
+}
+
 .nav-pills .nav-link {
     border-radius: 0px;
 }
@@ -73,7 +82,8 @@
     transition: all 0.3s;
 }
 
-#sim-sidebar .nav-link:not(.nav-header):hover, #sim-sidebar .nav-link.active {
+#sim-sidebar .nav-link:not(.nav-header):hover,
+#sim-sidebar .nav-link.active {
     background-color: #DEE2E6;
     color: #212529;
 }
@@ -91,7 +101,8 @@
     letter-spacing: 0.5px;
 }
 
-#sim-nav .nav-header[aria-expanded="true"], #sim-nav .nav-header:hover {
+#sim-nav .nav-header[aria-expanded="true"],
+#sim-nav .nav-header:hover {
     color: #212529;
 }
 

@@ -31,16 +31,16 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [4, 7],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1]],
-                        serviceDistribution: ["U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2]],
-                        expireDistribution: ["E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184]],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     },
                     {
                         name: "Actuation",
@@ -48,16 +48,16 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [5, 5],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1]],
-                        serviceDistribution: ["U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2]],
-                        expireDistribution: ["E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184]],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     },
                     {
                         name: "Directive Mandatory",
@@ -65,16 +65,16 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [5, 5],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1]],
-                        serviceDistribution: ["U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2]],
-                        expireDistribution: ["E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184]],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     }
                 ]
         },
@@ -91,7 +91,7 @@ var sim = new Vue({
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
-                        tasks: [],
+                        tasks: [0, 1],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -104,7 +104,7 @@ var sim = new Vue({
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
-                        tasks: [],
+                        tasks: [1, 2],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -125,7 +125,7 @@ var sim = new Vue({
                 name: "Fleet",
                 numVehicles: 1,
                 comms: "N",
-                tasks: []
+                tasks: [0, 1, 2]
             }]
         }
     },
@@ -432,17 +432,17 @@ var sim = new Vue({
                 isCustom: true,
                 priority: [],
                 affTeamCoord: "n",
-                arrivalDistribution: ["E", "E"],
-                arrivalParam: [[],[]],
-                serviceDistribution: ["E", "E"],
-                serviceParam: [[],[]],
-                expireDistribution: ["E", "E"],
-                expireParamDefault: [[],[]],
-                expireParamExo: [[],[]],
+                arrivalDistribution: "E",
+                arrivalParam: [],
+                serviceDistribution: "E",
+                serviceParam: [],
+                expireDistribution: "E",
+                expireParamDefault: [],
+                expireParamExo: [],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
-                humanErrorProb: []
-            })
+                humanErrorProb: [[],[]]
+            });
         },
 
         removeCustomTask(task) {
@@ -554,7 +554,7 @@ $(document).ready(function () {
             "expPmsLo": sim.expPmsHi,
             "expPmsHi": sim.expPmsHi,
             "affByTraff": sim.affByTraff,
-            "teamCoordAff": [0, 1, 0, 1],
+            "teamCoordAff": sim.teamCoordAff,
             "humanError": sim.humanError
         };
         console.log(out);
@@ -603,7 +603,6 @@ $(document).ready(function () {
                     // downloadRepCSV();
                     // downloadSummary();
                 }
-                hideProgress();
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
             },
@@ -614,7 +613,7 @@ $(document).ready(function () {
     });
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail";
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
@@ -623,13 +622,20 @@ $(document).ready(function () {
         var xhttp = new XMLHttpRequest();
         // $.get("http://localhost:8080/shado/getSummary");
         // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getSummary";
         win.focus();
         console.log("GET request 'getSummary' sent");
     });
 
-
-    // alert("SHADO params SUBMITTED!");
+    $("#downloadJSON").click(function () {
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON";
+        console.log("GET request 'getUtilizationJSON' sent");
+    });
+    $(function () {
+        $("form").submit(function () {
+            return false;
+        });
+    });
 });
 
 function showDownloadBtn() {
