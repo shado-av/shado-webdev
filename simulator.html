@@ -204,7 +204,7 @@
                 <h3 class="mb-4">Basic Settings</h3>
 
                 <!-- TYPE & HOURS -->
-                <form class="mb-5">
+                <form class="mb-5" @submit.prevent>
 
                     <!-- type of simulation (simType) -->
                     <div class="form-group form-inline justify-content-between">
@@ -330,7 +330,7 @@
                     <div class="tab-pane fade show active" id="tasks-global-settings" role="tabpanel" aria-labelledby="tasks-global-settings-tab">
 
                         <h3 class="mb-4">Tasks Settings</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- number of phases (numPhases) -->
                             <div class="form-group">
@@ -372,7 +372,7 @@
 
                         <!-- NAME -->
                         <h3 class="mb-4">{{ task.name }}</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- task name (task.name) -->
                             <div class="form-group form-row">
@@ -402,7 +402,7 @@
                         <!-- DISTRIBUTIONS -->
                         <h5 class="mb-0">Distributions</h5>
                         <small class="form-text text-muted mb-4">Distribution types take different parameters.</small>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- arrival time distribution (task.arrivalDistribution) -->
                             <div class="form-group form-row" v-for="n in taskSettings.numPhases">
@@ -613,7 +613,7 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <form>
+                        <form @submit.prevent>
                             <div class="form-group form-row">
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0]">
@@ -672,7 +672,7 @@
                     <!-- OPERATOR GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="operators-global-settings" role="tabpanel" aria-labelledby="operators-global-settings-tab">
                         <h3 class="mb-4">Operators Settings</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
@@ -695,7 +695,7 @@
                         <h3 class="mb-4">{{ team.name }}</h3>
 
                         <!-- TEAM SETTINGS-->
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- operator team name (team.name) -->
                             <div class="form-group form-row">
@@ -839,12 +839,12 @@
                     <!-- FLEET GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="fleets-global-settings" role="tabpanel" aria-labelledby="fleets-global-settings-tab">
                         <h3 class="mb-4">Fleets Settings</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- number of fleets (fleetTypes) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many different fleets do the operators manage?</label>
-                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
+                                <input type="number" class="form-control" min="1" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
                                     @change="updateFleets">
                             </div>
                         </form>
@@ -862,7 +862,7 @@
                         <h3 class="mb-4">{{ fleet.name }}</h3>
 
                         <!-- FLEET SETTINGS -->
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- fleet name (fleet.name) -->
                             <div class="form-group form-row">
