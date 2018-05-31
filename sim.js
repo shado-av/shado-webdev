@@ -554,7 +554,7 @@ $(document).ready(function () {
             "expPmsLo": sim.expPmsHi,
             "expPmsHi": sim.expPmsHi,
             "affByTraff": sim.affByTraff,
-            "teamCoordAff": [0, 1, 0, 1],
+            "teamCoordAff": sim.teamCoordAff,
             "humanError": sim.humanError
         };
         console.log(out);
@@ -603,7 +603,6 @@ $(document).ready(function () {
                     // downloadRepCSV();
                     // downloadSummary();
                 }
-                hideProgress();
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
             },
@@ -614,7 +613,7 @@ $(document).ready(function () {
     });
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail", '_blank');
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail";
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
@@ -623,13 +622,20 @@ $(document).ready(function () {
         var xhttp = new XMLHttpRequest();
         // $.get("http://localhost:8080/shado/getSummary");
         // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        var win = window.open("http://apps.hal.pratt.duke.edu:8080/shado/getSummary", '_blank');
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getSummary";
         win.focus();
         console.log("GET request 'getSummary' sent");
     });
 
-
-    // alert("SHADO params SUBMITTED!");
+    $("#downloadJSON").click(function () {
+        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON";
+        console.log("GET request 'getUtilizationJSON' sent");
+    });
+    $(function () {
+        $("form").submit(function () {
+            return false;
+        });
+    });
 });
 
 function showDownloadBtn() {
