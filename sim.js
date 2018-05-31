@@ -97,7 +97,7 @@ var sim = new Vue({
                             assistingIndividuals: "N",
                             assistingTeamCoord: "N"
                         },
-                        failTresh: 50
+                        failThresh: 50
                     },
                     {
                         name: "Operator Team",
@@ -470,7 +470,7 @@ var sim = new Vue({
                             assistingIndividuals: "N",
                             assistingTeamCoord: "N"
                         },
-                        failTresh: 50
+                        failThresh: 50
                     })
                 }
             } else {
