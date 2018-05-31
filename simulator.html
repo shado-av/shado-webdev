@@ -350,7 +350,7 @@
                         <div class="custom-control custom-checkbox mb-4 task" v-for="(task, index) in taskSettings.tasks">
                             <input class="custom-control-input" type="checkbox" :id="'task-type-' + index" v-model="task.include" :disabled="disableAddTask(task)">
                             <label class="custom-control-label h6" :for="'task-type-' + index">{{ task.name }}</label>
-                            <button type="button" class="delete badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
+                            <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <p class="pr-4">Details about the task and an overview of its default parameters will go here.</p>
@@ -366,7 +366,7 @@
                         role="tabpanel" :aria-labelledby="'tasks-' + index + '-settings-tab'">
 
                         <!-- DELETE TASK -->
-                        <button type="button" class="delete badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
+                        <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
 
@@ -688,7 +688,7 @@
                         :aria-labelledby="'opteam-' + index + '-settings-tab'">
 
                         <!-- DELETE TEAM -->
-                        <button type="button" class="delete badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
+                        <button type="button" class="delete btn badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -855,7 +855,7 @@
                         :aria-labelledby="'fleet-' + index + '-settings-tab'">
 
                         <!-- DELETE FLEET -->
-                        <button type="button" class="delete badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
+                        <button type="button" class="delete btn badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
