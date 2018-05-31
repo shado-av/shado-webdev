@@ -97,7 +97,7 @@ var sim = new Vue({
                             assistingIndividuals: "N",
                             assistingTeamCoord: "N"
                         },
-                        failTresh: 50
+                        failThresh: 50
                     },
                     {
                         name: "Operator Team",
@@ -470,7 +470,7 @@ var sim = new Vue({
                             assistingIndividuals: "N",
                             assistingTeamCoord: "N"
                         },
-                        failTresh: 50
+                        failThresh: 50
                     })
                 }
             } else {
@@ -487,8 +487,8 @@ var sim = new Vue({
 
         updateFleets() {
             var fleets = this.fleetSettings.fleets;
-            if (this.fleetSettings.numFleets > fleets.length) {
-                while (fleets.length < this.fleetSettings.numFleets) {
+            if (this.fleetSettings.fleetTypes > fleets.length) {
+                while (fleets.length < this.fleetSettings.fleetTypes) {
                     fleets.push({
                         name: "Fleet",
                         numVehicles: 1,
@@ -497,7 +497,7 @@ var sim = new Vue({
                     })
                 }
             } else {
-                fleets.splice(this.fleetSettings.numFleets);
+                fleets.splice(this.fleetSettings.fleetTypes);
             }
 
         },
@@ -506,7 +506,7 @@ var sim = new Vue({
             if (confirm("Are you sure you want to delete this fleet?")) {
                 this.fleetSettings.fleets.splice(this.fleetSettings.fleets.indexOf(fleet), 1);
             }
-            this.fleetSettings.numFleets = this.fleetSettings.fleets.length;
+            this.fleetSettings.fleetTypes = this.fleetSettings.fleets.length;
 
         }
     }

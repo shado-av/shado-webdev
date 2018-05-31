@@ -208,7 +208,7 @@
                 <h3 class="mb-4">Basic Settings</h3>
 
                 <!-- TYPE & HOURS -->
-                <form class="mb-5">
+                <form class="mb-5" @submit.prevent>
 
                     <!-- type of simulation (simType) -->
                     <div class="form-group form-inline justify-content-between">
@@ -334,7 +334,7 @@
                     <div class="tab-pane fade show active" id="tasks-global-settings" role="tabpanel" aria-labelledby="tasks-global-settings-tab">
 
                         <h3 class="mb-4">Tasks Settings</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- number of phases (numPhases) -->
                             <div class="form-group">
@@ -354,7 +354,7 @@
                         <div class="custom-control custom-checkbox mb-4 task" v-for="(task, index) in taskSettings.tasks">
                             <input class="custom-control-input" type="checkbox" :id="'task-type-' + index" v-model="task.include" :disabled="disableAddTask(task)">
                             <label class="custom-control-label h6" :for="'task-type-' + index">{{ task.name }}</label>
-                            <button type="button" class="delete badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
+                            <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <p class="pr-4">Details about the task and an overview of its default parameters will go here.</p>
@@ -370,13 +370,13 @@
                         role="tabpanel" :aria-labelledby="'tasks-' + index + '-settings-tab'">
 
                         <!-- DELETE TASK -->
-                        <button type="button" class="delete badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
+                        <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
 
                         <!-- NAME -->
                         <h3 class="mb-4">{{ task.name }}</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- task name (task.name) -->
                             <div class="form-group form-row">
@@ -408,7 +408,7 @@
                         <!-- DISTRIBUTIONS -->
                         <h5 class="mb-0">Distributions</h5>
                         <small class="form-text text-muted mb-4">Distribution types take different parameters.</small>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- arrival time distribution (task.arrivalDistribution) -->
                             <div class="form-group form-row">
@@ -637,8 +637,10 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <form v-for="n in taskSettings.numPhases">
+
+                        <form @submit.prevent v-for="n in taskSettings.numPhases">
                             <label>Phase {{n}}</label>
+
                             <div class="form-group form-row">
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[n-1][0]">
@@ -697,7 +699,7 @@
                     <!-- OPERATOR GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="operators-global-settings" role="tabpanel" aria-labelledby="operators-global-settings-tab">
                         <h3 class="mb-4">Operators Settings</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
@@ -713,14 +715,14 @@
                         :aria-labelledby="'opteam-' + index + '-settings-tab'">
 
                         <!-- DELETE TEAM -->
-                        <button type="button" class="delete badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
+                        <button type="button" class="delete btn badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h3 class="mb-4">{{ team.name }}</h3>
 
                         <!-- TEAM SETTINGS-->
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- operator team name (team.name) -->
                             <div class="form-group form-row">
@@ -863,12 +865,12 @@
                     <!-- FLEET GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="fleets-global-settings" role="tabpanel" aria-labelledby="fleets-global-settings-tab">
                         <h3 class="mb-4">Fleets Settings</h3>
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- number of fleets (fleetTypes) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many different fleets do the operators manage?</label>
-                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
+                                <input type="number" class="form-control" min="1" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
                                     @change="updateFleets">
                             </div>
                         </form>
@@ -879,14 +881,14 @@
                         :aria-labelledby="'fleet-' + index + '-settings-tab'">
 
                         <!-- DELETE FLEET -->
-                        <button type="button" class="delete badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
+                        <button type="button" class="delete btn badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h3 class="mb-4">{{ fleet.name }}</h3>
 
                         <!-- FLEET SETTINGS -->
-                        <form class="mb-5">
+                        <form class="mb-5" @submit.prevent>
 
                             <!-- fleet name (fleet.name) -->
                             <div class="form-group form-row">
