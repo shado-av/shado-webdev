@@ -637,14 +637,7 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
                         <!-- human error probability numbers (task.humanErrorProb) -->
-<<<<<<< HEAD
-                        <form>
-=======
-
-                        <form @submit.prevent v-for="n in taskSettings.numPhases">
-                            <label>Phase {{n}}</label>
-
->>>>>>> hanwiz/master
+                        <form @submit.prevent>
                             <div class="form-group form-row">
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0]">
