@@ -40,7 +40,7 @@ var sim = new Vue({
                         expireParamExo: [[0, 0.184],[0, 0.184]],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     },
                     {
                         name: "Actuation",
@@ -57,8 +57,8 @@ var sim = new Vue({
                         expireParamExo: [[0, 0.184],[0, 0.184]],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
-                    },
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
+                     },
                     {
                         name: "Directive Mandatory",
                         include: true,
@@ -74,7 +74,7 @@ var sim = new Vue({
                         expireParamExo: [[0, 0.184],[0, 0.184]],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [[0.0004, 0.00008, 0.007], [0.0004, 0.00008, 0.007]]
                     }
                 ]
         },
@@ -91,7 +91,7 @@ var sim = new Vue({
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
-                        tasks: [],
+                        tasks: [0, 1],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -104,7 +104,7 @@ var sim = new Vue({
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
-                        tasks: [],
+                        tasks: [1, 2],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -125,7 +125,7 @@ var sim = new Vue({
                 name: "Fleet",
                 numVehicles: 1,
                 comms: "N",
-                tasks: []
+                tasks: [0, 1, 2]
             }]
         }
     },
