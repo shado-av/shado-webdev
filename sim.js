@@ -15,7 +15,8 @@ var sim = new Vue({
             numHours: 8, // number of hours in shift (1 - 12)
             diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
-            exoFactorsType: [0, 0]
+            exoFactors: "n",
+            exoFactorsType: 1
         },
 
         /* ------------------------------
@@ -31,13 +32,13 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [4, 7],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1]],
-                        serviceDistribution: ["U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2]],
-                        expireDistribution: ["E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184]],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
@@ -48,13 +49,13 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [5, 5],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1]],
-                        serviceDistribution: ["U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2]],
-                        expireDistribution: ["E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184]],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
@@ -65,13 +66,13 @@ var sim = new Vue({
                         isCustom: false,
                         priority: [5, 5],
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1]],
-                        serviceDistribution: ["U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2]],
-                        expireDistribution: ["E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184]],
+                        arrivalDistribution: "E",
+                        arrivalParam: [0.033333, 0.1],
+                        serviceDistribution: "U",
+                        serviceParam: [0.5, 2],
+                        expireDistribution: "E",
+                        expireParamDefault: [0, 0.184],
+                        expireParamExo: [0, 0.184],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
@@ -153,13 +154,10 @@ var sim = new Vue({
 
         // array of existence of exo factors and type of exo factor
         hasExogenous() {
-            var exoFT = this.globalSettings.exoFactorsType;
-            for (var j = 0; j < 2; j++) {
-                if (typeof exoFT[j] !== "number") {
-                    exoFT[j] = exoFT[j] ? 1 : 0;
-                }
+            if (this.globalSettings.exoFactors === "y") {
+                return [1, parseInt(this.globalSettings.exoFactorsType, 10)];
             }
-            return exoFT;
+            return [0, 0];
         },
 
         /* ------------------------------
@@ -432,13 +430,13 @@ var sim = new Vue({
                 isCustom: true,
                 priority: [],
                 affTeamCoord: "n",
-                arrivalDistribution: ["E", "E"],
-                arrivalParam: [[],[]],
-                serviceDistribution: ["E", "E"],
-                serviceParam: [[],[]],
-                expireDistribution: ["E", "E"],
-                expireParamDefault: [[],[]],
-                expireParamExo: [[],[]],
+                arrivalDistribution: "E",
+                arrivalParam: [],
+                serviceDistribution: "E",
+                serviceParam: [],
+                expireDistribution: "E",
+                expireParamDefault: [],
+                expireParamExo: [],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
                 humanErrorProb: []
