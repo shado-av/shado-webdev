@@ -637,25 +637,22 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
                         <!-- human error probability numbers (task.humanErrorProb) -->
-
-                        <form @submit.prevent v-for="n in taskSettings.numPhases">
-                            <label>Phase {{n}}</label>
-
+                        <form @submit.prevent>
                             <div class="form-group form-row">
                                 <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[n-1][0]">
+                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0]">
                                     <small class="form-text text-muted">
                                         Mode
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[n-1][1]">
+                                    <input type="number" min="0" max="1" step="0.1" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[1]">
                                     <small class="form-text text-muted">
                                         Lower Bound
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="0.1" class="form-control" v-model.number="task.humanErrorProb[n-1][2]" placeholder="Enter #">
+                                    <input type="number" min="0" max="1" step="0.1" class="form-control" v-model.number="task.humanErrorProb[2]" placeholder="Enter #">
                                     <small class="form-text text-muted">
                                         Upper Bound
                                     </small>
