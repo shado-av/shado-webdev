@@ -1,109 +1,89 @@
 <!doctype html>
 <html>
+
 <head>
-  <script src="https://cdn.anychart.com/releases/8.2.1/js/anychart-base.min.js"></script>
-  <script src="Utilization.json"></script>
-  <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.2.1/css/anychart-ui.min.css" />
-  <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.2.1/fonts/css/anychart-font.min.css" />
-  <style>
-    html, body, #container {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
+    <script src="https://cdn.anychart.com/releases/8.2.1/js/anychart-base.min.js"></script>
+    <script src="Utilization.json"></script>
+    <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.2.1/css/anychart-ui.min.css" />
+    <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.2.1/fonts/css/anychart-font.min.css" />
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
+
 <body>
     <div id="container"></div>
     <script type="text/javascript">
-anychart.onDocumentReady(function() {
+        anychart.onDocumentReady(function() {
 
-    var firstReplication = utilData.utilization[0][0];
-  firstReplication.unshift([]);
-  for(var i=10;i<=480;i+=10) {
-      firstReplication[0][i/10 - 1] = i;
-  }
+            var firstReplication = utilData.utilization[0][0];
 
-  // create data set on our data
-  var dataSet = anychart.data.set( firstReplication );
+            // create data set on our data
+            var dataSet = anychart.data.set(firstReplication);
 
-  // map data for the first series, take x from the zero column and value from the first column of data set
-  var seriesData_1 = dataSet.mapAs({
-    'x': 0,
-    'value': 1
-  });
+            // create bar chart
+            var chart = anychart.column();
 
-  // map data for the second series, take x from the zero column and value from the second column of data set
-  var seriesData_2 = dataSet.mapAs({
-    'x': 0,
-    'value': 2
-  });
+            chart.addSeries(firstReplication[0], firstReplication[1], firstReplication[2]);
 
-  // map data for the second series, take x from the zero column and value from the third column of data set
-  var seriesData_3 = dataSet.mapAs({
-    'x': 0,
-    'value': 3
-  });
+            // turn on chart animation
+            chart.animation(false);
 
-  // create bar chart
-  var chart = anychart.column();
+            // force chart to stack values by Y scale.
+            chart.yScale().stackMode('value');
 
-  // turn on chart animation
-  chart.animation(false);
+            // set chart title text settings
+            chart.title('Operator Workload');
+            chart.title().padding([0, 0, 5, 0]);
 
-  // force chart to stack values by Y scale.
-  chart.yScale().stackMode('value');
+            // helper function to setup label settings for all series
+            var setupSeriesLabels = function(series, name) {
+                series.name(name)
+                    .stroke('3 #fff 1');
+                series.hovered().stroke('3 #fff 1');
+            };
 
-  // set chart title text settings
-  chart.title('Operator Workload');
-  chart.title().padding([0, 0, 5, 0]);
+            // temp variable to store series instance
+            // turn on legend
+            chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+            // set yAxis labels formatter
+            chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
 
-  // helper function to setup label settings for all series
-  var setupSeriesLabels = function(series, name) {
-    series.name(name)
-      .stroke('3 #fff 1');
-    series.hovered().stroke('3 #fff 1');
-  };
+            // set titles for axes
+            chart.xAxis().labels().format(function (){
+                var value = this.value;
+                // scale USD to EUR and rouns the result
+                value = value * 10;
+                return value;
+            });
 
-  // temp variable to store series instance
-  var series;
+            chart.xAxis().labels().position('left');
+            //chart.xScale.minimum(0);
+            //chart.xScale.maximum(480);
+            chart.xAxis().title('Time(min)');
+            chart.yAxis().title('Utilization(%)');
 
-  // create first series with mapped data
-  series = chart.column(seriesData_1);
-  setupSeriesLabels(series, '1');
+            // set interactivity hover
+            chart.interactivity().hoverMode('by-x');
 
-  // create second series with mapped data
-  series = chart.column(seriesData_2);
-  setupSeriesLabels(series, '2');
+            chart.tooltip()
+                //.valuePrefix('')
+                .displayMode('union');
 
-  // create third series with mapped data
-  series = chart.column(seriesData_3);
-  setupSeriesLabels(series, '3');
+            // set container id for the chart
+            chart.container('container');
 
-  // turn on legend
-  chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
-  // set yAxis labels formatter
-  chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
-
-  // set titles for axes
-  chart.xAxis().title('Time(min)');
-  chart.yAxis().title('Utilization(%)');
-
-  // set interactivity hover
-  chart.interactivity().hoverMode('by-x');
-
-  chart.tooltip()
-    .valuePrefix('$')
-    .displayMode('union');
-
-  // set container id for the chart
-  chart.container('container');
-
-  // initiate chart drawing
-  chart.draw();
-});
+            // initiate chart drawing
+            chart.draw();
+        });
     </script>
 </body>
-</html>
 
+</html>
