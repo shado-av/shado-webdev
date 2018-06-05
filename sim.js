@@ -366,7 +366,16 @@ var sim = new Vue({
             }
             return comms;
         },
-
+        // array containing operator team fail threshold
+        teamFailThreshold() {
+            var ft = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].failThresh) {
+                    ft.push(this.operatorSettings.teams[i].failThresh);
+                }
+            }
+            return ft;
+        },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
          * ------------------------------ */
@@ -529,7 +538,7 @@ $(document).ready(function () {
             "exNames": ["Medical", "Weather"],
             "exTypes": ["add_task", "long_serv"],
 
-            "failThreshold": 0.5,
+            "failThreshold": sim.teamFailThreshold,
             "opStrats": "STF",
             "opNames": sim.opNames,
             "opTasks": sim.opTasks,
