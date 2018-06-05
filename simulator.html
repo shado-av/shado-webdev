@@ -467,7 +467,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <hr/>
                             <!-- service time distribution (task.serviceDistribution) -->
                             <div class="form-group form-row" v-for="n in taskSettings.numPhases"  class="row no-gutters">
                                 <div class="col-3">
@@ -525,7 +525,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <hr/>
                             <!-- expiration time distribution (task.expireDistribution) -->
                             <div class="form-group form-row" v-for="n in taskSettings.numPhases">
                                 <div class="col-3">
@@ -589,34 +589,13 @@
                         <h5 class="mb-3">Traffic</h5>
                         <form class="mb-5">
 
-                            <!-- task affected by traffic (task.affectedByTraffic) -->
-                            <div class="form-group form-inline justify-content-between">
-                                <label class="col-form-label">Is this task affected by traffic?</label>
-                                <div class="text-right">
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-y'"
-                                            value="y" v-model="task.affectedByTraffic">
-                                        <label class="custom-control-label" :for="'task-' + index + 'traff-affects-y'">Yes</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'traff-affects'" :id="'task-' + index + 'traff-affects-n'"
-                                            value="n" v-model="task.affectedByTraffic">
-                                        <label class="custom-control-label" :for="'task-' + index + 'traff-affects-n'">No</label>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- traffic different over different phases (task.affectByIROPS) -->
                             <div class="form-group" v-show="isAffectedByTrafficPhases(task)">
                                 <label class="mb-3">Adjust task traffic behavior per phase:</label>
                                 <div>
-                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" :id="'task-' + index + 'traffic-phase-1'" class="custom-control-input" v-model="task.affectByIROPS[0]">
-                                        <label class="custom-control-label" :for="'task-' + index + 'traffic-phase-1'">Affected During Phase 1</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" :id="'task-' + index + 'traffic-phase-2'" class="custom-control-input" v-model="task.affectByIROPS[1]">
-                                        <label class="custom-control-label" :for="'task-' + index + 'traffic-phase-2'">Affected During Phase 2</label>
+                                    <div class="custom-control custom-checkbox custom-control-inline" v-for="n in taskSettings.numPhases">
+                                        <input type="checkbox" :id="'task-' + index + 'traffic-phase-' + n" class="custom-control-input" v-model="task.affectByIROPS[n-1]">
+                                        <label class="custom-control-label" :for="'task-' + index + 'traffic-phase-' + n">Affected During Phase {{n}}</label>
                                     </div>
                                 </div>
                             </div>

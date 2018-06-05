@@ -39,7 +39,7 @@ var sim = new Vue({
                         expireParamDefault: [[0, 0.184],[0, 0.184],[0, 0.184]],
                         expireParamExo: [[0, 0.184],[0, 0.184],[0, 0.184]],
                         affectedByTraffic: "y",
-                        affectByIROPS: [0, 1],
+                        affectByIROPS: [0, 1, 0],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
                     },
                     {
@@ -56,7 +56,7 @@ var sim = new Vue({
                         expireParamDefault: [[0, 0.184],[0, 0.184],[0, 0.184]],
                         expireParamExo: [[0, 0.184],[0, 0.184],[0, 0.184]],
                         affectedByTraffic: "y",
-                        affectByIROPS: [0, 1],
+                        affectByIROPS: [0, 1, 0],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
                     },
                     {
@@ -73,7 +73,7 @@ var sim = new Vue({
                         expireParamDefault: [[0, 0.184],[0, 0.184],[0, 0.184]],
                         expireParamExo: [[0, 0.184],[0, 0.184],[0, 0.184]],
                         affectedByTraffic: "y",
-                        affectByIROPS: [0, 1],
+                        affectByIROPS: [0, 1, 0],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
                     }
                 ]
