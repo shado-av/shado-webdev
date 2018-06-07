@@ -92,6 +92,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
+                        priority: [0, 1, 2],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -105,6 +106,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
+                        priority: [0, 1, 2],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -348,7 +350,18 @@ var sim = new Vue({
             var tasks = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].tasks) {
-                    tasks.push(this.operatorSettings.teams[i].tasks);
+                    var curTasks = this.operatorSettings.teams[i].tasks;
+                    var tasksOrdered = [];
+
+                    // needs better sorting algorithm, but this suffices.
+                    for(var j = 0; j < curTasks.length; j++) {
+                        tasksOrdered[this.operatorSettings.teams[i].priority.indexOf(curTasks[j])] = curTasks[j];
+                    }
+                    for(var j = 0; j < tasksOrdered.length; j++) {
+                        if (tasksOrdered[j] == null) tasksOrdered.splice(j--, 1);
+                    }
+
+                    tasks.push(tasksOrdered);
                 } else {
                     tasks.push([]);
                 }
@@ -475,11 +488,35 @@ var sim = new Vue({
                 affectByIROPS: [],
                 humanErrorProb: []
             });
+
+            // add priority for each operatorSettings.teams
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                this.operatorSettings.teams[i].priority.push(this.taskSettings.tasks.length - 1);
+            }
         },
 
         removeCustomTask(task) {
             if (confirm("Are you sure you want to delete this custom task?")) {
-                this.taskSettings.tasks.splice(this.taskSettings.tasks.indexOf(task), 1);
+
+                // remove from taskSettings.tasks
+                var taskIndex = this.taskSettings.tasks.indexOf(task);
+                this.taskSettings.tasks.splice(taskIndex, 1);
+
+                // remove priority for each operatorSettings.teams
+                for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                    var priIndex = -1;
+                    console.log(this.operatorSettings.teams[i].priority, taskIndex);
+                    for (var j = 0; j< this.operatorSettings.teams[i].priority.length; j++) {
+                        if (this.operatorSettings.teams[i].priority[j] === taskIndex)
+                            priIndex = j;
+                        else if (this.operatorSettings.teams[i].priority[j] > taskIndex)
+                            this.operatorSettings.teams[i].priority[j]--;
+                    }
+
+                    if (priIndex !== -1)
+                        this.operatorSettings.teams[i].priority.splice(priIndex, 1);
+                    console.log(this.operatorSettings.teams[i].priority);
+                }
             }
         },
 
