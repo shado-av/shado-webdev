@@ -376,6 +376,16 @@ var sim = new Vue({
             }
             return ft;
         },
+        // array containing operator team strategy
+        teamStrategy() {
+            var st = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].strategy) {
+                    st.push(this.operatorSettings.teams[i].strategy);
+                }
+            }
+            return st;
+        },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
          * ------------------------------ */
@@ -391,6 +401,19 @@ var sim = new Vue({
                 }
             }
             return vehicles;
+        },
+
+        // array containing fleet autonomy levels
+        fleetAutoLevel() {
+            var al = [];
+            for (i = 0; i < this.fleetSettings.fleets.length; i++) {
+                if (this.fleetSettings.fleets[i].comms) {
+                    al.push(this.fleetSettings.fleets[i].comms);
+                } else {
+                    al.push([]);
+                }
+            }
+            return al;
         },
 
         // array containing fleet tasks arrays
@@ -531,7 +554,7 @@ $(document).ready(function () {
             "numRemoteOp": sim.numRemoteOp,
             "numTeams": sim.operatorSettings.numTeams,
             "numvehicles": sim.numVehicles,
-            "autolvl": 1,
+            "autolvl": sim.fleetAutoLevel,
             "numPhases": sim.taskSettings.numPhases,
 
             "hasExogenous": sim.hasExogenous,
@@ -539,7 +562,7 @@ $(document).ready(function () {
             "exTypes": ["add_task", "long_serv"],
 
             "failThreshold": sim.teamFailThreshold,
-            "opStrats": "STF",
+            "opStrats": sim.teamStrategy,
             "opNames": sim.opNames,
             "opTasks": sim.opTasks,
             "teamComm": sim.teamComm,
