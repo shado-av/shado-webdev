@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 Page Template</title>
+
+    <!-- D3 Libraries -->
+    <script src="https://d3js.org/d3.v5.js"></script>
+
+    <!-- Bootstrap Libraries -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+
+    <style>
+        #chart-container {
+            display: inline-block;
+            position: relative;
+            width: 95%;
+            padding-bottom: 50%;
+            overflow: hidden;
+            background-color: cornsilk;
+        }
+
+        #chart {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: lavenderblush;
+        }
+
+        .groups {
+            fill: blue;
+        }
+
+
+
+        /*.axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+
+        .dot {
+            stroke: #000;
+        }
+
+
+        .legend {
+            padding: 5px;
+            font: 10px sans-serif;
+            background: yellow;
+            box-shadow: 2px 2px 1px #888;
+        }*/
+    </style>
+</head>
+
+<body>
+
+    <div id="chart-container">
+        <svg id="chart"></svg>
+    </div>
+
+
+
+    <script type="text/javascript">
+        var width = 960;
+        var height = 500;
+        var svg = d3.select("#chart")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + height);
+
+        var data;
+
+        d3.json("utilization-test.json").then(function(json) {
+            data = json;
+            
+            var tasks = data.taskName;
+            var util = data.utilization[0][0];
+
+            var stack = d3.stack()
+                .keys(d3.map(util[0]).keys());
+
+            var stacked = stack(util);
+
+            var xScale = d3.scaleBand()
+                .domain(d3.map(util[0]).keys())
+                .rangeRound([0, width])
+                .padding(0.2)
+                .align(0);
+            
+            var yScale = d3.scaleLinear()
+                .domain([0, 1.5])
+                .rangeRound([height, 0]);
+
+            var xAxis = d3.axisBottom(xScale)
+                .ticks(util.length);
+
+            var yAxis = d3.axisLeft(yScale)
+                .ticks(10);
+
+            /*var groups = svg.selectAll("g")
+            .data(stacked)
+            .enter()
+            .append("g")
+            .attr("class", "groups");
+
+            var rects = groups.selectAll("rect")
+            .data(function(d) { return d; })
+            .enter()
+            .append("rect")
+            .attr("x")*/
+
+            var intervals = svg.selectAll("g")
+            .data(stacked)
+            .enter()
+            .append("g")
+            .attr("transform", function(d, index) 
+            { 
+                return "translate(" + xScale(index) + ", 0)";
+            })
+            .selectAll("rect")
+            .data(function(d) { return d; })
+            .enter()
+            .append("rect")
+            .attr("y", function(d) {
+                console.log(d[1] + " " + yScale(d[1]));
+                return yScale(d[1]);
+            })
+            .attr("width", 10)
+            .attr("height", function(d) {
+                return yScale(d[0]) - yScale(d[1]);
+            })
+            .attr("fill", "black");
+/*
+            g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.State); })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("width", x.bandwidth());
+*/
+
+
+        });
+        
+    </script>
+</body>
+
+</html>
