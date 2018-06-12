@@ -20,6 +20,10 @@
 
     <!-- Vue.js libraries -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <!-- CDNJS :: Sortable (https://cdnjs.com/) -->
+    <script src="//cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
+    <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
 
     <!-- Ajax Libraries-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -733,10 +737,13 @@
                         <form class="mb-5">
                             <div class="form-group">
                                 <label class="mb-3">What tasks are these operators responsible for?</label>
-                                <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
-                                    <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
-                                    <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ task.name }}</label>
-                                </div>
+                                <draggable v-model="team.priority" :options="{draggable:'.item'}">
+                                    <div class="custom-control custom-checkbox item mb-2" v-for="i in team.priority" v-show="taskSettings.tasks[i].include">
+                                        <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
+                                        <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
+                                        <i class="fas fa-arrows-alt float-right"></i>
+                                    </div>
+                                </draggable>
                             </div>
                         </form>
 
@@ -977,6 +984,9 @@
                                 </li>
                                 <li>Operator Tasks:
                                     <b>{{team.tasks}}</b>
+                                </li>
+                                <li>Operator Priority:
+                                    <b>{{team.priority}}</b>
                                 </li>
                                 <li>Fail Threshold:
                                     <b>{{team.failThresh}}%</b>
