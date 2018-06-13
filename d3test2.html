@@ -1,6 +1,47 @@
 <!DOCTYPE html>
-<svg width="960" height="450"></svg>
+<html>
+<head>
+<style>
+div.tooltip {
+  position: absolute;
+  text-align: left;
+  padding: 10px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+div.modal-dialog.modal-lg {
+    max-width: 1000px;
+}
+</style>
+<!-- Bootstrap 4.0.0 libraries -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+<!-- Modal -->
+<div class="modal fade" id="stackedBC" role="dialog">
+<div class="modal-dialog modal-lg">
+
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+        <h4>Stacked Bar Charts</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+        <svg width="960" height="450"></svg>
+    </div>
+  </div>
+
+</div>
+</div>
 <script>
     var svg = d3.select("svg"),
         margin = {
@@ -13,10 +54,10 @@
         height = +svg.attr("height") - margin.top - margin.bottom,
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var x = d3.scaleBand()
-        .rangeRound([0, width])
-        .paddingInner(0.05)
-        .align(0.1);
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     var x = d3.scaleLinear().rangeRound([0, width]);
 
     var y = d3.scaleLinear()
@@ -28,7 +69,8 @@
         var data = [];
         for (var i = 0, j = 0; i <= 480; i += 10, j++) {
             data.push({
-                x: i
+                x: i,
+                total: 0
             });
         }
 
@@ -36,6 +78,7 @@
         for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 48; j++) {
                 data[j][keys[i]] = json.utilization[0][0][i][j];
+                data[j]["total"] += json.utilization[0][0][i][j];
             }
             data[j][keys[i]] = 0; // prevent error for the last column 480
         }
@@ -143,6 +186,29 @@
             .style("text-decoration", "underline")
             .text(json.operatorName[0] + " Workload");
 
+        // mouseover tips
+		svg.selectAll("rect")
+			.on("mouseover", function(d, i){
+                if (i>=49*3) return;    // skip for legends...
+                //console.log(d, i, i/49, data[i%49]);
+
+				d3.select(this).attr("stroke","blue").attr("stroke-width",0.8);
+				div.transition()
+	                .duration(200)
+	                .style("opacity", .9);
+
+	            div.html("Task: " + keys[parseInt(i/49)] + "<br> Mean Utilization: "+((d[1]-d[0]) * 100).toFixed(2) + "%<br> Total Utilization: " + (data[i%49]["total"] * 100).toFixed(2) + "%")
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                    //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
+                    //.style("top", (window.pageYOffset + matrix.f - 30) + "px");;
+			})
+			.on("mouseout", function(d) {
+				d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
+	            div.transition()
+	                .duration(500)
+	                .style("opacity", 0);
+			});
     });
 </script>
 
@@ -167,8 +233,8 @@
             groupCounts[key] = json.averageUtilization[i];
             globalCounts = globalCounts.concat(json.averageUtilization[i]);
         }
-        console.log("GroupCounts ", groupCounts);
-        console.log("GlobalCounts ", globalCounts);
+        //console.log("GroupCounts ", groupCounts);
+        //console.log("GlobalCounts ", globalCounts);
 
 
         // Sort group counts so quantile methods work
@@ -208,8 +274,8 @@
         var min = d3.min(globalCounts);
         var max = d3.max(globalCounts);
         var yScale = d3.scaleLinear()
-            .domain([min, max])
-            .range([0, height]);
+            .domain([min - 0.0001, max])
+            .range([height, 0]);
 
         // Setup the svg and group we will draw the box plot in
         var svg = d3.select("body").append("svg")
@@ -220,7 +286,7 @@
 
         // Move the left axis over 25 pixels, and the top axis over 35 pixels
         var axisG = svg.append("g").attr("transform", "translate(25,0)");
-        var axisTopG = svg.append("g").attr("transform", "translate(35,0)");
+        var axisBG = svg.append("g").attr("transform", "translate(35," + (height ) + ")");
 
         // Setup the group the box plot elements will render in
         var g = svg.append("g")
@@ -257,20 +323,50 @@
             .attr("width", barWidth)
             .attr("height", function(datum) {
                 var quartiles = datum.quartile;
-                var height = yScale(quartiles[2]) - yScale(quartiles[0]);
+                var height = yScale(quartiles[0]) - yScale(quartiles[2]);
                 return height;
             })
             .attr("x", function(datum) {
                 return xScale(datum.key);
             })
             .attr("y", function(datum) {
-                return yScale(datum.quartile[0]);
+                return yScale(datum.quartile[2]);
             })
             .attr("fill", function(datum) {
                 return datum.color;
             })
             .attr("stroke", "#000")
             .attr("stroke-width", 1);
+
+        g.selectAll("rect")
+			.on("mouseover", function(d, i){
+                //console.log(d, i);
+				d3.select(this).attr("stroke","blue").attr("stroke-width",0.8);
+				div.transition()
+	                .duration(200)
+	                .style("opacity", .9);
+
+	            div.html("Group: " + d.key +
+                        "<br/>Max: " + d.whiskers[1].toFixed(4) +
+                        "<br/>Q3: " + d.quartile[2].toFixed(4) +
+                        "<br/>Median: " + d.quartile[1].toFixed(4) +
+                        "<br/>Q1: " + d.quartile[0].toFixed(4) +
+                        "<br/>Min: " + d.whiskers[0].toFixed(4) )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                    //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
+                    //.style("top", (window.pageYOffset + matrix.f - 30) + "px");;
+			})
+			.on("mouseout", function(d) {
+				d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
+	            div.transition()
+	                .duration(500)
+	                .style("opacity", 0);
+			})
+            .on("click", function(d) {
+                //console.log("open Modal");
+                $('#stackedBC').modal();
+            });
 
         // Now render all the horizontal lines at once - the whiskers and the median
         var horizontalLineConfigs = [
@@ -343,10 +439,29 @@
         axisG.append("g")
             .call(axisLeft);
 
-        // Setup a series axis on the top
-        var axisTop = d3.axisTop(xScale);
-        axisTopG.append("g")
-            .call(axisTop);
+        // Setup a series axis on the bottom
+        var axisBottom = d3.axisBottom(xScale);
+        axisBG.append("g")
+            .call(axisBottom);
+
+        // text label for the x axis
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width / 2) + " ," +
+                (height + margin.bottom - 10) + ")")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Operator Name");
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -50) // - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Average Utilization (%)");
 
         function boxQuartiles(d) {
             return [
@@ -362,3 +477,5 @@
         }
     });
 </script>
+</body>
+</html>
