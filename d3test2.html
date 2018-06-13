@@ -3,18 +3,69 @@
 <head>
 <style>
 div.tooltip {
-  position: absolute;
-  text-align: left;
-  padding: 10px;
-  font: 12px sans-serif;
-  background: lightsteelblue;
-  border: 0px;
-  border-radius: 8px;
-  pointer-events: none;
+    position: absolute;
+    text-align: left;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+h3.subtitle {
+    padding: 20px 80px 0px;
 }
 
 div.modal-dialog.modal-lg {
     max-width: 1000px;
+}
+
+#replication {
+    margin-left: 20px;
+    width: 100%;
+}
+
+#replication label {
+    vertical-align: middle;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+    #replication span {
+        width: 50px;
+        display: inline-block;
+    }
+
+.slider {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    vertical-align: middle;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
 }
 </style>
 <!-- Bootstrap 4.0.0 libraries -->
@@ -25,6 +76,7 @@ div.modal-dialog.modal-lg {
 <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
+<h3 class='subtitle'>Average Utilization per Operator</h3>
 <!-- Modal -->
 <div class="modal fade" id="stackedBC" role="dialog">
 <div class="modal-dialog modal-lg">
@@ -32,7 +84,13 @@ div.modal-dialog.modal-lg {
   <!-- Modal content-->
   <div class="modal-content">
     <div class="modal-header">
-        <h4>Stacked Bar Charts</h4>
+        <div class="col-sm">
+            <h3 id="stackedBCTitle">Operator Workload per Replication</h3>
+        </div>
+        <div class="col-sm" id="replication">
+            <label>Replication: <span id="replicationTB"/> </label>
+            <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider" class="slider"/>
+        </div>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
     </div>
     <div class="modal-body">
@@ -43,6 +101,8 @@ div.modal-dialog.modal-lg {
 </div>
 </div>
 <script>
+    var jsonData = {};
+    var currentOperator = 0;
     var svg = d3.select("svg"),
         margin = {
             top: 40,
@@ -64,56 +124,45 @@ div.modal-dialog.modal-lg {
         .rangeRound([height, 0]);
 
     var z = d3.scaleOrdinal(d3.schemeCategory10);
+    var keys = [];
+    var stacked;
 
-    d3.json("data.json").then(function(json) {
-        var data = [];
-        for (var i = 0, j = 0; i <= 480; i += 10, j++) {
-            data.push({
-                x: i,
-                total: 0
-            });
-        }
+    // text label for the x axis
+    svg.append("text")
+        .attr("transform",
+            "translate(" + (width / 2) + " ," +
+            (height + margin.bottom + margin.top) + ")")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text("Time (min)");
 
-        var keys = json.taskName;
-        for (var i = 0; i < 3; i++) {
-            for (var j = 0; j < 48; j++) {
-                data[j][keys[i]] = json.utilization[0][0][i][j];
-                data[j]["total"] += json.utilization[0][0][i][j];
-            }
-            data[j][keys[i]] = 0; // prevent error for the last column 480
-        }
+    // text label for the y axis
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0) // - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text("Utilization (%)");
 
-        //console.log(data);
-        //data.sort(function(a, b) { return b.total - a.total; });
+    function initStackedBarChart(json) {
+        jsonData = json;
+        keys = json.taskName;
+
+        // reset slider to 1
+        var slider = d3.select("#replicationSlider")
+            .attr("value", 1)
+            .attr("max", json.utilization[0].length);
+        var output = d3.select("#replicationTB")
+            .text(1);
+
+        // define domains
         x.domain([0, 480]); // data.map(function(d) { return d.x; }));
         y.domain([0, 1]); //.nice()
         z.domain(keys);
 
-        var stacked = d3.stack().keys(keys)(data);
-        //console.log(stacked);
-        g.append("g")
-            .selectAll("g")
-            .data(d3.stack().keys(keys)(data))
-            .enter().append("g")
-            .attr("fill", function(d) {
-                return z(d.key);
-            })
-            .selectAll("rect")
-            .data(function(d) {
-                return d;
-            })
-            .enter().append("rect")
-            .attr("x", function(d) {
-                return x(d.data.x) + 3;
-            })
-            .attr("y", function(d) {
-                return y(d[1]);
-            })
-            .attr("height", function(d) {
-                return y(d[0]) - y(d[1]);
-            })
-            .attr("width", 14); // x.bandwidth());
-
+        // set ticks
         g.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
@@ -132,6 +181,7 @@ div.modal-dialog.modal-lg {
             .attr("font-weight", "bold")
             .attr("text-anchor", "start");
 
+        // set legends
         var legend = g.append("g")
             .attr("font-family", "sans-serif")
             .attr("font-size", 10)
@@ -157,41 +207,86 @@ div.modal-dialog.modal-lg {
                 return d;
             });
 
-        // text label for the x axis
-        svg.append("text")
-            .attr("transform",
-                "translate(" + (width / 2) + " ," +
-                (height + margin.bottom + margin.top) + ")")
-            .style("text-anchor", "middle")
-            .attr("font-weight", "bold")
-            .text("Time (min)");
+        stacked = d3.stack().keys(keys); //(data);
+    }
 
-        // text label for the y axis
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0) // - margin.left)
-            .attr("x", 0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .attr("font-weight", "bold")
-            .text("Utilization (%)");
+    function drawStackedBarChart(json, operator = 0, replication = 0) {
+        // convert json data into d3 stack preferred form
+        var data = [];
+        for (var i = 0, j = 0; i <= 480; i += 10, j++) {
+            data.push({
+                x: i,
+                total: 0
+            });
+        }
 
-        // text title
-        svg.append("text")
-            .attr("x", (width / 2))
-            .attr("y", 30) // - (margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "24px")
-            .attr("font-weight", "bold")
-            .style("text-decoration", "underline")
-            .text(json.operatorName[0] + " Workload");
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 48; j++) {
+                data[j][keys[i]] = json.utilization[operator][replication][i][j];
+                data[j]["total"] += json.utilization[operator][replication][i][j];
+            }
+            data[j][keys[i]] = 0; // prevent error for the last column 480
+        }
 
+        //console.log(data);
+        // var stacked = d3.stack().keys(keys)(data);
+        //console.log(stacked);
+
+        // draw stacked bar charts
+        // each data column (a.k.a "key" or "series") needs to be iterated over
+        // the variable alphabet represents the unique keys of the stacks
+        keys.forEach(function(key, key_index){
+
+            var keyClassName = key.replace(' ', '-');
+            console.log(key, key_index);
+            var bar = g.selectAll(".bar-" + keyClassName)
+                .data(stacked(data)[key_index], function(d){ return d.data.x + "-" + keyClassName; });
+
+            bar
+              .transition()
+                .attr("x", function(d){ return x(d.data.x); })
+                .attr("y", function(d){ return y(d[1]); })
+                .attr("height", function(d){ return y(d[0]) - y(d[1]); });
+
+            bar.enter().append("rect")
+                .attr("class", function(d){ return "bar bar-" + keyClassName; })
+                .attr("x", function(d){ return x(d.data.x); })
+                .attr("y", function(d){ return y(d[1]); })
+                .attr("height", function(d){ return y(d[0]) - y(d[1]); })
+                .attr("width", 14) // x.bandwidth())
+                .attr("fill", function(d){ return z(key); })
+
+        });
+
+//        g.append("g")
+//            .selectAll("g")
+//            .data(d3.stack().keys(keys)(data))
+//            .enter().append("g")
+//            .attr("fill", function(d) {
+//                return z(d.key);
+//            })
+//            .selectAll("rect")
+//            .data(function(d) {
+//                return d;
+//            })
+//            .enter().append("rect")
+//            .attr("class", "barStacked")
+//            .attr("x", function(d) {
+//                return x(d.data.x) + 3;
+//            })
+//            .attr("y", function(d) {
+//                return y(d[1]);
+//            })
+//            .attr("height", function(d) {
+//                return y(d[0]) - y(d[1]);
+//            })
+//            .attr("width", 14); // x.bandwidth());
+
+        d3.select("#stackedBCTitle").text(json.operatorName[operator] + " Workload");
         // mouseover tips
-		svg.selectAll("rect")
+		svg.selectAll(".bar")
 			.on("mouseover", function(d, i){
-                if (i>=49*3) return;    // skip for legends...
                 //console.log(d, i, i/49, data[i%49]);
-
 				d3.select(this).attr("stroke","blue").attr("stroke-width",0.8);
 				div.transition()
 	                .duration(200)
@@ -209,7 +304,18 @@ div.modal-dialog.modal-lg {
 	                .duration(500)
 	                .style("opacity", 0);
 			});
-    });
+    }
+
+    var slider = document.getElementById("replicationSlider");
+    var output = document.getElementById("replicationTB");
+
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+        console.log(jsonData, currentOperator, this.value);
+        drawStackedBarChart(jsonData, currentOperator, this.value - 1);
+    }
 </script>
 
 <script>
@@ -227,7 +333,9 @@ div.modal-dialog.modal-lg {
     var groupCounts = {};
     var globalCounts = [];
     d3.json("data.json").then(function(json) {
-        //json.operatorName;
+        // save the json into jsonData for later use of stacked bar charts
+        initStackedBarChart(json);
+
         for (var i = 0; i < json.averageUtilization.length; i++) {
             var key = json.operatorName[i];
             groupCounts[key] = json.averageUtilization[i];
@@ -235,7 +343,6 @@ div.modal-dialog.modal-lg {
         }
         //console.log("GroupCounts ", groupCounts);
         //console.log("GlobalCounts ", globalCounts);
-
 
         // Sort group counts so quantile methods work
         for (var key in groupCounts) {
@@ -363,8 +470,10 @@ div.modal-dialog.modal-lg {
 	                .duration(500)
 	                .style("opacity", 0);
 			})
-            .on("click", function(d) {
+            .on("click", function(d, i) {
                 //console.log("open Modal");
+                currentOperator = i;
+                drawStackedBarChart(json, i,        d3.select("#replicationSlider").property("value") - 1);
                 $('#stackedBC').modal();
             });
 
