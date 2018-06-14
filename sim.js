@@ -674,6 +674,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
+                BoxPlot.visualize("data.json", "#results-test");
             },
             failure: function (errMsg) {
                 alert(errMsg);
