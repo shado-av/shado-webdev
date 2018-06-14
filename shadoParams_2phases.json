@@ -1,0 +1,66 @@
+{
+    "numHours": 8,
+    "traffic": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+    "numReps": 2,
+    "numRemoteOp": 2,
+    "numTeams": 1,
+    "numvehicles": [2],
+    "autolvl": 1,
+    "numPhases": 2,
+    "hasExogenous": [0, 0],
+    "exNames": [],
+    "exTypes": [],
+    "failThreshold": 0.5,
+    "opStrats": "N",
+    "opNames": ["Dispatcher"],
+    "opTasks": [
+        [0, 1, 2]
+    ],
+    "teamComm": ["S"],
+    "teamSize": [2],
+    "fleetTypes": 1,
+    "fleetHetero": [
+        [0, 1, 2]
+    ],
+    "numTaskTypes": 3,
+    "taskNames": ["Communicating Internally", "Communication", "Actuation"],
+    "taskPrty": [
+        [4, 7],
+        [5, 5],
+        [2, 5]
+    ],
+    "arrDists": ["E", "E", "E"],
+    "arrPms": [
+        [0.033333, 0.1],
+        [0.033333, 0.1],
+        [0.033333, 0.1]
+    ],
+    "serDists": ["U", "U", "U"],
+    "serPms": [
+        [0.5, 2],
+        [0.5, 2],
+        [0.5, 2]
+    ],
+    "expDists": ["E", "E", "E"],
+    "expPmsLo": [
+        [0, 0.184],
+        [0, 0.184],
+        [0, 0.184]
+    ],
+    "expPmsHi": [
+        [0, 0.184],
+        [0, 0.184],
+        [0, 0.184]
+    ],
+    "affByTraff": [
+        [0, 1],
+        [0, 1],
+        [0, 1]
+    ],
+    "teamCoordAff": ["0", "1", "0"],
+    "humanError": [
+        [0.003, 0.00008, 0.007],
+        [0.003, 0.00008, 0.007],
+        [0.003, 0.00008, 0.007]
+    ]
+}
