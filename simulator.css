@@ -238,3 +238,69 @@ hr {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
 }
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+h3.subtitle {
+    padding: 20px 80px 0px;
+}
+
+div.modal-dialog.modal-lg {
+    max-width: 1000px;
+}
+
+#replication {
+    margin-left: 20px;
+    width: 100%;
+}
+
+#replication label {
+    vertical-align: middle;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+    #replication span {
+        width: 50px;
+        display: inline-block;
+    }
+
+.slider {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    vertical-align: middle;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
