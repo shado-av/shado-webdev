@@ -5,7 +5,7 @@ var div = d3.select("body").append("div")
 var StackedBarChart = (function () {
     var jsonData = {};
     var currentOperator = 0;
-    var svg = d3.select("svg"),
+    var svg = d3.select("#modalSVG"),
         margin = {
             top: 40,
             right: 20,
@@ -29,6 +29,7 @@ var StackedBarChart = (function () {
         jsonData = json;
         keys = json.taskName;
 
+        //console.log(keys, width, height);
         // text label for the x axis
         svg.append("text")
             .attr("transform",

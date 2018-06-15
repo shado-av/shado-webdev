@@ -1,7 +1,7 @@
 var i;
 
 var sim = new Vue({
-
+    el: '#shado-sim',
     data: {
 
         numReps: 100, // number of replications (1 - 1000)
@@ -579,9 +579,8 @@ var sim = new Vue({
 
         }
     }
+});
 
-
-})
 $(document).ready(function () {
     $("#sumbitBtn").click(function () {
         var out = {
@@ -712,5 +711,3 @@ function showDownloadBtn() {
     document.getElementById("downloadBtn").style.display = "block";
     document.getElementById("downloadSummary").style.display = "block";
 }
-
-sim.$mount("#shado-sim");
