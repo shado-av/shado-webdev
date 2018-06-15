@@ -505,7 +505,7 @@ var sim = new Vue({
                 // remove priority for each operatorSettings.teams
                 for (i = 0; i < this.operatorSettings.teams.length; i++) {
                     var priIndex = -1;
-                    console.log(this.operatorSettings.teams[i].priority, taskIndex);
+                    //console.log(this.operatorSettings.teams[i].priority, taskIndex);
                     for (var j = 0; j< this.operatorSettings.teams[i].priority.length; j++) {
                         if (this.operatorSettings.teams[i].priority[j] === taskIndex)
                             priIndex = j;
@@ -513,10 +513,11 @@ var sim = new Vue({
                             this.operatorSettings.teams[i].priority[j]--;
                     }
 
-                    if (priIndex !== -1)
-                        this.operatorSettings.teams[i].priority.splice(priIndex, 1);
-                    console.log(this.operatorSettings.teams[i].priority);
+                    if (priIndex !== -1)                            this.operatorSettings.teams[i].priority.splice(priIndex, 1);
+                    //console.log(this.operatorSettings.teams[i].priority);
                 }
+
+                $("#tasks-global-settings-tab").click();
             }
         },
 
@@ -552,6 +553,7 @@ var sim = new Vue({
                 this.operatorSettings.teams.splice(this.operatorSettings.teams.indexOf(team), 1);
             }
             this.operatorSettings.numTeams = this.operatorSettings.teams.length;
+            $("#operators-global-settings-tab").click();
         },
 
         updateFleets() {
@@ -576,7 +578,7 @@ var sim = new Vue({
                 this.fleetSettings.fleets.splice(this.fleetSettings.fleets.indexOf(fleet), 1);
             }
             this.fleetSettings.fleetTypes = this.fleetSettings.fleets.length;
-
+            $("#fleets-global-settings-tab").click();
         }
     }
 });
