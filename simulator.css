@@ -325,6 +325,9 @@ div.modal-dialog.modal-lg {
     width: auto;
 }
 
+.form-group {
+    margin-bottom:2rem;
+}
 .input-group.width-small {
     width: 150px;
 }
