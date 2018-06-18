@@ -82,14 +82,9 @@
 
                     <!-- links to different settings tabs -->
                     <li class="nav-item mb-3">
-                        <a id="settings-menu-toggle" class="nav-link nav-header" data-toggle="collapse" href="#settings-nav" aria-expanded="true"
-                            aria-controls="settings-nav">
+                        <div id="settings-menu-toggle" class="nav-link nav-header">
                             Settings
-                            <span class="arrow">
-                                <i class="fas fa-angle-down"></i>
-                                <i class="fas fa-angle-up"></i>
-                            </span>
-                        </a>
+                        </div>
                         <div id="settings-nav" class="collapse show" data-parent="#sim-nav-submenus">
                             <ul class="nav nav-pills">
 
@@ -130,24 +125,9 @@
                                         Review Settings
                                     </a>
                                 </li>
-
-
-                            </ul>
-                        </div>
-                    </li>
-
-                    <!-- links to different results tabs -->
-                    <li class="nav-item">
-                        <a id="results-menu-toggle" class="nav-link nav-header" data-toggle="collapse" href="#results-nav" aria-expanded="false"
-                            aria-controls="results-nav">
-                            Results
-                            <span class="arrow">
-                                <i class="fas fa-angle-down"></i>
-                                <i class="fas fa-angle-up"></i>
-                            </span>
-                        </a>
-                        <div id="results-nav" class="collapse" data-parent="#sim-nav-submenus">
-                            <ul class="nav nav-pills">
+                                <div class="nav-link nav-header">
+                                    Results
+                                </div>
                                 <li class="nav-item">
                                     <a class="nav-link" id="results-test-tab" data-toggle="tab" href="#results-test" role="tab" aria-controls="results-test"
                                         selected="false">
@@ -156,6 +136,7 @@
                                 </li>
                             </ul>
                         </div>
+                        <!-- links to different results tabs -->
                     </li>
                 </ul>
             </div>
@@ -822,10 +803,12 @@
                         <form>
                             <div class="form-group">
                                 <label>For every error, what is the chance that the team will catch it?</label>
-                                <h5 class="float-right mb-0">
-                                    <span class="badge badge-secondary">{{ team.failThresh }}%</span>
-                                </h5>
-                                <input type="range" min="0" max="100" v-model="team.failThresh" step="1" class="slider">
+                                <div class="input-group width-small">
+                                    <input type="number" class="form-control width-small" min="0" max="100" step="10" v-model.number="team.failThresh">
+                                    <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>

@@ -105,10 +105,12 @@
     letter-spacing: 0.5px;
 }
 
+/*
 #sim-nav .nav-header[aria-expanded="true"],
 #sim-nav .nav-header:hover {
     color: #212529;
 }
+*/
 
 #sim-nav .arrow {
     float: right;
@@ -321,4 +323,8 @@ div.modal-dialog.modal-lg {
 
 .form-control.width-small, .custom-select.width-small {
     width: auto;
+}
+
+.input-group.width-small {
+    width: 150px;
 }
