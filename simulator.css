@@ -36,6 +36,10 @@
     display: none;
 }
 
+#shado-sim, .navbar {
+    max-width: 1080px;
+    margin: auto;
+}
 @media screen and (min-width: 800px) {
     #sim-nav #brand {
         display: initial;
@@ -62,7 +66,7 @@
     width: 200px;
     position: fixed;
     top: 64px;
-    left: 0;
+    left: auto;
     height: calc(100vh - 64px);
     transition: all 0.3s;
     background-color: #f8f9fa;
@@ -313,4 +317,8 @@ div.modal-dialog.modal-lg {
 .interval .jslider {
     height: 60px;
     padding-left: 20px !important;
+}
+
+.form-control.width-small, .custom-select.width-small {
+    width: auto;
 }

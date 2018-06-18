@@ -52,7 +52,7 @@
         TOP NAVIGATION
     ------------------------------------------>
 
-    <nav class="navbar fixed-top" id="sim-nav">
+    <nav class="navbar fixed-top">
 
         <!-- HAL logo and SHADO title -->
         <a class="navbar-brand" href="index.html">
@@ -217,9 +217,9 @@
                 <form class="mb-5" @submit.prevent>
 
                     <!-- type of simulation (simType) -->
-                    <div class="form-group form-inline justify-content-between">
-                        <label class="col-form-label">Type of Simulation</label>
-                        <div class="text-right">
+                    <div class="form-group">
+                        <label class="col-form-label">1. Type of Simulation</label>
+                        <div>
                             <div class="custom-control custom-control-inline custom-radio">
                                 <input class="custom-control-input" type="radio" name="sim-type" id="sim-type-aviation" value="aviation" v-model="globalSettings.simType">
                                 <label class="custom-control-label" for="sim-type-aviation">Aviation</label>
@@ -238,22 +238,19 @@
                     <!-- hours in shift (numHours) -->
                     <div class="form-group">
                         <label for="num-hours">
-                            How many hours are in this shift?
+                            2. How many hours are in this shift?
                         </label>
-                        <input type="number" min="1" max="12" step="1" class="form-control" id="num-hours" v-model.number="globalSettings.numHours"
+                        <input type="number" min="1" max="12" step="1" class="form-control width-small" id="num-hours" v-model.number="globalSettings.numHours"
                             @input="updateTrafficLvls"
                             @change="updatePhases">
                     </div>
-                </form>
 
                 <!-- TRAFFIC -->
-                <h5 class="mb-3">Traffic</h5>
-                <form class="mb-5">
-
+                <!-- <h5 class="mb-3">Traffic</h5>-->
                     <!-- different traffic levels (diffTrafficLevels) -->
-                    <div class="form-group form-inline justify-content-between">
-                        <label class="col-form-label">Are there different traffic levels during this shift?</label>
-                        <div class="text-right">
+                    <div class="form-group">
+                        <label class="col-form-label">3. Are there different traffic levels during this shift?</label>
+                        <div>
                             <div class="custom-control custom-control-inline custom-radio">
                                 <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-y" value="y" v-model="globalSettings.diffTrafficLevels"
                                     @change="updateTrafficLvls">
@@ -285,14 +282,12 @@
                             </div>
                         </div>
                     </div>
-                </form>
 
                 <!-- EXOGENOUS FACTORS -->
-                <h5 class="mb-3">Exogenous Factors</h5>
-                <form>
+<!--                <h5 class="mb-3">Exogenous Factors</h5>-->
                     <!-- type of exogenous factors (exoFactorsType) -->
                     <div class="form-group">
-                        <label>Select the type of exogenous factor:</label>
+                        <label>4. Select the type of exogenous factor:</label>
                         <div>
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
@@ -348,19 +343,18 @@
                                 <label for="num-hours">
                                     How many different phases do the operators have in their shift?
                                 </label>
-                                <input type="number" min="1" max="3" step="1" class="form-control" id="num-phases" v-model.number="taskSettings.numPhases" @input="onChangeNumPhases">
+                                <input type="number" min="1" max="3" step="1" class="form-control width-small" id="num-phases" v-model.number="taskSettings.numPhases" @input="onChangeNumPhases">
                             </div>
 
                             <!-- time interval of phases (intervalPhases) -->
                             <div>Time Interval of Phases (Hours)</div>
-                            <div>{{taskSettings.intervalPhases}}</div>
                             <div class="form-group form-row interval">
 
                                 <div class="col-md-9 jslider" >
                                     <div id="interval-1" ref="interval-1"></div>
                                 </div>
                                 <div class="col-md-3 text-center">
-                                    Phase 1
+                                    Phase 1 {{taskSettings.intervalPhases[0]}}
                                 </div>
                             </div>
                             <div class="form-group form-row interval" v-show="2 <= taskSettings.numPhases">
@@ -370,6 +364,7 @@
                                 </div>
                                 <div class="col-md-3 text-center">
                                     Phase 2
+                                    {{taskSettings.intervalPhases[1]}}
                                 </div>
                             </div>
                             <div class="form-group form-row interval" v-show="3 <= taskSettings.numPhases">
@@ -379,6 +374,7 @@
                                 </div>
                                 <div class="col-md-3 text-center">
                                     Phase 3
+                                    {{taskSettings.intervalPhases[2]}}
                                 </div>
                             </div>
                         </form>
@@ -425,9 +421,9 @@
                             </div>
 
                             <!-- task affected by team coordination (task.affTeamCoord) -->
-                            <div class="form-group form-inline justify-content-between">
+                            <div class="form-group">
                                 <label class="col-form-label">Is this task affected by team coordination?</label>
-                                <div class="text-right">
+                                <div>
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
                                             value="y" v-model="task.affTeamCoord">
@@ -705,7 +701,7 @@
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
                                 <label for="num-operators">How many different teams of operators are there?</label>
-                                <input type="number" class="form-control" min="2" max="5" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
+                                <input type="number" class="form-control width-small" min="2" max="5" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
                                     @change="updateOperatorTeams">
                             </div>
                         </form>
@@ -738,7 +734,7 @@
                                 <!-- team size (team.size) -->
                                 <div class="col">
                                     <label>How large is the team?</label>
-                                    <input class="form-control" type="number" min="1" max="10" v-model.number="team.size">
+                                    <input class="form-control width-small" type="number" min="1" max="10" v-model.number="team.size">
                                 </div>
 
                                 <!-- operator strategies (team.strategy) -->
@@ -874,7 +870,7 @@
                             <!-- number of fleets (fleetTypes) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many different fleets do the operators manage?</label>
-                                <input type="number" class="form-control" min="1" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
+                                <input type="number" class="form-control width-small" min="1" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
                                     @change="updateFleets">
                             </div>
                         </form>
@@ -905,13 +901,14 @@
                             <!-- number of vehicles (fleet.numVehicles) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many vehicles are in this fleet?</label>
-                                <input type="number" class="form-control" min="1" max="100" step="1" v-model.number="fleet.numVehicles">
+                                <input type="number" class="form-control width-small" min="1" max="100" step="1" v-model.number="fleet.numVehicles">
                             </div>
 
                             <!-- fleet communications (fleet.comms) -->
                             <div class="form-group">
                                 <label>Does this fleet have some level of vehicle-to-vehicle communication?</label>
-                                <select class="custom-select" v-model="fleet.comms">
+                                <br/>
+                                <select class="custom-select width-small" v-model="fleet.comms">
                                     <option value="N">None</option>
                                     <option value="S">Some</option>
                                     <option value="F">Full</option>
