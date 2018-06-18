@@ -179,8 +179,8 @@
 #tasks-settings-content,
 #operators-settings-content,
 #fleets-settings-content {
-    margin-left: 150px;
-    padding-left: 30px;
+    margin-left: 0px;
+    padding-top: 20px;
 }
 
 .traffic-levels {
@@ -194,6 +194,7 @@
     margin-bottom: 10px;
 }
 
+/*
 .tabs-left {
     position: absolute;
     top: 30px;
@@ -229,6 +230,7 @@
     background-color: #fff;
     border-color: #dee2e6 #fff #dee2e6 #dee2e6;
 }
+*/
 
 .delete {
     float: right;
@@ -303,4 +305,12 @@ div.modal-dialog.modal-lg {
     height: 25px;
     background: #4CAF50;
     cursor: pointer;
+}
+
+.interval {
+    margin-top: 20px;
+}
+.interval .jslider {
+    height: 60px;
+    padding-left: 20px !important;
 }

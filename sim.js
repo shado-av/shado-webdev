@@ -24,6 +24,14 @@ var sim = new Vue({
 
         taskSettings: {
             numPhases: 2, // number of phases
+            intervalSlider: {
+                startMin: 0,
+                startMax: 8,
+                min: 0,
+                max: 8,
+                step: 0.5
+            },
+            intervalPhases: [[0,0.5],[0.5,7.5],[7.5,8]], // hours of phases
             tasks: // array of individual task objects
                 [{
                         name: "Communicating",
@@ -445,7 +453,7 @@ var sim = new Vue({
     },
 
     methods: {
-
+        // when numHours changed
         updateTrafficLvls() {
             var lvls = this.globalSettings.trafficLevels;
             if (this.globalSettings.diffTrafficLevels === "n") {
@@ -461,6 +469,7 @@ var sim = new Vue({
             } else {
                 lvls.splice(this.globalSettings.numHours);
             }
+
         },
 
         disableAddTask(task) {
@@ -579,7 +588,104 @@ var sim = new Vue({
             }
             this.fleetSettings.fleetTypes = this.fleetSettings.fleets.length;
             $("#fleets-global-settings-tab").click();
+        },
+
+        updatePhases() {
+            // change numPhases hours
+            var numPhases = this.taskSettings.numPhases;
+            var numHours = this.globalSettings.numHours;
+
+            for(let i=1;i<=3;i++) {
+                this.$refs["interval-" + i].noUiSlider.updateOptions({
+                    range: {
+			            'min': 0,
+			            'max': numHours
+		            }
+	            });
+            }
+            // set last slider
+            var tip = this.taskSettings.intervalPhases
+            if (numPhases === 1) {
+                tip[0] = [0, numHours];
+            } else {
+                tip[numPhases - 1] = [ tip[numPhases - 2][1], numHours];
+            }
+            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases-1]);
+        },
+        onChangeNumPhases() {
+            var numPhases = this.taskSettings.numPhases;
+            var numHours = this.globalSettings.numHours;
+
+            // right slider enable
+            for(let i=1;i<numPhases;i++) {
+                this.$refs["interval-" + i].getElementsByClassName("noUi-origin")[1].removeAttribute('disabled');
+            }
+            // right-slider of last slider disabled
+            this.$refs["interval-" + numPhases].getElementsByClassName("noUi-origin")[1].setAttribute('disabled', true);
+
+            // set last slider
+            var tip = this.taskSettings.intervalPhases
+            if (numPhases === 1) {
+                tip[0] = [0, numHours];
+            } else {
+                tip[numPhases - 1] = [ tip[numPhases - 2][1], numHours];
+            }
+            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases-1]);
         }
+    },
+
+    mounted: function() {
+        //for(let i=1;i<=this.taskSettings.numPhases;i++) {
+        for(let i=1;i<=3;i++) {
+            //console.log(this.$refs["interval-" + i]);
+            noUiSlider.create(this.$refs["interval-" + i], {
+                start: [this.taskSettings.intervalPhases[i-1][0], this.taskSettings.intervalPhases[i-1][1]],
+                step: this.taskSettings.intervalSlider.step,
+                range: {
+                    'min': this.taskSettings.intervalSlider.min,
+                    'max': this.taskSettings.intervalSlider.max
+                },
+                connect: true,
+                pips: {
+                    mode: 'steps',
+                    values: [0, 8],
+                    filter: function( value, type ){
+	                           return value * 2 % 2 ? 0 : 1;
+                            },
+                    format: wNumb({ decimal: 1}),
+                    density: 100
+                }
+            });
+
+            this.$refs["interval-" + i].noUiSlider.on('update',(values, handle) => {
+                var val = parseFloat(values[handle]);
+                var tip = this.taskSettings.intervalPhases;
+                if (i>1 && handle===0) {
+                    if (tip[i-2][1] !== val) {
+                        tip[i-2][1] = val;
+                        setTimeout(() => {
+                            this.$refs["interval-" + (i-1)].noUiSlider.set(tip[i-2]);
+                        }, 100);
+                    }
+                }
+                if (i<this.taskSettings.numPhases && handle===1) {
+                    if (tip[i][0] !== val) {
+                        tip[i][0] = val;
+                        //console.log(this.$refs["interval-" + (i+1)][0], tip[i]);
+                        setTimeout(() => {
+                            this.$refs["interval-" + (i+1)]
+                            .noUiSlider.set(tip[i]);
+                        }, 100);
+                    }
+                }
+                tip[i-1].splice(handle, 1, val);
+           });
+        }
+        // left-slider of first slider disabled
+        this.$refs["interval-1"].getElementsByClassName("noUi-origin")[0].setAttribute('disabled', true);
+        // right-slider of last slider disabled
+        this.$refs["interval-" + this.taskSettings.numPhases].getElementsByClassName("noUi-origin")[1].setAttribute('disabled', true);
+        this.$refs["interval-" + this.taskSettings.numPhases].noUiSlider.set([0.5, 8]);
     }
 });
 
@@ -594,6 +700,7 @@ $(document).ready(function () {
             "numvehicles": sim.numVehicles,
             "autolvl": sim.fleetAutoLevel,
             "numPhases": sim.taskSettings.numPhases,
+            "intervalPhases": sim.taskSettings.intervalPhases,
 
             "hasExogenous": sim.hasExogenous,
             "exNames": ["Medical", "Weather"],

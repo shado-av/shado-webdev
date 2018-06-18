@@ -31,6 +31,11 @@
     <!--D3 Libraries-->
     <script src="https://d3js.org/d3.v5.js"></script>
 
+    <!--noUIiSlider library-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.js"></script>
+
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="simulator.css">
     <script type="text/javascript" src="sim.js" defer></script>
@@ -236,7 +241,8 @@
                             How many hours are in this shift?
                         </label>
                         <input type="number" min="1" max="12" step="1" class="form-control" id="num-hours" v-model.number="globalSettings.numHours"
-                            @input="updateTrafficLvls">
+                            @input="updateTrafficLvls"
+                            @change="updatePhases">
                     </div>
                 </form>
 
@@ -342,7 +348,38 @@
                                 <label for="num-hours">
                                     How many different phases do the operators have in their shift?
                                 </label>
-                                <input type="number" min="1" max="3" step="1" class="form-control" id="num-phases" v-model.number="taskSettings.numPhases">
+                                <input type="number" min="1" max="3" step="1" class="form-control" id="num-phases" v-model.number="taskSettings.numPhases" @input="onChangeNumPhases">
+                            </div>
+
+                            <!-- time interval of phases (intervalPhases) -->
+                            <div>Time Interval of Phases (Hours)</div>
+                            <div>{{taskSettings.intervalPhases}}</div>
+                            <div class="form-group form-row interval">
+
+                                <div class="col-md-9 jslider" >
+                                    <div id="interval-1" ref="interval-1"></div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    Phase 1
+                                </div>
+                            </div>
+                            <div class="form-group form-row interval" v-show="2 <= taskSettings.numPhases">
+
+                                <div class="col-md-9 jslider" >
+                                    <div id="interval-2" ref="interval-2"></div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    Phase 2
+                                </div>
+                            </div>
+                            <div class="form-group form-row interval" v-show="3 <= taskSettings.numPhases">
+
+                                <div class="col-md-9 jslider" >
+                                    <div id="interval-3" ref="interval-3"></div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    Phase 3
+                                </div>
                             </div>
                         </form>
 
@@ -923,6 +960,10 @@
                 </ul>
                 <h5>Tasks</h5>
                 <ul>
+                    <li>Number of Phases:
+                        <b>{{taskSettings.numPhases}}</b></li>
+                    <li>Interval of Phases:
+                        <b>{{taskSettings.intervalPhases}}</b></li>
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
                         <a class="nav-link disabled" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'"
                             role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
