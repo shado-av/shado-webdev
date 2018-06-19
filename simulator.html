@@ -853,7 +853,7 @@
                             <!-- number of fleets (fleetTypes) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many different fleets do the operators manage?</label>
-                                <input type="number" class="form-control width-small" min="1" max="5" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
+                                <input type="number" class="form-control width-small" min="1" max="99" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
                                     @change="updateFleets">
                             </div>
                         </form>
@@ -884,7 +884,7 @@
                             <!-- number of vehicles (fleet.numVehicles) -->
                             <div class="form-group">
                                 <label for="num-fleets">How many vehicles are in this fleet?</label>
-                                <input type="number" class="form-control width-small" min="1" max="100" step="1" v-model.number="fleet.numVehicles">
+                                <input type="number" class="form-control width-small" min="1" max="99" step="1" v-model.number="fleet.numVehicles">
                             </div>
 
                             <!-- fleet communications (fleet.comms) -->
