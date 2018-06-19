@@ -1,3 +1,8 @@
+#shado-sim, .navbar, .container-fluid {
+    max-width: 1080px;
+    margin: auto;
+}
+
 .container-fluid {
     padding: 4%;
 }
@@ -36,10 +41,6 @@
     display: none;
 }
 
-#shado-sim, .navbar {
-    max-width: 1080px;
-    margin: auto;
-}
 @media screen and (min-width: 800px) {
     #sim-nav #brand {
         display: initial;
