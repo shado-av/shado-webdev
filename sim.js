@@ -814,6 +814,19 @@ $(document).ready(function () {
             return false;
         });
     });
+
+    // when tab is selected, focus on the first input
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = e.target.attributes.href.value;
+        var selectedTab = $(target + ' a.active');
+
+        if (selectedTab.length > 0) {
+            target = selectedTab[0].attributes.href.value;
+        }
+
+        if ($(target +' input').length > 0)
+            $(target +' input')[0].focus();
+    })
 });
 
 function showDownloadBtn() {
