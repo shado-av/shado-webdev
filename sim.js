@@ -381,7 +381,7 @@ var sim = new Vue({
             var ft = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].failThresh) {
-                    ft.push(this.operatorSettings.teams[i].failThresh);
+                    ft.push(this.operatorSettings.teams[i].failThresh / 100);
                 }
             }
             return ft;
@@ -635,6 +635,18 @@ var sim = new Vue({
                 tip[numPhases - 1] = [ tip[numPhases - 2][1], numHours];
             }
             this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases-1]);
+        },
+        stepNumberInput(team, min, max, step) {
+            var val = team.failThresh + step;
+            if (val <= min) val = min;
+            if (val >= max) val = max;
+            team.failThresh = val;
+        },
+        validateInput(team, min, max) {
+            var val = team.failThresh;
+            if (val <= min) val = min;
+            if (val >= max) val = max;
+            team.failThresh = val;
         }
     },
 
