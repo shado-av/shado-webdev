@@ -1,5 +1,3 @@
-var i;
-
 var sim = new Vue({
     el: '#shado-sim',
     data: {
@@ -23,21 +21,13 @@ var sim = new Vue({
          * ------------------------------ */
 
         taskSettings: {
-            numPhases: 2, // number of phases
-            intervalSlider: {
-                startMin: 0,
-                startMax: 8,
-                min: 0,
-                max: 8,
-                step: 0.5
-            },
+            numPhases: 3, // number of phases
             intervalPhases: [[0,0.5],[0.5,7.5],[7.5,8]], // hours of phases
             tasks: // array of individual task objects
                 [{
                         name: "Communicating",
                         include: true,
                         isCustom: false,
-                        priority: [4, 7],
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
                         arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
@@ -54,7 +44,6 @@ var sim = new Vue({
                         name: "Actuation",
                         include: true,
                         isCustom: false,
-                        priority: [5, 5],
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
                         arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
@@ -71,7 +60,6 @@ var sim = new Vue({
                         name: "Directive Mandatory",
                         include: true,
                         isCustom: false,
-                        priority: [5, 5],
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
                         arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
@@ -100,7 +88,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
-                        priority: [0, 1, 2],
+                        priority: [[0, 1, 2],[0,1,2],[0,1,2]],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -114,7 +102,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
-                        priority: [0, 1, 2],
+                        priority: [[0, 1, 2],[0,1,2],[0,1,2]],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -358,23 +346,24 @@ var sim = new Vue({
             var tasks = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].tasks) {
-                    var curTasks = this.operatorSettings.teams[i].tasks;
-                    var tasksOrdered = [];
-
-                    // needs better sorting algorithm, but this suffices.
-                    for(var j = 0; j < curTasks.length; j++) {
-                        tasksOrdered[this.operatorSettings.teams[i].priority.indexOf(curTasks[j])] = curTasks[j];
-                    }
-                    for(var j = 0; j < tasksOrdered.length; j++) {
-                        if (tasksOrdered[j] == null) tasksOrdered.splice(j--, 1);
-                    }
-
-                    tasks.push(tasksOrdered);
+                    tasks.push(this.operatorSettings.teams[i].tasks);
                 } else {
                     tasks.push([]);
                 }
             }
             return tasks;
+        },
+
+        opPriority() {
+            var prty = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].priority) {
+                    prty.push(this.operatorSettings.teams[i].priority);
+                } else {
+                    prty.push([[]]);
+                }
+            }
+            return prty;
         },
 
         // array containing operator team communication types
@@ -479,12 +468,21 @@ var sim = new Vue({
             return true;
         },
 
+        getTaskArray() {
+            var task = [];
+
+            for(i=0;i<this.taskSettings.tasks.length;i++) {
+                task.push(i);
+            }
+
+            return task;
+        },
+
         addCustomTask() {
             this.taskSettings.tasks.push({
                 name: "Custom Task",
                 include: true,
                 isCustom: true,
-                priority: [],
                 affTeamCoord: "n",
                 arrivalDistribution: ["E","E","E"],
                 arrivalParam: [[],[],[]],
@@ -499,10 +497,12 @@ var sim = new Vue({
             });
 
             // add priority for each operatorSettings.teams
-            for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                this.operatorSettings.teams[i].priority.push(this.taskSettings.tasks.length - 1);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                    this.operatorSettings.teams[i].priority[j].push(this.taskSettings.tasks.length - 1);
+                }
             }
-        },
+         },
 
         removeCustomTask(task) {
             if (confirm("Are you sure you want to delete this custom task?")) {
@@ -512,18 +512,20 @@ var sim = new Vue({
                 this.taskSettings.tasks.splice(taskIndex, 1);
 
                 // remove priority for each operatorSettings.teams
-                for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                    var priIndex = -1;
-                    //console.log(this.operatorSettings.teams[i].priority, taskIndex);
-                    for (var j = 0; j< this.operatorSettings.teams[i].priority.length; j++) {
-                        if (this.operatorSettings.teams[i].priority[j] === taskIndex)
-                            priIndex = j;
-                        else if (this.operatorSettings.teams[i].priority[j] > taskIndex)
-                            this.operatorSettings.teams[i].priority[j]--;
-                    }
+                for (var k = 0; k < this.taskSettings.numPhases; k++) {
+                    for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                        var priIndex = -1;
+                        //console.log(this.operatorSettings.teams[i].priority, taskIndex);
+                        for (var j = 0; j< this.operatorSettings.teams[i].priority[k].length; j++) {
+                            if (this.operatorSettings.teams[i].priority[k][j] === taskIndex)
+                                priIndex = j;
+                            else if (this.operatorSettings.teams[i].priority[k][j] > taskIndex)
+                                this.operatorSettings.teams[i].priority[k][j]--;
+                        }
 
-                    if (priIndex !== -1)                            this.operatorSettings.teams[i].priority.splice(priIndex, 1);
-                    //console.log(this.operatorSettings.teams[i].priority);
+                        if (priIndex !== -1)                            this.operatorSettings.teams[i].priority[k].splice(priIndex, 1);
+                        //console.log(this.operatorSettings.teams[i].priority);
+                    }
                 }
 
                 $("#tasks-global-settings-tab").click();
@@ -537,6 +539,7 @@ var sim = new Vue({
         updateOperatorTeams() {
             var teams = this.operatorSettings.teams;
             if (this.operatorSettings.numTeams > teams.length) {
+                var tasks = sim.getTaskArray();
                 while (teams.length < this.operatorSettings.numTeams) {
                     teams.push({
                         name: "Operator Team",
@@ -544,6 +547,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
+                        priority: [tasks,tasks,tasks],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: "N",
@@ -640,10 +644,10 @@ var sim = new Vue({
             //console.log(this.$refs["interval-" + i]);
             noUiSlider.create(this.$refs["interval-" + i], {
                 start: [this.taskSettings.intervalPhases[i-1][0], this.taskSettings.intervalPhases[i-1][1]],
-                step: this.taskSettings.intervalSlider.step,
+                step: 0.5,
                 range: {
-                    'min': this.taskSettings.intervalSlider.min,
-                    'max': this.taskSettings.intervalSlider.max
+                    'min': 0,
+                    'max': this.globalSettings.numHours
                 },
                 connect: true,
                 pips: {
@@ -685,7 +689,7 @@ var sim = new Vue({
         this.$refs["interval-1"].getElementsByClassName("noUi-origin")[0].setAttribute('disabled', true);
         // right-slider of last slider disabled
         this.$refs["interval-" + this.taskSettings.numPhases].getElementsByClassName("noUi-origin")[1].setAttribute('disabled', true);
-        this.$refs["interval-" + this.taskSettings.numPhases].noUiSlider.set([0.5, 8]);
+        //this.$refs["interval-" + this.taskSettings.numPhases].noUiSlider.set([0.5, 8]);
     }
 });
 
@@ -717,12 +721,7 @@ $(document).ready(function () {
 
             "numTaskTypes": sim.numTaskTypes,
             "taskNames": sim.taskNames,
-            "taskPrty": [
-                [3, 5],
-                [2, 2],
-                [3, 4],
-                [4, 3]
-            ],
+            "taskPrty": sim.opPriority,
             "arrDists": sim.arrDists,
             "arrPms": sim.arrPms,
             "serDists": sim.serDists,
