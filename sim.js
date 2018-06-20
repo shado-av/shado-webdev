@@ -1,5 +1,3 @@
-var i;
-
 var sim = new Vue({
     el: '#shado-sim',
     data: {
@@ -723,12 +721,7 @@ $(document).ready(function () {
 
             "numTaskTypes": sim.numTaskTypes,
             "taskNames": sim.taskNames,
-            "taskPrty": [
-                [3, 5],
-                [2, 2],
-                [3, 4],
-                [4, 3]
-            ],
+            "taskPrty": sim.opPriority,
             "arrDists": sim.arrDists,
             "arrPms": sim.arrPms,
             "serDists": sim.serDists,
