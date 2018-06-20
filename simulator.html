@@ -711,32 +711,55 @@
                             </div>
 
                             <div class="form-group form-row">
-
                                 <!-- team size (team.size) -->
                                 <div class="col">
                                     <label>How large is the team?</label>
                                     <input class="form-control width-small" type="number" min="1" max="10" v-model.number="team.size">
                                 </div>
 
-                                <!-- operator strategies (team.strategy) -->
+                                <!-- team communications (team.comms) -->
                                 <div class="col">
-                                    <label>Operator Strategies</label>
-                                    <select class="custom-select" v-model="team.strategy">
-                                        <option value="FIFO">First In First Out</option>
-                                        <option value="STF">Shortest Task First</option>
-                                        <option value="PRTY">Priority</option>
+                                    <label>Does this team have some level of communications?</label>
+                                    <select class="custom-select" v-model="team.comms">
+                                        <option value="N">None</option>
+                                        <option value="S">Some</option>
+                                        <option value="F">Full</option>
                                     </select>
                                 </div>
                             </div>
-
-                            <!-- team communications (team.comms) -->
+                            <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
-                                <label>Does this team have some level of communications?</label>
-                                <select class="custom-select" v-model="team.comms">
-                                    <option value="N">None</option>
-                                    <option value="S">Some</option>
-                                    <option value="F">Full</option>
+                                <label>Operator Strategies</label>
+                                <select class="custom-select" v-model="team.strategy">
+                                    <option value="FIFO">First In First Out</option>
+                                    <option value="STF">Shortest Task First</option>
+                                    <option value="PRTY">Priority</option>
                                 </select>
+                            </div>
+                            <div class="form-group form-row" v-show="team.strategy === 'PRTY'">
+                                <!-- operator task checklist (team.tasks) -->           <div class="col form-group" v-for="n in taskSettings.numPhases">
+                                    <label class="mb-3">Priority for Phase {{n}}</label>
+                                    <draggable v-model="team.priority[n-1]" :options="{draggable:'.item'}">
+                                        <div class="item mb-2" v-for="i in team.priority[n-1]" v-show="taskSettings.tasks[i].include">
+                                            <i class="fas fa-arrows-alt"></i>   <span :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</span>
+                                        </div>
+                                    </draggable>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- FAIL THRESHOLD -->
+                        <h5 class="mb-3">Fail Threshold</h5>
+
+                        <!-- fail threshold (team.failThresh) -->
+                        <form>
+                            <div class="form-group">
+                                <label>For every error, what is the chance that the team will catch it?</label>
+                                <div class="input-group width-small">
+                                    <input type="number" class="form-control width-small" min="0" max="100" step="10" v-model.number="team.failThresh">
+                                    <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
                             </div>
                         </form>
 
@@ -747,13 +770,10 @@
                         <form class="mb-5">
                             <div class="form-group">
                                 <label class="mb-3">What tasks are these operators responsible for?</label>
-                                <draggable v-model="team.priority" :options="{draggable:'.item'}">
-                                    <div class="custom-control custom-checkbox item mb-2" v-for="i in team.priority" v-show="taskSettings.tasks[i].include">
-                                        <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
-                                        <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
-                                        <i class="fas fa-arrows-alt float-right"></i>
-                                    </div>
-                                </draggable>
+                                <div class="custom-control custom-checkbox item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
+                                    <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
+                                    <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
+                                </div>
                             </div>
                         </form>
 
@@ -792,22 +812,6 @@
                                         <option value="S">Some</option>
                                         <option value="F">Full</option>
                                     </select>
-                                </div>
-                            </div>
-                        </form>
-
-                        <!-- FAIL THRESHOLD -->
-                        <h5 class="mb-3">Fail Threshold</h5>
-
-                        <!-- fail threshold (team.failThresh) -->
-                        <form>
-                            <div class="form-group">
-                                <label>For every error, what is the chance that the team will catch it?</label>
-                                <div class="input-group width-small">
-                                    <input type="number" class="form-control width-small" min="0" max="100" step="10" v-model.number="team.failThresh">
-                                    <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                    </div>
                                 </div>
                             </div>
                         </form>
