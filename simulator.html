@@ -221,13 +221,12 @@
                         <label for="num-hours">
                             2. How many hours are in this shift?
                         </label>
-                        <input type="number" min="1" max="12" step="1" class="form-control width-small" id="num-hours" v-model.number="globalSettings.numHours"
-                            @input="updateTrafficLvls"
-                            @change="updatePhases">
+                        <input type="number" min="1" max="12" step="0.5" class="form-control width-small" id="num-hours" v-model.number="globalSettings.numHours"
+                            @input="updateTrafficLvls" @change="updatePhases">
                     </div>
 
-                <!-- TRAFFIC -->
-                <!-- <h5 class="mb-3">Traffic</h5>-->
+                    <!-- TRAFFIC -->
+                    <!-- <h5 class="mb-3">Traffic</h5>-->
                     <!-- different traffic levels (diffTrafficLevels) -->
                     <div class="form-group">
                         <label class="col-form-label">3. Are there different traffic levels during this shift?</label>
@@ -264,8 +263,8 @@
                         </div>
                     </div>
 
-                <!-- EXOGENOUS FACTORS -->
-<!--                <h5 class="mb-3">Exogenous Factors</h5>-->
+                    <!-- EXOGENOUS FACTORS -->
+                    <!--                <h5 class="mb-3">Exogenous Factors</h5>-->
                     <!-- type of exogenous factors (exoFactorsType) -->
                     <div class="form-group">
                         <label>4. Select the type of exogenous factor:</label>
@@ -279,7 +278,7 @@
                                 <label class="custom-control-label" for="exo-type-2">Type 2</label>
                             </div>
                         </div>
-                    </div>                              
+                    </div>
                 </form>
             </div>
 
@@ -324,14 +323,15 @@
                                 <label for="num-hours">
                                     How many different phases do the operators have in their shift?
                                 </label>
-                                <input type="number" min="1" max="3" step="1" class="form-control width-small" id="num-phases" v-model.number="taskSettings.numPhases" @input="onChangeNumPhases">
+                                <input type="number" min="1" max="3" step="1" class="form-control width-small" id="num-phases" v-model.number="taskSettings.numPhases"
+                                    @input="onChangeNumPhases">
                             </div>
 
                             <!-- time interval of phases (intervalPhases) -->
                             <div>Time Interval of Phases (Hours)</div>
                             <div class="form-group form-row interval">
 
-                                <div class="col-md-9 jslider" >
+                                <div class="col-md-9 jslider">
                                     <div id="interval-1" ref="interval-1"></div>
                                 </div>
                                 <div class="col-md-3 text-center">
@@ -340,22 +340,20 @@
                             </div>
                             <div class="form-group form-row interval" v-show="2 <= taskSettings.numPhases">
 
-                                <div class="col-md-9 jslider" >
+                                <div class="col-md-9 jslider">
                                     <div id="interval-2" ref="interval-2"></div>
                                 </div>
                                 <div class="col-md-3 text-center">
-                                    Phase 2
-                                    {{taskSettings.intervalPhases[1]}}
+                                    Phase 2 {{taskSettings.intervalPhases[1]}}
                                 </div>
                             </div>
                             <div class="form-group form-row interval" v-show="3 <= taskSettings.numPhases">
 
-                                <div class="col-md-9 jslider" >
+                                <div class="col-md-9 jslider">
                                     <div id="interval-3" ref="interval-3"></div>
                                 </div>
                                 <div class="col-md-3 text-center">
-                                    Phase 3
-                                    {{taskSettings.intervalPhases[2]}}
+                                    Phase 3 {{taskSettings.intervalPhases[2]}}
                                 </div>
                             </div>
                         </form>
@@ -484,7 +482,7 @@
                             </div>
                             <hr/>
                             <!-- service time distribution (task.serviceDistribution) -->
-                            <div class="form-group form-row" v-for="n in taskSettings.numPhases"  class="row no-gutters">
+                            <div class="form-group form-row" v-for="n in taskSettings.numPhases" class="row no-gutters">
                                 <div class="col-3">
                                     <label :for="'task-' + index + 'ser-dist'">Service Time Phase {{n}}</label>
                                     <select class="custom-select" :id="'task-' + index + 'ser-dist'" v-model="task.serviceDistribution[n-1]" @change="task.serviceParam[n-1].splice(0)">
@@ -556,7 +554,7 @@
                                 <!-- expiration time distribution parameters (task.expireParamDefault) -->
                                 <div class="col-9">
                                     <label>Distribution Parameters Phase {{n}}</label>
-                                    <div v-if="task.expireDistribution[n-1] === 'E'"  class="row no-gutters">
+                                    <div v-if="task.expireDistribution[n-1] === 'E'" class="row no-gutters">
                                         <div class="col">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
                                             <small class="form-text text-muted">Mean</small>
@@ -682,7 +680,7 @@
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
                                 <label for="num-operators">How many different teams of operators are there?</label>
-                                <input type="number" class="form-control width-small" min="2" max="5" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
+                                <input type="number" class="form-control width-small" min="1" max="99" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
                                     @change="updateOperatorTeams">
                             </div>
                         </form>
@@ -714,7 +712,7 @@
                                 <!-- team size (team.size) -->
                                 <div class="col">
                                     <label>How large is the team?</label>
-                                    <input class="form-control width-small" type="number" min="1" max="10" v-model.number="team.size">
+                                    <input class="form-control width-small" type="number" min="1" max="99" v-model.number="team.size">
                                 </div>
 
                                 <!-- team communications (team.comms) -->
@@ -945,9 +943,11 @@
                 <h5>Tasks</h5>
                 <ul>
                     <li>Number of Phases:
-                        <b>{{taskSettings.numPhases}}</b></li>
+                        <b>{{taskSettings.numPhases}}</b>
+                    </li>
                     <li>Interval of Phases:
-                        <b>{{taskSettings.intervalPhases}}</b></li>
+                        <b>{{taskSettings.intervalPhases}}</b>
+                    </li>
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
                         <a class="nav-link disabled" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'"
                             role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
@@ -1074,7 +1074,8 @@
                                     <h3 id="stackedBCTitle">Operator Workload per Replication</h3>
                                 </div>
                                 <div class="col-sm" id="replication">
-                                    <label>Replication: <span id="replicationTB"/> </label>
+                                    <label>Replication:
+                                        <span id="replicationTB" /> </label>
                                     <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider" class="slider" />
                                 </div>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
