@@ -770,7 +770,6 @@
                         <form class="mb-5">
                             <div class="form-group">
                                 <label class="mb-3">What tasks are these operators responsible for?</label>
-                                <br/>
                                 <div class="custom-control custom-checkbox item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
                                     <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
@@ -792,27 +791,68 @@
                                     <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">Equal Operator</label>
                                 </div>
                             </div>
-
-                            <div class="form-row">
-
-                                <!-- assisting individuals (AIDA.assistingIndividuals) -->
-                                <div class="form-group col-md-6">
-                                    <label>Assisting Individuals</label>
-                                    <select class="custom-select custom-" v-model="team.AIDA.assistingIndividuals">
-                                        <option value="N">None</option>
-                                        <option value="S">Some</option>
-                                        <option value="F">Full</option>
-                                    </select>
+                            <div class="form-group" v-show="team.AIDA.equalOperator">
+                                <div class="mb-3">What percentage of the Service Time is affected by this AI?</div>
+                                <div class="input-group width-small mb-3">
+                                  <input class="form-control" min="0"  max="100" type="number" v-model.number="team.AIDA.ETServiceTime">
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                  </div>
                                 </div>
+                                <div class="mb-3">Error Rate</div>
+                                <div class="input-group width-small mb-3">
+                                  <input class="form-control" min="0"  max="100" type="number" v-model.number="team.AIDA.ETErrorRate">
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                  </div>
+                                </div>
+                                <div class="mb-3">Fail Threshold</div>
+                                <div class="input-group width-small mb-3">
+                                  <input class="form-control" min="0"  max="100" type="number" v-model.number="team.AIDA.ETFailThreshold">
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                  </div>
+                                </div>
+                            </div>
+                            <!-- assisting individuals (AIDA.assistingIndividuals) -->
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.assistingIndividuals">
+                                    <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">Assisting Indivisuals</label>
+                                </div>
+                            </div>
+                            <div class="form-group" v-show="team.AIDA.assistingIndividuals">
+                                <div class="mb-3">What tasks are this AI responsible for?</div>
+                                <div class="custom-control custom-checkbox item mb-2" v-for="i in team.tasks">
+                                    <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IAtasks">
+                                    <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
+                                </div>
+                                <div class="mb-3 mt-3">What is the level of this AI?</div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" name="assist-indi-levels" id="assist-indi-levels-some" value="S" v-model="team.AIDA.IALevel">
+                                    <label class="custom-control-label" for="assist-indi-levels-some">Some</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" name="assist-indi-levels" id="assist-indi-levels-full" value="F" v-model="team.AIDA.IALevel">
+                                    <label class="custom-control-label" for="assist-indi-levels-full">Full</label>
+                                </div>
+                            </div>
 
-                                <!-- assisting in team coordinations (AIDA.assistingTeamCoord) -->
-                                <div class="form-group col-md-6">
-                                    <label>Assisting Team Coordination</label>
-                                    <select class="custom-select custom-" v-model="team.AIDA.assistingTeamCoord">
-                                        <option value="N">None</option>
-                                        <option value="S">Some</option>
-                                        <option value="F">Full</option>
-                                    </select>
+                            <!-- assisting in team coordinations (AIDA.assistingTeamCoord) -->
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.assistingTeamCoord">
+                                    <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">Assisting Team Coordination</label>
+                                </div>
+                            </div>
+                            <div class="form-group" v-show="team.AIDA.assistingTeamCoord">
+                                <div class="mb-3">What is the level of this AI?</div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-some" value="S" v-model="team.AIDA.TCALevel">                 <label class="custom-control-label" for="assist-team-levels-some">Some</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-full" value="F" v-model="team.AIDA.TCALevel">
+                                    <label class="custom-control-label" for="assist-team-levels-full">Full</label>
                                 </div>
                             </div>
                         </form>

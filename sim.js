@@ -28,6 +28,8 @@ var sim = new Vue({
                         name: "Communicating",
                         include: true,
                         isCustom: false,
+                        essential: false,
+                        interruptable: false,
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
                         arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
@@ -44,6 +46,8 @@ var sim = new Vue({
                         name: "Actuation",
                         include: true,
                         isCustom: false,
+                        essential: false,
+                        interruptable: false,
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
                         arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
@@ -60,6 +64,8 @@ var sim = new Vue({
                         name: "Directive Mandatory",
                         include: true,
                         isCustom: false,
+                        essential: false,
+                        interruptable: false,
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
                         arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
@@ -91,8 +97,14 @@ var sim = new Vue({
                         priority: [[0, 1, 2],[0,1,2],[0,1,2]],
                         AIDA: {
                             equalOperator: false,
-                            assistingIndividuals: "N",
-                            assistingTeamCoord: "N"
+                            ETServiceTime: 0,
+                            ETErrorRate: 0,
+                            ETFailThreshold: 0,
+                            assistingIndividuals: false,
+                            IATasks: [],
+                            IALevel: [],
+                            assistingTeamCoord: false,
+                            TCALevel: []
                         },
                         failThresh: 50
                     },
@@ -105,8 +117,8 @@ var sim = new Vue({
                         priority: [[0, 1, 2],[0,1,2],[0,1,2]],
                         AIDA: {
                             equalOperator: false,
-                            assistingIndividuals: "N",
-                            assistingTeamCoord: "N"
+                            assistingIndividuals: false,
+                            assistingTeamCoord: false
                         },
                         failThresh: 50
                     }
@@ -483,6 +495,8 @@ var sim = new Vue({
                 name: "Custom Task",
                 include: true,
                 isCustom: true,
+                essential: false,
+                interruptable: false,
                 affTeamCoord: "n",
                 arrivalDistribution: ["E","E","E"],
                 arrivalParam: [[],[],[]],
@@ -550,8 +564,8 @@ var sim = new Vue({
                         priority: [tasks,tasks,tasks],
                         AIDA: {
                             equalOperator: false,
-                            assistingIndividuals: "N",
-                            assistingTeamCoord: "N"
+                            assistingIndividuals: false,
+                            assistingTeamCoord: false
                         },
                         failThresh: 50
                     })
