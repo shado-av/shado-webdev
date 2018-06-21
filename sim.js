@@ -475,10 +475,30 @@ var sim = new Vue({
             var st = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].AIDA.ETServiceTime) {
-                    st.push(this.operatorSettings.teams[i].AIDA.ETServiceTime);
+                    st.push(this.operatorSettings.teams[i].AIDA.ETServiceTime / 100);
                 }
             }
             return st;
+        },
+        //array contining Error Rate
+        ETErrorRate() {
+            var er = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.ETErrorRate) {
+                    er.push(this.operatorSettings.teams[i].AIDA.ETErrorRate / 100);
+                }
+            }
+            return er;
+        },
+        //array for fail threshold
+        ETFailThreshold() {
+            var ft = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.ETFailThreshold) {
+                    ft.push(this.operatorSettings.teams[i].AIDA.ETFailThreshold / 100);
+                }
+            }
+            return ft;
         },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
@@ -828,14 +848,14 @@ $(document).ready(function () {
             "taskPrty": sim.opPriority,
             "teamComm": sim.teamComm,
             "humanError": sim.humanError,
-            "ECC": [0.5],
+            "ECC": sim.teamFailThreshold,
 
             "AIDAtype": [
                 [0, 1, 0]
             ],
             "ETServiceTime": sim.ETServiceTime,
-            "ETErrorRate": [0],
-            "ETFailThreshold": [0.5],
+            "ETErrorRate": sim.ETErrorRate,
+            "ETFailThreshold": sim.ETFailThreshold,
             "IAtasks": [
                 [0, 1]
             ],
