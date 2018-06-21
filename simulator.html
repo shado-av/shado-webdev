@@ -750,13 +750,35 @@
                                 </select>
                             </div>
                             <div class="form-group form-row" v-show="team.strategy === 'PRTY'">
-                                <!-- operator task checklist (team.tasks) -->           <div class="col form-group" v-for="n in taskSettings.numPhases">
-                                    <label class="mb-3">Priority for Phase {{n}}</label>
-                                    <draggable v-model="team.priority[n-1]" :options="{draggable:'.item'}">
-                                        <div class="item mb-2" v-for="i in team.priority[n-1]" v-show="taskSettings.tasks[i].include">
-                                            <i class="fas fa-arrows-alt"></i>   <span :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</span>
+                                <!-- adjust priority task per phase(team.tasks) -->
+                                <div class="col form-group">
+                                    <label class="mb-3">Task</label>
+                                    <div class="traffic-levels">
+                                        <div class="input-group traffic-level" v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+
+                                            <div class="input-group-text">
+                                                {{ task.name }}
+                                            </div>
+
                                         </div>
-                                    </draggable>
+                                    </div>
+                                </div>
+                                <div class="col form-group" v-for="n in taskSettings.numPhases">
+                                    <label class="mb-3">Priority for Phase {{n}}</label>
+
+                                    <div class="traffic-levels">
+                                        <div class="input-group traffic-level" v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                            <select class="custom-select" v-model.number="team.priority[n-1][i]">
+                                                <option value="7">Essential</option>
+                                                <option value="6">High</option>
+                                                <option value="5">Moderate</option>
+                                                <option value="4">Neutral</option>
+                                                <option value="3">Somewhat</option>
+                                                <option value="2">Low</option>
+                                                <option value="1">Not a Priority</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
