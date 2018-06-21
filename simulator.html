@@ -790,7 +790,7 @@
                             <div class="form-group">
                                 <div class="mb-3">For every error, what is the chance that the team will catch it?</div>
                                 <div class="number-input">
-                                  <button @click="stepNumberInput(team,0, 100, -10)"></button>
+                                  <button @click="stepNumberInput(team,0, 100, -10)" class="minus"></button>
                                   <input class="quantity" min="0"  max="100" type="number" @change="validateInput(team, 0, 100)" v-model.number="team.failThresh">
                                   <button @click="stepNumberInput(team,0, 100, 10)" class="plus"></button>
                                   <div class="input-group-append">
