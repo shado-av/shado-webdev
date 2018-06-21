@@ -470,6 +470,16 @@ var sim = new Vue({
             }
             return st;
         },
+        // array containing ET Service Time
+        ETServiceTime() {
+            var st = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.ETServiceTime) {
+                    st.push(this.operatorSettings.teams[i].AIDA.ETServiceTime);
+                }
+            }
+            return st;
+        },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
          * ------------------------------ */
@@ -823,20 +833,18 @@ $(document).ready(function () {
             "AIDAtype": [
                 [0, 1, 0]
             ],
-            "ETServiceTime": [0],
+            "ETServiceTime": sim.ETServiceTime,
             "ETErrorRate": [0],
-            "ETFailThreshold": sim.teamFailThreshold,
+            "ETFailThreshold": [0.5],
             "IAtasks": [
                 [0, 1]
             ],
             "IALevel": ["S"],
             "TCALevel": ["S"],
 
-
             "fleetTypes": sim.fleetSettings.fleetTypes,
             "numvehicles": sim.numVehicles,
             "autolvl": sim.fleetAutoLevel,
-            "intervalPhases": sim.taskSettings.intervalPhases,
             "fleetHetero": sim.fleetHetero,
 
             "numTaskTypes": sim.numTaskTypes,
