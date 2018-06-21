@@ -146,11 +146,15 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
+<<<<<<< HEAD
                         priority: [
                             [0, 1, 2],
                             [0, 1, 2],
                             [0, 1, 2]
                         ],
+=======
+                        priority: [[1, 1, 1],[1,2,3],[1,1,2]],
+>>>>>>> hanwiz/master
                         AIDA: {
                             equalOperator: false,
                             ETServiceTime: 0,
@@ -170,11 +174,15 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
+<<<<<<< HEAD
                         priority: [
                             [0, 1, 2],
                             [0, 1, 2],
                             [0, 1, 2]
                         ],
+=======
+                        priority: [[1, 1, 1],[1,2,3],[1,1,2]],
+>>>>>>> hanwiz/master
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: false,
@@ -575,8 +583,13 @@ var sim = new Vue({
         getTaskArray() {
             var task = [];
 
+<<<<<<< HEAD
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 task.push(i);
+=======
+            for(i=0;i<this.taskSettings.tasks.length;i++) {
+                task.push(1);
+>>>>>>> hanwiz/master
             }
 
             return task;
@@ -621,7 +634,7 @@ var sim = new Vue({
             // add priority for each operatorSettings.teams
             for (var j = 0; j < this.taskSettings.numPhases; j++) {
                 for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                    this.operatorSettings.teams[i].priority[j].push(this.taskSettings.tasks.length - 1);
+                    this.operatorSettings.teams[i].priority[j].push(1);
                 }
             }
         },
