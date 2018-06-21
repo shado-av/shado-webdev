@@ -417,22 +417,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-form-label">Is this task essential? An essential task can interrupt any other tasks but is not interruptable.</label>
-                                <div>
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
-                                            value="y" v-model="task.essential">
-                                        <label class="custom-control-label" :for="'task-' + index + 'essential-y'">Yes</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-n'"
-                                            value="n" v-model="task.essential">
-                                        <label class="custom-control-label" :for="'task-' + index + 'essential-n'">No</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group" v-show="task.essential==='n'">
                                 <label class="col-form-label">Is this task interruptable?</label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
