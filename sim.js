@@ -22,7 +22,11 @@ var sim = new Vue({
 
         taskSettings: {
             numPhases: 3, // number of phases
-            intervalPhases: [[0,0.5],[0.5,7.5],[7.5,8]], // hours of phases
+            intervalPhases: [
+                [0, 0.5],
+                [0.5, 7.5],
+                [7.5, 8]
+            ], // hours of phases
             tasks: // array of individual task objects
                 [{
                         name: "Communicating",
@@ -32,12 +36,28 @@ var sim = new Vue({
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
+                        arrivalParam: [
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
+                            [0.033333, 0.1]
+                        ],
                         serviceDistribution: ["U", "U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2], [0.5, 2]],
+                        serviceParam: [
+                            [0.5, 2],
+                            [0.5, 2],
+                            [0.5, 2]
+                        ],
                         expireDistribution: ["E", "E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184],[0, 0.184]],
+                        expireParamDefault: [
+                            [0, 0.184],
+                            [0, 0.184],
+                            [0, 0.184]
+                        ],
+                        expireParamExo: [
+                            [0, 0.184],
+                            [0, 0.184],
+                            [0, 0.184]
+                        ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
@@ -50,12 +70,28 @@ var sim = new Vue({
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
+                        arrivalParam: [
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
+                            [0.033333, 0.1]
+                        ],
                         serviceDistribution: ["U", "U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2], [0.5, 2]],
+                        serviceParam: [
+                            [0.5, 2],
+                            [0.5, 2],
+                            [0.5, 2]
+                        ],
                         expireDistribution: ["E", "E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184],[0, 0.184]],
+                        expireParamDefault: [
+                            [0, 0.184],
+                            [0, 0.184],
+                            [0, 0.184]
+                        ],
+                        expireParamExo: [
+                            [0, 0.184],
+                            [0, 0.184],
+                            [0, 0.184]
+                        ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
@@ -68,12 +104,28 @@ var sim = new Vue({
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E"],
-                        arrivalParam: [[0.033333, 0.1], [0.033333, 0.1], [0.033333, 0.1]],
+                        arrivalParam: [
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
+                            [0.033333, 0.1]
+                        ],
                         serviceDistribution: ["U", "U", "U"],
-                        serviceParam: [[0.5, 2], [0.5, 2], [0.5, 2]],
+                        serviceParam: [
+                            [0.5, 2],
+                            [0.5, 2],
+                            [0.5, 2]
+                        ],
                         expireDistribution: ["E", "E", "E"],
-                        expireParamDefault: [[0, 0.184],[0, 0.184],[0, 0.184]],
-                        expireParamExo: [[0, 0.184],[0, 0.184],[0, 0.184]],
+                        expireParamDefault: [
+                            [0, 0.184],
+                            [0, 0.184],
+                            [0, 0.184]
+                        ],
+                        expireParamExo: [
+                            [0, 0.184],
+                            [0, 0.184],
+                            [0, 0.184]
+                        ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0],
                         humanErrorProb: [0.0004, 0.00008, 0.007]
@@ -94,7 +146,11 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
-                        priority: [[0, 1, 2],[0,1,2],[0,1,2]],
+                        priority: [
+                            [0, 1, 2],
+                            [0, 1, 2],
+                            [0, 1, 2]
+                        ],
                         AIDA: {
                             equalOperator: false,
                             ETServiceTime: 0,
@@ -114,7 +170,11 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
-                        priority: [[0, 1, 2],[0,1,2],[0,1,2]],
+                        priority: [
+                            [0, 1, 2],
+                            [0, 1, 2],
+                            [0, 1, 2]
+                        ],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: false,
@@ -372,7 +432,9 @@ var sim = new Vue({
                 if (this.operatorSettings.teams[i].priority) {
                     prty.push(this.operatorSettings.teams[i].priority);
                 } else {
-                    prty.push([[]]);
+                    prty.push([
+                        []
+                    ]);
                 }
             }
             return prty;
@@ -407,6 +469,36 @@ var sim = new Vue({
                 }
             }
             return st;
+        },
+        // array containing ET Service Time
+        ETServiceTime() {
+            var st = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.ETServiceTime) {
+                    st.push(this.operatorSettings.teams[i].AIDA.ETServiceTime / 100);
+                }
+            }
+            return st;
+        },
+        //array contining Error Rate
+        ETErrorRate() {
+            var er = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.ETErrorRate) {
+                    er.push(this.operatorSettings.teams[i].AIDA.ETErrorRate / 100);
+                }
+            }
+            return er;
+        },
+        //array for fail threshold
+        ETFailThreshold() {
+            var ft = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.ETFailThreshold) {
+                    ft.push(this.operatorSettings.teams[i].AIDA.ETFailThreshold / 100);
+                }
+            }
+            return ft;
         },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
@@ -483,7 +575,7 @@ var sim = new Vue({
         getTaskArray() {
             var task = [];
 
-            for(i=0;i<this.taskSettings.tasks.length;i++) {
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 task.push(i);
             }
 
@@ -498,13 +590,29 @@ var sim = new Vue({
                 essential: "n",
                 interruptable: "n",
                 affTeamCoord: "n",
-                arrivalDistribution: ["E","E","E"],
-                arrivalParam: [[],[],[]],
-                serviceDistribution: ["E","E","E"],
-                serviceParam: [[],[],[]],
-                expireDistribution: ["E","E","E"],
-                expireParamDefault: [[],[],[]],
-                expireParamExo: [[],[],[]],
+                arrivalDistribution: ["E", "E", "E"],
+                arrivalParam: [
+                    [],
+                    [],
+                    []
+                ],
+                serviceDistribution: ["E", "E", "E"],
+                serviceParam: [
+                    [],
+                    [],
+                    []
+                ],
+                expireDistribution: ["E", "E", "E"],
+                expireParamDefault: [
+                    [],
+                    [],
+                    []
+                ],
+                expireParamExo: [
+                    [],
+                    [],
+                    []
+                ],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
                 humanErrorProb: []
@@ -516,7 +624,7 @@ var sim = new Vue({
                     this.operatorSettings.teams[i].priority[j].push(this.taskSettings.tasks.length - 1);
                 }
             }
-         },
+        },
 
         removeCustomTask(task) {
             if (confirm("Are you sure you want to delete this custom task?")) {
@@ -530,14 +638,14 @@ var sim = new Vue({
                     for (i = 0; i < this.operatorSettings.teams.length; i++) {
                         var priIndex = -1;
                         //console.log(this.operatorSettings.teams[i].priority, taskIndex);
-                        for (var j = 0; j< this.operatorSettings.teams[i].priority[k].length; j++) {
+                        for (var j = 0; j < this.operatorSettings.teams[i].priority[k].length; j++) {
                             if (this.operatorSettings.teams[i].priority[k][j] === taskIndex)
                                 priIndex = j;
                             else if (this.operatorSettings.teams[i].priority[k][j] > taskIndex)
                                 this.operatorSettings.teams[i].priority[k][j]--;
                         }
 
-                        if (priIndex !== -1)                            this.operatorSettings.teams[i].priority[k].splice(priIndex, 1);
+                        if (priIndex !== -1) this.operatorSettings.teams[i].priority[k].splice(priIndex, 1);
                         //console.log(this.operatorSettings.teams[i].priority);
                     }
                 }
@@ -561,7 +669,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
-                        priority: [tasks,tasks,tasks],
+                        priority: [tasks, tasks, tasks],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: false,
@@ -613,29 +721,29 @@ var sim = new Vue({
             var numPhases = this.taskSettings.numPhases;
             var numHours = this.globalSettings.numHours;
 
-            for(let i=1;i<=3;i++) {
+            for (let i = 1; i <= 3; i++) {
                 this.$refs["interval-" + i].noUiSlider.updateOptions({
                     range: {
-			            'min': 0,
-			            'max': numHours
-		            }
-	            });
+                        'min': 0,
+                        'max': numHours
+                    }
+                });
             }
             // set last slider
             var tip = this.taskSettings.intervalPhases
             if (numPhases === 1) {
                 tip[0] = [0, numHours];
             } else {
-                tip[numPhases - 1] = [ tip[numPhases - 2][1], numHours];
+                tip[numPhases - 1] = [tip[numPhases - 2][1], numHours];
             }
-            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases-1]);
+            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases - 1]);
         },
         onChangeNumPhases() {
             var numPhases = this.taskSettings.numPhases;
             var numHours = this.globalSettings.numHours;
 
             // right slider enable
-            for(let i=1;i<numPhases;i++) {
+            for (let i = 1; i < numPhases; i++) {
                 this.$refs["interval-" + i].getElementsByClassName("noUi-origin")[1].removeAttribute('disabled');
             }
             // right-slider of last slider disabled
@@ -646,9 +754,9 @@ var sim = new Vue({
             if (numPhases === 1) {
                 tip[0] = [0, numHours];
             } else {
-                tip[numPhases - 1] = [ tip[numPhases - 2][1], numHours];
+                tip[numPhases - 1] = [tip[numPhases - 2][1], numHours];
             }
-            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases-1]);
+            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases - 1]);
         },
         stepNumberInput(team, min, max, step) {
             var val = team.failThresh + step;
@@ -664,12 +772,12 @@ var sim = new Vue({
         }
     },
 
-    mounted: function() {
+    mounted: function () {
         //for(let i=1;i<=this.taskSettings.numPhases;i++) {
-        for(let i=1;i<=3;i++) {
+        for (let i = 1; i <= 3; i++) {
             //console.log(this.$refs["interval-" + i]);
             noUiSlider.create(this.$refs["interval-" + i], {
-                start: [this.taskSettings.intervalPhases[i-1][0], this.taskSettings.intervalPhases[i-1][1]],
+                start: [this.taskSettings.intervalPhases[i - 1][0], this.taskSettings.intervalPhases[i - 1][1]],
                 step: 0.5,
                 range: {
                     'min': 0,
@@ -679,37 +787,39 @@ var sim = new Vue({
                 pips: {
                     mode: 'steps',
                     values: [0, 8],
-                    filter: function( value, type ){
-	                           return value * 2 % 2 ? 0 : 1;
-                            },
-                    format: wNumb({ decimal: 1}),
+                    filter: function (value, type) {
+                        return value * 2 % 2 ? 0 : 1;
+                    },
+                    format: wNumb({
+                        decimal: 1
+                    }),
                     density: 100
                 }
             });
 
-            this.$refs["interval-" + i].noUiSlider.on('update',(values, handle) => {
+            this.$refs["interval-" + i].noUiSlider.on('update', (values, handle) => {
                 var val = parseFloat(values[handle]);
                 var tip = this.taskSettings.intervalPhases;
-                if (i>1 && handle===0) {
-                    if (tip[i-2][1] !== val) {
-                        tip[i-2][1] = val;
+                if (i > 1 && handle === 0) {
+                    if (tip[i - 2][1] !== val) {
+                        tip[i - 2][1] = val;
                         setTimeout(() => {
-                            this.$refs["interval-" + (i-1)].noUiSlider.set(tip[i-2]);
+                            this.$refs["interval-" + (i - 1)].noUiSlider.set(tip[i - 2]);
                         }, 100);
                     }
                 }
-                if (i<this.taskSettings.numPhases && handle===1) {
+                if (i < this.taskSettings.numPhases && handle === 1) {
                     if (tip[i][0] !== val) {
                         tip[i][0] = val;
                         //console.log(this.$refs["interval-" + (i+1)][0], tip[i]);
                         setTimeout(() => {
-                            this.$refs["interval-" + (i+1)]
-                            .noUiSlider.set(tip[i]);
+                            this.$refs["interval-" + (i + 1)]
+                                .noUiSlider.set(tip[i]);
                         }, 100);
                     }
                 }
-                tip[i-1].splice(handle, 1, val);
-           });
+                tip[i - 1].splice(handle, 1, val);
+            });
         }
         // left-slider of first slider disabled
         this.$refs["interval-1"].getElementsByClassName("noUi-origin")[0].setAttribute('disabled', true);
@@ -725,39 +835,51 @@ $(document).ready(function () {
             "numHours": sim.globalSettings.numHours,
             "traffic": sim.traffic,
             "numReps": sim.numReps,
-            "numRemoteOp": sim.numRemoteOp,
+            "numPhases": sim.taskSettings.numPhases,
+            "phaseBegin": [0],
+            "hasExogenous": sim.hasExogenous,
+
             "numTeams": sim.operatorSettings.numTeams,
+            "teamSize": sim.teamSize,
+            "numRemoteOp": sim.numRemoteOp,
+            "opNames": sim.opNames,
+            "opStrats": sim.teamStrategy,
+            "opTasks": sim.opTasks,
+            "taskPrty": sim.opPriority,
+            "teamComm": sim.teamComm,
+            "humanError": sim.humanError,
+            "ECC": sim.teamFailThreshold,
+
+            "AIDAtype": [
+                [0, 1, 0]
+            ],
+            "ETServiceTime": sim.ETServiceTime,
+            "ETErrorRate": sim.ETErrorRate,
+            "ETFailThreshold": sim.ETFailThreshold,
+            "IAtasks": [
+                [0, 1]
+            ],
+            "IALevel": ["S"],
+            "TCALevel": ["S"],
+
+            "fleetTypes": sim.fleetSettings.fleetTypes,
             "numvehicles": sim.numVehicles,
             "autolvl": sim.fleetAutoLevel,
-            "numPhases": sim.taskSettings.numPhases,
-            "intervalPhases": sim.taskSettings.intervalPhases,
-
-            "hasExogenous": sim.hasExogenous,
-            "exNames": ["Medical", "Weather"],
-            "exTypes": ["add_task", "long_serv"],
-
-            "failThreshold": sim.teamFailThreshold,
-            "opStrats": sim.teamStrategy,
-            "opNames": sim.opNames,
-            "opTasks": sim.opTasks,
-            "teamComm": sim.teamComm,
-            "teamSize": sim.teamSize,
-            "fleetTypes": sim.fleetSettings.fleetTypes,
             "fleetHetero": sim.fleetHetero,
 
             "numTaskTypes": sim.numTaskTypes,
             "taskNames": sim.taskNames,
-            "taskPrty": sim.opPriority,
             "arrDists": sim.arrDists,
             "arrPms": sim.arrPms,
             "serDists": sim.serDists,
             "serPms": sim.serPms,
             "expDists": sim.expDists,
-            "expPmsLo": sim.expPmsHi,
-            "expPmsHi": sim.expPmsHi,
+            "expPms": sim.expPmsHi,
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
-            "humanError": sim.humanError
+            "interruptable": [0, 0, 0],
+            "essential": [0, 0, 1]
+
         };
         console.log(out);
         //hide download
@@ -849,8 +971,8 @@ $(document).ready(function () {
             target = selectedTab[0].attributes.href.value;
         }
 
-        if ($(target +' input').length > 0)
-            $(target +' input')[0].focus();
+        if ($(target + ' input').length > 0)
+            $(target + ' input')[0].focus();
     })
 });
 
