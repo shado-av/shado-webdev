@@ -789,14 +789,7 @@
                         <form>
                             <div class="form-group">
                                 <div class="mb-3">For every error, what is the chance that the team will catch it?</div>
-                                <div class="number-input">
-                                  <button @click="stepNumberInput(team,0, 100, -10)" class="minus"></button>
-                                  <input class="quantity" min="0"  max="100" type="number" @change="validateInput(team, 0, 100)" v-model.number="team.failThresh">
-                                  <button @click="stepNumberInput(team,0, 100, 10)" class="plus"></button>
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                  </div>
-                                </div>
+                                <percentage-input v-bind:value.sync = "team.failThresh"></percentage-input>
                             </div>
                         </form>
 
@@ -829,27 +822,12 @@
                                 </div>
                             </div>
                             <div class="form-group" v-show="team.AIDA.equalOperator">
-                                <div class="mb-3">What percentage of the Service Time is affected by this AI?</div>
-                                <div class="input-group width-small mb-3">
-                                  <input class="form-control" min="0"  max="100" type="number" v-model.number="team.AIDA.ETServiceTime">
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                  </div>
-                                </div>
-                                <div class="mb-3">Error Rate</div>
-                                <div class="input-group width-small mb-3">
-                                  <input class="form-control" min="0"  max="100" type="number" v-model.number="team.AIDA.ETErrorRate">
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                  </div>
-                                </div>
-                                <div class="mb-3">Fail Threshold</div>
-                                <div class="input-group width-small mb-3">
-                                  <input class="form-control" min="0"  max="100" type="number" v-model.number="team.AIDA.ETFailThreshold">
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                  </div>
-                                </div>
+                                <div class="">What percentage of the Service Time is affected by this AI?</div>
+                                <percentage-input v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
+                                <div class="">Error Rate</div>
+                                <percentage-input v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
+                                <div class="">Fail Threshold</div>
+                                <percentage-input v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
                             </div>
                             <!-- assisting individuals (AIDA.assistingIndividuals) -->
                             <div class="form-group">
