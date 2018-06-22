@@ -210,7 +210,7 @@ var sim = new Vue({
                             assistingTeamCoord: false,
                             TCALevel: []
                         },
-                        failThresh: 50
+                        failThresh: [50,50,50]
                     },
                     {
                         name: "Operator Team",
@@ -228,7 +228,7 @@ var sim = new Vue({
                             assistingIndividuals: false,
                             assistingTeamCoord: false
                         },
-                        failThresh: 50
+                        failThresh: [50,50,50]
                     }
                 ]
         },
@@ -511,7 +511,12 @@ var sim = new Vue({
             var ft = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].failThresh) {
-                    ft.push(this.operatorSettings.teams[i].failThresh / 100);
+                    var teamft = [];
+                    for(var n of this.operatorSettings.teams[i].failThresh) {
+                        console.log(n);
+                        teamft.push(n / 100);
+                    }
+                    ft.push(teamft);
                 }
             }
             return ft;
@@ -718,6 +723,11 @@ var sim = new Vue({
             var teams = this.operatorSettings.teams;
             if (this.operatorSettings.numTeams > teams.length) {
                 var tasks = sim.getTaskArray();
+                var ft = [];
+
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    ft.push(50);
+                }
                 while (teams.length < this.operatorSettings.numTeams) {
                     teams.push({
                         name: "Operator Team",
@@ -731,7 +741,7 @@ var sim = new Vue({
                             assistingIndividuals: false,
                             assistingTeamCoord: false
                         },
-                        failThresh: 50
+                        failThresh: ft
                     })
                 }
             } else {
@@ -813,18 +823,6 @@ var sim = new Vue({
                 tip[numPhases - 1] = [tip[numPhases - 2][1], numHours];
             }
             this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases - 1]);
-        },
-        stepNumberInput(team, min, max, step) {
-            var val = team.failThresh + step;
-            if (val <= min) val = min;
-            if (val >= max) val = max;
-            team.failThresh = val;
-        },
-        validateInput(team, min, max) {
-            var val = team.failThresh;
-            if (val <= min) val = min;
-            if (val >= max) val = max;
-            team.failThresh = val;
         }
     },
 

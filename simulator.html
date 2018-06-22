@@ -788,8 +788,11 @@
                         <!-- fail threshold (team.failThresh) -->
                         <form>
                             <div class="form-group">
-                                <div class="mb-3">For every error, what is the chance that the team will catch it?</div>
-                                <percentage-input v-bind:value.sync = "team.failThresh"></percentage-input>
+                                <div class="mb-3">For every error, what is the chance that the team will catch it for each task?</div>
+                                <div class="row custom-control custom-checkbox item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
+                                    <label class="col">{{task.name}}</label>
+                                    <percentage-input class="col" v-bind:value.sync = "team.failThresh[i-1]"></percentage-input>
+                                </div>
                             </div>
                         </form>
 
