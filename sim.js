@@ -497,13 +497,10 @@ var sim = new Vue({
 
         opPriority() {
             var prty = [];
-            for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                if (this.operatorSettings.teams[i].priority) {
-                    prty.push(this.operatorSettings.teams[i].priority);
-                } else {
-                    prty.push([
-                        []
-                    ]);
+            for (var j=0; j<this.taskSettings.numPhases; j++) {
+                prty.push([]);
+                for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                    prty[j].push(this.operatorSettings.teams[i].priority[j]);
                 }
             }
             return prty;
