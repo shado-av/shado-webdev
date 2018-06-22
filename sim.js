@@ -342,9 +342,12 @@ var sim = new Vue({
         // array containing all task arrival time distributions
         arrDists() {
             var dists = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].arrivalDistribution && this.taskSettings.tasks[i].include) {
-                    dists.push(this.taskSettings.tasks[i].arrivalDistribution);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                dists.push([]);
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].arrivalDistribution && this.taskSettings.tasks[i].include) {
+                        dists[j].push(this.taskSettings.tasks[i].arrivalDistribution[j]);
+                    }
                 }
             }
             return dists;
@@ -353,9 +356,12 @@ var sim = new Vue({
         // array containing all task arrival time parameters
         arrPms() {
             var params = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].arrivalParam && this.taskSettings.tasks[i].include) {
-                    params.push(this.taskSettings.tasks[i].arrivalParam);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                params.push([]);
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].arrivalParam && this.taskSettings.tasks[i].include) {
+                        params[j].push(this.taskSettings.tasks[i].arrivalParam[j]);
+                    }
                 }
             }
             return params;
@@ -364,9 +370,12 @@ var sim = new Vue({
         // array containing all task service time distributions
         serDists() {
             var dists = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].serviceDistribution && this.taskSettings.tasks[i].include) {
-                    dists.push(this.taskSettings.tasks[i].serviceDistribution);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                dists.push([]);
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].serviceDistribution && this.taskSettings.tasks[i].include) {
+                        dists[j].push(this.taskSettings.tasks[i].serviceDistribution[j]);
+                    }
                 }
             }
             return dists;
@@ -375,9 +384,12 @@ var sim = new Vue({
         // array containing all task service time parameters
         serPms() {
             var params = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].serviceParam && this.taskSettings.tasks[i].include) {
-                    params.push(this.taskSettings.tasks[i].serviceParam);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                params.push([]);
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].serviceParam && this.taskSettings.tasks[i].include) {
+                        params[j].push(this.taskSettings.tasks[i].serviceParam[j]);
+                    }
                 }
             }
             return params;
@@ -386,20 +398,26 @@ var sim = new Vue({
         // array containing all task expiration time distributions
         expDists() {
             var dists = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].expireDistribution && this.taskSettings.tasks[i].include) {
-                    dists.push(this.taskSettings.tasks[i].expireDistribution);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                dists.push([]);
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].expireDistribution && this.taskSettings.tasks[i].include) {
+                        dists[j].push(this.taskSettings.tasks[i].expireDistribution[j]);
+                    }
                 }
             }
             return dists;
         },
 
         // array containing all task expiration time parameters
-        expPmsHi() {
+        expPms() {
             var params = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].expireParamDefault && this.taskSettings.tasks[i].include) {
-                    params.push(this.taskSettings.tasks[i].expireParamDefault);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                params.push([]);
+                for (var i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].expireParamDefault && this.taskSettings.tasks[i].include) {
+                        params[j].push(this.taskSettings.tasks[i].expireParamDefault[j]);
+                    }
                 }
             }
             return params;
@@ -429,9 +447,11 @@ var sim = new Vue({
         // array containing all task human error probabilities
         humanError() {
             var probs = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {
-                    probs.push(this.taskSettings.tasks[i].humanErrorProb);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                probs.push([]);
+                for (var i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {                        probs[j].push(this.taskSettings.tasks[i].humanErrorProb[j]);
+                    }
                 }
             }
             return probs;
@@ -936,7 +956,7 @@ $(document).ready(function () {
             "serDists": sim.serDists,
             "serPms": sim.serPms,
             "expDists": sim.expDists,
-            "expPms": sim.expPmsHi,
+            "expPms": sim.expPms,
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
             "interruptable": [0, 0, 0],
