@@ -208,7 +208,7 @@ var sim = new Vue({
                         comms: "N",
                         tasks: [0, 1],
                         priority: [
-                            [1, 1, 1],
+                            [1, 4, 7],
                             [1, 2, 3],
                             [1, 1, 2]
                         ],
@@ -526,8 +526,7 @@ var sim = new Vue({
                 if (this.operatorSettings.teams[i].failThresh) {
                     var teamft = [];
                     for(var n of this.operatorSettings.teams[i].failThresh) {
-                        console.log(n);
-                        teamft.push(n / 100);
+                         teamft.push(n / 100);
                     }
                     ft.push(teamft);
                 }
@@ -917,16 +916,16 @@ $(document).ready(function () {
             "ECC": sim.teamFailThreshold,
 
             "AIDAtype": [
-                [0, 1, 0]
+                [0, 1, 0], [0, 1, 0]
             ],
             "ETServiceTime": sim.ETServiceTime,
             "ETErrorRate": sim.ETErrorRate,
             "ETFailThreshold": sim.ETFailThreshold,
             "IAtasks": [
-                [0, 1]
+                [0, 1], [1, 2]
             ],
-            "IALevel": ["S"],
-            "TCALevel": ["S"],
+            "IALevel": ["S", "S"],
+            "TCALevel": ["S", "S"],
 
             "fleetTypes": sim.fleetSettings.fleetTypes,
             "numvehicles": sim.numVehicles,
@@ -995,7 +994,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize("data.json", "#results-test");
+                BoxPlot.visualize("http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON", "#results-test");
             },
             failure: function (errMsg) {
                 alert(errMsg);
