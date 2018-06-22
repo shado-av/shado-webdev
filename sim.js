@@ -466,6 +466,14 @@ var sim = new Vue({
             return tasks;
         },
 
+        phaseBegin() {
+            var pb = [];
+            for (i = 0; i < this.taskSettings.numPhases; i++) {
+                pb.push(this.taskSettings.intervalPhases[i][0]);
+            }
+            return pb;
+        },
+
         opPriority() {
             var prty = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
@@ -876,7 +884,7 @@ $(document).ready(function () {
             "traffic": sim.traffic,
             "numReps": sim.numReps,
             "numPhases": sim.taskSettings.numPhases,
-            "phaseBegin": [0],
+            "phaseBegin": sim.phaseBegin,
             "hasExogenous": sim.hasExogenous,
 
             "numTeams": sim.operatorSettings.numTeams,
