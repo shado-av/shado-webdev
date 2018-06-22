@@ -688,7 +688,7 @@ var sim = new Vue({
                 ],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
-                humanErrorProb: []
+                humanErrorProb: [[]]
             });
 
             // add priority for each operatorSettings.teams
