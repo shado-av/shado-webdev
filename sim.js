@@ -108,7 +108,12 @@ var sim = new Vue({
                         ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007]
+                        ]
+
                     },
                     {
                         name: "Actuation",
@@ -142,7 +147,11 @@ var sim = new Vue({
                         ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                        humanErrorProb: [
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007]
+                         ]
                     },
                     {
                         name: "Directive Mandatory",
@@ -176,7 +185,11 @@ var sim = new Vue({
                         ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0],
-                        humanErrorProb: [0.0004, 0.00008, 0.007]
+                         humanErrorProb: [
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007]
+                         ]
                     }
                 ]
         },
