@@ -194,7 +194,11 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
-                        priority: [[1, 1, 1],[1,2,3],[1,1,2]],
+                        priority: [
+                            [1, 1, 1],
+                            [1, 2, 3],
+                            [1, 1, 2]
+                        ],
                         AIDA: {
                             equalOperator: false,
                             ETServiceTime: 0,
@@ -214,7 +218,11 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
-                        priority: [[1, 1, 1],[1,2,3],[1,1,2]],
+                        priority: [
+                            [1, 1, 1],
+                            [1, 2, 3],
+                            [1, 1, 2]
+                        ],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: false,
@@ -623,7 +631,7 @@ var sim = new Vue({
         getTaskArray() {
             var task = [];
 
-            for(i=0;i<this.taskSettings.tasks.length;i++) {
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
                 task.push(1);
             }
 
@@ -889,7 +897,6 @@ $(document).ready(function () {
 
             "numTeams": sim.operatorSettings.numTeams,
             "teamSize": sim.teamSize,
-            "numRemoteOp": sim.numRemoteOp,
             "opNames": sim.opNames,
             "opStrats": sim.teamStrategy,
             "opTasks": sim.opTasks,
