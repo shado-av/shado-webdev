@@ -1011,7 +1011,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize("http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON", "#results-test");
+                BoxPlot.visualize("http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON", "#boxSVG");
             },
             failure: function (errMsg) {
                 alert(errMsg);

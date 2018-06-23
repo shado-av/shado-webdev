@@ -224,10 +224,6 @@ var BoxPlot = (function() {
     var totalWidth = width + margin.left + margin.right;
     var totalheight = height + margin.top + margin.bottom;
 
-    // parse json file into groupCounts
-    var groupCounts = {};
-    var globalCounts = [];
-
     var boxQuartiles = function(d) {
             return [
                 d3.quantile(d, .25),
@@ -246,6 +242,9 @@ var BoxPlot = (function() {
             // save the json into jsonData for later use of stacked bar charts
             StackedBarChart.initStackedBarChart(json);
 
+            // parse json file into groupCounts
+            var groupCounts = {};
+            var globalCounts = [];
             for (var i = 0; i < json.averageUtilization.length; i++) {
                 var key = json.operatorName[i];
                 groupCounts[key] = json.averageUtilization[i];
@@ -295,11 +294,13 @@ var BoxPlot = (function() {
                 .range([height, 0]);
 
             // Setup the svg and group we will draw the box plot in
-            var svg = d3.select(element).append("svg")
-                .attr("width", totalWidth)
-                .attr("height", totalheight)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            var svg = d3.select(element);
+            svg.selectAll("*").remove();
+
+            svg.attr("width", totalWidth)
+               .attr("height", totalheight)
+               .append("g")
+               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             // Move the left axis over 25 pixels, and the top axis over 35 pixels
             var axisG = svg.append("g").attr("transform", "translate(25,0)");
@@ -364,11 +365,11 @@ var BoxPlot = (function() {
                         .style("opacity", .9);
 
                     div.html("Group: " + d.key +
-                            "<br/>Max: " + d.whiskers[1].toFixed(4) +
-                            "<br/>Q3: " + d.quartile[2].toFixed(4) +
-                            "<br/>Median: " + d.quartile[1].toFixed(4) +
-                            "<br/>Q1: " + d.quartile[0].toFixed(4) +
-                            "<br/>Min: " + d.whiskers[0].toFixed(4))
+                            "<br/>Max: " + (d.whiskers[1] * 100).toFixed(4) +
+                            "<br/>Q3: " + (d.quartile[2] * 100).toFixed(4) +
+                            "<br/>Median: " + (d.quartile[1] * 100).toFixed(4) +
+                            "<br/>Q1: " + (d.quartile[0] * 100).toFixed(4) +
+                            "<br/>Min: " + (d.whiskers[0] * 100).toFixed(4))
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                     //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
@@ -382,7 +383,8 @@ var BoxPlot = (function() {
                 })
                 .on("click", function (d, i) {
                     //console.log("open Modal");
-                    StackedBarChart.drawStackedBarChart(json, i,            d3.select("#replicationSlider").property("value") - 1);
+                    StackedBarChart.drawStackedBarChart(json, i,
+                        d3.select("#replicationSlider").property("value") - 1);
                     $('#stackedBC').modal();
                 });
 
@@ -455,8 +457,9 @@ var BoxPlot = (function() {
             // Setup a scale on the left
             var axisLeft = d3.axisLeft(yScale);
             axisG.append("g")
-                .call(axisLeft);
-
+                .call(axisLeft.ticks(null, 's').tickFormat(function (d) {
+                return d3.format(".2f")(d * 100);
+            }));
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
             axisBG.append("g")
@@ -466,7 +469,7 @@ var BoxPlot = (function() {
             svg.append("text")
                 .attr("transform",
                     "translate(" + (width / 2) + " ," +
-                    (height + margin.bottom - 10) + ")")
+                    (height + margin.bottom) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
                 .text("Operator Name");

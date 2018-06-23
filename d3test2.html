@@ -67,6 +67,10 @@ div.modal-dialog.modal-lg {
     background: #4CAF50;
     cursor: pointer;
 }
+
+#boxSVG {
+    padding-left: 50px;
+}
 </style>
 <!-- Bootstrap 4.0.0 libraries -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -103,10 +107,12 @@ div.modal-dialog.modal-lg {
 
         </div>
     </div>
+    <svg id="boxSVG" width="960" height="450"></svg>
+
     <script src='result.js'></script>
     <script>
         $(function() {
-            BoxPlot.visualize('data.json', 'body');
+            BoxPlot.visualize('data.json', '#boxSVG');
         });
     </script>
 </body>
