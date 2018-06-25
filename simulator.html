@@ -631,7 +631,7 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <form @submit.prevent  v-for="n in taskSettings.numPhases">
+                        <form @submit.prevent v-for="n in taskSettings.numPhases">
                             <label>Phase {{n}}</label>
                             <div class="form-group form-row">
                                 <div class="col-sm-4">
@@ -792,7 +792,7 @@
                                 <div class="mb-3">For every error, what is the chance that the team will catch it for each task?</div>
                                 <div class="row custom-control custom-checkbox item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
                                     <label class="col">{{task.name}}</label>
-                                    <percentage-input class="col" v-bind:value.sync = "team.failThresh[i-1]"></percentage-input>
+                                    <percentage-input class="col" v-bind:value.sync="team.failThresh[i-1]"></percentage-input>
                                 </div>
                             </div>
                         </form>
@@ -867,7 +867,8 @@
                             <div class="form-group" v-show="team.AIDA.assistingTeamCoord">
                                 <div class="mb-3">What is the level of this AI?</div>
                                 <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-some" value="S" v-model="team.AIDA.TCALevel">                 <label class="custom-control-label" for="assist-team-levels-some">Some</label>
+                                    <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-some" value="S" v-model="team.AIDA.TCALevel">
+                                    <label class="custom-control-label" for="assist-team-levels-some">Some</label>
                                 </div>
                                 <div class="custom-control custom-control-inline custom-radio mr-0">
                                     <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-full" value="F" v-model="team.AIDA.TCALevel">
@@ -1153,9 +1154,20 @@
             </div>
 
             <!-- // tab content -->
+            <div id="footer">
+                <div class="nav">
+                    <a class=" btn btn-small " href="# ">
+                        <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
+                    </a>
+                    <a class="btn btn-small " href="# ">
+                        <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
+                    </a>
+                </div>
+            </div>
+            <!-- // Vue app -->
+
         </div>
-        <!-- // Vue app -->
-    </div>
+
 </body>
 
 </html>
