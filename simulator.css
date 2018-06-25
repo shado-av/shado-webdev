@@ -1,4 +1,6 @@
-#shado-sim, .navbar, .container-fluid {
+#shado-sim,
+.navbar,
+.container-fluid {
     max-width: 1080px;
     margin: auto;
 }
@@ -75,7 +77,7 @@
 }
 
 #sim-nav {
-    overflow-y: scroll;
+    overflow: auto;
 }
 
 .nav-pills .nav-link {
@@ -277,10 +279,11 @@ div.modal-dialog.modal-lg {
     margin-top: 10px;
     margin-right: 10px;
 }
-    #replication span {
-        width: 50px;
-        display: inline-block;
-    }
+
+#replication span {
+    width: 50px;
+    display: inline-block;
+}
 
 .slider {
     -webkit-appearance: none;
@@ -317,85 +320,93 @@ div.modal-dialog.modal-lg {
 .interval {
     margin-top: 20px;
 }
+
 .interval .jslider {
     height: 60px;
     padding-left: 20px !important;
 }
 
-.form-control.width-small, .custom-select.width-small {
+.form-control.width-small,
+.custom-select.width-small {
     width: auto;
 }
 
 .form-group {
-    margin-bottom:2rem;
+    margin-bottom: 2rem;
 }
+
 .input-group.width-small {
     width: 150px;
 }
 
 /*https://stackoverflow.com/questions/45396280/customizing-increment-arrows-on-input-of-type-number-using-css*/
+
 .number-input input[type="number"] {
-  -webkit-appearance: textfield;
-     -moz-appearance: textfield;
-          appearance: textfield;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
+
 .number-input input[type=number]::-webkit-inner-spin-button,
 .number-input input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 .number-input {
-  display: inline-flex;
+    display: inline-flex;
 }
 
 .number-input,
 .number-input * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .number-input button {
-  outline:none;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  cursor: pointer;
-  margin: 0;
-  position: relative;
-  border: 1px solid #ddd;
+    outline: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+    border: 1px solid #ddd;
 }
 
 .number-input button.minus {
-  border-radius: .25rem 0 0 .25rem;
+    border-radius: .25rem 0 0 .25rem;
 }
 
 .number-input button:before,
 .number-input button:after {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  width: 1rem;
-  height: 2px;
-  background-color: #212121;
-  transform: translate(-50%, -50%);
+    display: inline-block;
+    position: absolute;
+    content: '';
+    width: 1rem;
+    height: 2px;
+    background-color: #212121;
+    transform: translate(-50%, -50%);
 }
+
 .number-input button.plus:after {
-  transform: translate(-50%, -50%) rotate(90deg);
+    transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .number-input input[type=number] {
-  font-family: sans-serif;
-  max-width: 5rem;
-  padding: .5rem;
-  border: solid #ddd;
-  border-width: 1px 0;
-  font-size: 1rem;
-  height: 2.5rem;
-  font-weight: normal;
-  text-align: center;
+    font-family: sans-serif;
+    max-width: 5rem;
+    padding: .5rem;
+    border: solid #ddd;
+    border-width: 1px 0;
+    font-size: 1rem;
+    height: 2.5rem;
+    font-weight: normal;
+    text-align: center;
 }
 
-#boxSVG { padding-left: 50px; }
+#boxSVG {
+    padding-left: 50px;
+}
