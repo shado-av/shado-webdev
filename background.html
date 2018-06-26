@@ -23,21 +23,19 @@
 
     <!------------ NAVIGATION ------------>
     <nav class="navbar fixed-top">
-        <div class="row">
-            <a class="navbar-brand col-12" href="index.html">
+        <div class="d-flex flex-row">
+            <a class="navbar-brand" href="index.html">
                 <img src="images/hal_light.png" height="40" alt="HAL Logo">
                 <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
                 <span id="brand-abbr">SHADO</span>
             </a>
         </div>
 
-        <div class="row">
-            <div class="ml-auto col-lg-12">
-                <a href="background.html" class="btn btn-outline-light" id="background-link">Background</a>
-                <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
-                <a href="help.html" class="btn btn-outline-light" id="help-link">Help</a>
-                <a href="contact-us.html" class="btn btn-outline-light" id="contact-us-link">Contact Us</a>
-            </div>
+        <div class="d-flex flex-row w-100">
+            <a href="background.html" class="ml-auto btn btn-outline-light" id="background-link">Background</a>
+            <a href="simulator.html" class="ml-2 btn btn-outline-light" id="simulator-link">Simulator</a>
+            <a href="help.html" class="ml-2 btn btn-outline-light" id="help-link">Help</a>
+            <a href="contact-us.html" class="ml-2 btn btn-outline-light" id="contact-us-link">Contact Us</a>
         </div>
     </nav>
 
@@ -109,6 +107,21 @@
 
                 </tbody>
             </table>
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Get Started</h5>
+                    <p class="card-text">
+                        If you're ready to get started, then run the simulator! And if you encounter any issues or have questions about the simulation, please
+                        <a href="#contact" class="card-link">contact us!</a>
+                    </p>
+                    <a href="simulator.html" class="btn btn-primary">Run Simulator</a>
+                </div>
+                <div class="card-footer">
+                    NOTE: This site is currently only compatible with Chrome and Firefox.
+                </div>
+            </div>
         </div>
     </div>
 
