@@ -16,11 +16,11 @@
 .navbar {
     background-color: #4981C7;
     box-sizing: border-box;
-    height: 64px;
+    height: 104px;
 }
 
 .spacer {
-    height: 64px;
+    height: 104px;
 }
 
 .navbar-brand {
@@ -68,9 +68,9 @@
 #sim-sidebar {
     width: 200px;
     position: fixed;
-    top: 64px;
+    top: 104px;
     left: auto;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 104px);
     transition: all 0.3s;
     background-color: #f8f9fa;
     padding: 30px 0;
