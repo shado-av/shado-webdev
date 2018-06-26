@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- custom CSS -->
     <link rel="stylesheet" href="simulator.css">
@@ -23,21 +22,19 @@
 
     <!------------ NAVIGATION ------------>
     <nav class="navbar fixed-top">
-        <div class="row">
-            <a class="navbar-brand col-12" href="index.html">
+        <div class="d-flex flex-row">
+            <a class="navbar-brand" href="index.html">
                 <img src="images/hal_light.png" height="40" alt="HAL Logo">
                 <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
                 <span id="brand-abbr">SHADO</span>
             </a>
         </div>
 
-        <div class="row">
-            <div class="ml-auto col-lg-12">
-                <a href="background.html" class="btn btn-outline-light" id="background-link">Background</a>
-                <a href="simulator.html" class="btn btn-outline-light" id="simulator-link">Simulator</a>
-                <a href="help.html" class="btn btn-outline-light" id="help-link">Help</a>
-                <a href="contact-us.html" class="btn btn-outline-light" id="contact-us-link">Contact Us</a>
-            </div>
+        <div class="d-flex flex-row w-100">
+            <a href="background.html" class="ml-auto btn btn-outline-light" id="background-link">Background</a>
+            <a href="simulator.html" class="ml-2 btn btn-outline-light" id="simulator-link">Simulator</a>
+            <a href="help.html" class="ml-2 btn btn-outline-light" id="help-link">Help</a>
+            <a href="contact-us.html" class="ml-2 btn btn-outline-light" id="contact-us-link">Contact Us</a>
         </div>
     </nav>
 
@@ -46,6 +43,24 @@
     <div class="container-fluid">
         <div class="row">
             <h2>Help</h2>
+            <p>
+                Help Text Needed...................... Welcome to the Simulator of Humans and Automation in Dispatch Operations (SHADO)! This tool, designed by Duke University researchers, simulates the workload of a dispatch operator and associated freight rail operators across the duration of a given shift. With SHADO, you can choose a trip with unique conditions and then see the operators' average workload after thousands of similar shifts.
+            </p>
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Get Started</h5>
+                    <p class="card-text">
+                        If you're ready to get started, then run the simulator! And if you encounter any issues or have questions about the simulation, please
+                        <a href="#contact" class="card-link">contact us!</a>
+                    </p>
+                    <a href="simulator.html" class="btn btn-primary">Run Simulator</a>
+                </div>
+                <div class="card-footer">
+                    NOTE: This site is currently only compatible with Chrome and Firefox.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -56,14 +71,11 @@
     <!------------ SCRIPTS ------------>
 
     <!-- jQuery 3.2.1 -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
     <!-- Bootstrap JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
