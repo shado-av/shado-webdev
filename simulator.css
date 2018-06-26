@@ -5,7 +5,7 @@
   margin: auto;
 }
 
-.footer {
+#footer {
   position: fixed;
   bottom: 77px;
   display: flex;
@@ -27,7 +27,7 @@
 }
 
 .spacer {
-    height: 104px;
+  height: 104px;
 }
 
 .navbar-brand {
@@ -73,14 +73,14 @@
 }
 
 #sim-sidebar {
-    width: 200px;
-    position: fixed;
-    top: 104px;
-    left: auto;
-    height: calc(100vh - 104px);
-    transition: all 0.3s;
-    background-color: #f8f9fa;
-    padding: 30px 0;
+  width: 200px;
+  position: fixed;
+  top: 104px;
+  left: auto;
+  height: calc(100vh - 104px);
+  transition: all 0.3s;
+  background-color: #f8f9fa;
+  padding: 30px 0;
 }
 
 #sim-nav {
