@@ -6,12 +6,16 @@
 }
 
 #footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+}
+.footer-wrapper {
   position: fixed;
   bottom: 77px;
-  display: flex;
-  justify-content: space-between;
 }
-
 .container-fluid {
   padding: 4%;
 }
@@ -21,7 +25,7 @@
 }
 
 .navbar {
-  background-color: #4981C7;
+  background-color: #4981c7;
   box-sizing: border-box;
   height: 104px;
 }
