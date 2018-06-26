@@ -1011,7 +1011,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize("http://apps.hal.pratt.duke.edu/out/Utilization.json", "#boxSVG");
+                BoxPlot.visualize("http://apps.hal.pratt.duke.edu/out/Utilization.json?" + new Date().getTime(), "#boxSVG");
             },
             failure: function (errMsg) {
                 alert(errMsg);
@@ -1055,7 +1055,20 @@ $(document).ready(function () {
 
         if ($(target + ' input').length > 0)
             $(target + ' input')[0].focus();
-    })
+    });
+
+    // In Firefox, mousewheel should not change the value of the input number
+    $('input[type=number]').on('wheel', function () {
+        var el = $(this);
+        var focused = el.is(":focus");
+        el.blur();
+        console.log("Scrolling?");
+        if (focused) {
+            setTimeout(function () {
+                el.focus();
+            }, 100);
+        }
+    });
 });
 
 function showDownloadBtn() {
