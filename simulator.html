@@ -576,7 +576,7 @@
                             <div class="form-group form-row" v-for="n in taskSettings.numPhases">
                                 <div class="col-3">
                                     <label :for="'task-' + index + 'exp-dist'">Expiration Time Phase {{n}}</label>
-                                    <select class="custom-select" :id="'task-' + index + 'exp-dist'" v-model="task.expireDistribution[n-1]" @change="task.expireParamDefault[n-1].splice(0)">
+                                    <select class="custom-select" :id="'task-' + index + 'exp-dist'" v-model="task.expireDistribution[n-1]" @change="task.expireParam[n-1].splice(0)">
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
@@ -584,46 +584,46 @@
                                     </select>
                                 </div>
 
-                                <!-- expiration time distribution parameters (task.expireParamDefault) -->
+                                <!-- expiration time distribution parameters (task.expireParam) -->
                                 <div class="col-9">
                                     <label>Distribution Parameters Phase {{n}}</label>
                                     <div v-if="task.expireDistribution[n-1] === 'E'" class="row no-gutters">
                                         <div class="col">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][0]">
                                             <small class="form-text text-muted">Mean</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[n-1] === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][0]">
                                             <small class="form-text text-muted">Mean</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][1]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][1]">
                                             <small class="form-text text-muted">Standard Deviation</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[n-1] === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][0]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][1]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][1]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[n-1] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][0]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][0]">
                                             <small class="form-text text-muted">Minimum</small>
                                         </div>
                                         <div class="col mx-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][1]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][1]">
                                             <small class="form-text text-muted">Mode</small>
                                         </div>
                                         <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParamDefault[n-1][2]">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][2]">
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
@@ -1090,7 +1090,7 @@
                                     </li>
                                     <li>Expiration Time:
                                         <b>{{task.expireDistribution}}</b>, Parameters:
-                                        <b>{{task.expireParamExo}}</b>
+                                        <b>{{task.expireParam}}</b>
                                     </li>
                                 </ul>
                                 <li>Traffic</li>

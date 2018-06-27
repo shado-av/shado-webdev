@@ -96,12 +96,7 @@ var sim = new Vue({
                             [0.5, 2]
                         ],
                         expireDistribution: ["E", "E", "E"],
-                        expireParamDefault: [
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184]
-                        ],
-                        expireParamExo: [
+                        expireParam: [
                             [0, 0.184],
                             [0, 0.184],
                             [0, 0.184]
@@ -135,12 +130,7 @@ var sim = new Vue({
                             [0.5, 2]
                         ],
                         expireDistribution: ["E", "E", "E"],
-                        expireParamDefault: [
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184]
-                        ],
-                        expireParamExo: [
+                        expireParam: [
                             [0, 0.184],
                             [0, 0.184],
                             [0, 0.184]
@@ -173,12 +163,7 @@ var sim = new Vue({
                             [0.5, 2]
                         ],
                         expireDistribution: ["E", "E", "E"],
-                        expireParamDefault: [
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184]
-                        ],
-                        expireParamExo: [
+                        expireParam: [
                             [0, 0.184],
                             [0, 0.184],
                             [0, 0.184]
@@ -415,8 +400,8 @@ var sim = new Vue({
             for (var j = 0; j < this.taskSettings.numPhases; j++) {
                 params.push([]);
                 for (var i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].expireParamDefault && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.taskSettings.tasks[i].expireParamDefault[j]);
+                    if (this.taskSettings.tasks[i].expireParam && this.taskSettings.tasks[i].include) {
+                        params[j].push(this.taskSettings.tasks[i].expireParam[j]);
                     }
                 }
             }
@@ -693,12 +678,7 @@ var sim = new Vue({
                     []
                 ],
                 expireDistribution: ["E", "E", "E"],
-                expireParamDefault: [
-                    [],
-                    [],
-                    []
-                ],
-                expireParamExo: [
+                expireParam: [
                     [],
                     [],
                     []
