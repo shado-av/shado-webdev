@@ -877,7 +877,7 @@
                                 <div class="form-group" v-show="team.AIDA.assistingIndividuals">
                                     <div class="mb-3">What tasks are this AI responsible for?</div>
                                     <div class="custom-control custom-checkbox item mb-2" v-for="i in team.tasks">
-                                        <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IAtasks">
+                                        <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
                                         <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
                                     </div>
                                     <div class="mb-3 mt-3">What is the level of this AI?</div>
@@ -1078,6 +1078,8 @@
                             role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
                             <ul>
+                                <li>Is this task affected by  team coordination?{{task.affTeamCoord}}</li>
+                                <li>Is this task interruptable?{{task.interruptable}}</li>
                                 <li>Distributions</li>
                                 <ul>
                                     <li>Arrival Time:
@@ -1095,9 +1097,6 @@
                                 </ul>
                                 <li>Traffic</li>
                                 <ul>
-                                    <li>Is task altered by traffic:
-                                        <b>{{task.affectedByTraffic}}</b>
-                                    </li>
                                     <li>Phase(s) where task is affected:
                                         <b>{{task.affectByIROPS}}</b>
                                     </li>
@@ -1141,12 +1140,25 @@
                                 <ul>
                                     <li>Equal Operator:
                                         <b>{{team.AIDA.equalOperator}}</b>
+                                        <ul v-show="team.AIDA.equalOperator">
+                                            <li>Affected Rate of Service Time : {{team.AIDA.ETServiceTime}} </li>
+                                            <li>Affected Rate of Error Rate : {{team.AIDA.ETErrorRate}} </li>
+                                            <li>Affected Rate of Fail Threshold : {{team.AIDA.ETFailThreshold}} </li>
+                                        </ul>
                                     </li>
+
                                     <li>Assisting Individuals:
                                         <b>{{team.AIDA.assistingIndividuals}}</b>
+                                        <ul v-show="team.AIDA.assistingIndividuals">
+                                            <li>Affected Tasks : {{team.AIDA.IATasks}} </li>
+                                            <li>Communication Level : {{team.AIDA.IALevel}} </li>
+                                        </ul>
                                     </li>
                                     <li>Assisting Team Coordination:
                                         <b>{{team.AIDA.assistingTeamCoord}}</b>
+                                        <ul v-show="team.AIDA.assistingTeamCoord">
+                                            <li>Communication Level : {{team.AIDA.TCALevel}} </li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </ul>
