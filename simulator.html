@@ -218,7 +218,7 @@
                                 <div class="modal-body">
                                     <div class="row reference">
                                         <div class="col-4">
-                                            <a href="#" data-dismiss="modal" @click="globalSettings.simType='aviation'">
+                                            <a class="col" href="#" @click="setSimType('aviation')">
                                                 <img src="images/airport.jpg" class="img-responsive" alt="">
                                                 <div class="overlay">
                                                     <h3 class="reference-title">Aviation</h3>
@@ -226,7 +226,7 @@
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a class="col" href="#" data-dismiss="modal" @click="globalSettings.simType='railroad'">
+                                            <a class="col" href="#" @click="setSimType('railroad')">
                                                 <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                                 <div class="overlay">
@@ -235,13 +235,13 @@
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a class="col" href="#" data-dismiss="modal" @click="globalSettings.simType='ground'">
+                                            <div>
                                                 <img src="images/station.jpg" class="img-responsive" alt="">
 
                                                 <div class="overlay">
                                                     <h3 class="reference-title">Ground Logistics</h3>
                                                 </div>
-                                            </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

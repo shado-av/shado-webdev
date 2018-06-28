@@ -699,10 +699,14 @@ var sim = new Vue({
                 arrivalParam: [
                     [],
                     [],
+                    [],
+                    [],
                     []
                 ],
                 serviceDistribution: ["E", "E", "E", "E", "E"],
                 serviceParam: [
+                    [],
+                    [],
                     [],
                     [],
                     []
@@ -711,11 +715,13 @@ var sim = new Vue({
                 expireParam: [
                     [],
                     [],
+                    [],
+                    [],
                     []
                 ],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
-                humanErrorProb: [[],[],[]]
+                humanErrorProb: [[],[],[],[],[]]
             });
 
             // add priority for each operatorSettings.teams
@@ -774,7 +780,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
-                        priority: [tasks, tasks, tasks],
+                        priority: [tasks, tasks, tasks,tasks,tasks],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: false,
@@ -862,6 +868,10 @@ var sim = new Vue({
                 tip[numPhases - 1] = [tip[numPhases - 2][1], numHours];
             }
             this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases - 1]);
+        },
+        setSimType(str) {
+            this.globalSettings.simType = str;
+            this.$nextTick(function(){$("#simType").modal('hide');});
         }
     },
 
