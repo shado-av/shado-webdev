@@ -57,7 +57,7 @@ var sim = new Vue({
          * ------------------------------ */
 
         globalSettings: {
-            simType: "railroad", // simulation type (aviation, railroad, ground)
+            simType: "Rail", // simulation type (aviation, railroad, ground)
             numHours: 8, // number of hours in shift (1 - 12)
             diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)

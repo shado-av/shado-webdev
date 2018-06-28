@@ -218,7 +218,7 @@
                                 <div class="modal-body">
                                     <div class="row reference">
                                         <div class="col-4">
-                                            <a class="col" href="#" @click="setSimType('aviation')">
+                                            <a class="col" href="#" @click="setSimType('Aviation')">
                                                 <img src="images/airport.jpg" class="img-responsive" alt="">
                                                 <div class="overlay">
                                                     <h3 class="reference-title">Aviation</h3>
@@ -226,7 +226,7 @@
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a class="col" href="#" @click="setSimType('railroad')">
+                                            <a class="col" href="#" @click="setSimType('Rail')">
                                                 <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                                 <div class="overlay">
@@ -238,7 +238,7 @@
                                             <div>
                                                 <img src="images/station.jpg" class="img-responsive" alt="">
 
-                                                <div class="overlay">
+                                                <div class="overlay invisible">
                                                     <h3 class="reference-title">Ground Logistics</h3>
                                                 </div>
                                             </div>
@@ -249,24 +249,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">1. Type of Simulation</label>
+                        <label class="col-form-label">1. </label>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#simType">
                             Choose Type of Simulation
                         </button>
-                        <div>
-                            <div class="custom-control custom-control-inline custom-radio">
-                                <input class="custom-control-input" type="radio" name="sim-type" id="sim-type-aviation" value="aviation" v-model="globalSettings.simType">
-                                <label class="custom-control-label" for="sim-type-aviation">Aviation</label>
-                            </div>
-                            <div class="custom-control custom-control-inline custom-radio">
-                                <input class="custom-control-input" type="radio" name="sim-type" id="sim-type-rail" value="railroad" v-model="globalSettings.simType">
-                                <label class="custom-control-label" for="sim-type-rail">Rail</label>
-                            </div>
-                            <div class="custom-control custom-control-inline custom-radio mr-0">
-                                <input class="custom-control-input" type="radio" name="sim-type" id="sim-type-ground" value="ground" v-model="globalSettings.simType">
-                                <label class="custom-control-label" for="sim-type-ground">Ground Logistics</label>
-                            </div>
-                        </div>
+                        {{globalSettings.simType}}
                     </div>
 
                     <!-- hours in shift (numHours) -->
