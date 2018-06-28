@@ -341,8 +341,15 @@
                                 <label for="num-hours">
                                     How many different phases do the operators have in their shift?
                                 </label>
-                                <input type="number" min="1" max="3" step="1" class="form-control width-small" id="num-phases" v-model.number="taskSettings.numPhases"
-                                    @input="onChangeNumPhases">
+                                <div>
+                                    <select class="custom-select width-150" id="num-phases" v-model.number="taskSettings.numPhases" @change="onChangeNumPhases" >
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- time interval of phases (intervalPhases) -->
@@ -372,6 +379,24 @@
                                 </div>
                                 <div class="col-md-3 text-center">
                                     Phase 3 {{taskSettings.intervalPhases[2]}}
+                                </div>
+                            </div>
+                            <div class="form-group form-row interval" v-show="4 <= taskSettings.numPhases">
+
+                                <div class="col-md-9 jslider">
+                                    <div id="interval-4" ref="interval-4"></div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    Phase 3 {{taskSettings.intervalPhases[3]}}
+                                </div>
+                            </div>
+                            <div class="form-group form-row interval" v-show="5 <= taskSettings.numPhases">
+
+                                <div class="col-md-9 jslider">
+                                    <div id="interval-5" ref="interval-5"></div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    Phase 3 {{taskSettings.intervalPhases[4]}}
                                 </div>
                             </div>
                         </form>
@@ -783,7 +808,7 @@
                             <div class="form-group form-row" v-show="team.strategy === 'PRTY'">
                                 <!-- adjust priority task per phase(team.tasks) -->
                                 <div class="col form-group">
-                                    <label class="mb-3">Task</label>
+                                    <label class="mb-3">Task Priority</label>
                                     <div class="traffic-levels">
                                         <div class="input-group traffic-level" v-for="(task,i) in taskSettings.tasks" v-show="task.include">
 
@@ -795,7 +820,7 @@
                                     </div>
                                 </div>
                                 <div class="col form-group" v-for="n in taskSettings.numPhases">
-                                    <label class="mb-3">Priority for Phase {{n}}</label>
+                                    <label class="mb-3">Phase {{n}}</label>
 
                                     <div class="traffic-levels">
                                         <div class="input-group traffic-level" v-for="(task,i) in taskSettings.tasks" v-show="task.include">

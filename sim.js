@@ -73,7 +73,9 @@ var sim = new Vue({
             intervalPhases: [
                 [0, 0.5],
                 [0.5, 7.5],
-                [7.5, 8]
+                [7.5, 8],
+                [8,8],
+                [8,8]
             ], // hours of phases
             tasks: // array of individual task objects
                 [{
@@ -83,27 +85,35 @@ var sim = new Vue({
                         essential: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E", "E"],
+                        arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
                             [0.033333, 0.1],
                             [0.033333, 0.1],
-                            [0.033333, 0.1]
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
                         ],
-                        serviceDistribution: ["U", "U", "U"],
+                        serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
+                            [0.5, 2],
+                            [0.5, 2],
                             [0.5, 2],
                             [0.5, 2],
                             [0.5, 2]
                         ],
-                        expireDistribution: ["E", "E", "E"],
+                        expireDistribution: ["E", "E", "E", "E", "E"],
                         expireParam: [
+                            [0, 0.184],
+                            [0, 0.184],
                             [0, 0.184],
                             [0, 0.184],
                             [0, 0.184]
                         ],
                         affectedByTraffic: "y",
-                        affectByIROPS: [0, 1, 0],
+                        affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
@@ -117,27 +127,35 @@ var sim = new Vue({
                         essential: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E", "E"],
+                        arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
                             [0.033333, 0.1],
                             [0.033333, 0.1],
                             [0.033333, 0.1]
                         ],
-                        serviceDistribution: ["U", "U", "U"],
+                        serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
+                            [0.5, 2],
+                            [0.5, 2],
                             [0.5, 2],
                             [0.5, 2],
                             [0.5, 2]
                         ],
-                        expireDistribution: ["E", "E", "E"],
+                        expireDistribution: ["E", "E", "E", "E", "E"],
                         expireParam: [
+                            [0, 0.184],
+                            [0, 0.184],
                             [0, 0.184],
                             [0, 0.184],
                             [0, 0.184]
                         ],
                         affectedByTraffic: "y",
-                        affectByIROPS: [0, 1, 0],
+                        affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
@@ -150,27 +168,35 @@ var sim = new Vue({
                         essential: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E", "E"],
+                        arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
+                            [0.033333, 0.1],
+                            [0.033333, 0.1],
                             [0.033333, 0.1],
                             [0.033333, 0.1],
                             [0.033333, 0.1]
                         ],
-                        serviceDistribution: ["U", "U", "U"],
+                        serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
+                            [0.5, 2],
+                            [0.5, 2],
                             [0.5, 2],
                             [0.5, 2],
                             [0.5, 2]
                         ],
-                        expireDistribution: ["E", "E", "E"],
+                        expireDistribution: ["E", "E", "E", "E", "E"],
                         expireParam: [
+                            [0, 0.184],
+                            [0, 0.184],
                             [0, 0.184],
                             [0, 0.184],
                             [0, 0.184]
                         ],
                         affectedByTraffic: "y",
-                        affectByIROPS: [0, 1, 0],
+                        affectByIROPS: [0, 1, 0, 0, 0],
                          humanErrorProb: [
+                            [0.00008, 0.0004, 0.007],
+                            [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
@@ -195,6 +221,8 @@ var sim = new Vue({
                         priority: [
                             [1, 4, 7],
                             [1, 2, 3],
+                            [1, 2, 3],
+                            [1, 2, 3],
                             [1, 1, 2]
                         ],
                         AIDA: {
@@ -208,7 +236,7 @@ var sim = new Vue({
                             assistingTeamCoord: false,
                             TCALevel: []
                         },
-                        failThresh: [50,50,50]
+                        failThresh: [50,50,50,50,50]
                     },
                     {
                         name: "Operator Team",
@@ -219,6 +247,8 @@ var sim = new Vue({
                         priority: [
                             [1, 1, 1],
                             [1, 2, 3],
+                            [1, 2, 3],
+                            [1, 2, 3],
                             [1, 1, 2]
                         ],
                         AIDA: {
@@ -226,7 +256,7 @@ var sim = new Vue({
                             assistingIndividuals: false,
                             assistingTeamCoord: false
                         },
-                        failThresh: [50,50,50]
+                        failThresh: [50,50,50,50,50]
                     }
                 ]
         },
@@ -665,19 +695,19 @@ var sim = new Vue({
                 essential: "n",
                 interruptable: "n",
                 affTeamCoord: "n",
-                arrivalDistribution: ["E", "E", "E"],
+                arrivalDistribution: ["E", "E", "E", "E", "E"],
                 arrivalParam: [
                     [],
                     [],
                     []
                 ],
-                serviceDistribution: ["E", "E", "E"],
+                serviceDistribution: ["E", "E", "E", "E", "E"],
                 serviceParam: [
                     [],
                     [],
                     []
                 ],
-                expireDistribution: ["E", "E", "E"],
+                expireDistribution: ["E", "E", "E", "E", "E"],
                 expireParam: [
                     [],
                     [],
@@ -837,7 +867,7 @@ var sim = new Vue({
 
     mounted: function () {
         //for(let i=1;i<=this.taskSettings.numPhases;i++) {
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 5; i++) {
             //console.log(this.$refs["interval-" + i]);
             noUiSlider.create(this.$refs["interval-" + i], {
                 start: [this.taskSettings.intervalPhases[i - 1][0], this.taskSettings.intervalPhases[i - 1][1]],
@@ -1033,8 +1063,8 @@ $(document).ready(function () {
             target = selectedTab[0].attributes.href.value;
         }
 
-        if ($(target + ' input').length > 0)
-            $(target + ' input')[0].focus();
+        if ($(target + ' input[type=text]').length > 0)
+            $(target + ' input[type=text]')[0].focus();
     });
 
     // In Firefox, mousewheel should not change the value of the input number
