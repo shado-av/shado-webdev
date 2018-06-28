@@ -345,6 +345,9 @@ div.modal-dialog.modal-lg {
   margin-bottom: 2rem;
 }
 
+.width-150 {
+  width: 150px;
+}
 .input-group.width-small {
   width: 150px;
 }
@@ -420,6 +423,10 @@ div.modal-dialog.modal-lg {
 #boxSVG {
   padding-left: 50px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> b363a042c2be018209b045df94f6f6814c64874d
 .options .form-group {
   padding: 1rem;
   border: 2px solid #ddd;
