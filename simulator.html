@@ -204,8 +204,55 @@
                 <form class="mb-5" @submit.prevent>
 
                     <!-- type of simulation (simType) -->
+                    <div class="modal fade" id="simType" role="dialog">
+                        <div class="modal-dialog modal-lg">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="col-sm">
+                                        <h3 id="simTypeTitle">Choose a simulation type:</h3>
+                                    </div>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row reference">
+                                        <div class="col-4">
+                                            <a href="#" data-dismiss="modal" @click="globalSettings.simType='aviation'">
+                                                <img src="images/airport.jpg" class="img-responsive" alt="">
+                                                <div class="overlay">
+                                                    <h3 class="reference-title">Aviation</h3>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a class="col" href="#" data-dismiss="modal" @click="globalSettings.simType='railroad'">
+                                                <img src="images/railway.jpg" class="img-responsive" alt="">
+
+                                                <div class="overlay">
+                                                    <h3 class="reference-title">Rail</h3>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a class="col" href="#" data-dismiss="modal" @click="globalSettings.simType='ground'">
+                                                <img src="images/station.jpg" class="img-responsive" alt="">
+
+                                                <div class="overlay">
+                                                    <h3 class="reference-title">Ground Logistics</h3>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-form-label">1. Type of Simulation</label>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#simType">
+                            Choose Type of Simulation
+                        </button>
                         <div>
                             <div class="custom-control custom-control-inline custom-radio">
                                 <input class="custom-control-input" type="radio" name="sim-type" id="sim-type-aviation" value="aviation" v-model="globalSettings.simType">

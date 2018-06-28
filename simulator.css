@@ -430,3 +430,78 @@ div.modal-dialog.modal-lg {
   border: 2px solid #ddd;
   border-radius: 0.5rem;
 }
+
+.img-responsive {
+    width:100%;
+    height:auto;
+}
+
+a .overlay {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  -webkit-box-sizing: 'border-box';
+  -moz-box-sizing: 'border-box';
+  box-sizing: 'border-box';
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s
+}
+
+.reference {
+  margin-bottom: 30px;
+}
+.reference a {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.reference a .overlay {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  -webkit-box-sizing: 'border-box';
+  -moz-box-sizing: 'border-box';
+  box-sizing: 'border-box';
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.reference a .overlay h3 {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.reference a img {
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.reference a:hover .overlay,
+.reference a:focus .overlay {
+  display: block;
+  top: 0;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+.reference a:hover img,
+.reference a:focus img {
+  -webkit-transform: scale(1.2, 1.2);
+  -ms-transform: scale(1.2, 1.2);
+  transform: scale(1.2, 1.2);
+}
