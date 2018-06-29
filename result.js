@@ -294,8 +294,9 @@ var BoxPlot = (function() {
             var min = d3.min(globalCounts);
             var max = d3.max(globalCounts);
             var yScale = d3.scaleLinear()
+                //.domain(0, 1)
                 .domain([min - 0.0001, max])
-                .range([height, 0]);
+                .range ([height, 0]);
 
             // Setup the svg and group we will draw the box plot in
             var svg = d3.select(element);
@@ -306,8 +307,8 @@ var BoxPlot = (function() {
                .append("g")
                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Move the left axis over 25 pixels, and the top axis over 35 pixels
-            var axisG = svg.append("g").attr("transform", "translate(25,0)");
+            // Move the left axis over 55 pixels, and the top axis over 35 pixels
+            var axisG = svg.append("g").attr("transform", "translate(55,0)");
             var axisBG = svg.append("g").attr("transform", "translate(35," +        (height) + ")");
 
             // Setup the group the box plot elements will render in
@@ -481,7 +482,7 @@ var BoxPlot = (function() {
             // text label for the y axis
             svg.append("text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", -50) // - margin.left)
+                .attr("y", 0) // - margin.left)
                 .attr("x", 0 - (height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
