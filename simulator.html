@@ -204,24 +204,24 @@
                 <form class="mb-5" @submit.prevent>
 
                     <!-- type of simulation (simType) -->
-                    <div class="modal fade" id="simType" role="dialog">
+                    <div class="modal fade" id="sim-type" role="dialog">
                         <div class="modal-dialog modal-lg">
 
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <div class="col-sm">
-                                        <h3 id="simTypeTitle">Choose a simulation type:</h3>
+                                        <h3 id="sim-type-title">Choose a simulation type:</h3>
                                     </div>
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row reference">
+                                    <div class="row image-card">
                                         <div class="col-4">
                                             <a class="col" href="#" @click="setSimType('Aviation')">
                                                 <img src="images/airport.jpg" class="img-responsive" alt="">
                                                 <div class="overlay">
-                                                    <h3 class="reference-title">Aviation</h3>
+                                                    <h3 class="image-card-title">Aviation</h3>
                                                 </div>
                                             </a>
                                         </div>
@@ -230,18 +230,16 @@
                                                 <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                                 <div class="overlay">
-                                                    <h3 class="reference-title">Rail</h3>
+                                                    <h3 class="image-card-title">Rail</h3>
                                                 </div>
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <div>
-                                                <img src="images/station.jpg" class="img-responsive" alt="">
+                                             <img src="images/station.jpg" class="img-responsive" alt="">
 
-                                                <div class="overlay invisible">
-                                                    <h3 class="reference-title">Ground Logistics</h3>
-                                                </div>
-                                            </div>
+                                             <div class="overlay invisible">
+                                                 <h3 class="image-card-title">Ground Logistics</h3>
+                                             </div>
                                         </div>
                                     </div>
                                 </div>
@@ -250,7 +248,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">1. </label>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#simType">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sim-type">
                             Choose Type of Simulation
                         </button>
                         {{globalSettings.simType}}

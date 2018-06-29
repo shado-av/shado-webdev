@@ -436,17 +436,17 @@ div.modal-dialog.modal-lg {
     height:auto;
 }
 
-.reference {
+.image-card {
   margin-bottom: 30px;
 }
-.reference a {
+.image-card a {
   display: block;
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
-.reference a .overlay {
+.image-card a .overlay {
   display: block;
   position: absolute;
   left: 0;
@@ -464,24 +464,24 @@ div.modal-dialog.modal-lg {
   -moz-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-.reference a .overlay h3 {
+.image-card a .overlay h3 {
   text-transform: uppercase;
   font-weight: 500;
 }
-.reference a img {
+.image-card a img {
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-.reference a:hover .overlay,
-.reference a:focus .overlay {
+.image-card a:hover .overlay,
+.image-card a:focus .overlay {
   display: block;
   top: 0;
   opacity: 0.8;
   filter: alpha(opacity=80);
 }
-.reference a:hover img,
-.reference a:focus img {
+.image-card a:hover img,
+.image-card a:focus img {
   -webkit-transform: scale(1.2, 1.2);
   -ms-transform: scale(1.2, 1.2);
   transform: scale(1.2, 1.2);

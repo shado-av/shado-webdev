@@ -871,7 +871,7 @@ var sim = new Vue({
         },
         setSimType(str) {
             this.globalSettings.simType = str;
-            this.$nextTick(function(){$("#simType").modal('hide');});
+            this.$nextTick(function(){$("#sim-type").modal('hide');});
         }
     },
 
