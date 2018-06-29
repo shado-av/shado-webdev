@@ -21,7 +21,11 @@ var StackedBarChart = (function () {
     var y = d3.scaleLinear()
         .rangeRound([height, 0]);
 
-    var z = d3.scaleOrdinal(d3.schemeCategory10);
+    var z = d3.scaleOrdinal()
+        .range(
+    //["#a0e3b7", "#710c9e", "#37b51f", "#ae2a51", "#a3c541", "#323d96", "#7ebef8", "#1c5872", "#21f0b6", "#6f3631", "#f3a4a8", "#166d2a", "#fd6ca0", "#d95e13", "#f2d174"]
+    ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
+        );
     var keys = [];
     var stacked;
 
@@ -64,7 +68,7 @@ var StackedBarChart = (function () {
         }
 
         // define domains
-        x.domain([0, 480]); // data.map(function(d) { return d.x; }));
+        x.domain([0, 580]); // data.map(function(d) { return d.x; }));
         y.domain([0, 1]); //.nice()
         z.domain(keys);
 
@@ -72,7 +76,7 @@ var StackedBarChart = (function () {
         g.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).ticks(48));
+            .call(d3.axisBottom(x).ticks());
 
         g.append("g")
             .attr("class", "axis")
@@ -127,7 +131,7 @@ var StackedBarChart = (function () {
             });
         }
 
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < keys.length; i++) {
             for (var j = 0; j < 48; j++) {
                 data[j][keys[i]] = json.utilization[operator][replication][i][j];
                 data[j]["total"] += json.utilization[operator][replication][i][j];
@@ -150,7 +154,7 @@ var StackedBarChart = (function () {
             bar
                 .transition()
                 .attr("x", function (d) {
-                    return x(d.data.x);
+                    return x(d.data.x) + 2;
                 })
                 .attr("y", function (d) {
                     return y(d[1]);
@@ -164,7 +168,7 @@ var StackedBarChart = (function () {
                     return "bar bar-" + keyClassName;
                 })
                 .attr("x", function (d) {
-                    return x(d.data.x);
+                    return x(d.data.x) + 2;
                 })
                 .attr("y", function (d) {
                     return y(d[1]);
