@@ -13,7 +13,7 @@ Vue.component('percentage-input', {
             default: 0
         }
     },
-    data: function() {
+    data: function () {
         return {
             counter: this.value
         }
@@ -31,7 +31,7 @@ Vue.component('percentage-input', {
         }
     },
     watch: {
-        counter: function(val) {
+        counter: function (val) {
             this.$emit('update:value', val);
         }
     },
@@ -74,8 +74,8 @@ var sim = new Vue({
                 [0, 0.5],
                 [0.5, 7.5],
                 [7.5, 8],
-                [8,8],
-                [8,8]
+                [8, 8],
+                [8, 8]
             ], // hours of phases
             tasks: // array of individual task objects
                 [{
@@ -159,7 +159,7 @@ var sim = new Vue({
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
-                         ]
+                        ]
                     },
                     {
                         name: "Directive Mandatory",
@@ -194,13 +194,13 @@ var sim = new Vue({
                         ],
                         affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0, 0, 0],
-                         humanErrorProb: [
+                        humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
-                         ]
+                        ]
                     }
                 ]
         },
@@ -236,7 +236,7 @@ var sim = new Vue({
                             assistingTeamCoord: false,
                             TCALevel: []
                         },
-                        failThresh: [50,50,50,50,50]
+                        failThresh: [50, 50, 50, 50, 50]
                     },
                     {
                         name: "Operator Team",
@@ -256,7 +256,7 @@ var sim = new Vue({
                             assistingIndividuals: false,
                             assistingTeamCoord: false
                         },
-                        failThresh: [50,50,50,50,50]
+                        failThresh: [50, 50, 50, 50, 50]
                     }
                 ]
         },
@@ -465,7 +465,8 @@ var sim = new Vue({
             for (var j = 0; j < this.taskSettings.numPhases; j++) {
                 probs.push([]);
                 for (var i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {                        probs[j].push(this.taskSettings.tasks[i].humanErrorProb[j]);
+                    if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {
+                        probs[j].push(this.taskSettings.tasks[i].humanErrorProb[j]);
                     }
                 }
             }
@@ -532,7 +533,7 @@ var sim = new Vue({
 
         opPriority() {
             var prty = [];
-            for (var j=0; j<this.taskSettings.numPhases; j++) {
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
                 prty.push([]);
                 for (var i = 0; i < this.operatorSettings.teams.length; i++) {
                     prty[j].push(this.operatorSettings.teams[i].priority[j]);
@@ -557,8 +558,8 @@ var sim = new Vue({
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].failThresh) {
                     var teamft = [];
-                    for(var n of this.operatorSettings.teams[i].failThresh) {
-                         teamft.push(n / 100);
+                    for (var n of this.operatorSettings.teams[i].failThresh) {
+                        teamft.push(n / 100);
                     }
                     ft.push(teamft);
                 }
@@ -721,7 +722,13 @@ var sim = new Vue({
                 ],
                 affectedByTraffic: "n",
                 affectByIROPS: [],
-                humanErrorProb: [[],[],[],[],[]]
+                humanErrorProb: [
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                ]
             });
 
             // add priority for each operatorSettings.teams
@@ -780,7 +787,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
-                        priority: [tasks, tasks, tasks,tasks,tasks],
+                        priority: [tasks, tasks, tasks, tasks, tasks],
                         AIDA: {
                             equalOperator: false,
                             assistingIndividuals: false,
@@ -871,7 +878,9 @@ var sim = new Vue({
         },
         setSimType(str) {
             this.globalSettings.simType = str;
-            this.$nextTick(function(){$("#sim-type").modal('hide');});
+            this.$nextTick(function () {
+                $("#sim-type").modal('hide');
+            });
         }
     },
 
@@ -933,6 +942,7 @@ var sim = new Vue({
 });
 
 $(document).ready(function () {
+    //Json Builder
     $("#sumbitBtn").click(function () {
         var out = {
             "numHours": sim.globalSettings.numHours,
@@ -953,13 +963,15 @@ $(document).ready(function () {
             "ECC": sim.teamFailThreshold,
 
             "AIDAtype": [
-                [0, 1, 0], [0, 1, 0]
+                [0, 1, 0],
+                [0, 1, 0]
             ],
             "ETServiceTime": sim.ETServiceTime,
             "ETErrorRate": sim.ETErrorRate,
             "ETFailThreshold": sim.ETFailThreshold,
             "IAtasks": [
-                [0, 1], [1, 2]
+                [0, 1],
+                [1, 2]
             ],
             "IALevel": ["S", "S"],
             "TCALevel": ["S", "S"],
@@ -1038,6 +1050,7 @@ $(document).ready(function () {
             }
         });
     });
+    //Download  
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
         window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail";
