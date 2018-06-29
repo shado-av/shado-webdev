@@ -2,25 +2,14 @@ var div = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-var StackedBarChart = (function () {
+var StackedBarChart = (function (index) {
     var jsonData = {};
     var currentOperator = 0;
-    var svg = d3.select("#modalSVG"),
-        margin = {
-            top: 40,
-            right: 20,
-            bottom: 40,
-            left: 50
-        },
-        width = +svg.attr("width") - margin.left - margin.right,
-        height = +svg.attr("height") - margin.top - margin.bottom,
-        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var x = d3.scaleLinear().rangeRound([0, width]);
-
-    var y = d3.scaleLinear()
-        .rangeRound([height, 0]);
-
+    var svg;
+    var g;
+    var id = index || "";
+    var x;
+    var y;
     var z = d3.scaleOrdinal()
         .range(
     //["#a0e3b7", "#710c9e", "#37b51f", "#ae2a51", "#a3c541", "#323d96", "#7ebef8", "#1c5872", "#21f0b6", "#6f3631", "#f3a4a8", "#166d2a", "#fd6ca0", "#d95e13", "#f2d174"]
@@ -28,11 +17,29 @@ var StackedBarChart = (function () {
         );
     var keys = [];
     var stacked;
+    var margin = {
+            top: 40,
+            right: 20,
+            bottom: 40,
+            left: 50
+        };
+    var minutes, barCounts;
 
     var initStackedBarChart = function(json) {
         jsonData = json;
         keys = json.taskName;
+        barCounts = json.utilization[0][0][0].length;
+        minutes = barCounts * 10;
+        console.log(minutes, barCounts);
+        svg = d3.select("#modalSVG" + id);
+        width = +svg.attr("width") - margin.left - margin.right;
+        height = +svg.attr("height") - margin.top - margin.bottom;
 
+        x = d3.scaleLinear().rangeRound([0, width-150]);
+        y = d3.scaleLinear()
+            .rangeRound([height, 0]);
+
+        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         //console.log(keys, width, height);
         // text label for the x axis
         svg.append("text")
@@ -54,8 +61,8 @@ var StackedBarChart = (function () {
             .text("Utilization (%)");
 
         // reset slider to 1
-        var slider = document.getElementById("replicationSlider");
-        var output = document.getElementById("replicationTB");
+        var slider = document.getElementById("replicationSlider" + id);
+        var output = document.getElementById("replicationTB" + id);
 
         slider.value = 1;
         slider.setAttribute("max", json.utilization[0].length);
@@ -68,7 +75,7 @@ var StackedBarChart = (function () {
         }
 
         // define domains
-        x.domain([0, 580]); // data.map(function(d) { return d.x; }));
+        x.domain([0, minutes]); // data.map(function(d) { return d.x; }));
         y.domain([0, 1]); //.nice()
         z.domain(keys);
 
@@ -104,13 +111,13 @@ var StackedBarChart = (function () {
             });
 
         legend.append("rect")
-            .attr("x", width - 19)
+            .attr("x", width - 5)
             .attr("width", 19)
             .attr("height", 19)
             .attr("fill", z);
 
         legend.append("text")
-            .attr("x", width - 24)
+            .attr("x", width - 10)
             .attr("y", 9.5)
             .attr("dy", "0.32em")
             .text(function (d) {
@@ -124,7 +131,7 @@ var StackedBarChart = (function () {
         // convert json data into d3 stack preferred form
         currentOperator = operator;
         var data = [];
-        for (var i = 0, j = 0; i <= 480; i += 10, j++) {
+        for (var i = 0, j = 0; i <= minutes; i += 10, j++) {
             data.push({
                 x: i,
                 total: 0
@@ -132,7 +139,7 @@ var StackedBarChart = (function () {
         }
 
         for (var i = 0; i < keys.length; i++) {
-            for (var j = 0; j < 48; j++) {
+            for (var j = 0; j < barCounts; j++) {
                 data[j][keys[i]] = json.utilization[operator][replication][i][j];
                 data[j]["total"] += json.utilization[operator][replication][i][j];
             }
@@ -144,7 +151,7 @@ var StackedBarChart = (function () {
         // the variable alphabet represents the unique keys of the stacks
         keys.forEach(function (key, key_index) {
 
-            var keyClassName = key.replace(/ /g, '_');
+            var keyClassName = key.replace(/[ ()]/g, '_');
             console.log(key, keyClassName, key_index);
             var bar = g.selectAll(".bar-" + keyClassName)
                 .data(stacked(data)[key_index], function (d) {
@@ -182,7 +189,7 @@ var StackedBarChart = (function () {
                 })
         });
 
-        d3.select("#stackedBCTitle").text(json.operatorName[operator] + " Workload");
+        d3.select("#stackedBCTitle" + id).text(json.operatorName[operator] + " Workload");
         // mouseover tips
         svg.selectAll(".bar")
             .on("mouseover", function (d, i) {
@@ -192,7 +199,7 @@ var StackedBarChart = (function () {
                     .duration(200)
                     .style("opacity", .9);
 
-                div.html("Task: " + keys[parseInt(i / 49)] + "<br> Mean Utilization: " + ((d[1] - d[0]) * 100).toFixed(2) + "%<br> Total Utilization: " + (data[i % 49]["total"] * 100).toFixed(2) + "%")
+                div.html("Task: " + keys[parseInt(i / (barCounts + 1))] + "<br> Mean Utilization: " + ((d[1] - d[0]) * 100).toFixed(2) + "%<br> Total Utilization: " + (data[i % (barCounts +1)]["total"] * 100).toFixed(2) + "%")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
@@ -210,7 +217,7 @@ var StackedBarChart = (function () {
         initStackedBarChart : initStackedBarChart,
         drawStackedBarChart : drawStackedBarChart
     };
-})();
+});
 
 var BoxPlot = (function() {
     var width = 960;
@@ -240,11 +247,13 @@ var BoxPlot = (function() {
     var sortNumber = function(a, b) {
             return a - b;
     };
-
-    var visualize = function(url, element) {
+    var stackedBC = [];
+    var visualize = function(url, element, index) {
         d3.json(url).then(function (json) {
             // save the json into jsonData for later use of stacked bar charts
-            StackedBarChart.initStackedBarChart(json);
+
+            stackedBC[index] = new StackedBarChart(index);
+            stackedBC[index].initStackedBarChart(json);
 
             // parse json file into groupCounts
             var groupCounts = {};
@@ -287,16 +296,16 @@ var BoxPlot = (function() {
             // Compute an ordinal xScale for the keys in boxPlotData
             var xScale = d3.scalePoint()
                 .domain(Object.keys(groupCounts))
-                .rangeRound([0, width])
+                .rangeRound([20, width])
                 .padding([0.5]);
 
             // Compute a global y scale based on the global counts
             var min = d3.min(globalCounts);
             var max = d3.max(globalCounts);
             var yScale = d3.scaleLinear()
-                //.domain(0, 1)
-                .domain([min - 0.0001, max])
-                .range ([height, 0]);
+                .domain([0, 1])
+                //.domain([min - 0.0001, max])
+                .range ([height, 20]);
 
             // Setup the svg and group we will draw the box plot in
             var svg = d3.select(element);
@@ -388,9 +397,9 @@ var BoxPlot = (function() {
                 })
                 .on("click", function (d, i) {
                     //console.log("open Modal");
-                    StackedBarChart.drawStackedBarChart(json, i,
-                        d3.select("#replicationSlider").property("value") - 1);
-                    $('#stackedBC').modal();
+                    stackedBC[index].drawStackedBarChart(json, i,
+                        d3.select("#replicationSlider" + index).property("value") - 1);
+                    $("#stackedBC" + index).modal();
                 });
 
             // Now render all the horizontal lines at once - the whiskers and the median
@@ -463,7 +472,7 @@ var BoxPlot = (function() {
             var axisLeft = d3.axisLeft(yScale);
             axisG.append("g")
                 .call(axisLeft.ticks(null, 's').tickFormat(function (d) {
-                return d3.format(".2f")(d * 100);
+                return d3.format(".0f")(d * 100);
             }));
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
