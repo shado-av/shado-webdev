@@ -980,7 +980,23 @@ $(document).ready(function () {
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
             "interruptable": [0, 0, 0],
-            "essential": [0, 0, 1]
+            "essential": [0, 0, 1],
+
+            "leadTask": [],
+            "taskNames_f": ["Shitft Follow", "Rude Follow"],
+            "arrDists_f": [["C", "C"], ["C", "C"]],
+            "arrPms_f": [[[1], [1]], [[1], [1]]],
+            "serDists_f": [["C", "C"], ["C", "C"]],
+            "serPms_f": [[[5], [2]], [[5], [2]]],
+            "expDists_f": [["C", "C"], ["C", "C"]],
+            "expPms_f": [[[70], [70]], [[70], [70]]],
+            "affByTraff_f": [[0, 0], [0, 0]],
+            "teamCoordAff_f": [0, 1],
+            "taskPrty_f": [[[0, 1]], [[0, 1]]],
+            "interruptable_f": [1, 1],
+            "essential_f": [0, 0],
+            "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
+            "ECC_f": [[0.5, 0.5]]
 
         };
         console.log(out);
@@ -1031,7 +1047,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize("http://apps.hal.pratt.duke.edu/out/Utilization.json?" + new Date().getTime(), "#boxSVG");
+                BoxPlot.visualize("http://apps.hal.pratt.duke.edu/out/Utilization.json?" + new Date().getTime(), "#boxSVG", "1");
             },
             failure: function (errMsg) {
                 alert(errMsg);
