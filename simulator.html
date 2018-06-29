@@ -168,21 +168,6 @@
                 </div>
                 <br>
                 <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
-
-                <!-- run simulation -->
-                <form id="run-sim" onsubmit="return false">
-
-                    <!-- number of replications -->
-                    <div class="form-group">
-                        <label for="num-reps"># Replications</label>
-                        <input class="form-control" type="number" id="num-reps" min="1" max="1000" step="1" v-model.number="numReps">
-                    </div>
-                </form>
-
-                <!-- run sim button -->
-                <div class="form-row justify-content-center">
-                    <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="">Run Simulation</button>
-                </div>
             </div>
         </div>
 
@@ -318,18 +303,7 @@
                         </div>
                     </div>
                 </form>
-                <div id="footer">
-                    <div>
-                        <a class=" btn btn-small " href="index.html">
-                            <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="btn btn-small ">
-                            <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                </div>
+
             </div>
 
             <!----------------------------------------- 
@@ -374,12 +348,12 @@
                                     How many different phases do the operators have in their shift?
                                 </label>
                                 <div>
-                                    <select class="custom-select width-150" id="num-phases" v-model.number="taskSettings.numPhases" @change="onChangeNumPhases" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                    <select class="custom-select width-150" id="num-phases" v-model.number="taskSettings.numPhases" @change="onChangeNumPhases">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
                                     </select>
                                 </div>
                             </div>
@@ -731,18 +705,7 @@
                         </form>
                     </div>
                 </div>
-                <div id="footer">
-                    <div>
-                        <a class=" btn btn-small " href="# ">
-                            <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="btn btn-small " href="# ">
-                            <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                </div>
+
             </div>
 
             <!----------------------------------------- 
@@ -973,18 +936,7 @@
                         </form>
                     </div>
                 </div>
-                <div id="footer">
-                    <div>
-                        <a class=" btn btn-small " href="# ">
-                            <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="btn btn-small " href="# ">
-                            <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                </div>
+
             </div>
 
             <!----------------------------------------- 
@@ -1086,18 +1038,7 @@
                         </form>
                     </div>
                 </div>
-                <div id="footer">
-                    <div>
-                        <a class=" btn btn-small " href="# ">
-                            <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="btn btn-small " href="# ">
-                            <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                </div>
+
             </div>
 
             <!----------------------------------------- 
@@ -1135,7 +1076,7 @@
                             role="tab" :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
                             <ul>
-                                <li>Is this task affected by  team coordination?{{task.affTeamCoord}}</li>
+                                <li>Is this task affected by team coordination?{{task.affTeamCoord}}</li>
                                 <li>Is this task interruptable?{{task.interruptable}}</li>
                                 <li>Distributions</li>
                                 <ul>
@@ -1247,18 +1188,7 @@
                 <br>
                 <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div>
                 <br>
-                <div id="footer">
-                    <div>
-                        <a class=" btn btn-small " href="# ">
-                            <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="btn btn-small " href="# ">
-                            <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
-                        </a>
-                    </div>
-                </div>
+
 
             </div>
 
@@ -1297,7 +1227,38 @@
 
             <!-- // tab content -->
             <!-- // Vue app -->
+            <div id="footer">
+                <div>
+                    <a class=" btn btn-small" href=#>
+                        <span class="fas fa-angle-double-left fa-5x" style="color:#4981C7"></span>
+                    </a>
+                </div>
+                <div>
+                    <a class=" btn btn-small " href="index.html">
+                        <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
+                    </a>
+                </div>
+                <div class="form-row justify-content-center">
+                    <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="" style="height:40px">Run Simulation</button>
+                </div>
+                <form id="run-sim" onsubmit="return false">
+                    <div class="form-group">
+                        <label for="num-reps"># Replications</label>
+                        <input class="form-control" type="number" id="num-reps" min="1" max="10000" step="100" v-model.number="numReps">
+                    </div>
+                </form>
 
+                <div>
+                    <a class="btn btn-small" href=#tasks-settings>
+                        <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
+                    </a>
+                </div>
+                <div>
+                    <a class=" btn btn-small" href=#>
+                        <span class="fas fa-angle-double-right fa-5x" style="color:#4981C7"></span>
+                    </a>
+                </div>
+            </div>
         </div>
 
 </body>

@@ -9,8 +9,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
+  align-items: center;
 }
 .footer-wrapper {
   position: fixed;
@@ -424,7 +423,10 @@ div.modal-dialog.modal-lg {
 #boxSVG {
   padding-left: 50px;
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> b363a042c2be018209b045df94f6f6814c64874d
 .options .form-group {
   padding: 1rem;
   border: 2px solid #ddd;
