@@ -140,8 +140,8 @@ var StackedBarChart = (function () {
         // the variable alphabet represents the unique keys of the stacks
         keys.forEach(function (key, key_index) {
 
-            var keyClassName = key.replace(' ', '-');
-            console.log(key, key_index);
+            var keyClassName = key.replace(/ /g, '_');
+            console.log(key, keyClassName, key_index);
             var bar = g.selectAll(".bar-" + keyClassName)
                 .data(stacked(data)[key_index], function (d) {
                     return d.data.x + "-" + keyClassName;
