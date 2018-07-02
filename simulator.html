@@ -201,17 +201,17 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row image-card">
-                                        <div class="col-4">
-                                            <a class="col" href="#" @click="setSimType('Aviation')">
+                                    <div class="">
+                                        <div class="column-4 image-card">
+                                            <a href="#" @click="setSimType('Aviation')">
                                                 <img src="images/airport.jpg" class="img-responsive" alt="">
                                                 <div class="overlay">
                                                     <h3 class="image-card-title">Aviation</h3>
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="col-4">
-                                            <a class="col" href="#" @click="setSimType('Rail')">
+                                        <div class="column-4 image-card">
+                                            <a href="#" @click="setSimType('Rail')">
                                                 <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                                 <div class="overlay">
@@ -219,7 +219,7 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="column-4 image-card">
                                             <img src="images/station.jpg" class="img-responsive" alt="">
 
                                             <div class="overlay invisible">
@@ -231,6 +231,7 @@
                             </div>
                         </div>
                     </div>
+<!--
                     <div class="form-group">
                         <label class="col-form-label">1. </label>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sim-type">
@@ -238,11 +239,12 @@
                         </button>
                         {{globalSettings.simType}}
                     </div>
+-->
 
                     <!-- hours in shift (numHours) -->
                     <div class="form-group">
                         <label for="num-hours">
-                            2. How many hours are in this shift?
+                            1. How many hours are in this shift?
                         </label>
                         <input type="number" min="1" max="12" step="1" class="form-control width-small" id="num-hours" v-model.number="globalSettings.numHours"
                             @input="updateTrafficLvls" @change="updatePhases">
@@ -252,7 +254,7 @@
                     <!-- <h5 class="mb-3">Traffic</h5>-->
                     <!-- different traffic levels (diffTrafficLevels) -->
                     <div class="form-group">
-                        <label class="col-form-label">3. Are there different traffic levels during this shift?</label>
+                        <label class="col-form-label">2. Are there different traffic levels during this shift?</label>
                         <div>
                             <div class="custom-control custom-control-inline custom-radio">
                                 <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-y" value="y" v-model="globalSettings.diffTrafficLevels"
@@ -290,7 +292,7 @@
                     <!--                <h5 class="mb-3">Exogenous Factors</h5>-->
                     <!-- type of exogenous factors (exoFactorsType) -->
                     <div class="form-group">
-                        <label>4. Select the type of exogenous factor:</label>
+                        <label>3. Select the type of exogenous factor:</label>
                         <div>
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">

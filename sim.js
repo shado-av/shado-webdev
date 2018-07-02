@@ -1118,6 +1118,8 @@ $(document).ready(function () {
             }, 100);
         }
     });
+
+    $('#sim-type').modal(true);
 });
 
 function showDownloadBtn() {

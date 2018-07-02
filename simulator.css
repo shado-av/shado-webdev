@@ -423,10 +423,7 @@ div.modal-dialog.modal-lg {
 #boxSVG {
   padding-left: 50px;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> b363a042c2be018209b045df94f6f6814c64874d
 .options .form-group {
   padding: 1rem;
   border: 2px solid #ddd;
@@ -438,6 +435,11 @@ div.modal-dialog.modal-lg {
     height:auto;
 }
 
+.column-4 {
+    width: 33.33333%;
+    float: left;
+    padding: 0 10px;
+}
 .image-card {
   margin-bottom: 30px;
 }
