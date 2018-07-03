@@ -236,9 +236,9 @@ var sim = new Vue({
                             ETFailThreshold: 0,
                             assistingIndividuals: false,
                             IATasks: [],
-                            IALevel: [],
+                            IALevel: 'S',
                             assistingTeamCoord: false,
-                            TCALevel: []
+                            TCALevel: 'S'
                         },
                         failThresh: [50, 50, 50, 50, 50]
                     },
@@ -257,8 +257,14 @@ var sim = new Vue({
                         ],
                         AIDA: {
                             equalOperator: false,
+                            ETServiceTime: 0,
+                            ETErrorRate: 0,
+                            ETFailThreshold: 0,
                             assistingIndividuals: false,
-                            assistingTeamCoord: false
+                            IATasks: [],
+                            IALevel: 'S',
+                            assistingTeamCoord: false,
+                            TCALevel: 'S'
                         },
                         failThresh: [50, 50, 50, 50, 50]
                     }
@@ -356,6 +362,20 @@ var sim = new Vue({
                 }
             }
             return coords;
+        },
+        // array containing whether each task is interruptable
+        interruptable() {
+            var intp = [];
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].interruptable && this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[i].interruptable === "y") {
+                        intp.push(1);
+                    } else {
+                        intp.push(0);
+                    }
+                }
+            }
+            return intp;
         },
 
         // array containing all task arrival time distributions
@@ -610,6 +630,32 @@ var sim = new Vue({
             }
             return ft;
         },
+
+        //AIDA IA Level
+        IALevel() {
+            var lv = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.IALevel) {
+                    lv.push(this.operatorSettings.teams[i].AIDA.IALevel);
+                } else {
+                    lv.push("");
+                }
+            }
+            return lv;
+        },
+
+        //AIDA TCA Level
+        TCALevel() {
+            var lv = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.TCALevel) {
+                    lv.push(this.operatorSettings.teams[i].AIDA.TCALevel);
+                } else {
+                    lv.push("");
+                }
+            }
+            return lv;
+        },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
          * ------------------------------ */
@@ -794,8 +840,14 @@ var sim = new Vue({
                         priority: [tasks, tasks, tasks, tasks, tasks],
                         AIDA: {
                             equalOperator: false,
+                            ETServiceTime: 0,
+                            ETErrorRate: 0,
+                            ETFailThreshold: 0,
                             assistingIndividuals: false,
-                            assistingTeamCoord: false
+                            IATasks: [],
+                            IALevel: 'S',
+                            assistingTeamCoord: false,
+                            TCALevel: 'S'
                         },
                         failThresh: ft
                     })
@@ -977,8 +1029,8 @@ $(document).ready(function () {
                 [0, 1],
                 [1, 2]
             ],
-            "IALevel": ["S", "S"],
-            "TCALevel": ["S", "S"],
+            "IALevel": sim.IALevel,
+            "TCALevel": sim.TCALevel,
 
             "fleetTypes": sim.fleetSettings.fleetTypes,
             "numvehicles": sim.numVehicles,
@@ -995,7 +1047,7 @@ $(document).ready(function () {
             "expPms": sim.expPms,
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
-            "interruptable": [0, 0, 0],
+            "interruptable": sim.interruptable,
             "essential": [0, 0, 1],
 
             "leadTask": [],
