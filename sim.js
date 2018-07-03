@@ -226,7 +226,7 @@ var sim = new Vue({
                         comms: "N",
                         tasks: [0, 1],
                         priority: [
-                            [1, 4, 7],
+                            [1, 4, 6],
                             [1, 2, 3],
                             [1, 2, 3],
                             [1, 2, 3],
@@ -375,6 +375,20 @@ var sim = new Vue({
                 }
             }
             return coords;
+        },
+        // array containing whether each task is essential
+        essential() {
+            var esst = [];
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].essential && this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[i].essential === "y") {
+                        esst.push(1);
+                    } else {
+                        esst.push(0);
+                    }
+                }
+            }
+            return esst;
         },
         // array containing whether each task is interruptable
         interruptable() {
@@ -1086,6 +1100,7 @@ $(document).ready(function () {
             "teamCoordAff": sim.teamCoordAff,
             "exoType2Aff": sim.exoType2Aff,
             "interruptable": sim.interruptable,
+            "essential": sim.essential,
 
             "leadTask": [],
             "taskNames_f": ["Shitft Follow", "Rude Follow"],
@@ -1099,6 +1114,7 @@ $(document).ready(function () {
             "teamCoordAff_f": [0, 1],
             "taskPrty_f": [[[0, 1]], [[0, 1]]],
             "interruptable_f": [1, 1],
+            "essential_f": [0, 0],
             "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
             "ECC_f": [[0.5, 0.5]]
 

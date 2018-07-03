@@ -485,6 +485,22 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-form-label">Is this task essential? An essential task can interrupt any other tasks but is not interruptable.</label>
+                                <div>
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
+                                            value="y" v-model="task.essential" @change="task.interruptable='n'">
+                                        <label class="custom-control-label" :for="'task-' + index + 'essential-y'">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-0">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-n'"
+                                            value="n" v-model="task.essential">
+                                        <label class="custom-control-label" :for="'task-' + index + 'essential-n'">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" v-show="task.essential==='n'">
                                 <label class="col-form-label">Is this task interruptable?</label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
@@ -846,7 +862,7 @@
                             <div class="form-group form-row table-responsive" v-show="team.strategy === 'PRTY'">
                                 <!-- adjust priority task per phase(team.tasks) -->
                                 <table class="form-group table">
-                                    <thead>
+                                    <thead class="thead-light">
                                         <th>Task Priority</th>
                                         <th v-for="n in taskSettings.numPhases">
                                             Phase {{n}}
@@ -857,7 +873,6 @@
                                             <td>{{task.name}}</td>
                                             <td v-for="n in taskSettings.numPhases">
                                                 <select class="custom-select" v-model.number="team.priority[n-1][i]">
-                                                    <option value="7">Essential</option>
                                                     <option value="6">High</option>
                                                     <option value="5">Moderate</option>
                                                     <option value="4">Neutral</option>
