@@ -37,12 +37,13 @@ Vue.component('percentage-input', {
             if (this.counter < this.min) this.counter = this.min;
             if (this.counter > this.max) this.counter = this.max;
             this.$emit('update:value', this.counter);
+            this.$forceUpdate();    // sometimes update not working...
         }
     },
     template: `<div class="mt-3 mb-3 number-input">
                 <button @click="stepNumberInput(-step)" class="minus"></button>
                 <input min="0" max="100" type="number" @change="validateInput(parseInt($event.target.value))"
-                    v-bind:value="counter">
+                    :value="value">
                 <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : numberOnly }]"></button>
                 <div class="input-group-append" v-if="!numberOnly">
                         <span class="input-group-text">%</span>
@@ -241,7 +242,13 @@ var sim = new Vue({
                             IALevel: 'S',
                             TCALevel: 'S'
                         },
-                        failThresh: [50, 50, 50, 50, 50]
+                        failThresh: [
+                            [10, 20, 30],
+                            [40, 50, 60],
+                            [50, 50, 50],
+                            [50, 50, 50],
+                            [50, 50, 50]
+                        ]
                     },
                     {
                         name: "Operator Team",
@@ -265,7 +272,13 @@ var sim = new Vue({
                             IALevel: 'S',
                             TCALevel: 'S'
                         },
-                        failThresh: [50, 50, 50, 50, 50]
+                        failThresh: [
+                            [10, 20, 30],
+                            [40, 50, 60],
+                            [50, 50, 50],
+                            [50, 50, 50],
+                            [50, 50, 50]
+                        ]
                     }
                 ]
         },
@@ -606,13 +619,11 @@ var sim = new Vue({
         // array containing operator team fail threshold
         teamFailThreshold() {
             var ft = [];
-            for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                if (this.operatorSettings.teams[i].failThresh) {
-                    var teamft = [];
-                    for (var n of this.operatorSettings.teams[i].failThresh) {
-                        teamft.push(n / 100);
-                    }
-                    ft.push(teamft);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                ft.push([]);
+
+                for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                    ft[j].push(this.operatorSettings.teams[i].failThresh[j]);
                 }
             }
             return ft;
@@ -841,9 +852,11 @@ var sim = new Vue({
             });
 
             // add priority for each operatorSettings.teams
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+            for (var j = 0; j < 5; j++) {
                 for (i = 0; i < this.operatorSettings.teams.length; i++) {
                     this.operatorSettings.teams[i].priority[j].push(1);
+                    // add fail threshold
+                    this.operatorSettings.teams[i].failThresh[j].push(50);
                 }
             }
         },
@@ -855,20 +868,14 @@ var sim = new Vue({
                 var taskIndex = this.taskSettings.tasks.indexOf(task);
                 this.taskSettings.tasks.splice(taskIndex, 1);
 
+                //console.log(taskIndex, this.operatorSettings.teams[0].failThresh[0]);
                 // remove priority for each operatorSettings.teams
                 for (var k = 0; k < this.taskSettings.numPhases; k++) {
                     for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                        var priIndex = -1;
-                        //console.log(this.operatorSettings.teams[i].priority, taskIndex);
-                        for (var j = 0; j < this.operatorSettings.teams[i].priority[k].length; j++) {
-                            if (this.operatorSettings.teams[i].priority[k][j] === taskIndex)
-                                priIndex = j;
-                            else if (this.operatorSettings.teams[i].priority[k][j] > taskIndex)
-                                this.operatorSettings.teams[i].priority[k][j]--;
-                        }
-
-                        if (priIndex !== -1) this.operatorSettings.teams[i].priority[k].splice(priIndex, 1);
-                        //console.log(this.operatorSettings.teams[i].priority);
+                        console.log(taskIndex, this.operatorSettings.teams[i].failThresh[k]);
+                        this.operatorSettings.teams[i].priority[k].splice(taskIndex, 1);
+                        this.operatorSettings.teams[i].failThresh[k].splice(taskIndex, 1);
+                        console.log(taskIndex, i, k, this.operatorSettings.teams[i].failThresh[k]);
                     }
                 }
 
@@ -906,7 +913,7 @@ var sim = new Vue({
                             IALevel: 'S',
                             TCALevel: 'S'
                         },
-                        failThresh: ft
+                        failThresh: [ft, ft, ft, ft, ft]
                     })
                 }
             } else {
@@ -1116,7 +1123,7 @@ $(document).ready(function () {
             "interruptable_f": [1, 1],
             "essential_f": [0, 0],
             "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
-            "ECC_f": [[0.5, 0.5]]
+            "ECC_f": [[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]]]
 
         };
         console.log(out);
@@ -1219,7 +1226,7 @@ $(document).ready(function () {
         var el = $(this);
         var focused = el.is(":focus");
         el.blur();
-        console.log("Scrolling?");
+        //console.log("Scrolling?");
         if (focused) {
             setTimeout(function () {
                 el.focus();

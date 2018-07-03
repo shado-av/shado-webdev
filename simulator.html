@@ -890,15 +890,22 @@
                         <h5 class="mb-3">Fail Threshold</h5>
 
                         <!-- fail threshold (team.failThresh) -->
-                        <form>
-                            <div class="form-group">
-                                <div class="mb-3">For every error, what is the chance that the team will catch it for each task?</div>
-                                <div class="row custom-control custom-checkbox item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
-                                    <label class="col">{{task.name}}</label>
-                                    <percentage-input class="col" v-bind:value.sync="team.failThresh[i-1]"></percentage-input>
+                        <div class="form-group">
+                            <div class="mb-3">For every error, what is the chance that the team will catch it for each task?</div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col" v-for="n in taskSettings.numPhases">
+                                <div class="mb-2">Phase {{n}}</div>
+
+                                <div class="item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
+                                    <div>{{task.name}}</div>
+                                    <percentage-input :value.sync="team.failThresh[n-1][i]"></percentage-input>
                                 </div>
                             </div>
-                        </form>
+                            {{team.failThresh}}
+                            <input type="number" v-model.number="team.failThresh[0][0]"/>
+                        </div>
 
                         <!-- OPERATOR TASKS -->
                         <h5 class="mb-3">Operator Tasks</h5>
