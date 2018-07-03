@@ -802,37 +802,32 @@
                                     <option value="PRTY">Priority</option>
                                 </select>
                             </div>
-                            <div class="form-group form-row" v-show="team.strategy === 'PRTY'">
+                            <div class="form-group form-row table-responsive" v-show="team.strategy === 'PRTY'">
                                 <!-- adjust priority task per phase(team.tasks) -->
-                                <div class="col form-group">
-                                    <label class="mb-3">Task Priority</label>
-                                    <div class="traffic-levels">
-                                        <div class="input-group traffic-level" v-for="(task,i) in taskSettings.tasks" v-show="task.include">
-
-                                            <div class="input-group-text">
-                                                {{ task.name }}
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col form-group" v-for="n in taskSettings.numPhases">
-                                    <label class="mb-3">Phase {{n}}</label>
-
-                                    <div class="traffic-levels">
-                                        <div class="input-group traffic-level" v-for="(task,i) in taskSettings.tasks" v-show="task.include">
-                                            <select class="custom-select" v-model.number="team.priority[n-1][i]">
-                                                <option value="7">Essential</option>
-                                                <option value="6">High</option>
-                                                <option value="5">Moderate</option>
-                                                <option value="4">Neutral</option>
-                                                <option value="3">Somewhat</option>
-                                                <option value="2">Low</option>
-                                                <option value="1">Not a Priority</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                <table class="form-group table">
+                                    <thead>
+                                        <th>Task Priority</th>
+                                        <th v-for="n in taskSettings.numPhases">
+                                            Phase {{n}}
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                            <td>{{task.name}}</td>
+                                            <td v-for="n in taskSettings.numPhases">
+                                                <select class="custom-select" v-model.number="team.priority[n-1][i]">
+                                                    <option value="7">Essential</option>
+                                                    <option value="6">High</option>
+                                                    <option value="5">Moderate</option>
+                                                    <option value="4">Neutral</option>
+                                                    <option value="3">Somewhat</option>
+                                                    <option value="2">Low</option>
+                                                    <option value="1">Not a Priority</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </form>
                         <!-- FAIL THRESHOLD -->
