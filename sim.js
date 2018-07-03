@@ -230,14 +230,12 @@ var sim = new Vue({
                             [1, 1, 2]
                         ],
                         AIDA: {
-                            equalOperator: false,
+                            AIDAType: [false, false, false],
                             ETServiceTime: 0,
                             ETErrorRate: 0,
                             ETFailThreshold: 0,
-                            assistingIndividuals: false,
                             IATasks: [],
                             IALevel: 'S',
-                            assistingTeamCoord: false,
                             TCALevel: 'S'
                         },
                         failThresh: [50, 50, 50, 50, 50]
@@ -256,14 +254,12 @@ var sim = new Vue({
                             [1, 1, 2]
                         ],
                         AIDA: {
-                            equalOperator: false,
+                            AIDAType: [false, false, false],
                             ETServiceTime: 0,
                             ETErrorRate: 0,
                             ETFailThreshold: 0,
-                            assistingIndividuals: false,
                             IATasks: [],
                             IALevel: 'S',
-                            assistingTeamCoord: false,
                             TCALevel: 'S'
                         },
                         failThresh: [50, 50, 50, 50, 50]
@@ -601,6 +597,21 @@ var sim = new Vue({
             return st;
         },
         // array containing ET Service Time
+        AIDAType() {
+            var aitypes = [];
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                var ait = [];
+                for (var j=0; j < this.operatorSettings.teams[i].AIDA.AIDAType.length; j++) {
+                    if (this.operatorSettings.teams[i].AIDA.AIDAType[j])
+                        ait.push(1);
+                    else
+                        ait.push(0);
+                }
+                aitypes.push(ait);
+            }
+            return aitypes;
+        },
+        // array containing ET Service Time
         ETServiceTime() {
             var st = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
@@ -839,14 +850,12 @@ var sim = new Vue({
                         tasks: [],
                         priority: [tasks, tasks, tasks, tasks, tasks],
                         AIDA: {
-                            equalOperator: false,
+                            AIDAType: [false, false, false],
                             ETServiceTime: 0,
                             ETErrorRate: 0,
                             ETFailThreshold: 0,
-                            assistingIndividuals: false,
                             IATasks: [],
                             IALevel: 'S',
-                            assistingTeamCoord: false,
                             TCALevel: 'S'
                         },
                         failThresh: ft
@@ -1018,10 +1027,7 @@ $(document).ready(function () {
             "humanError": sim.humanError,
             "ECC": sim.teamFailThreshold,
 
-            "AIDAtype": [
-                [0, 1, 0],
-                [0, 1, 0]
-            ],
+            "AIDAtype": sim.AIDAType,
             "ETServiceTime": sim.ETServiceTime,
             "ETErrorRate": sim.ETErrorRate,
             "ETFailThreshold": sim.ETFailThreshold,
