@@ -641,7 +641,23 @@ var sim = new Vue({
             }
             return ft;
         },
-
+        //AIDA IA Tasks
+        IATasks() {
+            var tasks = [];
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                tasks.push([]);
+                if (this.operatorSettings.teams[i].AIDA.IATasks) {
+                    for(var j=0; j < this.operatorSettings.teams[i].AIDA.IATasks.length; j++) {
+                        var k = this.operatorSettings.teams[i].AIDA.IATasks[j];
+                        // only tasks included in op teams...
+                        if (this.operatorSettings.teams[i].tasks.includes(k)) {
+                            tasks[i].push(k);
+                        }
+                    }
+                }
+            }
+            return tasks;
+        },
         //AIDA IA Level
         IALevel() {
             var lv = [];
@@ -1031,10 +1047,7 @@ $(document).ready(function () {
             "ETServiceTime": sim.ETServiceTime,
             "ETErrorRate": sim.ETErrorRate,
             "ETFailThreshold": sim.ETFailThreshold,
-            "IAtasks": [
-                [0, 1],
-                [1, 2]
-            ],
+            "IAtasks": sim.IATasks,
             "IALevel": sim.IALevel,
             "TCALevel": sim.TCALevel,
 
