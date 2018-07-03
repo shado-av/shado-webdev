@@ -87,6 +87,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         essential: "n",
+                        exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
@@ -129,6 +130,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         essential: "n",
+                        exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
@@ -170,6 +172,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         essential: "n",
+                        exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
@@ -345,6 +348,20 @@ var sim = new Vue({
             return names;
         },
 
+        // array containing tasks affected by exogenous type 2
+        exoType2Aff() {
+            var exo2 = [];
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].exoType2Aff && this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[i].exoType2Aff === "y") {
+                        exo2.push(1);
+                    } else {
+                        exo2.push(0);
+                    }
+                }
+            }
+            return exo2;
+        },
         // array containing tasks affected by team coordination values
         teamCoordAff() {
             var coords = [];
@@ -772,6 +789,7 @@ var sim = new Vue({
                 isCustom: true,
                 essential: "n",
                 interruptable: "n",
+                exoType2Aff: "n",
                 affTeamCoord: "n",
                 arrivalDistribution: ["E", "E", "E", "E", "E"],
                 arrivalParam: [
@@ -1066,6 +1084,7 @@ $(document).ready(function () {
             "expPms": sim.expPms,
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
+            "exoType2Aff": sim.exoType2Aff,
             "interruptable": sim.interruptable,
 
             "leadTask": [],

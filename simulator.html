@@ -467,6 +467,23 @@
                                 </div>
                             </div>
 
+                            <!-- task affected by team coordination (task.affExoTeamCoord) -->
+                            <div class="form-group">
+                                <label class="col-form-label">Is this task affected by exogenous type 2?</label>
+                                <div>
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
+                                            value="y" v-model="task.exoType2Aff">
+                                        <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-y'">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-0">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-n'"
+                                            value="n" v-model="task.exoType2Aff">
+                                        <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-n'">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-form-label">Is this task interruptable?</label>
                                 <div>
