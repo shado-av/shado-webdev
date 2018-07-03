@@ -1067,7 +1067,6 @@ $(document).ready(function () {
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
             "interruptable": sim.interruptable,
-            "essential": [0, 0, 1],
 
             "leadTask": [],
             "taskNames_f": ["Shitft Follow", "Rude Follow"],
@@ -1081,7 +1080,6 @@ $(document).ready(function () {
             "teamCoordAff_f": [0, 1],
             "taskPrty_f": [[[0, 1]], [[0, 1]]],
             "interruptable_f": [1, 1],
-            "essential_f": [0, 0],
             "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
             "ECC_f": [[0.5, 0.5]]
 
