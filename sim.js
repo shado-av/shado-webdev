@@ -4,6 +4,10 @@ Vue.component('percentage-input', {
             type: Number,
             default: 50
         },
+        numberOnly: {
+            type:Boolean,
+            default: false
+        },
         max: {
             type: Number,
             default: 100
@@ -11,6 +15,10 @@ Vue.component('percentage-input', {
         min: {
             type: Number,
             default: 0
+        },
+        step: {
+            type: Number,
+            default: 10
         }
     },
     data: function () {
@@ -28,20 +36,16 @@ Vue.component('percentage-input', {
             this.counter = val;
             if (this.counter < this.min) this.counter = this.min;
             if (this.counter > this.max) this.counter = this.max;
-        }
-    },
-    watch: {
-        counter: function (val) {
-            this.$emit('update:value', val);
+            this.$emit('update:value', this.counter);
         }
     },
     template: `<div class="mt-3 mb-3 number-input">
-                <button @click="stepNumberInput(-10)" class="minus"></button>
+                <button @click="stepNumberInput(-step)" class="minus"></button>
                 <input min="0" max="100" type="number" @change="validateInput(parseInt($event.target.value))"
-                    v-bind:value="value">
-                <button @click="stepNumberInput(10)" class="plus"></button>
-                <div class="input-group-append">
-                    <span class="input-group-text">%</span>
+                    v-bind:value="counter">
+                <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : numberOnly }]"></button>
+                <div class="input-group-append" v-if="!numberOnly">
+                        <span class="input-group-text">%</span>
                 </div>
             </div>`
 });
