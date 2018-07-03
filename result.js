@@ -194,12 +194,13 @@ var StackedBarChart = (function (index) {
         svg.selectAll(".bar")
             .on("mouseover", function (d, i) {
                 //console.log(d, i, i/49, data[i%49]);
+                var minutes = i % (barCounts + 1) * 10;
                 d3.select(this).attr("stroke", "blue").attr("stroke-width", 0.8);
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-
-                div.html("Task: " + keys[parseInt(i / (barCounts + 1))] + "<br> Mean Utilization: " + ((d[1] - d[0]) * 100).toFixed(2) + "%<br> Total Utilization: " + (data[i % (barCounts +1)]["total"] * 100).toFixed(2) + "%")
+                //Minutes 30 to 40, Utilization due to, ___ tasks : 55%, Total Utilization: 100%
+                div.html("<table><tr><td>Minutes:</td><td>" + minutes + " to " + (minutes+10) + "</td></tr><tr><td>Utilization due to,</td></tr><tr><td>" + keys[parseInt(i / (barCounts + 1))] + ":</td><td align='right'>" + ((d[1] - d[0]) * 100).toFixed(2) + "%</td></tr><tr><td>Total Utilization:</td><td align='right'>" + (data[i % (barCounts +1)]["total"] * 100).toFixed(2) + "%</td></tr></table>")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
@@ -378,12 +379,13 @@ var BoxPlot = (function() {
                         .duration(200)
                         .style("opacity", .9);
 
-                    div.html("Group: " + d.key +
-                            "<br/>Max: " + (d.whiskers[1] * 100).toFixed(4) +
-                            "<br/>Q3: " + (d.quartile[2] * 100).toFixed(4) +
-                            "<br/>Median: " + (d.quartile[1] * 100).toFixed(4) +
-                            "<br/>Q1: " + (d.quartile[0] * 100).toFixed(4) +
-                            "<br/>Min: " + (d.whiskers[0] * 100).toFixed(4))
+                    div.html("<table><tr><td>Group:</td><td>" + d.key +
+                            "</td></tr><tr><td>Max:</td><td align='right'>" + (d.whiskers[1] * 100).toFixed(2) +
+                            "%</td></tr><tr><td>Q3:</td><td align='right'>" + (d.quartile[2] * 100).toFixed(2) +
+                            "%</td></tr><tr><td>Median:</td><td align='right'>" + (d.quartile[1] * 100).toFixed(2) +
+                            "%</td></tr><tr><td>Q1:</td><td align='right'>" + (d.quartile[0] * 100).toFixed(2) +
+                            "%</td></tr><tr><td>Min:</td><td align='right'>" + (d.whiskers[0] * 100).toFixed(2) +
+                            "%</td></tr></table>")
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                     //.style("left", (window.pageXOffset + matrix.e + 15) + "px")

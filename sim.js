@@ -4,6 +4,10 @@ Vue.component('percentage-input', {
             type: Number,
             default: 50
         },
+        numberOnly: {
+            type:Boolean,
+            default: false
+        },
         max: {
             type: Number,
             default: 100
@@ -11,6 +15,10 @@ Vue.component('percentage-input', {
         min: {
             type: Number,
             default: 0
+        },
+        step: {
+            type: Number,
+            default: 10
         }
     },
     data: function () {
@@ -28,20 +36,16 @@ Vue.component('percentage-input', {
             this.counter = val;
             if (this.counter < this.min) this.counter = this.min;
             if (this.counter > this.max) this.counter = this.max;
-        }
-    },
-    watch: {
-        counter: function (val) {
-            this.$emit('update:value', val);
+            this.$emit('update:value', this.counter);
         }
     },
     template: `<div class="mt-3 mb-3 number-input">
-                <button @click="stepNumberInput(-10)" class="minus"></button>
+                <button @click="stepNumberInput(-step)" class="minus"></button>
                 <input min="0" max="100" type="number" @change="validateInput(parseInt($event.target.value))"
-                    v-bind:value="value">
-                <button @click="stepNumberInput(10)" class="plus"></button>
-                <div class="input-group-append">
-                    <span class="input-group-text">%</span>
+                    v-bind:value="counter">
+                <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : numberOnly }]"></button>
+                <div class="input-group-append" v-if="!numberOnly">
+                        <span class="input-group-text">%</span>
                 </div>
             </div>`
 });
@@ -83,6 +87,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         essential: "n",
+                        exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
@@ -125,6 +130,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         essential: "n",
+                        exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
@@ -166,6 +172,7 @@ var sim = new Vue({
                         include: true,
                         isCustom: false,
                         essential: "n",
+                        exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
@@ -226,15 +233,13 @@ var sim = new Vue({
                             [1, 1, 2]
                         ],
                         AIDA: {
-                            equalOperator: false,
+                            AIDAType: [false, false, false],
                             ETServiceTime: 0,
                             ETErrorRate: 0,
                             ETFailThreshold: 0,
-                            assistingIndividuals: false,
                             IATasks: [],
-                            IALevel: [],
-                            assistingTeamCoord: false,
-                            TCALevel: []
+                            IALevel: 'S',
+                            TCALevel: 'S'
                         },
                         failThresh: [50, 50, 50, 50, 50]
                     },
@@ -252,9 +257,13 @@ var sim = new Vue({
                             [1, 1, 2]
                         ],
                         AIDA: {
-                            equalOperator: false,
-                            assistingIndividuals: false,
-                            assistingTeamCoord: false
+                            AIDAType: [false, false, false],
+                            ETServiceTime: 0,
+                            ETErrorRate: 0,
+                            ETFailThreshold: 0,
+                            IATasks: [],
+                            IALevel: 'S',
+                            TCALevel: 'S'
                         },
                         failThresh: [50, 50, 50, 50, 50]
                     }
@@ -339,6 +348,20 @@ var sim = new Vue({
             return names;
         },
 
+        // array containing tasks affected by exogenous type 2
+        exoType2Aff() {
+            var exo2 = [];
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].exoType2Aff && this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[i].exoType2Aff === "y") {
+                        exo2.push(1);
+                    } else {
+                        exo2.push(0);
+                    }
+                }
+            }
+            return exo2;
+        },
         // array containing tasks affected by team coordination values
         teamCoordAff() {
             var coords = [];
@@ -352,6 +375,20 @@ var sim = new Vue({
                 }
             }
             return coords;
+        },
+        // array containing whether each task is interruptable
+        interruptable() {
+            var intp = [];
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].interruptable && this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[i].interruptable === "y") {
+                        intp.push(1);
+                    } else {
+                        intp.push(0);
+                    }
+                }
+            }
+            return intp;
         },
 
         // array containing all task arrival time distributions
@@ -577,6 +614,21 @@ var sim = new Vue({
             return st;
         },
         // array containing ET Service Time
+        AIDAType() {
+            var aitypes = [];
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                var ait = [];
+                for (var j=0; j < this.operatorSettings.teams[i].AIDA.AIDAType.length; j++) {
+                    if (this.operatorSettings.teams[i].AIDA.AIDAType[j])
+                        ait.push(1);
+                    else
+                        ait.push(0);
+                }
+                aitypes.push(ait);
+            }
+            return aitypes;
+        },
+        // array containing ET Service Time
         ETServiceTime() {
             var st = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
@@ -605,6 +657,48 @@ var sim = new Vue({
                 }
             }
             return ft;
+        },
+        //AIDA IA Tasks
+        IATasks() {
+            var tasks = [];
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                tasks.push([]);
+                if (this.operatorSettings.teams[i].AIDA.IATasks) {
+                    for(var j=0; j < this.operatorSettings.teams[i].AIDA.IATasks.length; j++) {
+                        var k = this.operatorSettings.teams[i].AIDA.IATasks[j];
+                        // only tasks included in op teams...
+                        if (this.operatorSettings.teams[i].tasks.includes(k)) {
+                            tasks[i].push(k);
+                        }
+                    }
+                }
+            }
+            return tasks;
+        },
+        //AIDA IA Level
+        IALevel() {
+            var lv = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.IALevel) {
+                    lv.push(this.operatorSettings.teams[i].AIDA.IALevel);
+                } else {
+                    lv.push("");
+                }
+            }
+            return lv;
+        },
+
+        //AIDA TCA Level
+        TCALevel() {
+            var lv = [];
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                if (this.operatorSettings.teams[i].AIDA.TCALevel) {
+                    lv.push(this.operatorSettings.teams[i].AIDA.TCALevel);
+                } else {
+                    lv.push("");
+                }
+            }
+            return lv;
         },
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
@@ -695,6 +789,7 @@ var sim = new Vue({
                 isCustom: true,
                 essential: "n",
                 interruptable: "n",
+                exoType2Aff: "n",
                 affTeamCoord: "n",
                 arrivalDistribution: ["E", "E", "E", "E", "E"],
                 arrivalParam: [
@@ -789,9 +884,13 @@ var sim = new Vue({
                         tasks: [],
                         priority: [tasks, tasks, tasks, tasks, tasks],
                         AIDA: {
-                            equalOperator: false,
-                            assistingIndividuals: false,
-                            assistingTeamCoord: false
+                            AIDAType: [false, false, false],
+                            ETServiceTime: 0,
+                            ETErrorRate: 0,
+                            ETFailThreshold: 0,
+                            IATasks: [],
+                            IALevel: 'S',
+                            TCALevel: 'S'
                         },
                         failThresh: ft
                     })
@@ -962,19 +1061,13 @@ $(document).ready(function () {
             "humanError": sim.humanError,
             "ECC": sim.teamFailThreshold,
 
-            "AIDAtype": [
-                [0, 1, 0],
-                [0, 1, 0]
-            ],
+            "AIDAtype": sim.AIDAType,
             "ETServiceTime": sim.ETServiceTime,
             "ETErrorRate": sim.ETErrorRate,
             "ETFailThreshold": sim.ETFailThreshold,
-            "IAtasks": [
-                [0, 1],
-                [1, 2]
-            ],
-            "IALevel": ["S", "S"],
-            "TCALevel": ["S", "S"],
+            "IAtasks": sim.IATasks,
+            "IALevel": sim.IALevel,
+            "TCALevel": sim.TCALevel,
 
             "fleetTypes": sim.fleetSettings.fleetTypes,
             "numvehicles": sim.numVehicles,
@@ -991,8 +1084,8 @@ $(document).ready(function () {
             "expPms": sim.expPms,
             "affByTraff": sim.affByTraff,
             "teamCoordAff": sim.teamCoordAff,
-            "interruptable": [0, 0, 0],
-            "essential": [0, 0, 1],
+            "exoType2Aff": sim.exoType2Aff,
+            "interruptable": sim.interruptable,
 
             "leadTask": [],
             "taskNames_f": ["Shitft Follow", "Rude Follow"],
@@ -1006,7 +1099,6 @@ $(document).ready(function () {
             "teamCoordAff_f": [0, 1],
             "taskPrty_f": [[[0, 1]], [[0, 1]]],
             "interruptable_f": [1, 1],
-            "essential_f": [0, 0],
             "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
             "ECC_f": [[0.5, 0.5]]
 

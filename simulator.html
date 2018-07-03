@@ -467,6 +467,23 @@
                                 </div>
                             </div>
 
+                            <!-- task affected by team coordination (task.affExoTeamCoord) -->
+                            <div class="form-group">
+                                <label class="col-form-label">Is this task affected by exogenous type 2?</label>
+                                <div>
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
+                                            value="y" v-model="task.exoType2Aff">
+                                        <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-y'">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-0">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-n'"
+                                            value="n" v-model="task.exoType2Aff">
+                                        <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-n'">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-form-label">Is this task interruptable?</label>
                                 <div>
@@ -497,7 +514,9 @@
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
+                                        <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
+                                        <option value="N">None</option>
                                     </select>
                                 </div>
 
@@ -530,6 +549,12 @@
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
+                                    <div v-if="task.arrivalDistribution[n-1] === 'C'" class="row no-gutters">
+                                        <div class="col mr-1">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
+                                            <small class="form-text text-muted">Number</small>
+                                        </div>
+                                    </div>
                                     <div v-if="task.arrivalDistribution[n-1] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
@@ -555,7 +580,9 @@
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
+                                        <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
+                                        <option value="N">None</option>
                                     </select>
                                 </div>
 
@@ -588,6 +615,12 @@
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
+                                    <div v-if="task.serviceDistribution[n-1] === 'C'" class="row no-gutters">
+                                        <div class="col mr-1">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
+                                            <small class="form-text text-muted">Number</small>
+                                        </div>
+                                    </div>
                                     <div v-if="task.serviceDistribution[n-1] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
@@ -613,7 +646,9 @@
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
+                                        <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
+                                        <option value="N">None</option>
                                     </select>
                                 </div>
 
@@ -644,6 +679,12 @@
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][1]">
                                             <small class="form-text text-muted">Maximum</small>
+                                        </div>
+                                    </div>
+                                    <div v-if="task.expireDistribution[n-1] === 'C'" class="row no-gutters">
+                                        <div class="col mr-1">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][0]">
+                                            <small class="form-text text-muted">Number</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[n-1] === 'T'" class="row no-gutters">
@@ -868,12 +909,12 @@
                             <!-- equal operator (AIDA.equalOperator) -->
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.equalOperator">
+                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
                                     <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">Equal Operator</label>
                                 </div>
                             </div>
                             <div :class="{options:team.AIDA.equalOperator}">
-                                <div class="form-group" v-show="team.AIDA.equalOperator">
+                                <div class="form-group" v-show="team.AIDA.AIDAType[0]">
                                     <div class="">What percentage of the Service Time is affected by this AI?</div>
                                     <percentage-input v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
                                     <div class="">What percentage of the Error Rate is affected by this AI?</div>
@@ -886,12 +927,12 @@
                             <!-- assisting individuals (AIDA.assistingIndividuals) -->
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.assistingIndividuals">
+                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
                                     <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">Assisting Indivisuals</label>
                                 </div>
                             </div>
                             <div :class="{options: team.AIDA.assistingIndividuals}">
-                                <div class="form-group" v-show="team.AIDA.assistingIndividuals">
+                                <div class="form-group" v-show="team.AIDA.AIDAType[1]">
                                     <div class="mb-3">What tasks are this AI responsible for?</div>
                                     <div class="custom-control custom-checkbox item mb-2" v-for="i in team.tasks">
                                         <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
@@ -912,12 +953,12 @@
                             <!-- assisting in team coordinations (AIDA.assistingTeamCoord) -->
                             <div class="form-group" v-show="team.comms !== 'N'">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.assistingTeamCoord">
+                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
                                     <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">Assisting Team Coordination</label>
                                 </div>
                             </div>
                             <div :class="{options:team.AIDA.assistingTeamCoord}">
-                                <div class="form-group" v-show="team.AIDA.assistingTeamCoord">
+                                <div class="form-group" v-show="team.AIDA.AIDAType[2]">
                                     <div class="mb-3">What is the level of this AI?</div>
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-some" value="S" v-model="team.AIDA.TCALevel">
@@ -1134,7 +1175,7 @@
                                 <li>Artifical Intellegence</li>
                                 <ul>
                                     <li>Equal Operator:
-                                        <b>{{team.AIDA.equalOperator}}</b>
+                                        <b>{{team.AIDA.AIDAType[0]}}</b>
                                         <ul v-show="team.AIDA.equalOperator">
                                             <li>Affected Rate of Service Time : {{team.AIDA.ETServiceTime}} </li>
                                             <li>Affected Rate of Error Rate : {{team.AIDA.ETErrorRate}} </li>
@@ -1143,14 +1184,14 @@
                                     </li>
 
                                     <li>Assisting Individuals:
-                                        <b>{{team.AIDA.assistingIndividuals}}</b>
+                                        <b>{{team.AIDA.AIDAType[1]}}</b>
                                         <ul v-show="team.AIDA.assistingIndividuals">
                                             <li>Affected Tasks : {{team.AIDA.IATasks}} </li>
                                             <li>Communication Level : {{team.AIDA.IALevel}} </li>
                                         </ul>
                                     </li>
                                     <li>Assisting Team Coordination:
-                                        <b>{{team.AIDA.assistingTeamCoord}}</b>
+                                        <b>{{team.AIDA.AIDAType[2]}}</b>
                                         <ul v-show="team.AIDA.assistingTeamCoord">
                                             <li>Communication Level : {{team.AIDA.TCALevel}} </li>
                                         </ul>
