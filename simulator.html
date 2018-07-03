@@ -497,7 +497,9 @@
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
+                                        <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
+                                        <option value="N">None</option>
                                     </select>
                                 </div>
 
@@ -530,6 +532,12 @@
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
+                                    <div v-if="task.arrivalDistribution[n-1] === 'C'" class="row no-gutters">
+                                        <div class="col mr-1">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
+                                            <small class="form-text text-muted">Number</small>
+                                        </div>
+                                    </div>
                                     <div v-if="task.arrivalDistribution[n-1] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0]">
@@ -555,7 +563,9 @@
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
+                                        <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
+                                        <option value="N">None</option>
                                     </select>
                                 </div>
 
@@ -588,6 +598,12 @@
                                             <small class="form-text text-muted">Maximum</small>
                                         </div>
                                     </div>
+                                    <div v-if="task.serviceDistribution[n-1] === 'C'" class="row no-gutters">
+                                        <div class="col mr-1">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
+                                            <small class="form-text text-muted">Number</small>
+                                        </div>
+                                    </div>
                                     <div v-if="task.serviceDistribution[n-1] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[n-1][0]">
@@ -613,7 +629,9 @@
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
                                         <option value="U">Uniform</option>
+                                        <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
+                                        <option value="N">None</option>
                                     </select>
                                 </div>
 
@@ -644,6 +662,12 @@
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][1]">
                                             <small class="form-text text-muted">Maximum</small>
+                                        </div>
+                                    </div>
+                                    <div v-if="task.expireDistribution[n-1] === 'C'" class="row no-gutters">
+                                        <div class="col mr-1">
+                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[n-1][0]">
+                                            <small class="form-text text-muted">Number</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[n-1] === 'T'" class="row no-gutters">
