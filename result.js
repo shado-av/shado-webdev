@@ -24,6 +24,7 @@ var StackedBarChart = (function (index) {
             left: 50
         };
     var minutes, barCounts;
+    var bandWidth;
 
     var initStackedBarChart = function(json) {
         jsonData = json;
@@ -34,6 +35,7 @@ var StackedBarChart = (function (index) {
         svg = d3.select("#modalSVG" + id);
         width = +svg.attr("width") - margin.left - margin.right;
         height = +svg.attr("height") - margin.top - margin.bottom;
+        bandWidth = Math.floor((width - 150) / (barCounts + 1));
 
         x = d3.scaleLinear().rangeRound([0, width-150]);
         y = d3.scaleLinear()
@@ -79,11 +81,15 @@ var StackedBarChart = (function (index) {
         y.domain([0, 1]); //.nice()
         z.domain(keys);
 
+        var ticks = [];
+        for(var j=30; j<= minutes;j+=30) {
+            ticks.push(j);
+        }
         // set ticks
         g.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).ticks());
+            .call(d3.axisBottom(x).tickValues(ticks));
 
         g.append("g")
             .attr("class", "axis")
@@ -127,6 +133,14 @@ var StackedBarChart = (function (index) {
         stacked = d3.stack().keys(keys); //(data);
     };
 
+    var minsInTime = function(mins) {
+        var hh = Math.floor(mins / 60);
+        var mm = mins % 60;
+        //hh = hh < 10 ? '0' + hh : hh;
+        mm = mm < 10 ? '0' + mm : mm;
+        return hh + ":" + mm;
+    }
+
     var drawStackedBarChart = function(json, operator, replication) {
         // convert json data into d3 stack preferred form
         currentOperator = operator;
@@ -161,7 +175,7 @@ var StackedBarChart = (function (index) {
             bar
                 .transition()
                 .attr("x", function (d) {
-                    return x(d.data.x) + 2;
+                    return x(d.data.x) + 1;
                 })
                 .attr("y", function (d) {
                     return y(d[1]);
@@ -175,7 +189,7 @@ var StackedBarChart = (function (index) {
                     return "bar bar-" + keyClassName;
                 })
                 .attr("x", function (d) {
-                    return x(d.data.x) + 2;
+                    return x(d.data.x) + 1;
                 })
                 .attr("y", function (d) {
                     return y(d[1]);
@@ -183,7 +197,7 @@ var StackedBarChart = (function (index) {
                 .attr("height", function (d) {
                     return y(d[0]) - y(d[1]);
                 })
-                .attr("width", 14) // x.bandwidth())
+                .attr("width", bandWidth + 1) // x.bandwidth())
                 .attr("fill", function (d) {
                     return z(key);
                 })
@@ -195,12 +209,13 @@ var StackedBarChart = (function (index) {
             .on("mouseover", function (d, i) {
                 //console.log(d, i, i/49, data[i%49]);
                 var minutes = i % (barCounts + 1) * 10;
+
                 d3.select(this).attr("stroke", "blue").attr("stroke-width", 0.8);
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                //Minutes 30 to 40, Utilization due to, ___ tasks : 55%, Total Utilization: 100%
-                div.html("<table><tr><td>Minutes:</td><td>" + minutes + " to " + (minutes+10) + "</td></tr><tr><td>Utilization due to,</td></tr><tr><td>" + keys[parseInt(i / (barCounts + 1))] + ":</td><td align='right'>" + ((d[1] - d[0]) * 100).toFixed(2) + "%</td></tr><tr><td>Total Utilization:</td><td align='right'>" + (data[i % (barCounts +1)]["total"] * 100).toFixed(2) + "%</td></tr></table>")
+                //HH:MM-HH:MM, Busy for XX.XX minutes with Y tasks, Total Utilization: 100%
+                div.html("<table><tr><td>Time: " + minsInTime(minutes) + " to " + minsInTime(minutes+10) + "</td></tr><tr><td>Busy for " + ((d[1] - d[0]) * 10).toFixed(2) + " minutes</td></tr><tr><td>with " + keys[parseInt(i / (barCounts + 1))] + " task</td></tr><tr><td>Total Utilization: " + (data[i % (barCounts +1)]["total"] * 100).toFixed(2) + "%</td></tr></table>")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
