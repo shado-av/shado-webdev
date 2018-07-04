@@ -123,8 +123,10 @@ var sim = new Vue({
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
-                        ]
+                        ],
 
+                        leadTask: -1,
+                        tasks_f: []
                     },
                     {
                         name: "Actuation",
@@ -166,7 +168,10 @@ var sim = new Vue({
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
-                        ]
+                        ],
+
+                        leadTask: -1,
+                        tasks_f: []
                     },
                     {
                         name: "Directive Mandatory",
@@ -208,7 +213,10 @@ var sim = new Vue({
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007],
                             [0.00008, 0.0004, 0.007]
-                        ]
+                        ],
+
+                        leadTask: -1,
+                        tasks_f: []
                     }
                 ]
         },
@@ -336,7 +344,7 @@ var sim = new Vue({
 
         // true if 15 tasks
         maxTasksReached() {
-            return this.numTaskTypes >= 15;
+            return this.numTaskTypes >= 99;
         },
 
         // number of tasks
@@ -808,8 +816,12 @@ var sim = new Vue({
         },
 
         addCustomTask() {
+            sim.newTask("Custom Task", -1);
+        },
+
+        newTask(name, leadTask) {
             this.taskSettings.tasks.push({
-                name: "Custom Task",
+                name: name,
                 include: true,
                 isCustom: true,
                 essential: "n",
@@ -848,7 +860,9 @@ var sim = new Vue({
                     [],
                     [],
                     []
-                ]
+                ],
+                leadTask: leadTask,
+                tasks_f: []
             });
 
             // add priority for each operatorSettings.teams
@@ -880,6 +894,30 @@ var sim = new Vue({
                 }
 
                 $("#tasks-global-settings-tab").click();
+            }
+        },
+
+        addFollowingTask(task) {
+            sim.newTask(task.name + " (Following)", this.taskSettings.tasks.indexOf(task));
+        },
+
+        removeFollwingTask(task) {
+            if (confirm("Are you sure you want to delete this following task?")) {
+
+                // remove from taskSettings.tasks
+                var taskIndex = this.taskSettings.tasks.indexOf(task);
+                this.taskSettings.tasks.splice(taskIndex, 1);
+
+                //console.log(taskIndex, this.operatorSettings.teams[0].failThresh[0]);
+                // remove priority for each operatorSettings.teams
+                for (var k = 0; k < this.taskSettings.numPhases; k++) {
+                    for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                        console.log(taskIndex, this.operatorSettings.teams[i].failThresh[k]);
+                        this.operatorSettings.teams[i].priority[k].splice(taskIndex, 1);
+                        this.operatorSettings.teams[i].failThresh[k].splice(taskIndex, 1);
+                        console.log(taskIndex, i, k, this.operatorSettings.teams[i].failThresh[k]);
+                    }
+                }
             }
         },
 

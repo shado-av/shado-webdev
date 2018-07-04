@@ -415,13 +415,13 @@
                             <b>15</b> task types from the list of provided tasks or add custom tasks.</p>
 
                         <!-- LIST OF TASKS -->
-                        <div class="custom-control custom-checkbox mb-4 task" v-for="(task, index) in taskSettings.tasks">
+                        <div class="custom-control custom-checkbox mb-4 task" v-for="(task, index) in taskSettings.tasks" v-if="task.leadTask === -1">
                             <input class="custom-control-input" type="checkbox" :id="'task-type-' + index" v-model="task.include" :disabled="disableAddTask(task)">
                             <label class="custom-control-label h6" :for="'task-type-' + index">{{ task.name }}</label>
                             <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <p class="pr-4">Details about the task and an overview of its default parameters will go here.</p>
+<!--                            <p class="pr-4">Details about the task and an overview of its default parameters will go here.</p>-->
                         </div>
 
                         <!-- ADD A CUSTOM TASK -->
@@ -762,6 +762,22 @@
                                 </div>
                             </div>
                         </form>
+
+                        <div class="form-group" v-if="task.leadTask === -1">
+                            <!-- tasks assigned to operators (task.include) -->
+                            <h5 class="mb-3">Which tasks are following this task?</h5>
+
+
+                            <!-- LIST OF Following TASKS -->
+                            <div class="custom-control custom-checkbox mb-4 task" v-for="(taskf, indexf) in taskSettings.tasks" v-if="index === taskf.leadTask">
+                                <input class="custom-control-input" type="checkbox" :id="'taskf-type-' + indexf" v-model="taskf.include">
+                                <label class="custom-control-label h6" :for="'taskf-type-' + indexf">{{ taskf.name }}</label>
+                            </div>
+                            <!-- Add Following Tasks -->
+                            <button type="button" class="btn btn-secondary btn-sm" @click="addFollowingTask(task)" :disabled="maxTasksReached">
+                                <i class="fas fa-plus fa-xs"></i> Add Following Task</button>
+
+                        </div>
                     </div>
                 </div>
 
@@ -903,8 +919,6 @@
                                     <percentage-input :value.sync="team.failThresh[n-1][i]"></percentage-input>
                                 </div>
                             </div>
-                            {{team.failThresh}}
-                            <input type="number" v-model.number="team.failThresh[0][0]"/>
                         </div>
 
                         <!-- OPERATOR TASKS -->
