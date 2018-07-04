@@ -1100,6 +1100,9 @@ var sim = new Vue({
 });
 
 $(document).ready(function () {
+    var serverName = "http://apps.hal.pratt.duke.edu:8080";
+    //var serverName = "http://localhost:8080";
+
     //Json Builder
     $("#sumbitBtn").click(function () {
         var out = {
@@ -1175,7 +1178,7 @@ $(document).ready(function () {
         $('<a href="data:' + data + '" download="shadoParams.json">Download <br> Input JSON</a>').appendTo('#container');
         $.ajax({
             type: "POST",
-            url: "http://apps.hal.pratt.duke.edu:8080/shado/testpost",
+            url: serverName + "/shado/testpost",
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(out),
             contentType: "application/json; charset=utf-8",
@@ -1212,7 +1215,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize("http://apps.hal.pratt.duke.edu/out/Utilization.json?" + new Date().getTime(), "#boxSVG", "1");
+                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON", "#boxSVG", "1");
             },
             failure: function (errMsg) {
                 alert(errMsg);
@@ -1222,7 +1225,7 @@ $(document).ready(function () {
     //Download  
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
-        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail";
+        window.location.href = serverName + "/shado/getRepDetail";
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
@@ -1231,13 +1234,13 @@ $(document).ready(function () {
         var xhttp = new XMLHttpRequest();
         // $.get("http://localhost:8080/shado/getSummary");
         // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getSummary";
+        window.location.href = serverName + "/shado/getSummary";
         win.focus();
         console.log("GET request 'getSummary' sent");
     });
 
     $("#downloadJSON").click(function () {
-        window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON";
+        window.location.href = serverName + "/shado/getUtilizationJSON";
         console.log("GET request 'getUtilizationJSON' sent");
     });
     $(function () {
