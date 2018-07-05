@@ -603,6 +603,19 @@ var sim = new Vue({
             return pb;
         },
 
+        // array of leadTask, value will be -1 if leading, otherwise the leading task
+        leadTask() {
+            var task = [];
+
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].include)
+                    task.push(this.taskSettings.tasks[i].leadTask);
+            }
+
+            console.log("leadTask:", task);
+            return task;
+        },
+
         opPriority() {
             var prty = [];
             for (var j = 0; j < this.taskSettings.numPhases; j++) {
@@ -805,6 +818,7 @@ var sim = new Vue({
             return true;
         },
 
+        // return default task array
         getTaskArray() {
             var task = [];
 
@@ -830,36 +844,36 @@ var sim = new Vue({
                 affTeamCoord: "n",
                 arrivalDistribution: ["E", "E", "E", "E", "E"],
                 arrivalParam: [
-                    [],
-                    [],
-                    [],
-                    [],
-                    []
+                    [0.033333, 0.1],
+                    [0.033333, 0.1],
+                    [0.033333, 0.1],
+                    [0.033333, 0.1],
+                    [0.033333, 0.1]
                 ],
-                serviceDistribution: ["E", "E", "E", "E", "E"],
+                serviceDistribution: ["U", "U", "U", "U", "U"],
                 serviceParam: [
-                    [],
-                    [],
-                    [],
-                    [],
-                    []
+                    [0.5, 2],
+                    [0.5, 2],
+                    [0.5, 2],
+                    [0.5, 2],
+                    [0.5, 2]
                 ],
                 expireDistribution: ["E", "E", "E", "E", "E"],
                 expireParam: [
-                    [],
-                    [],
-                    [],
-                    [],
-                    []
+                    [0, 0.184],
+                    [0, 0.184],
+                    [0, 0.184],
+                    [0, 0.184],
+                    [0, 0.184]
                 ],
-                affectedByTraffic: "n",
-                affectByIROPS: [],
+                affectedByTraffic: "y",
+                affectByIROPS: [0, 0, 0, 0, 0],
                 humanErrorProb: [
-                    [],
-                    [],
-                    [],
-                    [],
-                    []
+                    [0.00008, 0.0004, 0.007],
+                    [0.00008, 0.0004, 0.007],
+                    [0.00008, 0.0004, 0.007],
+                    [0.00008, 0.0004, 0.007],
+                    [0.00008, 0.0004, 0.007]
                 ],
                 leadTask: leadTask,
                 tasks_f: []
@@ -1150,24 +1164,24 @@ $(document).ready(function () {
             "interruptable": sim.interruptable,
             "essential": sim.essential,
 
-            "leadTask": [],
-            "taskNames_f": ["Shitft Follow", "Rude Follow"],
-            "arrDists_f": [["C", "C"], ["C", "C"]],
-            "arrPms_f": [[[1], [1]], [[1], [1]]],
-            "serDists_f": [["C", "C"], ["C", "C"]],
-            "serPms_f": [[[5], [2]], [[5], [2]]],
-            "expDists_f": [["C", "C"], ["C", "C"]],
-            "expPms_f": [[[70], [70]], [[70], [70]]],
-            "affByTraff_f": [[0, 0], [0, 0]],
-            "teamCoordAff_f": [0, 1],
-            "taskPrty_f": [[[0, 1]], [[0, 1]]],
-            "interruptable_f": [1, 1],
-            "essential_f": [0, 0],
-            "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
-            "ECC_f": [[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]]]
+            "leadTask": sim.leadTask
+//            "taskNames_f": ["Shitft Follow", "Rude Follow"],
+//            "arrDists_f": [["C", "C"], ["C", "C"]],
+//            "arrPms_f": [[[1], [1]], [[1], [1]]],
+//            "serDists_f": [["C", "C"], ["C", "C"]],
+//            "serPms_f": [[[5], [2]], [[5], [2]]],
+//            "expDists_f": [["C", "C"], ["C", "C"]],
+//            "expPms_f": [[[70], [70]], [[70], [70]]],
+//            "affByTraff_f": [[0, 0], [0, 0]],
+//            "teamCoordAff_f": [0, 1],
+//            "taskPrty_f": [[[0, 1]], [[0, 1]]],
+//            "interruptable_f": [1, 1],
+//            "essential_f": [0, 0],
+//            "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
+//            "ECC_f": [[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]]]
 
         };
-        console.log(out);
+        console.log("JSON output: ", out);
         //hide download
         document.getElementById("downloadBtn").style.display = "none";
         // document.getElementById("downloadSummary").style.display = "none";
