@@ -115,7 +115,6 @@ var sim = new Vue({
                             [0, 0.184],
                             [0, 0.184]
                         ],
-                        affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
@@ -160,7 +159,6 @@ var sim = new Vue({
                             [0, 0.184],
                             [0, 0.184]
                         ],
-                        affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
@@ -205,7 +203,6 @@ var sim = new Vue({
                             [0, 0.184],
                             [0, 0.184]
                         ],
-                        affectedByTraffic: "y",
                         affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
@@ -513,18 +510,13 @@ var sim = new Vue({
         // array containing all tasks affected by traffic
         affByTraff() {
             var traff = [];
-            for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].affectedByTraffic && this.taskSettings.tasks[i].affectByIROPS && this.taskSettings.tasks[i].include) {
-                    if (this.taskSettings.tasks[i].affectedByTraffic === "y") {
-                        var affected = this.taskSettings.tasks[i].affectByIROPS;
-                        for (var j = 0; j < affected.length; j++) {
-                            if (typeof affected[j] !== "number") {
-                                affected[j] = affected[j] ? 1 : 0;
-                            }
-                        }
-                        traff.push(affected);
-                    } else {
-                        traff.push([0, 0]);
+            for (var j = 0; j < this.taskSettings.numPhases; j++) {
+                traff.push([]);
+                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                    if (this.taskSettings.tasks[i].affectByIROPS &&         this.taskSettings.tasks[i].include) {
+                        var affected = this.taskSettings.tasks[i].affectByIROPS[j];
+                        affected = affected ? 1 : 0;
+                        traff[j].push(affected);
                     }
                 }
             }
@@ -867,7 +859,6 @@ var sim = new Vue({
                     [0, 0.184],
                     [0, 0.184]
                 ],
-                affectedByTraffic: "y",
                 affectByIROPS: [0, 0, 0, 0, 0],
                 humanErrorProb: [
                     [0.00008, 0.0004, 0.007],
@@ -934,10 +925,6 @@ var sim = new Vue({
                     }
                 }
             }
-        },
-
-        isAffectedByTrafficPhases(task) {
-            return task.affectedByTraffic === "y" && this.taskSettings.numPhases > 1;
         },
 
         updateOperatorTeams() {
@@ -1167,21 +1154,6 @@ $(document).ready(function () {
             "essential": sim.essential,
 
             "leadTask": sim.leadTask
-//            "taskNames_f": ["Shitft Follow", "Rude Follow"],
-//            "arrDists_f": [["C", "C"], ["C", "C"]],
-//            "arrPms_f": [[[1], [1]], [[1], [1]]],
-//            "serDists_f": [["C", "C"], ["C", "C"]],
-//            "serPms_f": [[[5], [2]], [[5], [2]]],
-//            "expDists_f": [["C", "C"], ["C", "C"]],
-//            "expPms_f": [[[70], [70]], [[70], [70]]],
-//            "affByTraff_f": [[0, 0], [0, 0]],
-//            "teamCoordAff_f": [0, 1],
-//            "taskPrty_f": [[[0, 1]], [[0, 1]]],
-//            "interruptable_f": [1, 1],
-//            "essential_f": [0, 0],
-//            "humanError_f": [[[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]], [[0.00008, 0.003, 0.007], [0.00008, 0.003, 0.007]]],
-//            "ECC_f": [[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]],[[0.5,0.5,0.5],[0.5,0.5,0.5]]]
-
         };
         console.log("JSON output: ", out);
         //hide download
