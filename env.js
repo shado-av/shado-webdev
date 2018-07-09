@@ -1,0 +1,3 @@
+var env = {
+    production : true
+};

@@ -595,10 +595,11 @@ var sim = new Vue({
             return tasks;
         },
 
+        // array of phase begin time in minutes
         phaseBegin() {
             var pb = [];
             for (i = 0; i < this.taskSettings.numPhases; i++) {
-                pb.push(this.taskSettings.intervalPhases[i][0]);
+                pb.push(this.taskSettings.intervalPhases[i][0] * 60);
             }
             return pb;
         },
@@ -612,7 +613,7 @@ var sim = new Vue({
                     task.push(this.taskSettings.tasks[i].leadTask);
             }
 
-            console.log("leadTask:", task);
+            //console.log("leadTask:", task);
             return task;
         },
 
@@ -1115,7 +1116,8 @@ var sim = new Vue({
 
 $(document).ready(function () {
     var serverName = "http://apps.hal.pratt.duke.edu:8080";
-    //var serverName = "http://localhost:8080";
+    if (!env.production)
+        serverName = "http://localhost:8080";
 
     //Json Builder
     $("#sumbitBtn").click(function () {
