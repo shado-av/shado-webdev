@@ -351,10 +351,21 @@ var sim = new Vue({
                 nums[i] = 0;
 
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].include) {                       nums[this.taskSettings.tasks[i].leadTask + 1]++
+                if (this.taskSettings.tasks[i].include) {
+                    nums[this.taskSettings.tasks[i].leadTask + 1]++
                 }
             }
             return nums;
+        },
+
+        numTotalTaskTypes() {
+            var num = 0;
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].include) {
+                    num++;
+                }
+            }
+            return num;
         },
 
         // array containing task names
@@ -1167,7 +1178,7 @@ $(document).ready(function () {
             "autolvl": sim.fleetAutoLevel,
             "fleetHetero": sim.fleetHetero,
 
-            "numTaskTypes": sim.numTaskTypes,
+            "numTaskTypes": sim.numTotalTaskTypes,
             "taskNames": sim.taskNames,
             "arrDists": sim.arrDists,
             "arrPms": sim.arrPms,
