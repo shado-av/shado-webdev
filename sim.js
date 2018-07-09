@@ -1117,9 +1117,7 @@ var sim = new Vue({
 });
 
 $(document).ready(function () {
-    var serverName = "http://apps.hal.pratt.duke.edu:8080";
-    if (!env.production)
-        serverName = "http://localhost:8080";
+    var serverName = env.serverUrl;
 
     //Json Builder
     $("#sumbitBtn").click(function () {
