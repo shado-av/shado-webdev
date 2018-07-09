@@ -444,7 +444,7 @@ var sim = new Vue({
                 params.push([]);
                 for (i = 0; i < this.taskSettings.tasks.length; i++) {
                     if (this.taskSettings.tasks[i].arrivalParam && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.taskSettings.tasks[i].arrivalParam[j]);
+                        params[j].push(this.distParams(this.taskSettings.tasks[i].arrivalDistribution[j], this.taskSettings.tasks[i].arrivalParam[j]));
                     }
                 }
             }
@@ -472,7 +472,7 @@ var sim = new Vue({
                 params.push([]);
                 for (i = 0; i < this.taskSettings.tasks.length; i++) {
                     if (this.taskSettings.tasks[i].serviceParam && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.taskSettings.tasks[i].serviceParam[j]);
+                        params[j].push(this.distParams(this.taskSettings.tasks[i].serviceDistribution[j],this.taskSettings.tasks[i].serviceParam[j]));
                     }
                 }
             }
@@ -500,7 +500,7 @@ var sim = new Vue({
                 params.push([]);
                 for (var i = 0; i < this.taskSettings.tasks.length; i++) {
                     if (this.taskSettings.tasks[i].expireParam && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.taskSettings.tasks[i].expireParam[j]);
+                        params[j].push(this.distParams(this.taskSettings.tasks[i].expireDistribution[j],this.taskSettings.tasks[i].expireParam[j]));
                     }
                 }
             }
@@ -1041,7 +1041,22 @@ var sim = new Vue({
             this.$nextTick(function () {
                 $("#sim-type").modal('hide');
             });
-        }
+        },
+
+        // return exact number of params depending on distribution
+        distParams(dist, params) {
+            switch(dist) {
+                case 'E':
+                case 'C':
+                    return [params[0]];
+                case 'L':
+                case 'U':
+                    return [params[0], params[1]];
+                case 'N':
+                    return [-1];
+            }
+            return params;  // for 'T'
+        },
     },
 
     mounted: function () {
