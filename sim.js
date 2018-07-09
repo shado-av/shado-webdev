@@ -341,18 +341,20 @@ var sim = new Vue({
 
         // true if 15 tasks
         maxTasksReached() {
-            return this.numTaskTypes >= 99;
+            return this.numTaskTypes[0] >= 15;
         },
 
         // number of tasks
         numTaskTypes() {
-            var num = 0;
+            var nums = [];
+            for (i = 0; i <= this.taskSettings.tasks.length; i++)
+                nums[i] = 0;
+
             for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                if (this.taskSettings.tasks[i].include) {
-                    num++;
+                if (this.taskSettings.tasks[i].include) {                       nums[this.taskSettings.tasks[i].leadTask + 1]++
                 }
             }
-            return num;
+            return nums;
         },
 
         // array containing task names
@@ -811,6 +813,19 @@ var sim = new Vue({
             return true;
         },
 
+        maxFollowingTasksReached(index) {
+            return this.numTaskTypes[index + 1] >= 10;
+        },
+
+        disableAddFollowingTasks(task, index) {
+            console.log("DisableAddFollowingTasks : ");
+            if (task.include || !this.maxFollowingTasksReached(index)) {
+                console.log(false);
+                return false;
+            }
+            console.log(true);
+            return true;
+        },
         // return default task array
         getTaskArray() {
             var task = [];

@@ -767,15 +767,16 @@
                         <div class="form-group" v-if="task.leadTask === -1">
                             <!-- tasks assigned to operators (task.include) -->
                             <h5 class="mb-3">Which tasks are following this task?</h5>
-
+                            <p class="text-muted small">Include up to
+                            <b>10</b> following task types from the list of provided tasks or add following custom tasks.</p>
 
                             <!-- LIST OF Following TASKS -->
-                            <div class="custom-control custom-checkbox mb-4 task" v-for="(taskf, indexf) in taskSettings.tasks" v-if="index === taskf.leadTask">
-                                <input class="custom-control-input" type="checkbox" :id="'taskf-type-' + indexf" v-model="taskf.include">
+                            <div class="custom-control custom-checkbox mb-4 task" v-for="(taskf, indexf) in taskSettings.tasks" v-if="index === taskf.leadTask" >
+                                <input class="custom-control-input" type="checkbox" :id="'taskf-type-' + indexf" v-model="taskf.include" :disabled="disableAddFollowingTasks(taskf,index)">
                                 <label class="custom-control-label h6" :for="'taskf-type-' + indexf">{{ taskf.name }}</label>
                             </div>
                             <!-- Add Following Tasks -->
-                            <button type="button" class="btn btn-secondary btn-sm" @click="addFollowingTask(task)" :disabled="maxTasksReached">
+                            <button type="button" class="btn btn-secondary btn-sm" @click="addFollowingTask(task)" :disabled="maxFollowingTasksReached(index)">
                                 <i class="fas fa-plus fa-xs"></i> Add Following Task</button>
 
                         </div>
