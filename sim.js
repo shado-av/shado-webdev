@@ -93,11 +93,11 @@ var sim = new Vue({
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
+                            [30],
+                            [30],
+                            [30],
+                            [30],
+                            [30],
                         ],
                         serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
@@ -109,11 +109,11 @@ var sim = new Vue({
                         ],
                         expireDistribution: ["E", "E", "E", "E", "E"],
                         expireParam: [
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184]
+                            [1440],
+                            [1440],
+                            [1440],
+                            [1440],
+                            [1440],
                         ],
                         affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
@@ -137,11 +137,11 @@ var sim = new Vue({
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1]
+                            [30],
+                            [30],
+                            [30],
+                            [30],
+                            [30],
                         ],
                         serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
@@ -153,11 +153,11 @@ var sim = new Vue({
                         ],
                         expireDistribution: ["E", "E", "E", "E", "E"],
                         expireParam: [
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184]
+                            [1440],
+                            [1440],
+                            [1440],
+                            [1440],
+                            [1440],
                         ],
                         affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
@@ -181,11 +181,11 @@ var sim = new Vue({
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1],
-                            [0.033333, 0.1]
+                            [30],
+                            [30],
+                            [30],
+                            [30],
+                            [30],
                         ],
                         serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
@@ -197,11 +197,11 @@ var sim = new Vue({
                         ],
                         expireDistribution: ["E", "E", "E", "E", "E"],
                         expireParam: [
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184],
-                            [0, 0.184]
+                            [1440],
+                            [1440],
+                            [1440],
+                            [1440],
+                            [1440],
                         ],
                         affectByIROPS: [0, 1, 0, 0, 0],
                         humanErrorProb: [
@@ -837,11 +837,11 @@ var sim = new Vue({
                 affTeamCoord: "n",
                 arrivalDistribution: ["E", "E", "E", "E", "E"],
                 arrivalParam: [
-                    [0.033333, 0.1],
-                    [0.033333, 0.1],
-                    [0.033333, 0.1],
-                    [0.033333, 0.1],
-                    [0.033333, 0.1]
+                    [30],
+                    [30],
+                    [30],
+                    [30],
+                    [30],
                 ],
                 serviceDistribution: ["U", "U", "U", "U", "U"],
                 serviceParam: [
@@ -853,11 +853,11 @@ var sim = new Vue({
                 ],
                 expireDistribution: ["E", "E", "E", "E", "E"],
                 expireParam: [
-                    [0, 0.184],
-                    [0, 0.184],
-                    [0, 0.184],
-                    [0, 0.184],
-                    [0, 0.184]
+                    [1440],
+                    [1440],
+                    [1440],
+                    [1440],
+                    [1440],
                 ],
                 affectByIROPS: [0, 0, 0, 0, 0],
                 humanErrorProb: [
