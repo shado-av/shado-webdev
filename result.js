@@ -276,7 +276,7 @@ var BoxPlot = (function() {
             var globalCounts = [];
             for (var i = 0; i < json.averageUtilization.length; i++) {
                 var key = json.operatorName[i];
-                groupCounts[key] = json.averageUtilization[i];
+                groupCounts[key+"_" +i] = json.averageUtilization[i];
                 globalCounts = globalCounts.concat(json.averageUtilization[i]);
             }
             console.log("GroupCounts ", groupCounts);
@@ -301,6 +301,7 @@ var BoxPlot = (function() {
                 var localMax = d3.max(groupCount);
 
                 record["key"] = key;
+                record["okey"] = key.substr(0, key.lastIndexOf("_"));
                 record["counts"] = groupCount;
                 record["quartile"] = boxQuartiles(groupCount);
                 record["whiskers"] = [localMin, localMax];
@@ -394,7 +395,7 @@ var BoxPlot = (function() {
                         .duration(200)
                         .style("opacity", .9);
 
-                    div.html("<table><tr><td>Group:</td><td>" + d.key +
+                    div.html("<table><tr><td>Group:</td><td>" + d.okey +
                             "</td></tr><tr><td>Max:</td><td align='right'>" + (d.whiskers[1] * 100).toFixed(2) +
                             "%</td></tr><tr><td>Q3:</td><td align='right'>" + (d.quartile[2] * 100).toFixed(2) +
                             "%</td></tr><tr><td>Median:</td><td align='right'>" + (d.quartile[1] * 100).toFixed(2) +
@@ -494,7 +495,9 @@ var BoxPlot = (function() {
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
             axisBG.append("g")
-                .call(axisBottom);
+                .call(axisBottom.tickFormat(function (d) {
+                return d.substr(0, d.lastIndexOf("_"));
+            }));
 
             // text label for the x axis
             svg.append("text")
