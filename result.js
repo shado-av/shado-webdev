@@ -1,5 +1,5 @@
 var div = d3.select("body").append("div")
-        .attr("class", "tooltip")
+        .attr("class", "tooltipBox")
         .style("opacity", 0);
 
 var StackedBarChart = (function (index) {

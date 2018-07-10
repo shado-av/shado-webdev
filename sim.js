@@ -1298,6 +1298,10 @@ $(document).ready(function () {
         }
     });
 
+    // enable tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // pop-up simulation type chooser
     $('#sim-type').modal(true);
 });
 

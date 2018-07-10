@@ -260,7 +260,7 @@ hr {
   margin-bottom: 1.5rem;
 }
 
-div.tooltip {
+div.tooltipBox {
   position: absolute;
   text-align: left;
   padding: 10px;

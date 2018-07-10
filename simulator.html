@@ -245,7 +245,7 @@
                     <!-- hours in shift (numHours) -->
                     <div class="form-group">
                         <label for="num-hours">
-                            1. How many hours are in this shift?
+                            1. How many hours are in this shift? <span data-toggle="tooltip" data-placement="bottom" title="This is an example tooltip!"><span class="fas fa-info-circle"></span></span>
                         </label>
                         <input type="number" min="1" max="12" step="1" class="form-control width-small" id="num-hours" v-model.number="globalSettings.numHours"
                             @input="updateTrafficLvls" @change="updatePhases">
@@ -265,7 +265,7 @@
                             <div class="custom-control custom-control-inline custom-radio mr-0">
                                 <input class="custom-control-input" type="radio" name="diff-traff-levels" id="diff-traff-levels-n" value="n" v-model="globalSettings.diffTrafficLevels"
                                     @change="updateTrafficLvls">
-                                <label class="custom-control-label" for="diff-traff-levels-n">No</label>
+                                <label class="custom-control-label" for="diff-traff-levels-n">No <span data-toggle="tooltip" data-placement="bottom" title="This is an example tooltip for radio button answer."><span class="fas fa-info-circle"></span></span></label>
                             </div>
                         </div>
                     </div>
