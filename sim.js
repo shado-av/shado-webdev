@@ -93,11 +93,11 @@ var sim = new Vue({
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
-                            [30],
-                            [30],
-                            [30],
-                            [30],
-                            [30],
+                            [60],
+                            [60],
+                            [60],
+                            [60],
+                            [60],
                         ],
                         serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
@@ -125,7 +125,6 @@ var sim = new Vue({
                         ],
 
                         leadTask: -1,
-                        tasks_f: []
                     },
                     {
                         name: "Actuation",
@@ -137,11 +136,11 @@ var sim = new Vue({
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
-                            [30],
-                            [30],
-                            [30],
-                            [30],
-                            [30],
+                            [60],
+                            [60],
+                            [60],
+                            [60],
+                            [60],
                         ],
                         serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
@@ -169,7 +168,6 @@ var sim = new Vue({
                         ],
 
                         leadTask: -1,
-                        tasks_f: []
                     },
                     {
                         name: "Directive Mandatory",
@@ -181,11 +179,11 @@ var sim = new Vue({
                         affTeamCoord: "n",
                         arrivalDistribution: ["E", "E", "E", "E", "E"],
                         arrivalParam: [
-                            [30],
-                            [30],
-                            [30],
-                            [30],
-                            [30],
+                            [60],
+                            [60],
+                            [60],
+                            [60],
+                            [60],
                         ],
                         serviceDistribution: ["U", "U", "U", "U", "U"],
                         serviceParam: [
@@ -213,7 +211,6 @@ var sim = new Vue({
                         ],
 
                         leadTask: -1,
-                        tasks_f: []
                     }
                 ]
         },
@@ -863,11 +860,11 @@ var sim = new Vue({
                 affTeamCoord: "n",
                 arrivalDistribution: ["E", "E", "E", "E", "E"],
                 arrivalParam: [
-                    [30],
-                    [30],
-                    [30],
-                    [30],
-                    [30],
+                    [60],
+                    [60],
+                    [60],
+                    [60],
+                    [60],
                 ],
                 serviceDistribution: ["U", "U", "U", "U", "U"],
                 serviceParam: [
@@ -894,7 +891,6 @@ var sim = new Vue({
                     [0.00008, 0.0004, 0.007]
                 ],
                 leadTask: leadTask,
-                tasks_f: []
             });
 
             // add priority for each operatorSettings.teams
