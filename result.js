@@ -238,7 +238,7 @@ var StackedBarChart = (function (index) {
 var BoxPlot = (function() {
     var width = 960;
     var height = 450;
-    var barWidth = 30;
+    var barWidth = 25;
     var margin = {
             top: 40,
             right: 20,
@@ -339,7 +339,7 @@ var BoxPlot = (function() {
 
             // Setup the group the box plot elements will render in
             var g = svg.append("g")
-                .attr("transform", "translate(20,5)");
+                .attr("transform", "translate(20,0)");
 
             // Draw the box plot vertical lines
             var verticalLines = g.selectAll(".verticalLines")
@@ -387,7 +387,30 @@ var BoxPlot = (function() {
                 .attr("stroke", "#000")
                 .attr("stroke-width", 1);
 
-            g.selectAll("rect")
+            // Draw the invisible boxes of the box plot for making clickable area larger
+            var rects = g.selectAll(".clickable")
+                .data(boxPlotData)
+                .enter()
+                .append("rect")
+                .attr("width", barWidth)
+                .attr("height", function (datum) {
+                    var quartiles = datum.quartile;
+                    var height = yScale(0) - yScale(1);
+                    return height;
+                })
+                .attr("x", function (datum) {
+                    return xScale(datum.key);
+                })
+                .attr("y", function (datum) {
+                    return yScale(1);
+                })
+                .attr("fill", "none")
+                .attr("class", "clickable")
+                .attr("pointer-events", "visible")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 1);
+
+            g.selectAll(".clickable")
                 .on("mouseover", function (d, i) {
                     //console.log(d, i);
                     d3.select(this).attr("stroke", "blue").attr("stroke-width", 0.8);
