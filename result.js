@@ -408,6 +408,7 @@ var BoxPlot = (function() {
                 .attr("class", "clickable")
                 .attr("pointer-events", "visible")
                 .attr("stroke", "transparent")
+                .style("cursor", "pointer")
                 .attr("stroke-width", 1);
 
             g.selectAll(".clickable")
