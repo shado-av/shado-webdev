@@ -54,7 +54,7 @@ Vue.component('percentage-input', {
 var sim = new Vue({
     el: '#shado-sim',
     data: {
-
+        version: "0.9.0", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
@@ -1079,7 +1079,114 @@ var sim = new Vue({
             }
             return params;  // for 'T'
         },
+
+        saveData() {
+            localStorage.setItem('allData', JSON.stringify(this.$data));
+        },
+
+        saveFile() {
+            var a = document.createElement('a');
+            a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(JSON.stringify(this.$data)));
+            a.setAttribute('download', "download.json");
+            a.setAttribute("style", "display: none;");
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        },
+
+        loadFile(evt) {
+            var files = evt.target.files; // FileList object
+            console.log(files);
+
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            for (var i = 0, f; f = files[i]; i++) {
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        console.log('e readAsText = ', e);
+                        console.log('e readAsText target = ', e.target);
+                        try {
+                            var data = JSON.parse(e.target.result);
+
+                            // sanity check
+                            if (data.numReps && data.globalSettings && data.taskSettings && data.operatorSettings && data.fleetSettings && data.version && sim.version === data.version) {
+                                sim.numReps = data.numReps;
+                                sim.globalSettings = data.globalSettings;
+                                sim.taskSettings = data.taskSettings;
+                                sim.operatorSettings = data.operatorSettings;
+                                sim.fleetSettings = data.fleetSettings;
+
+                                alert(files[0].name + " is loaded successfully!");
+                            } else if (data.version) {
+                                alert("Your data file version is " + data.version + ". Please use current version!");
+                            } else {
+                                alert("Please use a valid JSON file!");
+                            }
+                        } catch (ex) {
+                            alert('There was an error when trying to parse JSON file = ' + ex);
+                        }
+
+                    }
+                })(f);
+                reader.readAsText(f);
+            }
+        },
+
+        loadData() {
+            if (localStorage.getItem('allData')) {
+                var data = JSON.parse(localStorage.getItem('allData'));
+
+                // erase all current keys from data
+                // Object.keys(this.$data).forEach(key => this.$data[key] = null);
+
+                // set all properties from newdata into data
+                // Object.entries(data).forEach(entry => Vue.set(this.$data, entry[0], entry[1]));
+
+                this.numReps = data.numReps;
+                this.globalSettings = data.globalSettings;
+                this.taskSettings = data.taskSettings;
+                this.operatorSettings = data.operatorSettings;
+                this.fleetSettings = data.fleetSettings;
+            }
+        }
     },
+
+
+//    watch: {
+//        numReps: {
+//            handler() {
+//                localStorage.setItem('numReps', JSON.stringify(this.numReps));
+//            },
+//            deep: true
+//        },
+//        globalSettings: {
+//            handler() {
+//                localStorage.setItem('globalSettings', JSON.stringify(this.globalSettings));
+//            },
+//            deep: true
+//        },
+//        taskSettings: {
+//            handler() {
+//                localStorage.setItem('taskSettings', JSON.stringify(this.taskSettings));
+//            },
+//            deep: true
+//        },
+//        operatorSettings: {
+//            handler() {
+//                localStorage.setItem('operatorSettings', JSON.stringify(this.operatorSettings));
+//            },
+//            deep: true
+//        },
+//        fleetSettings: {
+//            handler() {
+//                localStorage.setItem('fleetSettings', JSON.stringify(this.fleetSettings));
+//            },
+//            deep: true
+//        }
+//    },
 
     mounted: function () {
         //for(let i=1;i<=this.taskSettings.numPhases;i++) {
@@ -1135,6 +1242,7 @@ var sim = new Vue({
         // right-slider of last slider disabled
         this.$refs["interval-" + this.taskSettings.numPhases].getElementsByClassName("noUi-origin")[1].setAttribute('disabled', true);
         //this.$refs["interval-" + this.taskSettings.numPhases].noUiSlider.set([0.5, 8]);
+        this.loadData();
     }
 });
 

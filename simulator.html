@@ -79,7 +79,7 @@
             SIDEBAR NAVIGATION
         ------------------------------------------>
 
-        <div class="d-flex flex-column justify-content-between" id="sim-sidebar">
+        <div class="d-flex flex-row flex-column-md justify-content-between" id="sim-sidebar">
 
             <!-- navigation -->
             <div id="sim-nav-submenus">
@@ -1300,41 +1300,22 @@
                 </div>
                 <svg id="boxSVG" width="960" height="450"></svg>
             </div>
-            <div id="footer">
-                <div>
-                    <a class=" btn btn-small" href=#>
-                        <span class="fas fa-angle-double-left fa-5x" style="color:#4981C7"></span>
-                    </a>
-                </div>
-                <div>
-                    <a class=" btn btn-small " href="index.html">
-                        <span class="fas fa-angle-left fa-5x " style="color:#4981C7 "></span>
-                    </a>
-                </div>
-                <!--Submit Button-->
-                <div class="form-row justify-content-center">
-                    <button id="sumbitBtn" class="btn btn-primary btn-sm" type="button" title="" style="height:40px">Run Simulation</button>
-                </div>
-                <!--Number of replications selection-->
-                <form id="run-sim" onsubmit="return false">
-                    <div class="form-group">
-                        <label for="num-reps"># Replications</label>
-                        <input class="form-control" type="number" id="num-reps" min="1" max="10000" step="100" v-model.number="numReps">
-                    </div>
-                </form>
 
-                <div>
-                    <a class="btn btn-small" href=#tasks-settings>
-                        <span class="fas fa-angle-right fa-5x " style="color:#4981C7 "></span>
-                    </a>
-                </div>
-                <div>
-                    <a class=" btn btn-small" href=#>
-                        <span class="fas fa-angle-double-right fa-5x" style="color:#4981C7"></span>
-                    </a>
-                </div>
-            </div>
         </div>
+        <footer class="w-100">
+            <!-- Save/Load State/File Buttons -->
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Save Current Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Saved Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
+            <label class="btn btn-outline-light btn-sm btn-file">Load Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
+            <!--Submit Button-->
+            <button id="sumbitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
+            <!--Number of replications selection-->
+            <form id="run-sim" onsubmit="return false">
+                <label for="num-reps"># Replications</label>
+                <input class="form-control" type="number" id="num-reps" min="1" max="10000" step="100" v-model.number="numReps">
+            </form>
+        </footer>
 
 </body>
 
