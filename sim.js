@@ -1375,6 +1375,7 @@ $(document).ready(function () {
         window.location.href = serverName + "/shado/getUtilizationJSON";
         console.log("GET request 'getUtilizationJSON' sent");
     });
+
     $(function () {
         $("form").submit(function () {
             return false;
@@ -1408,7 +1409,7 @@ $(document).ready(function () {
     });
 
     // enable tooltip
-    $('[data-toggle="tooltip"]').tooltip();
+    $('body').tooltip({selector:'[data-toggle=tooltip]'});
 
     // pop-up simulation type chooser
     $('#sim-type').modal(true);
