@@ -1144,12 +1144,13 @@ var sim = new Vue({
 
                 // set all properties from newdata into data
                 // Object.entries(data).forEach(entry => Vue.set(this.$data, entry[0], entry[1]));
-
-                this.numReps = data.numReps;
-                this.globalSettings = data.globalSettings;
-                this.taskSettings = data.taskSettings;
-                this.operatorSettings = data.operatorSettings;
-                this.fleetSettings = data.fleetSettings;
+                if (this.version === data.version) {
+                    this.numReps = data.numReps;
+                    this.globalSettings = data.globalSettings;
+                    this.taskSettings = data.taskSettings;
+                    this.operatorSettings = data.operatorSettings;
+                    this.fleetSettings = data.fleetSettings;
+                }
             }
         }
     },
@@ -1381,7 +1382,7 @@ $(document).ready(function () {
     });
 
     // when tab is selected, focus on the first input
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    $("#sim-content").on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
         var target = e.target.attributes.href.value;
         var selectedTab = $(target + ' a.active');
 
@@ -1394,7 +1395,7 @@ $(document).ready(function () {
     });
 
     // In Firefox, mousewheel should not change the value of the input number
-    $('input[type=number]').on('wheel', function () {
+    $("#sim-content").on('wheel', 'input[type=number]', function () {
         var el = $(this);
         var focused = el.is(":focus");
         el.blur();
