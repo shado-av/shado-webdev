@@ -5,6 +5,10 @@
   margin: auto;
 }
 
+.navbar {
+  width: 100%;
+}
+
 footer {
   display: flex;
   flex-direction: row;
@@ -90,7 +94,7 @@ footer button {
 /* medium size bootstrap md */
 @media screen and (min-width: 768px) {
   #sim-nav #brand {
-    display: initial;
+    display: inline-block;
   }
   #sim-nav #brand-abbr {
     display: none;
@@ -99,7 +103,7 @@ footer button {
 
 @media screen and (min-width: 912px) {
   #brand {
-    display: initial;
+    display: inline-block;
   }
   #brand-abbr {
     display: none;
@@ -492,6 +496,9 @@ footer .number-input button:after {
     width: 33.33333%;
     float: left;
     padding: 0 10px;
+}
+.card {
+    width: 100%;
 }
 .image-card {
   margin-bottom: 30px;
