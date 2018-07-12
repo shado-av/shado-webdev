@@ -42,7 +42,7 @@ Vue.component('percentage-input', {
     },
     template: `<div class="mt-3 mb-3 number-input">
                 <button @click="stepNumberInput(-step)" class="minus"></button>
-                <input min="0" max="100" type="number" @change="validateInput(parseInt($event.target.value))"
+                <input type="number" @change="validateInput(parseInt($event.target.value))"
                     :value="value">
                 <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : numberOnly }]"></button>
                 <div class="input-group-append" v-if="!numberOnly">
