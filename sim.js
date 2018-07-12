@@ -19,6 +19,10 @@ Vue.component('percentage-input', {
         step: {
             type: Number,
             default: 10
+        },
+        margin: {
+            type:Boolean,
+            default: true
         }
     },
     data: function () {
@@ -40,7 +44,7 @@ Vue.component('percentage-input', {
             this.$forceUpdate();    // sometimes update not working...
         }
     },
-    template: `<div class="mt-3 mb-3 number-input">
+    template: `<div :class="['number-input', {'mt-3' : margin}, {'mb-3' : margin}]">
                 <button @click="stepNumberInput(-step)" class="minus"></button>
                 <input type="number" @change="validateInput(parseInt($event.target.value))"
                     :value="value">

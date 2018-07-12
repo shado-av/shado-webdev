@@ -1304,17 +1304,17 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Save Current Settings</button>
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Saved Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Quick Save Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Quick Load Settings</button>
             <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
-            <label class="btn btn-outline-light btn-sm btn-file">Load Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
+            <label class="btn btn-outline-light btn-sm btn-file">Load Settings<input type="file" style="display: none;" @change='loadFile'></label>
             <!--Submit Button-->
             <button id="sumbitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
             <!--Number of replications selection-->
-            <form id="run-sim" onsubmit="return false">
-                <label for="num-reps"># Replications</label>
-                <input class="form-control" type="number" id="num-reps" min="1" max="10000" step="100" v-model.number="numReps">
-            </form>
+            <span>
+                <label for="num-reps"># Replications&nbsp;</label>
+                <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
+            </span>
         </footer>
 
 </body>

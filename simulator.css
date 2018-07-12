@@ -21,6 +21,15 @@ footer {
   padding: 16px;
 }
 
+footer span {
+  display: inline-flex;
+}
+
+footer label {
+  margin-bottom:0;
+  line-height: 40px !important;
+}
+
 footer label.btn {
   margin-bottom:16px;
   line-height: 30px !important;
@@ -30,7 +39,6 @@ footer button {
   margin-bottom:16px;
   height: 40px;
 }
-
 
 #run-sim {
   margin-bottom: 16px;
@@ -442,6 +450,11 @@ div.modal-dialog.modal-lg {
   height: 2px;
   background-color: #212121;
   transform: translate(-50%, -50%);
+}
+
+footer .number-input button:before,
+footer .number-input button:after {
+ background-color: #ddd;
 }
 
 .number-input button.plus:after {
