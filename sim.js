@@ -1253,6 +1253,8 @@ var sim = new Vue({
 
 $(document).ready(function () {
     var serverName = env.serverUrl;
+    var sessionId = "";
+    var sessionQuery = "";
 
     //Json Builder
     $("#sumbitBtn").click(function () {
@@ -1342,6 +1344,9 @@ $(document).ready(function () {
                     alert(msg.responseText);
                 }
                 if (msg.status == 200) {
+                    sessionId = msg.responseText.substr(msg.responseText.lastIndexOf(":") + 2);
+                    sessionQuery = "?sessionN=" +sessionId;
+                    console.log(sessionId, sessionQuery);
                     alert(msg.responseText);
                     //Allow Download
                     //Show download button
@@ -1351,7 +1356,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON", "#boxSVG", "1");
+                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
             },
             failure: function (errMsg) {
                 alert(errMsg);
@@ -1361,7 +1366,7 @@ $(document).ready(function () {
     //Download  
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
-        window.location.href = serverName + "/shado/getRepDetail";
+        window.location.href = serverName + "/shado/getRepDetail" + sessionQuery;
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
@@ -1370,13 +1375,13 @@ $(document).ready(function () {
         var xhttp = new XMLHttpRequest();
         // $.get("http://localhost:8080/shado/getSummary");
         // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        window.location.href = serverName + "/shado/getSummary";
+        window.location.href = serverName + "/shado/getSummary" + sessionQuery;
         win.focus();
         console.log("GET request 'getSummary' sent");
     });
 
     $("#downloadJSON").click(function () {
-        window.location.href = serverName + "/shado/getUtilizationJSON";
+        window.location.href = serverName + "/shado/getUtilizationJSON" + sessionQuery;
         console.log("GET request 'getUtilizationJSON' sent");
     });
 
