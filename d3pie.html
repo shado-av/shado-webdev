@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .arc text {
+          font: 10px sans-serif;
+          text-anchor: middle;
+        }
+
+        .arc path {
+          stroke: #fff;
+        }
+        div.tooltip {
+            position: absolute;
+            text-align: left;
+            padding: 10px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        h3.subtitle {
+            padding: 20px 80px 0px;
+        }
+
+        div.modal-dialog.modal-lg {
+            max-width: 1000px;
+        }
+
+        #replication {
+            margin-left: 20px;
+            width: 100%;
+        }
+
+        #replication label {
+            vertical-align: middle;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        #replication span {
+            width: 50px;
+            display: inline-block;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 300px;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            vertical-align: middle;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        #boxSVG,
+        #boxSVG2,
+        #boxSVG3 {
+            padding-left: 50px;
+        }
+    </style>
+    <!-- Bootstrap 4.0.0 libraries -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.min.js" integrity="sha256-45YA33UQCDcJsntBst2bhka2t/LBNHP7RNvpllHPkQ0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js" integrity="sha256-OI3N9zCKabDov2rZFzl8lJUXCcP7EmsGcGoP6DMXQCo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="script/d3pie.min.js"></script>
+</head>
+
+<body>
+    <h3 class='subtitle mb-5'>Task Record Chart</h3>
+    <!-- Modal -->
+    <div class="modal fade" id="stackedBC1" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm">
+                        <h3 id="stackedBCTitle1">Operator Workload per Replication</h3>
+                    </div>
+                    <div class="col-sm" id="replication1">
+                        <label>Replication: <span id="replicationTB1"></span></label>
+                        <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider1" class="slider" />
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pieChart"></div>
+
+    <script>
+
+        d3.json("TaskRecord.json").then(function (json) {
+            console.log(json);
+            var ft = json.numFailedTask;
+            var tt = json.numTotalTask;
+
+            // replication, phase, team, task type
+            var numReps = json.numFailedTask.length;
+            var numPhases = ft[0].length;
+            var numOps = json.operatorName.length;
+            var numTasks = json.taskName.length;
+            numTasks = 4;
+
+            var data = [{},{},{},{},{}];
+            var color = ["#DC3912", "#3366CC", "#109618", "#FF9900", "#990099"];
+            console.log(numReps, numPhases, numOps, numTasks);
+
+            for(var i=0;i<5;i++) {
+                data.push({});
+                data[i].value = tt[i];
+                data[i].color = color[i];
+            }
+            data[0].label = "Successful Tasks";
+            data[1].label = "Missed Tasks";
+            data[2].label = "Incomplete Tasks";
+            data[3].label = "Failed Tasks and Not Caught";
+            data[4].label = "Failed Tasks and Caught";
+
+            console.log(data);
+            var pie = new d3pie("pieChart", {
+                "size": {
+                    "canvasHeight": 400,
+                    "canvasWidth": 590,
+                    "pieOuterRadius": "85%"
+                },
+                "data": {
+                    "content": data
+                },
+                "labels": {
+                    "outer": {
+                        "format": "label-percentage1",
+                        "pieDistance": 32
+                    },
+                    "inner": {
+                        "format": "value",
+                        "hideWhenLessThanPercentage": 3
+                    },
+                    "mainLabel": {
+                        "font": "verdana"
+                    },
+                    "percentage": {
+                        "color": "#716161",
+                        "font": "verdana",
+                        "decimalPlaces": 1
+                    },
+                    "value": {
+                        "color": "#e1e1e1",
+                        "font": "verdana"
+                    },
+                    "lines": {
+                        "enabled": true,
+                        "color": "#cccccc"
+                    },
+                    "truncation": {
+                        "enabled": true
+                    }
+                },
+                "tooltips": {
+                    "enabled": true,
+                    "type": "placeholder",
+                    "string": "# of {label} is {value}, which is {percentage}%."
+                },
+                "effects": {
+                    "pullOutSegmentOnClick": {
+                        "effect": "linear",
+                        "speed": 400,
+                        "size": 8
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
