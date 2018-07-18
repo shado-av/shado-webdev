@@ -109,19 +109,19 @@
                                     </a>
                                 </li>
 
-                                <!-- operators -->
-                                <li class="nav-item">
-                                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
-                                        selected="false">
-                                        Operators
-                                    </a>
-                                </li>
-
                                 <!-- fleets -->
                                 <li class="nav-item">
                                     <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
                                         selected="false">
                                         Fleets
+                                    </a>
+                                </li>
+
+                                <!-- operators -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
+                                        selected="false">
+                                        Operators
                                     </a>
                                 </li>
 
@@ -929,11 +929,24 @@
                         <!-- operator task checklist (team.tasks) -->
                         <form class="mb-5">
                             <div class="form-group">
-                                <label class="mb-3">What tasks are these operators responsible for?</label>
-                                <div class="custom-control custom-checkbox item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
-                                    <input class="custom-control-input" type="checkbox" :id="'opteam-' + index + '-task-' + i" :value="i" v-model="team.tasks">
-                                    <label class="custom-control-label" :for="'opteam-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
-                                </div>
+                                <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
+                                <!-- adjust task/fleet operators are responsible for (team.expertise) -->
+                                <table class="form-group table responsive">
+                                    <thead class="thead-light">
+                                        <th>Task \ Fleet</th>
+                                        <th v-for="(fleet, i) in fleetSettings.fleets">
+                                            {{fleet.name}}
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                            <td>{{task.name}}</td>
+                                            <td v-for="(fleet, j) in fleetSettings.fleets">
+                                                <input type="checkbox" v-model="team.expertise[i][j]"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </form>
 
@@ -978,12 +991,12 @@
                                     </div>
                                     <div class="mb-3 mt-3">What is the level of this AI?</div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" id="assist-indi-levels-some" value="S" v-model="team.AIDA.IALevel">
-                                        <label class="custom-control-label" for="assist-indi-levels-some">Some</label>
+                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
+                                        <label class="custom-control-label" :for="'assist-indi-levels-some-'+index">Some</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" id="assist-indi-levels-full" value="F" v-model="team.AIDA.IALevel">
-                                        <label class="custom-control-label" for="assist-indi-levels-full">Full</label>
+                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" :id="'assist-indi-levels-full-' + index" value="F" v-model="team.AIDA.IALevel">
+                                        <label class="custom-control-label" :for="'assist-indi-levels-full-'+index">Full</label>
                                     </div>
                                 </div>
                             </div>
@@ -999,12 +1012,12 @@
                                 <div class="form-group" v-show="team.AIDA.AIDAType[2]">
                                     <div class="mb-3">What is the level of this AI?</div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-some" value="S" v-model="team.AIDA.TCALevel">
-                                        <label class="custom-control-label" for="assist-team-levels-some">Some</label>
+                                        <input class="custom-control-input" type="radio" name="assist-team-levels" :id="'assist-team-levels-some-'+index" value="S" v-model="team.AIDA.TCALevel">
+                                        <label class="custom-control-label" :for="'assist-team-levels-some-'+index">Some</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="assist-team-levels" id="assist-team-levels-full" value="F" v-model="team.AIDA.TCALevel">
-                                        <label class="custom-control-label" for="assist-team-levels-full">Full</label>
+                                        <input class="custom-control-input" type="radio" name="assist-team-levels" :id="'assist-team-levels-full-'+index" value="F" v-model="team.AIDA.TCALevel">
+                                        <label class="custom-control-label" :for="'assist-team-levels-full-'+index">Full</label>
                                     </div>
                                 </div>
                             </div>

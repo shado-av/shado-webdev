@@ -58,7 +58,7 @@ Vue.component('percentage-input', {
 var sim = new Vue({
     el: '#shado-sim',
     data: {
-        version: "0.9.0", // data version for checking valid data when loading JSON file
+        version: "0.9.1", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
@@ -234,6 +234,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
+                        expertise: [[1],[1],[0]],
                         priority: [
                             [1, 4, 6],
                             [1, 2, 3],
@@ -264,6 +265,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
+                        expertise: [[0],[1],[1]],
                         priority: [
                             [1, 1, 1],
                             [1, 2, 3],
@@ -604,6 +606,27 @@ var sim = new Vue({
             return tasks;
         },
 
+        // array containing operator team tasks arrays
+        opExpertise() {
+            var expertise = [];
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                expertise.push([]);
+                for (var j = 0; j < this.taskSettings.tasks.length; j++) {
+                    if (this.taskSettings.tasks[j].include) {
+                        var exps = [];
+                        for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
+                            if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k]) {
+                                exps.push(1);
+                            } else
+                                exps.push(0);
+                        }
+                        expertise[i].push(exps);
+                    }
+                }
+            }
+            return expertise;
+        },
+
         // array of phase begin time in minutes
         phaseBegin() {
             var pb = [];
@@ -909,6 +932,11 @@ var sim = new Vue({
                     this.operatorSettings.teams[i].failThresh[j].push(50);
                 }
             }
+
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                // add a opExpertise
+                this.operatorSettings.teams[i].expertise.push([]);
+            }
         },
 
         removeCustomTask(task) {
@@ -975,6 +1003,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
+                        expertise: [[]],
                         priority: [tasks, tasks, tasks, tasks, tasks],
                         AIDA: {
                             AIDAType: [false, false, false],
@@ -1260,6 +1289,8 @@ var sim = new Vue({
 
 $(document).ready(function () {
     var serverName = env.serverUrl;
+    var sessionId = "";
+    var sessionQuery = "";
 
     //Json Builder
     $("#sumbitBtn").click(function () {
@@ -1276,6 +1307,7 @@ $(document).ready(function () {
             "opNames": sim.opNames,
             "opStrats": sim.teamStrategy,
             "opTasks": sim.opTasks,
+            "opExpertise": sim.opExpertise,
             "taskPrty": sim.opPriority,
             "teamComm": sim.teamComm,
             "humanError": sim.humanError,
@@ -1349,6 +1381,9 @@ $(document).ready(function () {
                     alert(msg.responseText);
                 }
                 if (msg.status == 200) {
+                    sessionId = msg.responseText.substr(msg.responseText.lastIndexOf(":") + 2);
+                    sessionQuery = "?sessionN=" +sessionId;
+                    console.log(sessionId, sessionQuery);
                     alert(msg.responseText);
                     //Allow Download
                     //Show download button
@@ -1358,7 +1393,7 @@ $(document).ready(function () {
                 }
                 document.getElementById("sumbitBtn").textContent = "Submit Again";
 
-                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON", "#boxSVG", "1");
+                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
             },
             failure: function (errMsg) {
                 alert(errMsg);
@@ -1368,7 +1403,7 @@ $(document).ready(function () {
     //Download  
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
-        window.location.href = serverName + "/shado/getRepDetail";
+        window.location.href = serverName + "/shado/getRepDetail" + sessionQuery;
         win.focus();
         console.log("GET request 'getRepDetail' sent");
     });
@@ -1377,13 +1412,13 @@ $(document).ready(function () {
         var xhttp = new XMLHttpRequest();
         // $.get("http://localhost:8080/shado/getSummary");
         // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        window.location.href = serverName + "/shado/getSummary";
+        window.location.href = serverName + "/shado/getSummary" + sessionQuery;
         win.focus();
         console.log("GET request 'getSummary' sent");
     });
 
     $("#downloadJSON").click(function () {
-        window.location.href = serverName + "/shado/getUtilizationJSON";
+        window.location.href = serverName + "/shado/getUtilizationJSON" + sessionQuery;
         console.log("GET request 'getUtilizationJSON' sent");
     });
 
