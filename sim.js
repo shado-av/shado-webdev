@@ -79,6 +79,7 @@ var sim = new Vue({
 
         taskSettings: {
             numPhases: 3, // number of phases
+            numNameTask: 1, // for just naming Custom Task #
             intervalPhases: [
                 [0, 0.5],
                 [0.5, 7.5],
@@ -225,9 +226,10 @@ var sim = new Vue({
 
         operatorSettings: {
             numTeams: 2, // number of teams (2 - 5)
+            numNameTeam: 3, // for just naming
             teams: // array of individual team objects
                 [{
-                        name: "Operator Team",
+                        name: "Operator Team 1",
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
@@ -257,7 +259,7 @@ var sim = new Vue({
                         ]
                     },
                     {
-                        name: "Operator Team",
+                        name: "Operator Team 2",
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
@@ -294,9 +296,10 @@ var sim = new Vue({
          * ------------------------------ */
 
         fleetSettings: {
-            fleetTypes: 1, // number of fleets (2 - 5)
+            fleetTypes: 1,    // number of fleets (2 - 5)
+            numNameFleet: 2,  // for just naming
             fleets: [{
-                name: "Fleet",
+                name: "Fleet 1",
                 numVehicles: 1,
                 comms: "N",
                 tasks: [0, 1, 2]
@@ -850,7 +853,8 @@ var sim = new Vue({
         },
 
         addCustomTask() {
-            sim.newTask("Custom Task", -1);
+            var x = this.taskSettings.numNameTask++;
+            sim.newTask("Custom Task " + x, -1);
         },
 
         newTask(name, leadTask) {
@@ -930,7 +934,8 @@ var sim = new Vue({
         },
 
         addFollowingTask(task) {
-            sim.newTask(task.name + " (Following)", this.taskSettings.tasks.indexOf(task));
+            var x = this.taskSettings.numNameTask++;
+            sim.newTask(task.name + " " + x + " (Follow)", this.taskSettings.tasks.indexOf(task));
         },
 
         removeFollwingTask(task) {
@@ -963,8 +968,9 @@ var sim = new Vue({
                     ft.push(50);
                 }
                 while (teams.length < this.operatorSettings.numTeams) {
+                    var x = this.operatorSettings.numNameTeam++;
                     teams.push({
-                        name: "Operator Team",
+                        name: "Operator Team " + x,
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
@@ -999,8 +1005,9 @@ var sim = new Vue({
             var fleets = this.fleetSettings.fleets;
             if (this.fleetSettings.fleetTypes > fleets.length) {
                 while (fleets.length < this.fleetSettings.fleetTypes) {
+                    var x = this.fleetSettings.numNameFleet++;
                     fleets.push({
-                        name: "Fleet",
+                        name: "Fleet " + x,
                         numVehicles: 1,
                         comms: "N",
                         tasks: []
