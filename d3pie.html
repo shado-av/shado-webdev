@@ -94,36 +94,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="script/d3pie.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
 </head>
 
 <body>
-    <h3 class='subtitle mb-5'>Task Record Chart</h3>
+    <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
     <!-- Modal -->
-    <div class="modal fade" id="stackedBC1" role="dialog">
+    <div class="modal fade" id="taskRecord" role="dialog">
         <div class="modal-dialog modal-lg">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="col-sm">
-                        <h3 id="stackedBCTitle1">Operator Workload per Replication</h3>
-                    </div>
-                    <div class="col-sm" id="replication1">
-                        <label>Replication: <span id="replicationTB1"></span></label>
-                        <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider1" class="slider" />
+                        <h3 id="taskRecordTitle">Failded Data Analysis</h3>
                     </div>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
+
                 </div>
             </div>
         </div>
     </div>
     <div id="pieChart"></div>
-
+    <table id="taskRecordTable" class="display" width="100%"></table>
     <script>
+        var taskRecord = {};
 
         d3.json("TaskRecord.json").then(function (json) {
+            taskRecord = json;
             console.log(json);
             var ft = json.numFailedTask;
             var tt = json.numTotalTask;
@@ -201,6 +204,55 @@
                         "size": 8
                     }
                 }
+            });
+
+            var dataSet = [];
+
+            var numReps = json.numFailedTask.length;
+            var numPhases = ft[0].length;
+            var numOps = json.operatorName.length;
+            var numTasks = json.taskName.length;
+            for(var i=0;i<numOps; i++) {
+                for(var j=0;j<numTasks; j++) {
+                    var data = [];
+                    data[0] = json.operatorName[i];
+                    data[1] = json.taskName[j];
+                    data[2] = 0;
+                    data[3] = 0;
+                    data[4] = 0;
+                    data[5] = 0;
+                    for(var m=0;m<4;m++) {
+                        data[6+m] = json.averageFailed[i][j][m].toFixed(2);
+                        data[10+m] = json.stdFailed[i][j][m].toFixed(2);
+                    }
+                    for(var k=0;k<numReps;k++) {
+                        for(var l=0;l<numPhases;l++) {
+                            for(var m=0;m<4;m++) {
+                                data[m+2] += json.numFailedTask[k][l][i][j][m];
+                            }
+                        }
+                    }
+                    dataSet.push(data);
+                }
+            }
+            $("#taskRecordTable").DataTable( {
+                data: dataSet,
+                columns: [
+                    {title: "Operator Team"},
+                    {title: "Task Name"},
+                    {title: "Missed"},
+                    {title: "Incomplete"},
+                    {title: "Not Caught"},
+                    {title: "Caught"},
+                    {title: "Avg. Missed"},
+                    {title: "Avg. Incomplete"},
+                    {title: "Avg. Not Caught"},
+                    {title: "Avg. Caught"},
+                    {title: "Std. Dev. Missed"},
+                    {title: "Std. Dev. Incomplete"},
+                    {title: "Std. Dev. Not Caught"},
+                    {title: "Std. Dev. Caught"}
+                ]
             });
         });
     </script>
