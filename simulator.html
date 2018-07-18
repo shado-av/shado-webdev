@@ -1304,17 +1304,18 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Quick Save Settings</button>
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Quick Load Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Save Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Settings</button>
             <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
-            <!--Submit Button-->
-            <button id="sumbitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
+
             <!--Number of replications selection-->
             <span>
                 <label for="num-reps"># Replications&nbsp;</label>
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
+            <!--Submit Button-->
+            <button id="sumbitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
         </footer>
 
 </body>
