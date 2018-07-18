@@ -58,7 +58,7 @@ Vue.component('percentage-input', {
 var sim = new Vue({
     el: '#shado-sim',
     data: {
-        version: "0.9.0", // data version for checking valid data when loading JSON file
+        version: "0.9.1", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
@@ -232,6 +232,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
+                        expertise: [[1],[1],[0]],
                         priority: [
                             [1, 4, 6],
                             [1, 2, 3],
@@ -262,6 +263,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
+                        expertise: [[0],[1],[1]],
                         priority: [
                             [1, 1, 1],
                             [1, 2, 3],
@@ -599,6 +601,24 @@ var sim = new Vue({
                 }
             }
             return tasks;
+        },
+
+        // array containing operator team tasks arrays
+        opExpertise() {
+            var expertise = [];
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                expertise.push([]);
+                for (var j = 0; j < this.taskSettings.tasks.length; j++) {
+                    expertise[i].push([]);
+                    for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
+                        if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k]) {
+                            expertise[i][j].push(1);
+                        } else
+                            expertise[i][j].push(0);
+                    }
+                }
+            }
+            return expertise;
         },
 
         // array of phase begin time in minutes
@@ -969,6 +989,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
+                        expertise: [[]],
                         priority: [tasks, tasks, tasks, tasks, tasks],
                         AIDA: {
                             AIDAType: [false, false, false],
@@ -1271,6 +1292,7 @@ $(document).ready(function () {
             "opNames": sim.opNames,
             "opStrats": sim.teamStrategy,
             "opTasks": sim.opTasks,
+            "opExpertise": sim.opExpertise,
             "taskPrty": sim.opPriority,
             "teamComm": sim.teamComm,
             "humanError": sim.humanError,
