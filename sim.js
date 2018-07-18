@@ -609,12 +609,15 @@ var sim = new Vue({
             for (var i = 0; i < this.operatorSettings.teams.length; i++) {
                 expertise.push([]);
                 for (var j = 0; j < this.taskSettings.tasks.length; j++) {
-                    expertise[i].push([]);
-                    for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
-                        if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k]) {
-                            expertise[i][j].push(1);
-                        } else
-                            expertise[i][j].push(0);
+                    if (this.taskSettings.tasks[j].include) {
+                        var exps = [];
+                        for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
+                            if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k]) {
+                                exps.push(1);
+                            } else
+                                exps.push(0);
+                        }
+                        expertise[i].push(exps);
                     }
                 }
             }
@@ -924,6 +927,11 @@ var sim = new Vue({
                     // add fail threshold
                     this.operatorSettings.teams[i].failThresh[j].push(50);
                 }
+            }
+
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                // add a opExpertise
+                this.operatorSettings.teams[i].expertise.push([]);
             }
         },
 
