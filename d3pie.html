@@ -102,26 +102,11 @@
 
 <body>
     <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
-    <!-- Modal -->
-    <div class="modal fade" id="taskRecord" role="dialog">
-        <div class="modal-dialog modal-lg">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="col-sm">
-                        <h3 id="taskRecordTitle">Failded Data Analysis</h3>
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="pieChart"></div>
-    <table id="taskRecordTable" class="display" width="100%"></table>
+    <div class="ml-5 mr-5 mb-5 mt-5">
+        <table id="taskRecordTable" class="display" width="100%"></table>
+    </div>
     <script>
         var taskRecord = {};
 
@@ -158,7 +143,7 @@
                 "size": {
                     "canvasHeight": 400,
                     "canvasWidth": 590,
-                    "pieOuterRadius": "85%"
+                    "pieOuterRadius": "80%"
                 },
                 "data": {
                     "content": data
@@ -198,11 +183,9 @@
                     "string": "# of {label} is {value}, which is {percentage}%."
                 },
                 "effects": {
-                    "pullOutSegmentOnClick": {
-                        "effect": "linear",
-                        "speed": 400,
-                        "size": 8
-                    }
+                    load: {
+			             effect: "none"
+		            }
                 }
             });
 
