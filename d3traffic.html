@@ -6,22 +6,6 @@
         h3.subtitle {
             padding: 20px 80px 0px;
         }
-
-        .bar {
-            fill: steelblue;
-        }
-
-        .bar:hover {
-            fill: brown;
-        }
-
-        .axis--y {
-            font: 12px sans-serif;
-        }
-
-        .axis--x {
-            font: 14px sans-serif;
-        }
     </style>
     <!-- Bootstrap 4.0.0 libraries -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -32,10 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js" integrity="sha256-OI3N9zCKabDov2rZFzl8lJUXCcP7EmsGcGoP6DMXQCo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="script/d3pie.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script src="result.js"></script>
 
 </head>
 
@@ -68,100 +49,6 @@
 
             TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", trafficLevels);
         }
-
-        var TrafficLevelBarChart = (function () {
-            var levels = {
-                "h": 2,
-                "m": 1,
-                "l": 0,
-                "0": -0.1
-            };
-
-            var drawTrafficeLevelBarChart = function(barChartId, trafficLevels) {
-                var trafficHours = trafficLevels.length;
-
-                var data = [];
-                for (var i = 0; i < trafficHours; i++) {
-                    data[i] = {
-                        hour: i,
-                        level: trafficLevels[i]
-                    };
-                }
-                // add extra tick for x axis
-//                data[i] = {
-//                    hour: i,
-//                    level: "0"
-//                };
-
-                var svg = d3.select(barChartId),
-                    margin = {
-                        top: 20,
-                        right: 20,
-                        bottom: 50,
-                        left: 50
-                    },
-                    width = +svg.attr("width") - margin.left - margin.right,
-                    height = +svg.attr("height") - margin.top - margin.bottom;
-
-                svg.selectAll("*").remove();
-                var x = d3.scaleLinear().rangeRound([0, width]),
-                    y = d3.scaleLinear().rangeRound([height, 0]);
-
-                var g = svg.append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                x.domain([0, trafficHours]);
-
-                y.domain([-0.1, 2.3]);
-
-                var xTickSkip = (trafficHours > 8) ? 2 : 1;
-                var xBandWidth = width / trafficHours;
-                var xPadding = Math.round(xBandWidth * 0.1);
-                g.append("g")
-                    .attr("class", "axis axis--x")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x).ticks(trafficHours).tickFormat(function (d,i) { if (Math.round(d)==d && i % xTickSkip==0) {return d;} }))
-
-                    .append("text")
-                    .attr("transform", "translate(" + ((width / 2) - 30) + ",45)")
-                    .attr("x", 1)
-                    .attr("dx", ".71em")
-                    .attr("fill", "black")
-                    .text("Time (Hour)");
-
-                g.append("g")
-                    .attr("class", "axis axis--y")
-                    .call(d3.axisLeft(y).ticks(3).tickSizeOuter(0))
-
-                    .append("text")
-                    .attr("transform", "translate(-50,0) rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", "0.71em")
-                    .attr("text-anchor", "end")
-                    .attr("fill", "black")
-                    .text("Traffic Level (0 = Low, 1 = Med, 2 = High)");
-
-                g.selectAll(".bar")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("class", "bar")
-                    .attr("fill", "steelblue")
-                    .attr("x", function(d) {
-                        return x(d.hour) + xPadding;
-                    })
-                    .attr("y", function(d) {
-                        return y(levels[d.level]);
-                    })
-                    .attr("width", xBandWidth - 2 * xPadding)
-                    .attr("height", function(d) {
-                        return height - y(levels[d.level]);
-                    });
-            }
-
-            return {
-                drawTrafficeLevelBarChart : drawTrafficeLevelBarChart
-            };
-        })();
 
         TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", trafficLevels);
     </script>

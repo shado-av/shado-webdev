@@ -70,7 +70,7 @@ var sim = new Vue({
             numHours: 8, // number of hours in shift (1 - 12)
             diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
-            exoFactorsType: [0, 0]
+            exoFactorsType: [false, false]
         },
 
         /* ------------------------------
@@ -339,6 +339,20 @@ var sim = new Vue({
                 }
             }
             return exoFT;
+        },
+
+        // return review string for type of exo factors
+        hasExogenousForReview() {
+            var exoFT = this.globalSettings.exoFactorsType;
+            var exoRv = "None";
+
+            if (exoFT[0] || exoFT[1]) {
+                if (exoFT[0]) exoRv = "Type 1";
+                if (exoFT[0] && exoFT[1]) exoRv += ", Type 2";
+                else if (exoFT[1]) exoRv = "Type 2";
+            }
+
+            return exoRv;
         },
 
         /* ------------------------------
@@ -1459,6 +1473,10 @@ $(document).ready(function () {
 
     // pop-up simulation type chooser
     $('#sim-type').modal(true);
+
+    $('#review-settings-tab').click( function() {
+        TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", sim.globalSettings.trafficLevels);
+    });
 });
 
 function showDownloadBtn() {

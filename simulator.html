@@ -127,8 +127,7 @@
 
                                 <!-- overview -->
                                 <li class="nav-item">
-                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings"
-                                        selected="false">
+                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false">
                                         Review Settings
                                     </a>
                                 </li>
@@ -1137,21 +1136,31 @@
             <div class="tab-pane fade" id="review-settings" role="tabpanel" aria-lablledby="review-settings-tab">
 
                 <h3 class="mb-4">Review Settings</h3>
-                <h5>Global Settings</h5>
-                <ul>
-                    <li>Type of simulation:
-                        <b>{{globalSettings.simType}}</b>
-                    </li>
-                    <li>Number of Hours:
-                        <b>{{globalSettings.numHours }}</b>
-                    </li>
-                    <li>Traffic Levels:
-                        <b>{{globalSettings.trafficLevels}}</b>
-                    </li>
-                    <li>Type of exogenous factor:
-                        <b>{{globalSettings.exoFactorsType}}</b>
-                    </li>
-                </ul>
+
+                <table class="form-group table responsive">
+                    <thead class="thead-light">
+                        <tr>
+                            <th colspan="2">Basic Settings</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>Type of simulation</td>
+                        <td><b>{{globalSettings.simType}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Shift Scheduled</td>
+                        <td>{{globalSettings.numHours }} hours</td>
+                    </tr>
+                    <tr>
+                        <td>Traffic Levels By Hours</td>
+                        <td><svg id="trafficLevel" width="400" height="300"></svg></td>
+                    </tr>
+                    <tr>
+                        <td>Exogenous factor</td>
+                        <td><b>{{hasExogenousForReview}}</b></td>
+                    </tr>
+                </table>
+
                 <h5>Tasks</h5>
                 <ul>
                     <li>Number of Phases:

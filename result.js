@@ -1,6 +1,6 @@
 var div = d3.select("body").append("div")
-        .attr("class", "tooltipBox")
-        .style("opacity", 0);
+    .attr("class", "tooltipBox")
+    .style("opacity", 0);
 
 var StackedBarChart = (function (index) {
     var jsonData = {};
@@ -12,21 +12,21 @@ var StackedBarChart = (function (index) {
     var y;
     var z = d3.scaleOrdinal()
         .range(
-    //["#a0e3b7", "#710c9e", "#37b51f", "#ae2a51", "#a3c541", "#323d96", "#7ebef8", "#1c5872", "#21f0b6", "#6f3631", "#f3a4a8", "#166d2a", "#fd6ca0", "#d95e13", "#f2d174"]
+            //["#a0e3b7", "#710c9e", "#37b51f", "#ae2a51", "#a3c541", "#323d96", "#7ebef8", "#1c5872", "#21f0b6", "#6f3631", "#f3a4a8", "#166d2a", "#fd6ca0", "#d95e13", "#f2d174"]
     ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
         );
     var keys = [];
     var stacked;
     var margin = {
-            top: 40,
-            right: 20,
-            bottom: 40,
-            left: 50
-        };
+        top: 40,
+        right: 20,
+        bottom: 40,
+        left: 50
+    };
     var minutes, barCounts;
     var bandWidth;
 
-    var initStackedBarChart = function(json) {
+    var initStackedBarChart = function (json) {
         jsonData = json;
         keys = json.taskName;
         barCounts = json.utilization[0][0][0].length;
@@ -37,7 +37,7 @@ var StackedBarChart = (function (index) {
         height = +svg.attr("height") - margin.top - margin.bottom;
         bandWidth = Math.floor((width - 150) / (barCounts + 1));
 
-        x = d3.scaleLinear().rangeRound([0, width-150]);
+        x = d3.scaleLinear().rangeRound([0, width - 150]);
         y = d3.scaleLinear()
             .rangeRound([height, 0]);
 
@@ -82,7 +82,7 @@ var StackedBarChart = (function (index) {
         z.domain(keys);
 
         var ticks = [];
-        for(var j=30; j<= minutes;j+=30) {
+        for (var j = 30; j <= minutes; j += 30) {
             ticks.push(j);
         }
         // set ticks
@@ -133,7 +133,7 @@ var StackedBarChart = (function (index) {
         stacked = d3.stack().keys(keys); //(data);
     };
 
-    var minsInTime = function(mins) {
+    var minsInTime = function (mins) {
         var hh = Math.floor(mins / 60);
         var mm = mins % 60;
         //hh = hh < 10 ? '0' + hh : hh;
@@ -141,7 +141,7 @@ var StackedBarChart = (function (index) {
         return hh + ":" + mm;
     }
 
-    var drawStackedBarChart = function(json, operator, replication) {
+    var drawStackedBarChart = function (json, operator, replication) {
         // convert json data into d3 stack preferred form
         currentOperator = operator;
         var data = [];
@@ -215,7 +215,7 @@ var StackedBarChart = (function (index) {
                     .duration(200)
                     .style("opacity", .9);
                 //HH:MM-HH:MM, Busy for XX.XX minutes with Y tasks, Total Utilization: 100%
-                div.html("<table><tr><td>Time: " + minsInTime(minutes) + " to " + minsInTime(minutes+10) + "</td></tr><tr><td>Busy for " + ((d[1] - d[0]) * 10).toFixed(2) + " minutes</td></tr><tr><td>with " + keys[parseInt(i / (barCounts + 1))] + " task</td></tr><tr><td>Total Utilization: " + (data[i % (barCounts +1)]["total"] * 100).toFixed(2) + "%</td></tr></table>")
+                div.html("<table><tr><td>Time: " + minsInTime(minutes) + " to " + minsInTime(minutes + 10) + "</td></tr><tr><td>Busy for " + ((d[1] - d[0]) * 10).toFixed(2) + " minutes</td></tr><tr><td>with " + keys[parseInt(i / (barCounts + 1))] + " task</td></tr><tr><td>Total Utilization: " + (data[i % (barCounts + 1)]["total"] * 100).toFixed(2) + "%</td></tr></table>")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
@@ -230,29 +230,29 @@ var StackedBarChart = (function (index) {
     };
 
     return {
-        initStackedBarChart : initStackedBarChart,
-        drawStackedBarChart : drawStackedBarChart
+        initStackedBarChart: initStackedBarChart,
+        drawStackedBarChart: drawStackedBarChart
     };
 });
 
-var BoxPlot = (function() {
+var BoxPlot = (function () {
     var width = 960;
     var height = 450;
     var barWidth = 25;
     var margin = {
-            top: 40,
-            right: 20,
-            bottom: 40,
-            left: 50
-        };
+        top: 40,
+        right: 20,
+        bottom: 40,
+        left: 50
+    };
     var width = width - margin.left - margin.right,
         height = height - margin.top - margin.bottom;
 
     var totalWidth = width + margin.left + margin.right;
     var totalheight = height + margin.top + margin.bottom;
 
-    var boxQuartiles = function(d) {
-            return [
+    var boxQuartiles = function (d) {
+        return [
                 d3.quantile(d, .25),
                 d3.quantile(d, .5),
                 d3.quantile(d, .75)
@@ -260,11 +260,11 @@ var BoxPlot = (function() {
     };
 
     // Perform a numeric sort on an array
-    var sortNumber = function(a, b) {
-            return a - b;
+    var sortNumber = function (a, b) {
+        return a - b;
     };
     var stackedBC = [];
-    var visualize = function(url, element, index) {
+    var visualize = function (url, element, index) {
         d3.json(url).then(function (json) {
             // save the json into jsonData for later use of stacked bar charts
 
@@ -276,7 +276,7 @@ var BoxPlot = (function() {
             var globalCounts = [];
             for (var i = 0; i < json.averageUtilization.length; i++) {
                 var key = json.operatorName[i];
-                groupCounts[key+"_" +i] = json.averageUtilization[i];
+                groupCounts[key + "_" + i] = json.averageUtilization[i];
                 globalCounts = globalCounts.concat(json.averageUtilization[i]);
             }
             console.log("GroupCounts ", groupCounts);
@@ -322,20 +322,20 @@ var BoxPlot = (function() {
             var yScale = d3.scaleLinear()
                 .domain([0, 1])
                 //.domain([min - 0.0001, max])
-                .range ([height, 20]);
+                .range([height, 20]);
 
             // Setup the svg and group we will draw the box plot in
             var svg = d3.select(element);
             svg.selectAll("*").remove();
 
             svg.attr("width", totalWidth)
-               .attr("height", totalheight)
-               .append("g")
-               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                .attr("height", totalheight)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             // Move the left axis over 55 pixels, and the top axis over 35 pixels
             var axisG = svg.append("g").attr("transform", "translate(55,0)");
-            var axisBG = svg.append("g").attr("transform", "translate(35," +        (height) + ")");
+            var axisBG = svg.append("g").attr("transform", "translate(35," + (height) + ")");
 
             // Setup the group the box plot elements will render in
             var g = svg.append("g")
@@ -514,14 +514,14 @@ var BoxPlot = (function() {
             var axisLeft = d3.axisLeft(yScale);
             axisG.append("g")
                 .call(axisLeft.ticks(null, 's').tickFormat(function (d) {
-                return d3.format(".0f")(d * 100);
-            }));
+                    return d3.format(".0f")(d * 100);
+                }));
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
             axisBG.append("g")
                 .call(axisBottom.tickFormat(function (d) {
-                return d.substr(0, d.lastIndexOf("_"));
-            }));
+                    return d.substr(0, d.lastIndexOf("_"));
+                }));
 
             // text label for the x axis
             svg.append("text")
@@ -546,6 +546,108 @@ var BoxPlot = (function() {
     };
 
     return {
-        visualize : visualize
+        visualize: visualize
+    };
+})();
+
+var TrafficLevelBarChart = (function () {
+    var levels = {
+        "h": 2,
+        "m": 1,
+        "l": 0,
+        "0": -0.1
+    };
+
+    var drawTrafficeLevelBarChart = function (barChartId, trafficLevels) {
+        var trafficHours = trafficLevels.length;
+
+        var data = [];
+        for (var i = 0; i < trafficHours; i++) {
+            data[i] = {
+                hour: i,
+                level: trafficLevels[i]
+            };
+        }
+
+        console.log(data);
+        var svg = d3.select(barChartId),
+            margin = {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 50
+            },
+            width = +svg.attr("width") - margin.left - margin.right,
+            height = +svg.attr("height") - margin.top - margin.bottom;
+
+        svg.selectAll("*").remove();
+        var x = d3.scaleLinear().rangeRound([0, width]),
+            y = d3.scaleLinear().rangeRound([height, 0]);
+
+        var g = svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        x.domain([0, trafficHours]);
+
+        y.domain([-0.1, 2.3]);
+
+        var xTickSkip = (trafficHours > 8) ? 2 : 1;
+        var xBandWidth = width / trafficHours;
+        var xPadding = Math.round(xBandWidth * 0.1);
+        g.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).ticks(trafficHours).tickFormat(function (d, i) {
+                if (Math.round(d) == d && i % xTickSkip == 0) {
+                    return d;
+                }
+            }))
+
+            .append("text")
+            .attr("transform", "translate(" + ((width / 2) - 30) + ",45)")
+            .attr("x", 1)
+            .attr("dx", ".71em")
+            .attr("fill", "black")
+            .attr("font-size", "13")
+            .text("Time (Hour)");
+
+        g.append("g")
+            .attr("class", "axis axis--y")
+            .call(d3.axisLeft(y).ticks(3).tickSizeOuter(0))
+
+            .append("text")
+            .attr("transform", "translate(-50,0) rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .attr("fill", "black")
+            .attr("font-size", "13")
+            .text("Traffic Level (0 = Low, 1 = Med, 2 = High)");
+
+        g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("fill", "steelblue")
+            .attr("x", function (d) {
+                return x(d.hour) + xPadding;
+            })
+            .attr("y", function (d) {
+                return y(levels[d.level]);
+            })
+            .attr("width", xBandWidth - 2 * xPadding)
+            .attr("height", function (d) {
+                return height - y(levels[d.level]);
+            })
+            .on("mouseover", function (d) {
+                d3.select(this).style("fill", "brown");
+            })
+            .on("mouseout", function (d) {
+                d3.select(this).style("fill", "steelblue");
+            });
+    }
+
+    return {
+        drawTrafficeLevelBarChart: drawTrafficeLevelBarChart
     };
 })();
