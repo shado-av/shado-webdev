@@ -587,7 +587,7 @@ var TrafficLevelBarChart = (function () {
         var g = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        x.domain([0, trafficHours]);
+        x.domain([-0.1, trafficHours]);
 
         y.domain([-0.1, 2.3]);
 
@@ -597,7 +597,7 @@ var TrafficLevelBarChart = (function () {
         g.append("g")
             .attr("class", "axis axis--x")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).ticks(trafficHours).tickFormat(function (d, i) {
+            .call(d3.axisBottom(x).ticks(trafficHours).tickSizeOuter(0).tickFormat(function (d, i) {
                 if (Math.round(d) == d && i % xTickSkip == 0) {
                     return d;
                 }
