@@ -30,6 +30,15 @@
 
     <!--D3 Libraries-->
     <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="script/d3pie.min.js"></script>
+
+    <!--Data Table Libraries-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
+    <!--nProgress Libraries-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 
     <!--noUIiSlider library-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
@@ -53,19 +62,21 @@
         TOP NAVIGATION
     ------------------------------------------>
     <nav class="navbar fixed-top">
-        <div class="d-flex flex-row">
-            <a class="navbar-brand" href="index.html">
-                <img src="images/hal_light.png" height="40" alt="HAL Logo">
-                <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
-                <span id="brand-abbr">SHADO</span>
-            </a>
-        </div>
+        <div class="navbar-container">
+            <div class="d-flex flex-row">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images/hal_light.png" height="40" alt="HAL Logo">
+                    <span id="brand">Simulator of Humans and Automation in Dispatch Operations</span>
+                    <span id="brand-abbr">SHADO</span>
+                </a>
+            </div>
 
-        <div class="d-flex flex-row w-100">
-            <a href="background.html" class="ml-auto btn btn-outline-light" id="background-link">Background</a>
-            <a href="simulator.html" class="ml-2 btn btn-outline-light" id="simulator-link">Simulator</a>
-            <a href="help.html" class="ml-2 btn btn-outline-light" id="help-link">Help</a>
-            <a href="contact-us.html" class="ml-2 btn btn-outline-light" id="contact-us-link">Contact Us</a>
+            <div class="d-flex flex-row w-100">
+                <a href="background.html" class="ml-auto btn btn-outline-light" id="background-link">Background</a>
+                <a href="simulator.html" class="ml-2 btn btn-outline-light" id="simulator-link">Simulator</a>
+                <a href="help.html" class="ml-2 btn btn-outline-light" id="help-link">Help</a>
+                <a href="contact-us.html" class="ml-2 btn btn-outline-light" id="contact-us-link">Contact Us</a>
+            </div>
         </div>
     </nav>
 
@@ -135,9 +146,9 @@
                                     Results
                                 </div>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="results-test-tab" data-toggle="tab" href="#results-test" role="tab" aria-controls="results-test"
+                                    <a class="nav-link" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results"
                                         selected="false">
-                                        Results Test
+                                        View Results
                                     </a>
                                 </li>
                             </ul>
@@ -1291,10 +1302,10 @@
             </div>
 
             <!----------------------------------------- 
-                RESULTS TEST
+                View RESULTS
             ------------------------------------------>
 
-            <div class="tab-pane fade" id="results-test" role="tabpanel" aria-lablledby="results-test-tab">
+            <div class="tab-pane fade" id="view-results" role="tabpanel" aria-lablledby="view-results-tab">
                 <h3 class='subtitle'>Average Utilization per Operator</h3>
                 <!-- Modal -->
                 <div class="modal fade" id="stackedBC1" role="dialog">
@@ -1337,7 +1348,7 @@
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
             <!--Submit Button-->
-            <button id="sumbitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
+            <button id="submitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
         </footer>
     </div>
 </body>

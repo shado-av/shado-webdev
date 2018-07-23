@@ -317,11 +317,12 @@ var sim = new Vue({
 
         // array of traffic levels per hour of 0, 0.5, or 1
         traffic() {
-            var traff = this.globalSettings.trafficLevels;
-            for (i = 0; i < traff.length; i++) {
-                if (traff[i] === "l") {
+            var traff = [];
+            var traffOrig = this.globalSettings.trafficLevels;
+            for (i = 0; i < traffOrig.length; i++) {
+                if (traffOrig[i] === "l") {
                     traff[i] = 0;
-                } else if (traff[i] === "h") {
+                } else if (traffOrig[i] === "h") {
                     traff[i] = 1;
                 } else {
                     traff[i] = 0.5;
@@ -1307,7 +1308,8 @@ $(document).ready(function () {
     var sessionQuery = "";
 
     //Json Builder
-    $("#sumbitBtn").click(function () {
+    $("#submitBtn").click(function () {
+        $("#submitBtn").prop('disabled', true);
         var out = {
             "numHours": sim.globalSettings.numHours,
             "traffic": sim.traffic,
@@ -1371,46 +1373,30 @@ $(document).ready(function () {
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(out),
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
+            //dataType: "json",
             success: function (msg) {
-                alert(msg);
-                console.log("response received");
+                console.log("response success received");
                 console.log(msg);
-                // move(100);
-                //  var obj = JSON.stringify(msg)
-                // // var tempParseData = obj;
-                // obj = JSON.parse(obj);
-                // console.log(obj);
-                // alert(obj);
-                // if(msg.status == 'success')
-                alert("PARAMETERS SUBMITTED!");
+                sessionId = msg.substr(msg.lastIndexOf(":") + 2);
+                sessionQuery = "?sessionN=" +sessionId;
+                console.log(sessionId, sessionQuery);
+                //alert(msg);
+
+                // Show download button
+                showDownloadBtn();
+                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
+                $("#view-results-tab").click();
             },
             complete: function (msg) {
-                console.log("response received");
+                console.log("response complete received");
                 console.log(msg);
-                var obj = JSON.stringify(msg);
 
-                if (msg.status == 500) {
-                    alert("Server Error: Check parameters(maybe not enough tasks)!")
-                    alert(msg.responseText);
-                }
-                if (msg.status == 200) {
-                    sessionId = msg.responseText.substr(msg.responseText.lastIndexOf(":") + 2);
-                    sessionQuery = "?sessionN=" +sessionId;
-                    console.log(sessionId, sessionQuery);
-                    alert(msg.responseText);
-                    //Allow Download
-                    //Show download button
-                    showDownloadBtn();
-                    // downloadRepCSV();
-                    // downloadSummary();
-                }
-                document.getElementById("sumbitBtn").textContent = "Submit Again";
-
-                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
+                document.getElementById("submitBtn").textContent = "Submit Again";
+                $("#submitBtn").prop('disabled', false);
             },
-            failure: function (errMsg) {
-                alert(errMsg);
+            error: function (errMsg) {
+                alert("Server Error: Check parameters(maybe not enough tasks)!")
+                alert(msg.responseText);
             }
         });
     });
@@ -1477,6 +1463,10 @@ $(document).ready(function () {
     $('#review-settings-tab').click( function() {
         TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", sim.globalSettings.trafficLevels);
     });
+
+    $(document)
+        .ajaxStart(NProgress.start)
+        .ajaxStop(NProgress.done);
 });
 
 function showDownloadBtn() {

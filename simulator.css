@@ -1,12 +1,12 @@
 #shado-sim,
-.navbar,
+.navbar-container,
 .container-fluid {
   max-width: 1080px;
   margin: auto;
 }
 
-.navbar {
-  width: 100%;
+.navbar-container, .navbar {
+    width: 100%;
 }
 
 footer {
@@ -569,4 +569,13 @@ footer .number-input button:after {
     background: white;
     cursor: inherit;
     display: block;
+}
+
+#nprogress .bar {
+  background: white;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: white;
+  border-left-color: white;
 }
