@@ -58,7 +58,9 @@ Vue.component('percentage-input', {
 var sim = new Vue({
     el: '#shado-sim',
     data: {
-        version: "0.9.1", // data version for checking valid data when loading JSON file
+        // 0.9.2 remove phase and add turnOver settings
+        // 0.9.1 add opExpertise settings
+        version: "0.9.2", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
@@ -70,6 +72,11 @@ var sim = new Vue({
             numHours: 8, // number of hours in shift (1 - 12)
             diffTrafficLevels: "n",
             trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
+            isTransition: 'y',            // Has this shift any transitioning peroid?
+            transitionDesc: ["Beginning", "Ending"],
+            hasTransition: [false, false],  // has transitioning period at the beginning or at the ending
+            transitionDists: ['U', 'U'],
+            transitionPms: [[5,10], [12,15]],
             exoFactorsType: [false, false]
         },
 
@@ -78,15 +85,7 @@ var sim = new Vue({
          * ------------------------------ */
 
         taskSettings: {
-            numPhases: 3, // number of phases
             numNameTask: 1, // for just naming Custom Task #
-            intervalPhases: [
-                [0, 0.5],
-                [0.5, 7.5],
-                [7.5, 8],
-                [8, 8],
-                [8, 8]
-            ], // hours of phases
             tasks: // array of individual task objects
                 [{
                         name: "Communicating",
@@ -96,37 +95,21 @@ var sim = new Vue({
                         exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E", "E", "E", "E"],
+                        arrivalDistribution: ["E"],
                         arrivalParam: [
                             [60],
-                            [60],
-                            [60],
-                            [60],
-                            [60],
                         ],
-                        serviceDistribution: ["U", "U", "U", "U", "U"],
+                        serviceDistribution: ["U"],
                         serviceParam: [
                             [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2]
                         ],
-                        expireDistribution: ["E", "E", "E", "E", "E"],
+                        expireDistribution: ["E"],
                         expireParam: [
                             [1440],
-                            [1440],
-                            [1440],
-                            [1440],
-                            [1440],
                         ],
-                        affectByIROPS: [0, 1, 0, 0, 0],
+                        affectByIROPS: [0],
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007]
                         ],
 
                         leadTask: -1,
@@ -139,37 +122,21 @@ var sim = new Vue({
                         exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E", "E", "E", "E"],
+                        arrivalDistribution: ["E"],
                         arrivalParam: [
                             [60],
-                            [60],
-                            [60],
-                            [60],
-                            [60],
                         ],
-                        serviceDistribution: ["U", "U", "U", "U", "U"],
+                        serviceDistribution: ["U"],
                         serviceParam: [
                             [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2]
                         ],
-                        expireDistribution: ["E", "E", "E", "E", "E"],
+                        expireDistribution: ["E"],
                         expireParam: [
                             [1440],
-                            [1440],
-                            [1440],
-                            [1440],
-                            [1440],
                         ],
-                        affectByIROPS: [0, 1, 0, 0, 0],
+                        affectByIROPS: [0],
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007]
                         ],
 
                         leadTask: -1,
@@ -182,37 +149,21 @@ var sim = new Vue({
                         exoType2Aff: "n",
                         interruptable: "n",
                         affTeamCoord: "n",
-                        arrivalDistribution: ["E", "E", "E", "E", "E"],
+                        arrivalDistribution: ["E"],
                         arrivalParam: [
                             [60],
-                            [60],
-                            [60],
-                            [60],
-                            [60],
                         ],
-                        serviceDistribution: ["U", "U", "U", "U", "U"],
+                        serviceDistribution: ["U"],
                         serviceParam: [
                             [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2],
-                            [0.5, 2]
                         ],
-                        expireDistribution: ["E", "E", "E", "E", "E"],
+                        expireDistribution: ["E"],
                         expireParam: [
                             [1440],
-                            [1440],
-                            [1440],
-                            [1440],
-                            [1440],
                         ],
-                        affectByIROPS: [0, 1, 0, 0, 0],
+                        affectByIROPS: [0],
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007],
-                            [0.00008, 0.0004, 0.007]
                         ],
 
                         leadTask: -1,
@@ -237,10 +188,6 @@ var sim = new Vue({
                         expertise: [[1],[1],[0]],
                         priority: [
                             [1, 4, 6],
-                            [1, 2, 3],
-                            [1, 2, 3],
-                            [1, 2, 3],
-                            [1, 1, 2]
                         ],
                         AIDA: {
                             AIDAType: [false, false, false],
@@ -253,10 +200,6 @@ var sim = new Vue({
                         },
                         failThresh: [
                             [10, 20, 30],
-                            [40, 50, 60],
-                            [50, 50, 50],
-                            [50, 50, 50],
-                            [50, 50, 50]
                         ]
                     },
                     {
@@ -268,10 +211,6 @@ var sim = new Vue({
                         expertise: [[0],[1],[1]],
                         priority: [
                             [1, 1, 1],
-                            [1, 2, 3],
-                            [1, 2, 3],
-                            [1, 2, 3],
-                            [1, 1, 2]
                         ],
                         AIDA: {
                             AIDAType: [false, false, false],
@@ -284,10 +223,6 @@ var sim = new Vue({
                         },
                         failThresh: [
                             [10, 20, 30],
-                            [40, 50, 60],
-                            [50, 50, 50],
-                            [50, 50, 50],
-                            [50, 50, 50]
                         ]
                     }
                 ]
@@ -329,6 +264,16 @@ var sim = new Vue({
                 }
             }
             return traff;
+        },
+
+        // array of existence of turn over [0,0]
+        hasTransition() {
+            var to = [];
+            var hasTo = this.globalSettings.hasTransition;
+            for (var j = 0; j < 2; j++) {
+                to[j] = hasTo[j] ? 1 : 0;
+            }
+            return to;
         },
 
         // array of existence of exo factors and type of exo factor
@@ -460,12 +405,9 @@ var sim = new Vue({
         // array containing all task arrival time distributions
         arrDists() {
             var dists = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                dists.push([]);
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].arrivalDistribution && this.taskSettings.tasks[i].include) {
-                        dists[j].push(this.taskSettings.tasks[i].arrivalDistribution[j]);
-                    }
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].arrivalDistribution && this.taskSettings.tasks[i].include) {
+                    dists.push(this.taskSettings.tasks[i].arrivalDistribution[0]);
                 }
             }
             return dists;
@@ -474,12 +416,10 @@ var sim = new Vue({
         // array containing all task arrival time parameters
         arrPms() {
             var params = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                params.push([]);
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].arrivalParam && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.distParams(this.taskSettings.tasks[i].arrivalDistribution[j], this.taskSettings.tasks[i].arrivalParam[j]));
-                    }
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].arrivalParam && this.taskSettings.tasks[i].include) {
+                    params.push(this.distParams(this.taskSettings.tasks[i].arrivalDistribution[0],
+                                                this.taskSettings.tasks[i].arrivalParam[0]));
                 }
             }
             return params;
@@ -488,12 +428,9 @@ var sim = new Vue({
         // array containing all task service time distributions
         serDists() {
             var dists = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                dists.push([]);
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].serviceDistribution && this.taskSettings.tasks[i].include) {
-                        dists[j].push(this.taskSettings.tasks[i].serviceDistribution[j]);
-                    }
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].serviceDistribution && this.taskSettings.tasks[i].include) {
+                    dists.push(this.taskSettings.tasks[i].serviceDistribution[0]);
                 }
             }
             return dists;
@@ -502,12 +439,10 @@ var sim = new Vue({
         // array containing all task service time parameters
         serPms() {
             var params = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                params.push([]);
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].serviceParam && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.distParams(this.taskSettings.tasks[i].serviceDistribution[j],this.taskSettings.tasks[i].serviceParam[j]));
-                    }
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].serviceParam && this.taskSettings.tasks[i].include) {
+                    params.push(this.distParams(this.taskSettings.tasks[i].serviceDistribution[0],
+                                                this.taskSettings.tasks[i].serviceParam[0]));
                 }
             }
             return params;
@@ -516,12 +451,9 @@ var sim = new Vue({
         // array containing all task expiration time distributions
         expDists() {
             var dists = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                dists.push([]);
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].expireDistribution && this.taskSettings.tasks[i].include) {
-                        dists[j].push(this.taskSettings.tasks[i].expireDistribution[j]);
-                    }
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].expireDistribution && this.taskSettings.tasks[i].include) {
+                    dists.push(this.taskSettings.tasks[i].expireDistribution[0]);
                 }
             }
             return dists;
@@ -530,12 +462,10 @@ var sim = new Vue({
         // array containing all task expiration time parameters
         expPms() {
             var params = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                params.push([]);
-                for (var i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].expireParam && this.taskSettings.tasks[i].include) {
-                        params[j].push(this.distParams(this.taskSettings.tasks[i].expireDistribution[j],this.taskSettings.tasks[i].expireParam[j]));
-                    }
+            for (var i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].expireParam && this.taskSettings.tasks[i].include) {
+                    params.push(this.distParams(this.taskSettings.tasks[i].expireDistribution[0],
+                                                this.taskSettings.tasks[i].expireParam[0]));
                 }
             }
             return params;
@@ -544,14 +474,11 @@ var sim = new Vue({
         // array containing all tasks affected by traffic
         affByTraff() {
             var traff = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                traff.push([]);
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].affectByIROPS &&         this.taskSettings.tasks[i].include) {
-                        var affected = this.taskSettings.tasks[i].affectByIROPS[j];
-                        affected = affected ? 1 : 0;
-                        traff[j].push(affected);
-                    }
+            for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].affectByIROPS && this.taskSettings.tasks[i].include) {
+                    var affected = this.taskSettings.tasks[i].affectByIROPS[0];
+                    affected = affected ? 1 : 0;
+                    traff.push(affected);
                 }
             }
             return traff;
@@ -560,12 +487,9 @@ var sim = new Vue({
         // array containing all task human error probabilities
         humanError() {
             var probs = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                probs.push([]);
-                for (var i = 0; i < this.taskSettings.tasks.length; i++) {
-                    if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {
-                        probs[j].push(this.taskSettings.tasks[i].humanErrorProb[j]);
-                    }
+            for (var i = 0; i < this.taskSettings.tasks.length; i++) {
+                if (this.taskSettings.tasks[i].humanErrorProb && this.taskSettings.tasks[i].include) {
+                    probs.push(this.taskSettings.tasks[i].humanErrorProb[0]);
                 }
             }
             return probs;
@@ -642,15 +566,6 @@ var sim = new Vue({
             return expertise;
         },
 
-        // array of phase begin time in minutes
-        phaseBegin() {
-            var pb = [];
-            for (i = 0; i < this.taskSettings.numPhases; i++) {
-                pb.push(this.taskSettings.intervalPhases[i][0] * 60);
-            }
-            return pb;
-        },
-
         // array of leadTask, value will be -1 if leading, otherwise the leading task
         leadTask() {
             var task = [];
@@ -666,11 +581,8 @@ var sim = new Vue({
 
         opPriority() {
             var prty = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                prty.push([]);
-                for (var i = 0; i < this.operatorSettings.teams.length; i++) {
-                    prty[j].push(this.operatorSettings.teams[i].priority[j]);
-                }
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                prty.push(this.operatorSettings.teams[i].priority[0]);
             }
             return prty;
         },
@@ -688,12 +600,9 @@ var sim = new Vue({
         // array containing operator team fail threshold
         teamFailThreshold() {
             var ft = [];
-            for (var j = 0; j < this.taskSettings.numPhases; j++) {
-                ft.push([]);
 
-                for (var i = 0; i < this.operatorSettings.teams.length; i++) {
-                    ft[j].push(this.operatorSettings.teams[i].failThresh[j]);
-                }
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                ft.push(this.operatorSettings.teams[i].failThresh[0]);
             }
             return ft;
         },
@@ -904,48 +813,30 @@ var sim = new Vue({
                 interruptable: "n",
                 exoType2Aff: "n",
                 affTeamCoord: "n",
-                arrivalDistribution: ["E", "E", "E", "E", "E"],
+                arrivalDistribution: ["E"],
                 arrivalParam: [
                     [60],
-                    [60],
-                    [60],
-                    [60],
-                    [60],
                 ],
-                serviceDistribution: ["U", "U", "U", "U", "U"],
+                serviceDistribution: ["U"],
                 serviceParam: [
                     [0.5, 2],
-                    [0.5, 2],
-                    [0.5, 2],
-                    [0.5, 2],
-                    [0.5, 2]
                 ],
-                expireDistribution: ["E", "E", "E", "E", "E"],
+                expireDistribution: ["E"],
                 expireParam: [
                     [1440],
-                    [1440],
-                    [1440],
-                    [1440],
-                    [1440],
                 ],
-                affectByIROPS: [0, 0, 0, 0, 0],
+                affectByIROPS: [0],
                 humanErrorProb: [
                     [0.00008, 0.0004, 0.007],
-                    [0.00008, 0.0004, 0.007],
-                    [0.00008, 0.0004, 0.007],
-                    [0.00008, 0.0004, 0.007],
-                    [0.00008, 0.0004, 0.007]
                 ],
                 leadTask: leadTask,
             });
 
             // add priority for each operatorSettings.teams
-            for (var j = 0; j < 5; j++) {
-                for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                    this.operatorSettings.teams[i].priority[j].push(1);
-                    // add fail threshold
-                    this.operatorSettings.teams[i].failThresh[j].push(50);
-                }
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                this.operatorSettings.teams[i].priority[0].push(1);
+                // add fail threshold
+                this.operatorSettings.teams[i].failThresh[0].push(50);
             }
 
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
@@ -954,23 +845,25 @@ var sim = new Vue({
             }
         },
 
+        removeTask(task) {
+            // remove from taskSettings.tasks
+            var taskIndex = this.taskSettings.tasks.indexOf(task);
+            this.taskSettings.tasks.splice(taskIndex, 1);
+
+            //console.log(taskIndex, this.operatorSettings.teams[0].failThresh[0]);
+            // remove priority for each operatorSettings.teams
+            for (i = 0; i < this.operatorSettings.teams.length; i++) {
+                console.log(taskIndex, this.operatorSettings.teams[i].failThresh[0]);
+                this.operatorSettings.teams[i].priority[0].splice(taskIndex, 1);
+                this.operatorSettings.teams[i].failThresh[0].splice(taskIndex, 1);
+                console.log(taskIndex, i, this.operatorSettings.teams[i].failThresh[0]);
+            }
+        },
+
         removeCustomTask(task) {
             if (confirm("Are you sure you want to delete this custom task?")) {
 
-                // remove from taskSettings.tasks
-                var taskIndex = this.taskSettings.tasks.indexOf(task);
-                this.taskSettings.tasks.splice(taskIndex, 1);
-
-                //console.log(taskIndex, this.operatorSettings.teams[0].failThresh[0]);
-                // remove priority for each operatorSettings.teams
-                for (var k = 0; k < this.taskSettings.numPhases; k++) {
-                    for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                        console.log(taskIndex, this.operatorSettings.teams[i].failThresh[k]);
-                        this.operatorSettings.teams[i].priority[k].splice(taskIndex, 1);
-                        this.operatorSettings.teams[i].failThresh[k].splice(taskIndex, 1);
-                        console.log(taskIndex, i, k, this.operatorSettings.teams[i].failThresh[k]);
-                    }
-                }
+                this.removeTask(task);
 
                 $("#tasks-global-settings-tab").click();
             }
@@ -983,33 +876,21 @@ var sim = new Vue({
 
         removeFollwingTask(task) {
             if (confirm("Are you sure you want to delete this following task?")) {
-
-                // remove from taskSettings.tasks
-                var taskIndex = this.taskSettings.tasks.indexOf(task);
-                this.taskSettings.tasks.splice(taskIndex, 1);
-
-                //console.log(taskIndex, this.operatorSettings.teams[0].failThresh[0]);
-                // remove priority for each operatorSettings.teams
-                for (var k = 0; k < this.taskSettings.numPhases; k++) {
-                    for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                        console.log(taskIndex, this.operatorSettings.teams[i].failThresh[k]);
-                        this.operatorSettings.teams[i].priority[k].splice(taskIndex, 1);
-                        this.operatorSettings.teams[i].failThresh[k].splice(taskIndex, 1);
-                        console.log(taskIndex, i, k, this.operatorSettings.teams[i].failThresh[k]);
-                    }
-                }
+                this.removeTask();
             }
         },
 
         updateOperatorTeams() {
             var teams = this.operatorSettings.teams;
             if (this.operatorSettings.numTeams > teams.length) {
-                var tasks = sim.getTaskArray();
-                var ft = [];
-
+                var tasks = sim.getTaskArray(); // default priority for each task
+                var ft = []; // failThreshold default value for each task
+                var exp = [];
                 for (i = 0; i < this.taskSettings.tasks.length; i++) {
                     ft.push(50);
+                    exp.push([]);
                 }
+
                 while (teams.length < this.operatorSettings.numTeams) {
                     var x = this.operatorSettings.numNameTeam++;
                     teams.push({
@@ -1018,8 +899,8 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
-                        expertise: [[]],
-                        priority: [tasks, tasks, tasks, tasks, tasks],
+                        expertise: exp,
+                        priority: [tasks],
                         AIDA: {
                             AIDAType: [false, false, false],
                             ETServiceTime: 0,
@@ -1029,7 +910,7 @@ var sim = new Vue({
                             IALevel: 'S',
                             TCALevel: 'S'
                         },
-                        failThresh: [ft, ft, ft, ft, ft]
+                        failThresh: [ft]
                     })
                 }
             } else {
@@ -1071,48 +952,6 @@ var sim = new Vue({
             $("#fleets-global-settings-tab").click();
         },
 
-        updatePhases() {
-            // change numPhases hours
-            var numPhases = this.taskSettings.numPhases;
-            var numHours = this.globalSettings.numHours;
-
-            for (let i = 1; i <= 3; i++) {
-                this.$refs["interval-" + i].noUiSlider.updateOptions({
-                    range: {
-                        'min': 0,
-                        'max': numHours
-                    }
-                });
-            }
-            // set last slider
-            var tip = this.taskSettings.intervalPhases
-            if (numPhases === 1) {
-                tip[0] = [0, numHours];
-            } else {
-                tip[numPhases - 1] = [tip[numPhases - 2][1], numHours];
-            }
-            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases - 1]);
-        },
-        onChangeNumPhases() {
-            var numPhases = this.taskSettings.numPhases;
-            var numHours = this.globalSettings.numHours;
-
-            // right slider enable
-            for (let i = 1; i < numPhases; i++) {
-                this.$refs["interval-" + i].getElementsByClassName("noUi-origin")[1].removeAttribute('disabled');
-            }
-            // right-slider of last slider disabled
-            this.$refs["interval-" + numPhases].getElementsByClassName("noUi-origin")[1].setAttribute('disabled', true);
-
-            // set last slider
-            var tip = this.taskSettings.intervalPhases
-            if (numPhases === 1) {
-                tip[0] = [0, numHours];
-            } else {
-                tip[numPhases - 1] = [tip[numPhases - 2][1], numHours];
-            }
-            this.$refs["interval-" + numPhases].noUiSlider.set(tip[numPhases - 1]);
-        },
         setSimType(str) {
             this.globalSettings.simType = str;
             this.$nextTick(function () {
@@ -1191,8 +1030,8 @@ var sim = new Vue({
         },
 
         loadData() {
-            if (localStorage.getItem('allData')) {
-                var data = JSON.parse(localStorage.getItem('allData'));
+            if (localStorage.getItem('allData' + this.version)) {
+                var data = JSON.parse(localStorage.getItem('allData' + this.version));
 
                 // erase all current keys from data
                 // Object.keys(this.$data).forEach(key => this.$data[key] = null);
@@ -1245,59 +1084,6 @@ var sim = new Vue({
 //    },
 
     mounted: function () {
-        //for(let i=1;i<=this.taskSettings.numPhases;i++) {
-        for (let i = 1; i <= 5; i++) {
-            //console.log(this.$refs["interval-" + i]);
-            noUiSlider.create(this.$refs["interval-" + i], {
-                start: [this.taskSettings.intervalPhases[i - 1][0], this.taskSettings.intervalPhases[i - 1][1]],
-                step: 0.5,
-                range: {
-                    'min': 0,
-                    'max': this.globalSettings.numHours
-                },
-                connect: true,
-                pips: {
-                    mode: 'steps',
-                    values: [0, 8],
-                    filter: function (value, type) {
-                        return value * 2 % 2 ? 0 : 1;
-                    },
-                    format: wNumb({
-                        decimal: 1
-                    }),
-                    density: 100
-                }
-            });
-
-            this.$refs["interval-" + i].noUiSlider.on('update', (values, handle) => {
-                var val = parseFloat(values[handle]);
-                var tip = this.taskSettings.intervalPhases;
-                if (i > 1 && handle === 0) {
-                    if (tip[i - 2][1] !== val) {
-                        tip[i - 2][1] = val;
-                        setTimeout(() => {
-                            this.$refs["interval-" + (i - 1)].noUiSlider.set(tip[i - 2]);
-                        }, 100);
-                    }
-                }
-                if (i < this.taskSettings.numPhases && handle === 1) {
-                    if (tip[i][0] !== val) {
-                        tip[i][0] = val;
-                        //console.log(this.$refs["interval-" + (i+1)][0], tip[i]);
-                        setTimeout(() => {
-                            this.$refs["interval-" + (i + 1)]
-                                .noUiSlider.set(tip[i]);
-                        }, 100);
-                    }
-                }
-                tip[i - 1].splice(handle, 1, val);
-            });
-        }
-        // left-slider of first slider disabled
-        this.$refs["interval-1"].getElementsByClassName("noUi-origin")[0].setAttribute('disabled', true);
-        // right-slider of last slider disabled
-        this.$refs["interval-" + this.taskSettings.numPhases].getElementsByClassName("noUi-origin")[1].setAttribute('disabled', true);
-        //this.$refs["interval-" + this.taskSettings.numPhases].noUiSlider.set([0.5, 8]);
         this.loadData();
     }
 });
@@ -1314,8 +1100,9 @@ $(document).ready(function () {
             "numHours": sim.globalSettings.numHours,
             "traffic": sim.traffic,
             "numReps": sim.numReps,
-            "numPhases": sim.taskSettings.numPhases,
-            "phaseBegin": sim.phaseBegin,
+            "hasTurnOver": sim.hasTransition,
+            "turnOverDists": sim.globalSettings.transitionDists,
+            "turnOverPms": sim.globalSettings.transitionPms,
             "hasExogenous": sim.hasExogenous,
 
             "numTeams": sim.operatorSettings.numTeams,
@@ -1389,14 +1176,13 @@ $(document).ready(function () {
             },
             complete: function (msg) {
                 console.log("response complete received");
-                console.log(msg);
 
                 document.getElementById("submitBtn").textContent = "Submit Again";
                 $("#submitBtn").prop('disabled', false);
             },
-            error: function (errMsg) {
-                alert("Server Error: Check parameters(maybe not enough tasks)!")
-                alert(msg.responseText);
+            error: function (request, status, error) {
+                console.log(request, status, error);
+                alert("Server Error: " + request.responseText);
             }
         });
     });

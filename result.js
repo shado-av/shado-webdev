@@ -29,7 +29,7 @@ var StackedBarChart = (function (index) {
     var initStackedBarChart = function (json) {
         jsonData = json;
         keys = json.taskName;
-        barCounts = json.utilization[0][0][0].length;
+        barCounts = json.taskUtilization[0][0][0].length;
         minutes = barCounts * 10;
         console.log(minutes, barCounts);
         svg = d3.select("#modalSVG" + id);
@@ -67,7 +67,7 @@ var StackedBarChart = (function (index) {
         var output = document.getElementById("replicationTB" + id);
 
         slider.value = 1;
-        slider.setAttribute("max", json.utilization[0].length);
+        slider.setAttribute("max", json.taskUtilization[0].length);
         output.innerHTML = slider.value;
 
         slider.oninput = function () {
@@ -154,8 +154,8 @@ var StackedBarChart = (function (index) {
 
         for (var i = 0; i < keys.length; i++) {
             for (var j = 0; j < barCounts; j++) {
-                data[j][keys[i]] = json.utilization[operator][replication][i][j];
-                data[j]["total"] += json.utilization[operator][replication][i][j];
+                data[j][keys[i]] = json.taskUtilization[operator][replication][i][j];
+                data[j]["total"] += json.taskUtilization[operator][replication][i][j];
             }
             data[j][keys[i]] = 0; // prevent error for the last column 480
         }
@@ -274,10 +274,10 @@ var BoxPlot = (function () {
             // parse json file into groupCounts
             var groupCounts = {};
             var globalCounts = [];
-            for (var i = 0; i < json.averageUtilization.length; i++) {
+            for (var i = 0; i < json.averageTaskUtilization.length; i++) {
                 var key = json.operatorName[i];
-                groupCounts[key + "_" + i] = json.averageUtilization[i];
-                globalCounts = globalCounts.concat(json.averageUtilization[i]);
+                groupCounts[key + "_" + i] = json.averageTaskUtilization[i];
+                globalCounts = globalCounts.concat(json.averageTaskUtilization[i]);
             }
             console.log("GroupCounts ", groupCounts);
             console.log("GlobalCounts ", globalCounts);
