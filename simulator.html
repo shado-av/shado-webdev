@@ -965,14 +965,34 @@
                         </div>
 
                         <!-- OPERATOR TASKS -->
-                        <h5 class="mb-3">Operator Tasks</h5>
+                        <h5 class="mb-3">Operator Tasks/Fleets</h5>
 
+                        <!-- Is this operator flexible? -->
+                        <div class="form-group">
+                            <label class="col-form-label">Can this operator team handle any tasks/fleets? (flex position)</label>
+                            <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" :name="'opteam-' + index + '-flexible'"
+                                           :id="'opteam-' + index + '-flex-y'"
+                                           v-model="team.flexible" value="y"
+                                           @change="updateOpExpertise(team)">
+                                    <label class="custom-control-label" :for="'opteam-' + index + '-flex-y'">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" :name="'opteam-' + index + '-flexible'"
+                                           :id="'opteam-' + index + '-flex-n'"
+                                           v-model="team.flexible" value="n">
+
+                                    <label class="custom-control-label" :for="'opteam-' + index + '-flex-n'">No</label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- operator task checklist (team.tasks) -->
-                        <form class="mb-5">
-                            <div class="form-group">
-                                <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
-                                <!-- adjust task/fleet operators are responsible for (team.expertise) -->
-                                <table class="form-group table responsive">
+                        <div class="form-group" v-show="team.flexible==='n'">
+                            <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
+                            <!-- adjust task/fleet operators are responsible for (team.expertise) -->
+                            <div class="table-responsive">
+                                <table class="form-group table">
                                     <thead class="thead-light">
                                         <th>Task \ Fleet</th>
                                         <th v-for="(fleet, i) in fleetSettings.fleets">
@@ -989,7 +1009,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
+                        </div>
 
                         <!-- AIDA -->
                         <h5 class="mb-3">Artificial Intelligence Decision Aid</h5>
@@ -1179,29 +1199,31 @@
 
                 <h3 class="mb-4">Review Settings</h3>
 
-                <table class="form-group table responsive">
-                    <thead class="thead-light">
+                <div class="table-responsive">
+                    <table class="form-group table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th colspan="2">Basic Settings</th>
+                            </tr>
+                        </thead>
                         <tr>
-                            <th colspan="2">Basic Settings</th>
+                            <td>Type of simulation</td>
+                            <td><b>{{globalSettings.simType}}</b></td>
                         </tr>
-                    </thead>
-                    <tr>
-                        <td>Type of simulation</td>
-                        <td><b>{{globalSettings.simType}}</b></td>
-                    </tr>
-                    <tr>
-                        <td>Shift Scheduled</td>
-                        <td>{{globalSettings.numHours }} hours</td>
-                    </tr>
-                    <tr>
-                        <td>Traffic Levels By Hours</td>
-                        <td><svg id="trafficLevel" width="400" height="300"></svg></td>
-                    </tr>
-                    <tr>
-                        <td>Exogenous factor</td>
-                        <td><b>{{hasExogenousForReview}}</b></td>
-                    </tr>
-                </table>
+                        <tr>
+                            <td>Shift Scheduled</td>
+                            <td>{{globalSettings.numHours }} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Traffic Levels By Hours</td>
+                            <td><svg id="trafficLevel" width="400" height="300"></svg></td>
+                        </tr>
+                        <tr>
+                            <td>Exogenous factor</td>
+                            <td><b>{{hasExogenousForReview}}</b></td>
+                        </tr>
+                    </table>
+                </div>
 
                 <h5>Tasks</h5>
                 <ul>

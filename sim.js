@@ -185,6 +185,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
+                        flexible: 'n',
                         expertise: [[1],[1],[0]],
                         priority: [
                             [1, 4, 6],
@@ -208,6 +209,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
+                        flexible: 'n',
                         expertise: [[0],[1],[1]],
                         priority: [
                             [1, 1, 1],
@@ -274,6 +276,18 @@ var sim = new Vue({
                 to[j] = hasTo[j] ? 1 : 0;
             }
             return to;
+        },
+
+        transitionPms() {
+            var params = [];
+
+            for (var j = 0; j < 2; j++) {
+                if (this.globalSettings.transitionDists[j]) {
+                    params.push(this.distParams(this.globalSettings.transitionDists[j],
+                                                this.globalSettings.transitionPms[j]));
+                }
+            }
+            return params;
         },
 
         // array of existence of exo factors and type of exo factor
@@ -886,9 +900,12 @@ var sim = new Vue({
                 var tasks = sim.getTaskArray(); // default priority for each task
                 var ft = []; // failThreshold default value for each task
                 var exp = [];
-                for (i = 0; i < this.taskSettings.tasks.length; i++) {
+                for (var i = 0; i < this.taskSettings.tasks.length; i++) {
                     ft.push(50);
                     exp.push([]);
+                    for(var j=0; j < this.fleetSettings.fleets.length;j++) {
+                        exp[i][j] = true;
+                    }
                 }
 
                 while (teams.length < this.operatorSettings.numTeams) {
@@ -899,6 +916,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
+                        flexible: 'y',
                         expertise: exp,
                         priority: [tasks],
                         AIDA: {
@@ -926,6 +944,14 @@ var sim = new Vue({
             $("#operators-global-settings-tab").click();
         },
 
+        // update whole matrix to true
+        updateOpExpertise(team) {
+            for(var i=0;i<this.taskSettings.tasks.length;i++) {
+                for(var j=0;j<this.fleetSettings.fleets.length;j++) {
+                    team.expertise[i][j]=true;
+                }
+            }
+        },
         updateFleets() {
             var fleets = this.fleetSettings.fleets;
             if (this.fleetSettings.fleetTypes > fleets.length) {
@@ -936,8 +962,18 @@ var sim = new Vue({
                         numVehicles: 1,
                         comms: "N",
                         tasks: []
-                    })
+                    });
+
+                    // change opExpertiseMatrix to true if opFlexible
+                    for(var i=0; i<this.operatorSettings.teams.length; i++) {
+                        if (this.operatorSettings.teams[i].flexible) {
+                            for(var j=0;j<this.taskSettings.tasks.length;j++) {
+                                this.operatorSettings.teams[i].expertise[j][fleets.length-1] = true;
+                            }
+                        }
+                    }
                 }
+
             } else {
                 fleets.splice(this.fleetSettings.fleetTypes);
             }
@@ -975,7 +1011,7 @@ var sim = new Vue({
         },
 
         saveData() {
-            localStorage.setItem('allData', JSON.stringify(this.$data));
+            localStorage.setItem('allData'+this.version, JSON.stringify(this.$data));
         },
 
         saveFile() {
@@ -1102,7 +1138,7 @@ $(document).ready(function () {
             "numReps": sim.numReps,
             "hasTurnOver": sim.hasTransition,
             "turnOverDists": sim.globalSettings.transitionDists,
-            "turnOverPms": sim.globalSettings.transitionPms,
+            "turnOverPms": sim.transitionPms,
             "hasExogenous": sim.hasExogenous,
 
             "numTeams": sim.operatorSettings.numTeams,
