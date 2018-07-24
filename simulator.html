@@ -947,8 +947,8 @@
                                 </table>
                             </div>
                         </form>
-                        <!-- FAIL THRESHOLD -->
-                        <h5 class="mb-3">Fail Threshold</h5>
+                        <!-- Error Catching Chance -->
+                        <h5 class="mb-3">Error Catching Chance</h5>
 
                         <!-- fail threshold (team.failThresh) -->
                         <div class="form-group">
@@ -1031,7 +1031,7 @@
                                     <percentage-input v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
                                     <div class="">What percentage of the Error Rate is affected by this AI?</div>
                                     <percentage-input v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
-                                    <div class="">What percentage of the Fail Threshold is affected by this AI?</div>
+                                    <div class="">What percentage of the Error Catching Chance is affected by this AI?</div>
                                     <percentage-input v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
                                 </div>
                             </div>
@@ -1287,7 +1287,7 @@
                                 <li>Operator Priority:
                                     <b>{{team.priority}}</b>
                                 </li>
-                                <li>Fail Threshold:
+                                <li>Error Catching Chance:
                                     <b>{{team.failThresh}}%</b>
                                 </li>
                                 <li>Artifical Intellegence</li>
@@ -1297,7 +1297,7 @@
                                         <ul v-show="team.AIDA.equalOperator">
                                             <li>Affected Rate of Service Time : {{team.AIDA.ETServiceTime}} </li>
                                             <li>Affected Rate of Error Rate : {{team.AIDA.ETErrorRate}} </li>
-                                            <li>Affected Rate of Fail Threshold : {{team.AIDA.ETFailThreshold}} </li>
+                                            <li>Affected Rate of Error Catching Chance : {{team.AIDA.ETFailThreshold}} </li>
                                         </ul>
                                     </li>
 
