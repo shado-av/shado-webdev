@@ -105,7 +105,32 @@
 
     <div id="pieChart"></div>
     <div class="ml-5 mr-5 mb-5 mt-5">
-        <table id="taskRecordTable" class="display" width="100%"></table>
+        <table id="taskRecordTable" class="display" width="100%">
+            <thead>
+                <tr>
+                    <th rowspan="2">Operator Team</th>
+                    <th rowspan="2">Task Name</th>
+                    <th colspan="3">Missed Tasks</th>
+                    <th colspan="3">Incomplete Tasks</th>
+                    <th colspan="3">Failed Tasks and Not Caught</th>
+                    <th colspan="3">Failed Tasks and Caught</th>
+                </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Avg.</th>
+                    <th>Std. Dev.</th>
+                    <th>#</th>
+                    <th>Avg.</th>
+                    <th>Std. Dev.</th>
+                    <th>#</th>
+                    <th>Avg.</th>
+                    <th>Std. Dev.</th>
+                    <th>#</th>
+                    <th>Avg.</th>
+                    <th>Std. Dev.</th>
+                </tr>
+            </thead>
+        </table>
     </div>
     <script>
         var taskRecord = {};
@@ -201,41 +226,26 @@
                     data[0] = json.operatorName[i];
                     data[1] = json.taskName[j];
                     data[2] = 0;
-                    data[3] = 0;
-                    data[4] = 0;
                     data[5] = 0;
+                    data[8] = 0;
+                    data[11] = 0;
                     for(var m=0;m<4;m++) {
-                        data[6+m] = json.averageFailed[i][j][m].toFixed(2);
-                        data[10+m] = json.stdFailed[i][j][m].toFixed(2);
+                        data[3+m*3] = json.averageFailed[i][j][m].toFixed(2);
+                        data[4+m*3] = json.stdFailed[i][j][m].toFixed(2);
                     }
                     for(var k=0;k<numReps;k++) {
                         for(var l=0;l<numPhases;l++) {
                             for(var m=0;m<4;m++) {
-                                data[m+2] += json.numFailedTask[k][l][i][j][m];
+                                data[m*3 + 2] += json.numFailedTask[k][l][i][j][m];
                             }
                         }
                     }
                     dataSet.push(data);
                 }
             }
+
             $("#taskRecordTable").DataTable( {
-                data: dataSet,
-                columns: [
-                    {title: "Operator Team"},
-                    {title: "Task Name"},
-                    {title: "Missed"},
-                    {title: "Incomplete"},
-                    {title: "Not Caught"},
-                    {title: "Caught"},
-                    {title: "Avg. Missed"},
-                    {title: "Avg. Incomplete"},
-                    {title: "Avg. Not Caught"},
-                    {title: "Avg. Caught"},
-                    {title: "Std. Dev. Missed"},
-                    {title: "Std. Dev. Incomplete"},
-                    {title: "Std. Dev. Not Caught"},
-                    {title: "Std. Dev. Caught"}
-                ]
+                data: dataSet
             });
         });
     </script>
