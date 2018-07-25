@@ -235,14 +235,21 @@ var sim = new Vue({
          * ------------------------------ */
 
         fleetSettings: {
-            fleetTypes: 1,    // number of fleets (2 - 5)
-            numNameFleet: 2,  // for just naming
+            fleetTypes: 1, // number of fleets (2 - 5)
+            numNameFleet: 3, // for just naming
             fleets: [{
-                name: "Fleet 1",
-                numVehicles: 1,
-                comms: "N",
-                tasks: [0, 1, 2]
-            }]
+                    name: "Fleet 1",
+                    numVehicles: 1,
+                    comms: "N",
+                    tasks: [0, 1]
+                },
+                {
+                    name: "Fleet 2",
+                    numVehicles: 1,
+                    comms: "N",
+                    tasks: [1, 2]
+                }
+            ]
         }
     },
 
@@ -568,7 +575,7 @@ var sim = new Vue({
                     if (this.taskSettings.tasks[j].include) {
                         var exps = [];
                         for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
-                            if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k]) {
+                            if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k] && this.fleetSettings.fleets[k].tasks.includes(j)) {
                                 exps.push(1);
                             } else
                                 exps.push(0);
@@ -952,6 +959,12 @@ var sim = new Vue({
                 }
             }
         },
+
+        // check whether fleet has assigned this task
+        disableOpExpertise(fleet, taskIndex) {
+            return !fleet.tasks.includes(taskIndex);
+        },
+
         updateFleets() {
             var fleets = this.fleetSettings.fleets;
             if (this.fleetSettings.fleetTypes > fleets.length) {
@@ -966,7 +979,7 @@ var sim = new Vue({
 
                     // change opExpertiseMatrix to true if opFlexible
                     for(var i=0; i<this.operatorSettings.teams.length; i++) {
-                        if (this.operatorSettings.teams[i].flexible) {
+                        if (this.operatorSettings.teams[i].flexible === 'y') {
                             for(var j=0;j<this.taskSettings.tasks.length;j++) {
                                 this.operatorSettings.teams[i].expertise[j][fleets.length-1] = true;
                             }

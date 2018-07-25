@@ -1003,7 +1003,7 @@
                                         <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
                                             <td>{{task.name}}</td>
                                             <td v-for="(fleet, j) in fleetSettings.fleets">
-                                                <input type="checkbox" v-model="team.expertise[i][j]"/>
+                                                <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
                                             </td>
                                         </tr>
                                     </tbody>
