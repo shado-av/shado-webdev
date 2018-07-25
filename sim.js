@@ -285,6 +285,20 @@ var sim = new Vue({
             return to;
         },
 
+        // return review string for type of exo factors
+        hasTransitionForReview() {
+            var hasTo = this.globalSettings.hasTransition;
+            var tranRv = "None";
+
+            if (hasTo[0] || hasTo[1]) {
+                if (hasTo[0]) tranRv = "Beginning of shift";
+                if (hasTo[0] && hasTo[1]) tranRv += ", Ending of shift";
+                else if (hasTo[1]) tranRv = "Ending of shift";
+            }
+
+            return tranRv;
+        },
+
         transitionPms() {
             var params = [];
 
