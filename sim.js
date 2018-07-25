@@ -574,8 +574,10 @@ var sim = new Vue({
                 for (var j = 0; j < this.taskSettings.tasks.length; j++) {
                     if (this.taskSettings.tasks[j].include) {
                         var exps = [];
+                        var opteam = this.operatorSettings.teams[i];
                         for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
-                            if (this.operatorSettings.teams[i].expertise[j] && this.operatorSettings.teams[i].expertise[j][k] && this.fleetSettings.fleets[k].tasks.includes(j)) {
+                            if ((opteam.flexible || opteam.expertise[j] && opteam.expertise[j][k])
+                                && this.fleetSettings.fleets[k].tasks.includes(j)) {
                                 exps.push(1);
                             } else
                                 exps.push(0);
@@ -978,13 +980,13 @@ var sim = new Vue({
                     });
 
                     // change opExpertiseMatrix to true if opFlexible
-                    for(var i=0; i<this.operatorSettings.teams.length; i++) {
-                        if (this.operatorSettings.teams[i].flexible === 'y') {
-                            for(var j=0;j<this.taskSettings.tasks.length;j++) {
-                                this.operatorSettings.teams[i].expertise[j][fleets.length-1] = true;
-                            }
-                        }
-                    }
+//                    for(var i=0; i<this.operatorSettings.teams.length; i++) {
+//                        if (this.operatorSettings.teams[i].flexible === 'y') {
+//                            for(var j=0;j<this.taskSettings.tasks.length;j++) {
+//                                this.operatorSettings.teams[i].expertise[j][fleets.length-1] = true;
+//                            }
+//                        }
+//                    }
                 }
 
             } else {
