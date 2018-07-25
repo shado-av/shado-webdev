@@ -1357,66 +1357,98 @@
             ------------------------------------------>
 
             <div class="tab-pane fade" id="view-results" role="tabpanel" aria-lablledby="view-results-tab">
-                <h3 class='subtitle'>Average Utilization per Operator</h3>
-                <!-- Modal -->
-                <div class="modal fade" id="stackedBC1" role="dialog">
-                    <div class="modal-dialog modal-lg">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <div class="col-sm">
-                                    <h3 id="stackedBCTitle1">Operator Workload per Replication</h3>
+                <!-- Results Page NAVIGATION -->
+                <ul class="nav nav-tabs">
+
+                    <!-- Results Utilization -->
+                    <li class="nav-item">
+                        <a class="nav-link active" id="results-utilization-tab" data-toggle="tab" href="#results-utilization" role="tab" aria-controls="results-utilization"
+                            selected="true">
+                            Utilization
+                        </a>
+                    </li>
+
+                    <!-- Failed Task Analysis -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="results-failed-task-tab" data-toggle="tab" href="#results-failed-task"
+                           role="tab" aria-controls="results-failed-task" selected="false">
+                            Failed Task Analysis
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- VIEW RESULTS CONTENT -->
+                <div class="tab-content" id="view-results-content">
+
+                    <!-- Results Utilization -->
+                    <div class="tab-pane fade show active" id="results-utilization" role="tabpanel" aria-labelledby="results-utilization-tab">
+                        <h3 class='subtitle'>Average Utilization per Operator</h3>
+                        <!-- Modal -->
+                        <div class="modal fade" id="stackedBC1" role="dialog">
+                            <div class="modal-dialog modal-lg">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="col-sm">
+                                            <h3 id="stackedBCTitle1">Operator Workload per Replication</h3>
+                                        </div>
+                                        <div class="col-sm" id="replication1">
+                                            <label>Replication:
+                                                <span id="replicationTB1" /> </label>
+                                            <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider1" class="slider" />
+                                        </div>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <svg id="modalSVG1" width="960" height="450"></svg>
+                                    </div>
                                 </div>
-                                <div class="col-sm" id="replication1">
-                                    <label>Replication:
-                                        <span id="replicationTB1" /> </label>
-                                    <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider1" class="slider" />
-                                </div>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <svg id="modalSVG1" width="960" height="450"></svg>
+
                             </div>
                         </div>
+                        <svg id="boxSVG" width="960" height="450"></svg>
+                    </div>
 
+                    <!-- Failed Task Analysis -->
+                    <div class="tab-pane fade" id="results-failed-task" role="tabpanel"
+                        :aria-labelledby="results-failed-task-tab">
+
+                        <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
+
+                        <div id="pieChart"></div>
+                        <div class="ml-5 mr-5 mb-5 mt-5">
+                            <table id="taskRecordTable" class="display" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Operator Team</th>
+                                        <th rowspan="2">Task Name</th>
+                                        <th colspan="3">Missed Tasks</th>
+                                        <th colspan="3">Incomplete Tasks</th>
+                                        <th colspan="3">Failed Tasks and Not Caught</th>
+                                        <th colspan="3">Failed Tasks and Caught</th>
+                                    </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Avg.</th>
+                                        <th>Std. Dev.</th>
+                                        <th>#</th>
+                                        <th>Avg.</th>
+                                        <th>Std. Dev.</th>
+                                        <th>#</th>
+                                        <th>Avg.</th>
+                                        <th>Std. Dev.</th>
+                                        <th>#</th>
+                                        <th>Avg.</th>
+                                        <th>Std. Dev.</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <svg id="boxSVG" width="960" height="450"></svg>
-
-                <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
-
-                <div id="pieChart"></div>
-                <div class="ml-5 mr-5 mb-5 mt-5">
-                    <table id="taskRecordTable" class="display" width="100%">
-                        <thead>
-                            <tr>
-                                <th rowspan="2">Operator Team</th>
-                                <th rowspan="2">Task Name</th>
-                                <th colspan="3">Missed Tasks</th>
-                                <th colspan="3">Incomplete Tasks</th>
-                                <th colspan="3">Failed Tasks and Not Caught</th>
-                                <th colspan="3">Failed Tasks and Caught</th>
-                            </tr>
-                            <tr>
-                                <th>#</th>
-                                <th>Avg.</th>
-                                <th>Std. Dev.</th>
-                                <th>#</th>
-                                <th>Avg.</th>
-                                <th>Std. Dev.</th>
-                                <th>#</th>
-                                <th>Avg.</th>
-                                <th>Std. Dev.</th>
-                                <th>#</th>
-                                <th>Avg.</th>
-                                <th>Std. Dev.</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
             </div>
-
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
