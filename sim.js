@@ -1237,7 +1237,13 @@ $(document).ready(function () {
                 // Show download button
                 showDownloadBtn();
                 BoxPlot.visualize(serverName + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
+
+                // pieChart only works when it is visible
+                FailedTaskAnalysis.analyze(serverName + "/shado/getTaskJSON" + sessionQuery, "pieChart", "#taskRecordTable");
+
                 $("#view-results-tab").click();
+
+                FailedTaskAnalysis.refreshPie();
             },
             complete: function (msg) {
                 console.log("response complete received");

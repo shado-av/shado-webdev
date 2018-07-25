@@ -579,3 +579,12 @@ footer .number-input button:after {
   border-top-color: white;
   border-left-color: white;
 }
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}

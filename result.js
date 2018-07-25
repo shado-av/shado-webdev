@@ -651,3 +651,146 @@ var TrafficLevelBarChart = (function () {
         drawTrafficeLevelBarChart: drawTrafficeLevelBarChart
     };
 })();
+
+var FailedTaskAnalysis = (function () {
+    var taskRecord = {};
+    var pie = null;
+
+    // refreshPie until correct label size is specified
+    var refreshPie = function () {
+        var isRefreshRequired = false;
+        if (pie === null) isRefreshRequired = true;
+        if (pie !== null && pie.outerLabelGroupData[0].h === 0) {
+            pie.redraw();
+            isRefreshRequired = true;
+        }
+        if (isRefreshRequired)
+            setTimeout(function() { FailedTaskAnalysis.refreshPie(); }, 200);
+    }
+    var analyze = function (filename, graphId, tableId) {
+        if (pie!==null) {
+            pie.destroy();
+            pie = null;
+        }
+
+        d3.json(filename).then(function (json) {
+            taskRecord = json;
+            //console.log(json);
+
+            var ft = json.numFailedTask;
+            var tt = json.numTotalTask;
+
+            // replication, phase, team, task type
+            var numReps = json.numFailedTask.length;
+            var numPhases = ft[0].length;
+            var numOps = json.operatorName.length;
+            var numTasks = json.taskName.length;
+
+            var data = [{},{},{},{},{}];
+            var color = ["#DC3912", "#3366CC", "#109618", "#FF9900", "#990099"];
+            console.log(numReps, numPhases, numOps, numTasks);
+
+            for(var i=0;i<5;i++) {
+                data.push({});
+                data[i].value = tt[i];
+                data[i].color = color[i];
+            }
+            data[0].label = "Successful Tasks";
+            data[1].label = "Missed Tasks";
+            data[2].label = "Incomplete Tasks";
+            data[3].label = "Failed Tasks and Not Caught";
+            data[4].label = "Failed Tasks and Caught";
+
+            console.log(data);
+
+            pie = new d3pie(graphId, {
+                "size": {
+                    "canvasHeight": 400,
+                    "canvasWidth": 590,
+                    "pieOuterRadius": "80%"
+                },
+                "data": {
+                    "content": data
+                },
+                "labels": {
+                    "outer": {
+                        "format": "label-percentage1",
+                        "pieDistance": 32
+                    },
+                    "inner": {
+                        "format": "value",
+                        "hideWhenLessThanPercentage": 3
+                    },
+                    "mainLabel": {
+                        "font": "verdana"
+                    },
+                    "percentage": {
+                        "color": "#716161",
+                        "font": "verdana",
+                        "decimalPlaces": 1
+                    },
+                    "value": {
+                        "color": "#e1e1e1",
+                        "font": "verdana"
+                    },
+                    "lines": {
+                        "enabled": true,
+                        "color": "#cccccc"
+                    },
+                    "truncation": {
+                        "enabled": true
+                    }
+                },
+                "tooltips": {
+                    "enabled": true,
+                    "type": "placeholder",
+                    "string": "# of {label} is {value}, which is {percentage}%."
+                },
+                "effects": {
+                    load: {
+                         effect: "none"
+                    }
+                },
+            });
+
+            var dataSet = [];
+
+            var numReps = json.numFailedTask.length;
+            var numPhases = ft[0].length;
+            var numOps = json.operatorName.length;
+            var numTasks = json.taskName.length;
+            for(var i=0;i<numOps; i++) {
+                for(var j=0;j<numTasks; j++) {
+                    var data = [];
+                    data[0] = json.operatorName[i];
+                    data[1] = json.taskName[j];
+                    data[2] = 0;
+                    data[5] = 0;
+                    data[8] = 0;
+                    data[11] = 0;
+                    for(var m=0;m<4;m++) {
+                        data[3+m*3] = json.averageFailed[i][j][m].toFixed(2);
+                        data[4+m*3] = json.stdFailed[i][j][m].toFixed(2);
+                    }
+                    for(var k=0;k<numReps;k++) {
+                        for(var l=0;l<numPhases;l++) {
+                            for(var m=0;m<4;m++) {
+                                data[m*3 + 2] += json.numFailedTask[k][l][i][j][m];
+                            }
+                        }
+                    }
+                    dataSet.push(data);
+                }
+            }
+
+            $(tableId).DataTable( {
+                data: dataSet,
+                "destroy": true,
+            });
+        });
+    };
+    return {
+        analyze: analyze,
+        refreshPie: refreshPie
+    };
+})();
