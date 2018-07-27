@@ -588,3 +588,7 @@ footer .number-input button:after {
 .arc path {
   stroke: #fff;
 }
+
+#submitBtn.btn-success {
+  border-color: #f8f9fa;
+}
