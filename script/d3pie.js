@@ -1780,9 +1780,9 @@ var tt = {
     tooltips.selectAll("." + pie.cssPrefix + "tooltip")
         .data(pie.options.data.content)
         .append("text")
-        .attr("fill", function(d) { return pie.options.tooltips.styles.color; })
-        .style("font-size", function(d) { return pie.options.tooltips.styles.fontSize; })
-        .style("font-family", function(d) { return pie.options.tooltips.styles.font; })
+        .attr("fill", pie.options.tooltips.styles.color)
+        .style("font-family", pie.options.tooltips.styles.font)
+        .style("font-size", pie.options.tooltips.styles.fontSize + "px")
         .text(function(d, i) {
             var caption = pie.options.tooltips.string;
             if (pie.options.tooltips.type === "caption") {
