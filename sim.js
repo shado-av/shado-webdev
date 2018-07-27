@@ -250,6 +250,12 @@ var sim = new Vue({
                     tasks: [1, 2]
                 }
             ]
+        },
+
+        miscSettings: {
+            downloadJsonData: "",
+            downloadJsonVisible: false,
+            onSubmit: false,
         }
     },
 
@@ -1111,9 +1117,104 @@ var sim = new Vue({
                     this.fleetSettings = data.fleetSettings;
                 }
             }
+        },
+
+        onSubmit() {
+            this.miscSettings.onSubmit = true;
+            var out = {
+                "numHours": sim.globalSettings.numHours,
+                "traffic": sim.traffic,
+                "numReps": sim.numReps,
+                "hasTurnOver": sim.hasTransition,
+                "turnOverDists": sim.globalSettings.transitionDists,
+                "turnOverPms": sim.transitionPms,
+                "hasExogenous": sim.hasExogenous,
+
+                "numTeams": sim.operatorSettings.numTeams,
+                "teamSize": sim.teamSize,
+                "opNames": sim.opNames,
+                "opStrats": sim.teamStrategy,
+                "opTasks": sim.opTasks,
+                "opExpertise": sim.opExpertise,
+                "taskPrty": sim.opPriority,
+                "teamComm": sim.teamComm,
+                "humanError": sim.humanError,
+                "ECC": sim.teamFailThreshold,
+
+                "AIDAtype": sim.AIDAType,
+                "ETServiceTime": sim.ETServiceTime,
+                "ETErrorRate": sim.ETErrorRate,
+                "ETFailThreshold": sim.ETFailThreshold,
+                "IAtasks": sim.IATasks,
+                "IALevel": sim.IALevel,
+                "TCALevel": sim.TCALevel,
+
+                "fleetTypes": sim.fleetSettings.fleetTypes,
+                "numvehicles": sim.numVehicles,
+                "autolvl": sim.fleetAutoLevel,
+                "fleetHetero": sim.fleetHetero,
+
+                "numTaskTypes": sim.numTotalTaskTypes,
+                "taskNames": sim.taskNames,
+                "arrDists": sim.arrDists,
+                "arrPms": sim.arrPms,
+                "serDists": sim.serDists,
+                "serPms": sim.serPms,
+                "expDists": sim.expDists,
+                "expPms": sim.expPms,
+                "affByTraff": sim.affByTraff,
+                "teamCoordAff": sim.teamCoordAff,
+                "exoType2Aff": sim.exoType2Aff,
+                "interruptable": sim.interruptable,
+                "essential": sim.essential,
+
+                "leadTask": sim.leadTask
+            };
+            console.log("JSON output: ", out);
+            //hide download
+            document.getElementById("downloadBtn").style.display = "none";
+            // document.getElementById("downloadSummary").style.display = "none";
+
+            //Download Json
+            this.miscSettings.downloadJsonVisible = true;
+            this.miscSettings.downloadJsonData = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
+
+            axios.post(env.serverUrl + "/shado/testpost", JSON.stringify(out), {
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                }
+            }).then((msg) => {
+                console.log("response success received");
+                console.log(msg.data);
+                var sessionId = msg.data.substr(msg.data.lastIndexOf(":") + 2);
+                var sessionQuery = "?sessionN=" +sessionId;
+                console.log(sessionId, sessionQuery);
+                alert(msg.data);
+
+                // Show download button
+                showDownloadBtn();
+                BoxPlot.visualize(env.serverUrl + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
+
+                // pieChart only works when it is visible
+                FailedTaskAnalysis.analyze(env.serverUrl + "/shado/getTaskJSON" + sessionQuery, "pieChart", "#taskRecordTable");
+
+                this.$refs.viewResultsTab.click();
+
+                FailedTaskAnalysis.refreshPie();
+            })
+            .catch((err) => {
+                console.log(err.response);
+                if (err.response)
+                    alert("Server Error: " + err.response.request.responseText);
+                else
+                    alert("Server Error: Server not responding");
+            }).then(() => {
+                console.log("response complete received");
+                document.getElementById("submitBtn").textContent = "Submit Again";
+                this.miscSettings.onSubmit = false;
+            });
         }
     },
-
 
 //    watch: {
 //        numReps: {
@@ -1149,6 +1250,28 @@ var sim = new Vue({
 //    },
 
     mounted: function () {
+        // Add a request interceptor
+        axios.interceptors.request.use(function (config) {
+          // Do something before request is sent
+          NProgress.start();
+          return config;
+        }, function (error) {
+          // Do something with request error
+          console.error(error)
+          return Promise.reject(error);
+        });
+
+        // Add a response interceptor
+        axios.interceptors.response.use(function (response) {
+          // Do something with response data
+          NProgress.done();
+          return response;
+        }, function (error) {
+          // Do something with response error
+          console.error(error)
+          return Promise.reject(error);
+        });
+
         this.loadData();
     }
 });
@@ -1158,105 +1281,6 @@ $(document).ready(function () {
     var sessionId = "";
     var sessionQuery = "";
 
-    //Json Builder
-    $("#submitBtn").click(function () {
-        $("#submitBtn").prop('disabled', true);
-        var out = {
-            "numHours": sim.globalSettings.numHours,
-            "traffic": sim.traffic,
-            "numReps": sim.numReps,
-            "hasTurnOver": sim.hasTransition,
-            "turnOverDists": sim.globalSettings.transitionDists,
-            "turnOverPms": sim.transitionPms,
-            "hasExogenous": sim.hasExogenous,
-
-            "numTeams": sim.operatorSettings.numTeams,
-            "teamSize": sim.teamSize,
-            "opNames": sim.opNames,
-            "opStrats": sim.teamStrategy,
-            "opTasks": sim.opTasks,
-            "opExpertise": sim.opExpertise,
-            "taskPrty": sim.opPriority,
-            "teamComm": sim.teamComm,
-            "humanError": sim.humanError,
-            "ECC": sim.teamFailThreshold,
-
-            "AIDAtype": sim.AIDAType,
-            "ETServiceTime": sim.ETServiceTime,
-            "ETErrorRate": sim.ETErrorRate,
-            "ETFailThreshold": sim.ETFailThreshold,
-            "IAtasks": sim.IATasks,
-            "IALevel": sim.IALevel,
-            "TCALevel": sim.TCALevel,
-
-            "fleetTypes": sim.fleetSettings.fleetTypes,
-            "numvehicles": sim.numVehicles,
-            "autolvl": sim.fleetAutoLevel,
-            "fleetHetero": sim.fleetHetero,
-
-            "numTaskTypes": sim.numTotalTaskTypes,
-            "taskNames": sim.taskNames,
-            "arrDists": sim.arrDists,
-            "arrPms": sim.arrPms,
-            "serDists": sim.serDists,
-            "serPms": sim.serPms,
-            "expDists": sim.expDists,
-            "expPms": sim.expPms,
-            "affByTraff": sim.affByTraff,
-            "teamCoordAff": sim.teamCoordAff,
-            "exoType2Aff": sim.exoType2Aff,
-            "interruptable": sim.interruptable,
-            "essential": sim.essential,
-
-            "leadTask": sim.leadTask
-        };
-        console.log("JSON output: ", out);
-        //hide download
-        document.getElementById("downloadBtn").style.display = "none";
-        // document.getElementById("downloadSummary").style.display = "none";
-
-        //Download Json
-        $("#container").empty();
-        var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
-        $('<a href="data:' + data + '" download="shadoParams.json">Download <br> Input JSON</a>').appendTo('#container');
-        $.ajax({
-            type: "POST",
-            url: serverName + "/shado/testpost",
-            // The key needs to match your method's input parameter (case-sensitive).
-            data: JSON.stringify(out),
-            contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            success: function (msg) {
-                console.log("response success received");
-                console.log(msg);
-                sessionId = msg.substr(msg.lastIndexOf(":") + 2);
-                sessionQuery = "?sessionN=" +sessionId;
-                console.log(sessionId, sessionQuery);
-                //alert(msg);
-
-                // Show download button
-                showDownloadBtn();
-                BoxPlot.visualize(serverName + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
-
-                // pieChart only works when it is visible
-                FailedTaskAnalysis.analyze(serverName + "/shado/getTaskJSON" + sessionQuery, "pieChart", "#taskRecordTable");
-
-                $("#view-results-tab").click();
-
-                FailedTaskAnalysis.refreshPie();
-            },
-            complete: function (msg) {
-                console.log("response complete received");
-
-                document.getElementById("submitBtn").textContent = "Submit Again";
-                $("#submitBtn").prop('disabled', false);
-            },
-            error: function (request, status, error) {
-                console.log(request, status, error);
-                alert("Server Error: " + request.responseText);
-            }
-        });
-    });
     //Download  
     $("#downloadCSV").click(function () {
         //  $.get("http://localhost:8080/shado/getRepDetail");
@@ -1320,10 +1344,6 @@ $(document).ready(function () {
     $('#review-settings-tab').click( function() {
         TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", sim.globalSettings.trafficLevels);
     });
-
-    $(document)
-        .ajaxStart(NProgress.start)
-        .ajaxStop(NProgress.done);
 });
 
 function showDownloadBtn() {

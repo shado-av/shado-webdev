@@ -24,13 +24,15 @@
     <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
     <!-- Fontawesome Icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
         crossorigin="anonymous"></script>
 
     <!--D3 Libraries-->
     <script src="https://d3js.org/d3.v5.js"></script>
-    <script src="script/d3pie.min.js"></script>
+    <script src="script/d3pie.js"></script>
 
     <!--Data Table Libraries-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
@@ -146,7 +148,7 @@
                                     Results
                                 </div>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results"
+                                    <a class="nav-link" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
                                         selected="false">
                                         View Results
                                     </a>
@@ -163,7 +165,9 @@
 
                 <!-- Download Buttons -->
                 <div class="form-row justify-content-center">
-                    <div id="container"></div>
+                    <div id="container">
+                        <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Input JSON</a>
+                    </div>
                     <br>
                 </div>
 
@@ -1413,7 +1417,7 @@
 
                     <!-- Failed Task Analysis -->
                     <div class="tab-pane fade" id="results-failed-task" role="tabpanel"
-                        :aria-labelledby="results-failed-task-tab">
+                        aria-labelledby="results-failed-task-tab">
 
                         <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
 
@@ -1463,7 +1467,7 @@
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
             <!--Submit Button-->
-            <button id="submitBtn" class="btn btn-outline-light btn-sm" type="button" title="">Run Simulation</button>
+            <button id="submitBtn" class="btn btn-outline-light btn-sm" type="button" title="" @click="onSubmit" :disabled="miscSettings.onSubmit">Run Simulation</button>
         </footer>
     </div>
 </body>
