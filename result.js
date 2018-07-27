@@ -659,13 +659,17 @@ var FailedTaskAnalysis = (function () {
     // refreshPie until correct label size is specified
     var refreshPie = function () {
         var isRefreshRequired = false;
-        if (pie === null) isRefreshRequired = true;
-        if (pie !== null && pie.outerLabelGroupData[0].h === 0) {
+        if (pie === null)
+            isRefreshRequired = true;
+        else if (pie.outerLabelGroupData[0] &&
+                 pie.outerLabelGroupData[0].h === 0) {
             pie.redraw();
             isRefreshRequired = true;
         }
+
         if (isRefreshRequired)
-            setTimeout(function() { FailedTaskAnalysis.refreshPie(); }, 200);
+            setTimeout(function() {
+                FailedTaskAnalysis.refreshPie(); }, 200);
     }
     var analyze = function (filename, graphId, tableId) {
         if (pie!==null) {
@@ -744,7 +748,7 @@ var FailedTaskAnalysis = (function () {
                 "tooltips": {
                     "enabled": true,
                     "type": "placeholder",
-                    "string": "# of {label} is {value}, which is {percentage}%."
+                    "string": "# of {label} is {value}, which is {percentage}%.",
                 },
                 "effects": {
                     load: {
