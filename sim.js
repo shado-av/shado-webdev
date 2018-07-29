@@ -1268,6 +1268,7 @@ var sim = new Vue({
           return response;
         }, function (error) {
           // Do something with response error
+          NProgress.done();
           console.error(error)
           return Promise.reject(error);
         });
