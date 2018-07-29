@@ -34,9 +34,9 @@ footer label {
   line-height: 40px !important;
 }
 
-footer label.btn {
+footer span {
   margin-bottom:16px;
-  line-height: 30px !important;
+/*  line-height: 30px !important;*/
 }
 
 footer button {
@@ -111,7 +111,7 @@ footer button {
 }
 
 @media screen and (min-width: 940px) {
-  footer button, footer label.btn, #run-sim {
+  footer button, footer span, #run-sim {
     margin-bottom: 0px;
   }
 }

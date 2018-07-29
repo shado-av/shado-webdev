@@ -1457,17 +1457,19 @@
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
             <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Save Settings</button>
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Settings</button>
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
-            <label class="btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Settings</button>
+<!--
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
+            <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
+-->
 
             <!--Number of replications selection-->
-            <span>
+            <span class="ml-auto">
                 <label for="num-reps"># Replications&nbsp;</label>
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
             <!--Submit Button-->
-            <button id="submitBtn" class="btn btn-success btn-sm" type="button" title="" @click="onSubmit" :disabled="miscSettings.onSubmit">Run Simulation</button>
+            <button id="submitBtn" class="btn btn-success btn-sm ml-3" type="button" title="" @click="onSubmit" :disabled="miscSettings.onSubmit">Run Simulation</button>
         </footer>
     </div>
 </body>
