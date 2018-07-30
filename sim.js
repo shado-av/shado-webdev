@@ -178,6 +178,8 @@ var sim = new Vue({
         operatorSettings: {
             numTeams: 2, // number of teams (2 - 5)
             numNameTeam: 3, // for just naming
+            hasFlexPosition: 'n',
+            flexTeamSize: 1,
             teams: // array of individual team objects
                 [{
                         name: "Operator Team 1",
@@ -185,7 +187,6 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
-                        flexible: 'n',
                         expertise: [[1],[1],[0]],
                         priority: [
                             [1, 4, 6],
@@ -209,7 +210,6 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
-                        flexible: 'n',
                         expertise: [[0],[1],[1]],
                         priority: [
                             [1, 1, 1],
@@ -241,13 +241,17 @@ var sim = new Vue({
                     name: "Fleet 1",
                     numVehicles: 1,
                     comms: "N",
-                    tasks: [0, 1]
+                    tasks: [0, 1],
+                    diffTrafficLevels: "n",
+                    trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
                 },
                 {
                     name: "Fleet 2",
                     numVehicles: 1,
                     comms: "N",
-                    tasks: [1, 2]
+                    tasks: [1, 2],
+                    diffTrafficLevels: "n",
+                    trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
                 }
             ]
         },
@@ -264,22 +268,6 @@ var sim = new Vue({
         /* ------------------------------
          * GLOBAL SETTINGS COMPUTED VALUES
          * ------------------------------ */
-
-        // array of traffic levels per hour of 0, 0.5, or 1
-        traffic() {
-            var traff = [];
-            var traffOrig = this.globalSettings.trafficLevels;
-            for (i = 0; i < traffOrig.length; i++) {
-                if (traffOrig[i] === "l") {
-                    traff[i] = 0;
-                } else if (traffOrig[i] === "h") {
-                    traff[i] = 1;
-                } else {
-                    traff[i] = 0.5;
-                }
-            }
-            return traff;
-        },
 
         // array of existence of turn over [0,0]
         hasTransition() {
@@ -551,6 +539,11 @@ var sim = new Vue({
             return sum;
         },
 
+        // is there a flex position?
+        hasFlexPosition() {
+            return (this.operatorSettings.hasFlexPosition === 'y') ? 1: 0;
+        },
+
         // array containing operator team names
         opNames() {
             var names = [];
@@ -596,7 +589,7 @@ var sim = new Vue({
                         var exps = [];
                         var opteam = this.operatorSettings.teams[i];
                         for (var k = 0; k < this.fleetSettings.fleets.length; k++) {
-                            if ((opteam.flexible || opteam.expertise[j] && opteam.expertise[j][k])
+                            if (opteam.expertise[j] && opteam.expertise[j][k]
                                 && this.fleetSettings.fleets[k].tasks.includes(j)) {
                                 exps.push(1);
                             } else
@@ -787,28 +780,51 @@ var sim = new Vue({
                 }
             }
             return tasks;
-        }
+        },
+
+        // array of traffic levels per hour of 0=no traffic, 0.5=low, 1=medium or 2 = high per each fleet
+        traffic() {
+            var traff = [];
+
+            for(var f=0;f<this.fleetSettings.fleets.length;f++) {
+                var traffOrig = this.fleetSettings.fleets[f].trafficLevels;
+                var noDiff = this.fleetSettings.fleets[f].diffTrafficLevels === 'n';
+                traff.push([]);
+                for (i = 0; i < traffOrig.length; i++) {
+                    if (noDiff) {
+                        traff[f][i] = 1;
+                    }
+                    else if (traffOrig[i] === "l") {
+                        traff[f][i] = 0.5;
+                    } else if (traffOrig[i] === "h") {
+                        traff[f][i] = 2;
+                    } else if (traffOrig[i] === "m") {
+                        traff[f][i] = 1;
+                    } else
+                        traff[f][i] = 0;
+                }
+            }
+            return traff;
+        },
 
     },
 
     methods: {
         // when numHours changed
         updateTrafficLvls() {
-            var lvls = this.globalSettings.trafficLevels;
-            if (this.globalSettings.diffTrafficLevels === "n") {
-                lvls.splice(0);
-            }
+            for (let fleet of this.fleetSettings.fleets) {
+                var lvls = fleet.trafficLevels;
 
-            var l = lvls.length;
-            if (this.globalSettings.numHours > l) {
-                while (l < this.globalSettings.numHours) {
-                    lvls.push("m");
-                    l++;
+                var l = lvls.length;
+                if (this.globalSettings.numHours > l) {
+                    while (l < this.globalSettings.numHours) {
+                        lvls.push("m");
+                        l++;
+                    }
+                } else {
+                    lvls.splice(this.globalSettings.numHours);
                 }
-            } else {
-                lvls.splice(this.globalSettings.numHours);
             }
-
         },
 
         disableAddTask(task) {
@@ -945,7 +961,6 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [],
-                        flexible: 'y',
                         expertise: exp,
                         priority: [tasks],
                         AIDA: {
@@ -996,17 +1011,10 @@ var sim = new Vue({
                         name: "Fleet " + x,
                         numVehicles: 1,
                         comms: "N",
-                        tasks: []
+                        tasks: [],
+                        diffTrafficLevels: "n",
+                        trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
                     });
-
-                    // change opExpertiseMatrix to true if opFlexible
-//                    for(var i=0; i<this.operatorSettings.teams.length; i++) {
-//                        if (this.operatorSettings.teams[i].flexible === 'y') {
-//                            for(var j=0;j<this.taskSettings.tasks.length;j++) {
-//                                this.operatorSettings.teams[i].expertise[j][fleets.length-1] = true;
-//                            }
-//                        }
-//                    }
                 }
 
             } else {
@@ -1132,6 +1140,8 @@ var sim = new Vue({
 
                 "numTeams": sim.operatorSettings.numTeams,
                 "teamSize": sim.teamSize,
+                "hasFlexPosition": sim.hasFlexPosition,
+                "flexTeamSize": sim.operatorSettings.flexTeamSize,
                 "opNames": sim.opNames,
                 "opStrats": sim.teamStrategy,
                 "opTasks": sim.opTasks,
@@ -1304,11 +1314,11 @@ $(document).ready(function () {
         console.log("GET request 'getUtilizationJSON' sent");
     });
 
-    $(function () {
-        $("form").submit(function () {
-            return false;
-        });
-    });
+//    $(function () {
+//        $("form").submit(function () {
+//            return false;
+//        });
+//    });
 
     // when tab is selected, focus on the first input
     $("#sim-content").on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
@@ -1342,9 +1352,9 @@ $(document).ready(function () {
     // pop-up simulation type chooser
     $('#sim-type').modal(true);
 
-    $('#review-settings-tab').click( function() {
-        TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", sim.globalSettings.trafficLevels);
-    });
+//    $('#review-settings-tab').click( function() {
+//        TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", sim.globalSettings.trafficLevels);
+//    });
 });
 
 function showDownloadBtn() {
