@@ -242,7 +242,7 @@ var BoxPlot = (function () {
     var margin = {
         top: 40,
         right: 20,
-        bottom: 40,
+        bottom: 80,
         left: 50
     };
     var width = width - margin.left - margin.right,
@@ -271,16 +271,34 @@ var BoxPlot = (function () {
             stackedBC[index] = new StackedBarChart(index);
             stackedBC[index].initStackedBarChart(json);
 
+            barWidth = 25;
+
             // parse json file into groupCounts
             var groupCounts = {};
-            var globalCounts = [];
-            for (var i = 0; i < json.averageTaskUtilization.length; i++) {
+            // number of operators in each team
+            var groupLength = [];
+            //var globalCounts = [];
+            // averageTaskUtilization [operator][replication]
+            // timeUtilization        [operator][replication][time]
+            var k = -1;
+            // number of operators
+            var numOps = json.operatorName.length;
+
+            for (var i = 0, j=0; i < numOps; i++) {
                 var key = json.operatorName[i];
-                groupCounts[key + "_" + i] = json.averageTaskUtilization[i];
-                globalCounts = globalCounts.concat(json.averageTaskUtilization[i]);
+                groupCounts[key + "_" + i] = [];
+                if (key.endsWith("_0") || k==-1)
+                    groupLength[++k] = 1;
+                else
+                    groupLength[k]++;
+
+                for(var j=0; j < json.timeUtilization[i].length; j++) {
+                    groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(json.timeUtilization[i][j]);
+                }
+                //groupCounts[key + "_" + i] = json.averageTaskUtilization[i];
             }
             console.log("GroupCounts ", groupCounts);
-            console.log("GlobalCounts ", globalCounts);
+            console.log("GroupLength ", groupLength);
 
             // Sort group counts so quantile methods work
             for (var key in groupCounts) {
@@ -289,36 +307,80 @@ var BoxPlot = (function () {
             }
 
             // Setup a color scale for filling each box
-            var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-                .domain(Object.keys(groupCounts));
+            var colorScale = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
             // Prepare the data for the box plots
             var boxPlotData = [];
-            for (var [key, groupCount] of Object.entries(groupCounts)) {
+            for (i=0; i<numOps; i++) {
+                key = json.operatorName[i] + "_" + i;
+                groupCount = groupCounts[key];
 
                 var record = {};
                 var localMin = d3.min(groupCount);
                 var localMax = d3.max(groupCount);
 
                 record["key"] = key;
-                record["okey"] = key.substr(0, key.lastIndexOf("_"));
+                record["index"] = i;
+                var okey = key.substr(0, key.lastIndexOf("_"));
+                record["okey"] = okey;
                 record["counts"] = groupCount;
                 record["quartile"] = boxQuartiles(groupCount);
                 record["whiskers"] = [localMin, localMax];
-                record["color"] = colorScale(key);
-
+                var k = +okey.substr(okey.lastIndexOf("_") + 1)
+                record["color"] = colorScale[ k ];
+                console.log(k);
                 boxPlotData.push(record);
             }
 
+            // calculat tick location within 0 ~ width - 20
+            width -= 50;
+            var xTickLoc = [];
+            var xTickVal = [];
+            var xTickStr = [];
+            var barWidthExpected = Math.floor(width / (groupLength.length-1+numOps));
+            var xStart = 0;
+            var xEnd = groupLength[0] * barWidthExpected;
+            var xAdjust = true;
+            if (barWidth > barWidthExpected) {
+                barWidth = Math.floor(barWidthExpected);
+                xAdjust = false;
+            }
+
+            for (i = 0, j = 0; i < groupLength.length; i++) {
+                j+=groupLength[i];
+                xTickVal[i] = (xStart + xEnd)/2;
+                xTickStr[i] = json.operatorName[j-1].substr(0,
+                                json.operatorName[j-1].lastIndexOf("_"));
+                if (i<groupLength.length-1) {
+                    xStart = xEnd + barWidthExpected;
+                    xEnd = xStart + (groupLength[i+1]) * barWidthExpected;
+                }
+            }
+
+            xStart = 0;
+            xEnd = groupLength[0] * barWidthExpected;
+            for (var i = 0, j = 0, k = 0; i < numOps; i++) {
+                if (xAdjust) { // enough width
+                    xTickLoc[i] = barWidth * j + (xStart + xEnd - barWidth * groupLength[k])/2;
+                    if (++j>=groupLength[k]) {
+                        j=0; xStart = xEnd + barWidthExpected;
+                        k++; xEnd = xStart + groupLength[k] * barWidthExpected;
+                    }
+                } else { // shrink down the barWdith
+                    xTickLoc[i] = barWidth * (i + k);
+                    if (++j>=groupLength[k]) { j=0; k++; }
+                }
+            }
+            console.log("x Tick Location: ", xTickLoc, barWidthExpected, barWidth, width);
             // Compute an ordinal xScale for the keys in boxPlotData
-            var xScale = d3.scalePoint()
-                .domain(Object.keys(groupCounts))
-                .rangeRound([20, width])
-                .padding([0.5]);
+            var xScale = d3.scaleLinear()
+                .domain([0, width])
+                .rangeRound([0, width]);
+                //.padding([0.5]);
 
             // Compute a global y scale based on the global counts
-            var min = d3.min(globalCounts);
-            var max = d3.max(globalCounts);
+            // var min = d3.min(globalCounts);
+            // var max = d3.max(globalCounts);
             var yScale = d3.scaleLinear()
                 .domain([0, 1])
                 //.domain([min - 0.0001, max])
@@ -328,18 +390,18 @@ var BoxPlot = (function () {
             var svg = d3.select(element);
             svg.selectAll("*").remove();
 
-            svg.attr("width", totalWidth)
+            var g = svg.attr("width", totalWidth)
                 .attr("height", totalheight)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             // Move the left axis over 55 pixels, and the top axis over 35 pixels
-            var axisG = svg.append("g").attr("transform", "translate(55,0)");
-            var axisBG = svg.append("g").attr("transform", "translate(35," + (height) + ")");
+            var axisG = g.append("g").attr("transform", "translate(0,0)");
+            var axisBG = g.append("g").attr("transform", "translate(0," + (height) + ")");
 
             // Setup the group the box plot elements will render in
-            var g = svg.append("g")
-                .attr("transform", "translate(20,0)");
+            //var g = svg.append("g")
+            //    .attr("transform", "translate(0,0)");
 
             // Draw the box plot vertical lines
             var verticalLines = g.selectAll(".verticalLines")
@@ -347,14 +409,14 @@ var BoxPlot = (function () {
                 .enter()
                 .append("line")
                 .attr("x1", function (datum) {
-                    return xScale(datum.key) + barWidth / 2;
+                    return xScale(xTickLoc[datum.index]) + barWidth / 2;
                 })
                 .attr("y1", function (datum) {
                     var whisker = datum.whiskers[0];
                     return yScale(whisker);
                 })
                 .attr("x2", function (datum) {
-                    return xScale(datum.key) + barWidth / 2;
+                    return xScale(xTickLoc[datum.index]) + barWidth / 2;
                 })
                 .attr("y2", function (datum) {
                     var whisker = datum.whiskers[1];
@@ -376,7 +438,7 @@ var BoxPlot = (function () {
                     return height;
                 })
                 .attr("x", function (datum) {
-                    return xScale(datum.key);
+                    return xScale(xTickLoc[datum.index]);
                 })
                 .attr("y", function (datum) {
                     return yScale(datum.quartile[2]);
@@ -399,7 +461,7 @@ var BoxPlot = (function () {
                     return height;
                 })
                 .attr("x", function (datum) {
-                    return xScale(datum.key);
+                    return xScale(xTickLoc[datum.index]);
                 })
                 .attr("y", function (datum) {
                     return yScale(1);
@@ -449,13 +511,13 @@ var BoxPlot = (function () {
             // Top whisker
                 {
                     x1: function (datum) {
-                        return xScale(datum.key)
+                        return xScale(xTickLoc[datum.index])
                     },
                     y1: function (datum) {
                         return yScale(datum.whiskers[0])
                     },
                     x2: function (datum) {
-                        return xScale(datum.key) + barWidth
+                        return xScale(xTickLoc[datum.index]) + barWidth
                     },
                     y2: function (datum) {
                         return yScale(datum.whiskers[0])
@@ -464,13 +526,13 @@ var BoxPlot = (function () {
             // Median line
                 {
                     x1: function (datum) {
-                        return xScale(datum.key)
+                        return xScale(xTickLoc[datum.index])
                     },
                     y1: function (datum) {
                         return yScale(datum.quartile[1])
                     },
                     x2: function (datum) {
-                        return xScale(datum.key) + barWidth
+                        return xScale(xTickLoc[datum.index]) + barWidth
                     },
                     y2: function (datum) {
                         return yScale(datum.quartile[1])
@@ -479,13 +541,13 @@ var BoxPlot = (function () {
             // Bottom whisker
                 {
                     x1: function (datum) {
-                        return xScale(datum.key)
+                        return xScale(xTickLoc[datum.index])
                     },
                     y1: function (datum) {
                         return yScale(datum.whiskers[1])
                     },
                     x2: function (datum) {
-                        return xScale(datum.key) + barWidth
+                        return xScale(xTickLoc[datum.index]) + barWidth
                     },
                     y2: function (datum) {
                         return yScale(datum.whiskers[1])
@@ -519,8 +581,8 @@ var BoxPlot = (function () {
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
             axisBG.append("g")
-                .call(axisBottom.tickFormat(function (d) {
-                    return d.substr(0, d.lastIndexOf("_"));
+                .call(axisBottom.tickValues(xTickVal).tickFormat(function(d, i) {
+                    return xTickStr[i];
                 }));
 
             // text label for the x axis
@@ -687,12 +749,12 @@ var FailedTaskAnalysis = (function () {
             // replication, phase, team, task type
             var numReps = json.numFailedTask.length;
             var numPhases = ft[0].length;
-            var numOps = json.operatorName.length;
+            var numTeams = json.teamName.length;
             var numTasks = json.taskName.length;
 
             var data = [{},{},{},{},{}];
             var color = ["#DC3912", "#3366CC", "#109618", "#FF9900", "#990099"];
-            console.log(numReps, numPhases, numOps, numTasks);
+            console.log(numReps, numPhases, numTeams, numTasks);
 
             for(var i=0;i<5;i++) {
                 data.push({});
@@ -759,14 +821,10 @@ var FailedTaskAnalysis = (function () {
 
             var dataSet = [];
 
-            var numReps = json.numFailedTask.length;
-            var numPhases = ft[0].length;
-            var numOps = json.operatorName.length;
-            var numTasks = json.taskName.length;
-            for(var i=0;i<numOps; i++) {
+            for(var i=0;i<numTeams; i++) {
                 for(var j=0;j<numTasks; j++) {
                     var data = [];
-                    data[0] = json.operatorName[i];
+                    data[0] = json.teamName[i];
                     data[1] = json.taskName[j];
                     data[2] = 0;
                     data[5] = 0;
