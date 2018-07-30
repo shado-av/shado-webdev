@@ -235,7 +235,7 @@ var sim = new Vue({
          * ------------------------------ */
 
         fleetSettings: {
-            fleetTypes: 1, // number of fleets (2 - 5)
+            fleetTypes: 2, // number of fleets (2 - 5)
             numNameFleet: 3, // for just naming
             fleets: [{
                     name: "Fleet 1",
