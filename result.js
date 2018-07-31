@@ -235,6 +235,207 @@ var StackedBarChart = (function (index) {
     };
 });
 
+var BarChartWithError = (function (index) {
+    var jsonData = {};
+    var svg;
+    var g;
+    var id = index || 0;
+    var x;
+    var y;
+    var z = d3.scaleOrdinal()
+        .range(
+            //["#a0e3b7", "#710c9e", "#37b51f", "#ae2a51", "#a3c541", "#323d96", "#7ebef8", "#1c5872", "#21f0b6", "#6f3631", "#f3a4a8", "#166d2a", "#fd6ca0", "#d95e13", "#f2d174"]
+    ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
+        );
+    var keys = [];
+    var stacked;
+    var margin = {
+        top: 40,
+        right: 20,
+        bottom: 40,
+        left: 50
+    };
+    var minutes, barCounts;
+    var bandWidth;
+
+    var drawBarChartWithError = function (json, teamName) {
+        jsonData = json;
+        keys = ["Fleet 1", "Fleet 2"];
+        barCounts = json.averageBusyTime[id].length;
+
+        console.log(barCounts);
+        svg = d3.select("#barGraph" + id);
+        console.log(svg);
+        width = +svg.attr("width") - margin.left - margin.right;
+        height = +svg.attr("height") - margin.top - margin.bottom;
+        bandWidth = Math.floor((width - 150) / (barCounts + 1));
+
+        x = d3.scaleBand().rangeRound([0, width - 150])
+            .padding(0.1);
+;
+        y = d3.scaleLinear()
+            .rangeRound([height, 0]);
+
+        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        //console.log(keys, width, height);
+        // text label for the x axis
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width / 2) + " ," +
+                (height + margin.bottom + margin.top) + ")")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Fleet");
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0) // - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Busy Time");
+
+        // define domains
+        x.domain(keys); // data.map(function(d) { return d.x; }));
+        y.domain([0, 100]); //.nice()
+        z.domain(keys);
+
+        // set ticks
+        g.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(y).ticks(null, 's'))
+            .append("text")
+            .attr("x", 2)
+            .attr("y", y(y.ticks().pop()) + 0.5)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start");
+
+        // set legends
+        var legend = g.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("text-anchor", "end")
+            .selectAll("g")
+            .data(keys.slice().reverse())
+            .enter().append("g")
+            .attr("transform", function (d, i) {
+                return "translate(0," + i * 20 + ")";
+            });
+
+        legend.append("rect")
+            .attr("x", width - 5)
+            .attr("width", 19)
+            .attr("height", 19)
+            .attr("fill", z);
+
+        legend.append("text")
+            .attr("x", width - 10)
+            .attr("y", 9.5)
+            .attr("dy", "0.32em")
+            .text(function (d) {
+                return d;
+            });
+
+        stacked = d3.stack().keys(keys); //(data);
+
+        // convert json data into d3 stack preferred form
+        var data = [];
+        for (var i = 0, j = 0; i <= keys.length; i ++, j++) {
+            data.push({
+                x: keys[i],
+                total: 0
+            });
+        }
+
+        for (var i = 0; i < keys.length; i++) {
+            data[i][keys[i]] = json.averageBusyTime[id][i];
+            data[i]["total"] += json.averageBusyTime[id][i];
+        }
+
+        console.log(data);
+
+        // draw stacked bar charts
+        // each data column (a.k.a "key" or "series") needs to be iterated over
+        // the variable alphabet represents the unique keys of the stacks
+        keys.forEach(function (key, key_index) {
+
+            var keyClassName = key.replace(/[ ()]/g, '_');
+            console.log(key, keyClassName, key_index);
+            var bar = g.selectAll(".bar-" + keyClassName)
+                .data(stacked(data)[key_index], function (d) {
+                    return d.data.x + "-" + keyClassName;
+                });
+
+            bar
+                .transition()
+                .attr("x", function (d) {
+                    return x(d.data.x) + 1;
+                })
+                .attr("y", function (d) {
+                    return y(d[1]);
+                })
+                .attr("height", function (d) {
+                    return y(d[0]) - y(d[1]);
+                });
+
+            bar.enter().append("rect")
+                .attr("class", function (d) {
+                    return "bar bar-" + keyClassName;
+                })
+                .attr("x", function (d) {
+                    return x(d.data.x) + 1;
+                })
+                .attr("y", function (d) {
+                    return y(d[1]);
+                })
+                .attr("height", function (d) {
+                    return y(d[0]) - y(d[1]);
+                })
+                .attr("width", x.bandwidth())
+                .attr("fill", function (d) {
+                    return z(key);
+                })
+        });
+
+        // mouseover tips
+        svg.selectAll(".bar")
+            .on("mouseover", function (d, i) {
+                d3.select(this).attr("stroke", "blue").attr("stroke-width", 0.8);
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                console.log(d, i);
+                var k = Math.floor(i/4);
+                div.html("<table><tr><td>Busy Time Average:</td><td>" + json.averageBusyTime[id][k].toFixed(2) + "</td></tr><tr><td>Std. Dev.</td><td>" + json.stdBusyTime[id][k].toFixed(2) + "</td></tr></table>")
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
+                //.style("top", (window.pageYOffset + matrix.f - 30) + "px");;
+            })
+            .on("mouseout", function (d) {
+                d3.select(this).attr("stroke", "pink").attr("stroke-width", 0.2);
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+
+        d3.select("#barChartTitle" + id).text(teamName + " Workload");
+    };
+
+    return {
+        drawBarChartWithError: drawBarChartWithError
+    };
+});
+
 var BoxPlot = (function () {
     var width = 960;
     var height = 450;
@@ -263,14 +464,9 @@ var BoxPlot = (function () {
     var sortNumber = function (a, b) {
         return a - b;
     };
-    var stackedBC = [];
+    var barCharts = [];
     var visualize = function (url, element, index) {
         d3.json(url).then(function (json) {
-            // save the json into jsonData for later use of stacked bar charts
-
-            //stackedBC[index] = new StackedBarChart(index);
-            //stackedBC[index].initStackedBarChart(json);
-
             barWidth = 25;
 
             // parse json file into groupCounts
@@ -300,6 +496,16 @@ var BoxPlot = (function () {
             console.log("GroupCounts ", groupCounts);
             console.log("GroupLength ", groupLength);
 
+            // Create a Bar chart for each team
+            for (i = 0, j = 0; i < groupLength.length; i++) {
+                var opName = json.operatorName[j];
+
+                barCharts[i] = new BarChartWithError(i);
+                barCharts[i].drawBarChartWithError(json, opName.substr(0, opName.lastIndexOf("_")));  // team name
+
+                j+=groupLength[i];
+            }
+
             // Sort group counts so quantile methods work
             for (var key in groupCounts) {
                 var groupCount = groupCounts[key];
@@ -312,7 +518,8 @@ var BoxPlot = (function () {
             // Prepare the data for the box plots
             var boxPlotData = [];
             for (i=0; i<numOps; i++) {
-                key = json.operatorName[i] + "_" + i;
+                var opName = json.operatorName[i];
+                key = opName + "_" + i;
                 groupCount = groupCounts[key];
 
                 var record = {};
@@ -321,12 +528,11 @@ var BoxPlot = (function () {
 
                 record["key"] = key;
                 record["index"] = i;
-                var okey = key.substr(0, key.lastIndexOf("_"));
-                record["okey"] = okey;
+                record["okey"] = opName;
                 record["counts"] = groupCount;
                 record["quartile"] = boxQuartiles(groupCount);
                 record["whiskers"] = [localMin, localMax];
-                var k = +okey.substr(okey.lastIndexOf("_") + 1)
+                var k = +opName.substr(opName.lastIndexOf("_") + 1)
                 record["color"] = colorScale[ k ];
                 console.log(k);
                 boxPlotData.push(record);
@@ -498,12 +704,10 @@ var BoxPlot = (function () {
                     div.transition()
                         .duration(500)
                         .style("opacity", 0);
-//                })
-//                .on("click", function (d, i) {
-//                    //console.log("open Modal");
-//                    stackedBC[index].drawStackedBarChart(json, i,
-//                        d3.select("#replicationSlider" + index).property("value") - 1);
-//                    $("#stackedBC" + index).modal();
+                })
+                .on("click", function (d, i) {
+                    //console.log("open Modal");
+                    //$("#barChart" + index).modal();
                 });
 
             // Now render all the horizontal lines at once - the whiskers and the median
