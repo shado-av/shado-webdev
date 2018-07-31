@@ -1189,7 +1189,7 @@ var sim = new Vue({
                 var sessionId = msg.data.substr(msg.data.lastIndexOf(":") + 2);
                 var sessionQuery = "?sessionN=" +sessionId;
                 console.log(sessionId, sessionQuery);
-                alert(msg.data);
+                alert("Simulation complete. View the results.");
 
                 // Show download button
                 showDownloadBtn();
