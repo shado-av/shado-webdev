@@ -544,6 +544,16 @@ var sim = new Vue({
             return (this.operatorSettings.hasFlexPosition === 'y') ? 1: 0;
         },
 
+        flexTeamSize() {
+            if (this.operatorSettings.hasFlexPosition === 'y') {
+                var fts = this.operatorSettings.flexTeamSize;
+                if (fts < 1) fts = 1;
+                if (fts > 99) fts = 99;
+                return fts;
+            } else
+                return 0;
+        },
+
         // array containing operator team names
         opNames() {
             var names = [];
@@ -1141,7 +1151,7 @@ var sim = new Vue({
                 "numTeams": sim.operatorSettings.numTeams,
                 "teamSize": sim.teamSize,
                 "hasFlexPosition": sim.hasFlexPosition,
-                "flexTeamSize": sim.operatorSettings.flexTeamSize,
+                "flexTeamSize": sim.flexTeamSize,
                 "opNames": sim.opNames,
                 "opStrats": sim.teamStrategy,
                 "opTasks": sim.opTasks,
