@@ -321,47 +321,47 @@
                                 <div v-if="globalSettings.transitionDists[n] === 'E'" class="row no-gutters">
                                     <div class="col">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Mean</small>
+                                        <small class="form-text text-muted">Mean (Minutes)</small>
                                     </div>
                                 </div>
                                 <div v-if="globalSettings.transitionDists[n] === 'L'" class="row no-gutters">
                                     <div class="col mr-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Mean</small>
+                                        <small class="form-text text-muted">Mean (Minutes)</small>
                                     </div>
                                     <div class="col ml-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][1]">
-                                        <small class="form-text text-muted">Standard Deviation</small>
+                                        <small class="form-text text-muted">Standard Deviation (Minutes)</small>
                                     </div>
                                 </div>
                                 <div v-if="globalSettings.transitionDists[n] === 'U'" class="row no-gutters">
                                     <div class="col mr-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Minimum</small>
+                                        <small class="form-text text-muted">Minimum (Minutes)</small>
                                     </div>
                                     <div class="col ml-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][1]">
-                                        <small class="form-text text-muted">Maximum</small>
+                                        <small class="form-text text-muted">Maximum (Minutes)</small>
                                     </div>
                                 </div>
                                 <div v-if="globalSettings.transitionDists[n] === 'C'" class="row no-gutters">
                                     <div class="col mr-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Number</small>
+                                        <small class="form-text text-muted">Number (Minutes)</small>
                                     </div>
                                 </div>
                                 <div v-if="globalSettings.transitionDists[n] === 'T'" class="row no-gutters">
                                     <div class="col mr-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Minimum</small>
+                                        <small class="form-text text-muted">Minimum (Minutes)</small>
                                     </div>
                                     <div class="col mx-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][1]">
-                                        <small class="form-text text-muted">Mode</small>
+                                        <small class="form-text text-muted">Mode (Minutes)</small>
                                     </div>
                                     <div class="col ml-1">
                                         <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][2]">
-                                        <small class="form-text text-muted">Maximum</small>
+                                        <small class="form-text text-muted">Maximum (Minutes)</small>
                                     </div>
                                 </div>
                             </div>
@@ -535,7 +535,7 @@
                             <!-- arrival time distribution (task.arrivalDistribution) -->
                             <div class="form-group form-row">
                                 <div class="col-3">
-                                    <label :for="'task-' + index + 'arr-dist'">Arrival Time</label>
+                                    <label :for="'task-' + index + 'arr-dist'">Interarrival Time</label>
                                     <select class="custom-select" :id="'task-' + index + 'arr-dist'" v-model="task.arrivalDistribution[0]" @change="task.arrivalParam[0].splice(0)">
                                         <option value="E">Exponential</option>
                                         <option value="L">Log Normal</option>
@@ -552,47 +552,47 @@
                                     <div v-if="task.arrivalDistribution[0] === 'E'" class="row no-gutters">
                                         <div class="col">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Mean</small>
+                                            <small class="form-text text-muted">Mean (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.arrivalDistribution[0] === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Mean</small>
+                                            <small class="form-text text-muted">Mean (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][1]">
-                                            <small class="form-text text-muted">Standard Deviation</small>
+                                            <small class="form-text text-muted">Standard Deviation (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.arrivalDistribution[0] === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Minimum</small>
+                                            <small class="form-text text-muted">Minimum (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][1]">
-                                            <small class="form-text text-muted">Maximum</small>
+                                            <small class="form-text text-muted">Maximum (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.arrivalDistribution[0] === 'C'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Number</small>
+                                            <small class="form-text text-muted">Number (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.arrivalDistribution[0] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Minimum</small>
+                                            <small class="form-text text-muted">Minimum (Minutes)</small>
                                         </div>
                                         <div class="col mx-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][1]">
-                                            <small class="form-text text-muted">Mode</small>
+                                            <small class="form-text text-muted">Mode (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][2]">
-                                            <small class="form-text text-muted">Maximum</small>
+                                            <small class="form-text text-muted">Maximum (Minutes)</small>
                                         </div>
                                     </div>
                                 </div>
@@ -618,47 +618,47 @@
                                     <div v-if="task.serviceDistribution[0] === 'E'" class="row no-gutters">
                                         <div class="col">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Mean</small>
+                                            <small class="form-text text-muted">Mean (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.serviceDistribution[0] === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Mean</small>
+                                            <small class="form-text text-muted">Mean (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][1]">
-                                            <small class="form-text text-muted">Standard Deviation</small>
+                                            <small class="form-text text-muted">Standard Deviation (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.serviceDistribution[0] === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Minimum</small>
+                                            <small class="form-text text-muted">Minimum (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][1]">
-                                            <small class="form-text text-muted">Maximum</small>
+                                            <small class="form-text text-muted">Maximum (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.serviceDistribution[0] === 'C'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Number</small>
+                                            <small class="form-text text-muted">Number (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.serviceDistribution[0] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Minimum</small>
+                                            <small class="form-text text-muted">Minimum (Minutes)</small>
                                         </div>
                                         <div class="col mx-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][1]">
-                                            <small class="form-text text-muted">Mode</small>
+                                            <small class="form-text text-muted">Mode (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][2]">
-                                            <small class="form-text text-muted">Maximum</small>
+                                            <small class="form-text text-muted">Maximum (Minutes)</small>
                                         </div>
                                     </div>
                                 </div>
@@ -684,47 +684,47 @@
                                     <div v-if="task.expireDistribution[0] === 'E'" class="row no-gutters">
                                         <div class="col">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Mean</small>
+                                            <small class="form-text text-muted">Mean (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[0] === 'L'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Mean</small>
+                                            <small class="form-text text-muted">Mean (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][1]">
-                                            <small class="form-text text-muted">Standard Deviation</small>
+                                            <small class="form-text text-muted">Standard Deviation (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[0] === 'U'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Minimum</small>
+                                            <small class="form-text text-muted">Minimum (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][1]">
-                                            <small class="form-text text-muted">Maximum</small>
+                                            <small class="form-text text-muted">Maximum (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[0] === 'C'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Number</small>
+                                            <small class="form-text text-muted">Number (Minutes)</small>
                                         </div>
                                     </div>
                                     <div v-if="task.expireDistribution[0] === 'T'" class="row no-gutters">
                                         <div class="col mr-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Minimum</small>
+                                            <small class="form-text text-muted">Minimum (Minutes)</small>
                                         </div>
                                         <div class="col mx-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][1]">
-                                            <small class="form-text text-muted">Mode</small>
+                                            <small class="form-text text-muted">Mode (Minutes)</small>
                                         </div>
                                         <div class="col ml-1">
                                             <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][2]">
-                                            <small class="form-text text-muted">Maximum</small>
+                                            <small class="form-text text-muted">Maximum (Minutes)</small>
                                         </div>
                                     </div>
                                 </div>
@@ -752,19 +752,19 @@
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][0]">
                                     <small class="form-text text-muted">
-                                        Minimum
+                                        Minimum (Minutes)
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][1]">
                                     <small class="form-text text-muted">
-                                        Mode
+                                        Mode (Minutes)
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="any" class="form-control" v-model.number="task.humanErrorProb[0][2]" placeholder="Enter #">
                                     <small class="form-text text-muted">
-                                        Maximum
+                                        Maximum (Minutes)
                                     </small>
                                 </div>
                             </div>
@@ -1199,6 +1199,38 @@
                         <thead class="thead-light">
                             <tr>
                                 <th colspan="2">Basic Settings</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>Type of simulation</td>
+                            <td><b>{{globalSettings.simType}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Shift Scheduled</td>
+                            <td>{{globalSettings.numHours }} hours</td>
+                        </tr>
+<!--
+                        <tr>
+                            <td>Traffic Levels By Hours</td>
+                            <td><svg id="trafficLevel" width="400" height="300"></svg></td>
+                        </tr>
+-->
+                        <tr>
+                            <td>Transitioning Period</td>
+                            <td><b>{{hasTransitionForReview}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Exogenous factor</td>
+                            <td><b>{{hasExogenousForReview}}</b></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="form-group table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th colspan="2">Advanced Settings</th>
                             </tr>
                         </thead>
                         <tr>
