@@ -58,9 +58,10 @@ Vue.component('percentage-input', {
 var sim = new Vue({
     el: '#shado-sim',
     data: {
+        // 0.9.3 add flex position, change traffic per fleet
         // 0.9.2 remove phase and add turnOver settings
         // 0.9.1 add opExpertise settings
-        version: "0.9.2", // data version for checking valid data when loading JSON file
+        version: "0.9.3", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
