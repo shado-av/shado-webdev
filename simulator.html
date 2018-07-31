@@ -260,8 +260,11 @@
                     <label for="num-hours">
                         1. How many hours are in this shift? <span data-toggle="tooltip" data-placement="bottom" title="This is an example tooltip!"><span class="fas fa-info-circle"></span></span>
                     </label>
-                    <input type="number" min="1" max="12" step="1" class="form-control width-small" id="num-hours" v-model.number="globalSettings.numHours"
-                        @input="updateTrafficLvls">
+                    <div>
+                        <select class="custom-select width-small" id="num-hours" v-model.number="globalSettings.numHours" @change="updateTrafficLvls">
+                            <option v-for="n in 12">{{n}}</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- different traffic levels (diffTrafficLevels) -->
@@ -947,7 +950,7 @@
                         <h5 class="mb-3">Operator Tasks/Fleets</h5>
 
                         <!-- operator task checklist (team.tasks) -->
-                        <div class="form-group" v-show="team.flexible==='n'">
+                        <div class="form-group">
                             <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
                             <!-- adjust task/fleet operators are responsible for (team.expertise) -->
                             <div class="table-responsive">
