@@ -1013,11 +1013,11 @@
                                     </div>
                                     <div class="mb-3 mt-3">What is the level of this AI?</div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
+                                        <input class="custom-control-input" type="radio" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
                                         <label class="custom-control-label" :for="'assist-indi-levels-some-'+index">Some</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" :id="'assist-indi-levels-full-' + index" value="F" v-model="team.AIDA.IALevel">
+                                        <input class="custom-control-input" type="radio" :id="'assist-indi-levels-full-' + index" value="F" v-model="team.AIDA.IALevel">
                                         <label class="custom-control-label" :for="'assist-indi-levels-full-'+index">Full</label>
                                     </div>
                                 </div>
@@ -1034,11 +1034,11 @@
                                 <div class="form-group" v-show="team.AIDA.AIDAType[2]">
                                     <div class="mb-3">What is the level of this AI?</div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="assist-team-levels" :id="'assist-team-levels-some-'+index" value="S" v-model="team.AIDA.TCALevel">
+                                        <input class="custom-control-input" type="radio" :id="'assist-team-levels-some-'+index" value="S" v-model="team.AIDA.TCALevel">
                                         <label class="custom-control-label" :for="'assist-team-levels-some-'+index">Some</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="assist-team-levels" :id="'assist-team-levels-full-'+index" value="F" v-model="team.AIDA.TCALevel">
+                                        <input class="custom-control-input" type="radio" :id="'assist-team-levels-full-'+index" value="F" v-model="team.AIDA.TCALevel">
                                         <label class="custom-control-label" :for="'assist-team-levels-full-'+index">Full</label>
                                     </div>
                                 </div>

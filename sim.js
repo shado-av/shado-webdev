@@ -684,7 +684,8 @@ var sim = new Vue({
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].AIDA.ETServiceTime) {
                     st.push(this.operatorSettings.teams[i].AIDA.ETServiceTime / 100);
-                }
+                } else
+                    st.push(0); // whether it's not defined or 0
             }
             return st;
         },
@@ -694,7 +695,8 @@ var sim = new Vue({
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].AIDA.ETErrorRate) {
                     er.push(this.operatorSettings.teams[i].AIDA.ETErrorRate / 100);
-                }
+                } else
+                    er.push(0);
             }
             return er;
         },
@@ -704,7 +706,8 @@ var sim = new Vue({
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 if (this.operatorSettings.teams[i].AIDA.ETFailThreshold) {
                     ft.push(this.operatorSettings.teams[i].AIDA.ETFailThreshold / 100);
-                }
+                } else
+                    ft.push(0);
             }
             return ft;
         },
