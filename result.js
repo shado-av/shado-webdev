@@ -470,7 +470,7 @@ var BoxPlot = (function () {
                 .attr("class", "clickable")
                 .attr("pointer-events", "visible")
                 .attr("stroke", "transparent")
-                .style("cursor", "pointer")
+ //               .style("cursor", "pointer")
                 .attr("stroke-width", 1);
 
             g.selectAll(".clickable")
@@ -498,12 +498,12 @@ var BoxPlot = (function () {
                     div.transition()
                         .duration(500)
                         .style("opacity", 0);
-                })
-                .on("click", function (d, i) {
-                    //console.log("open Modal");
-                    stackedBC[index].drawStackedBarChart(json, i,
-                        d3.select("#replicationSlider" + index).property("value") - 1);
-                    $("#stackedBC" + index).modal();
+//                })
+//                .on("click", function (d, i) {
+//                    //console.log("open Modal");
+//                    stackedBC[index].drawStackedBarChart(json, i,
+//                        d3.select("#replicationSlider" + index).property("value") - 1);
+//                    $("#stackedBC" + index).modal();
                 });
 
             // Now render all the horizontal lines at once - the whiskers and the median
@@ -602,7 +602,7 @@ var BoxPlot = (function () {
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .text("Average Utilization (%)");
+                .text("Utilization (%)");
 
         });
     };
@@ -845,10 +845,23 @@ var FailedTaskAnalysis = (function () {
                 }
             }
 
-            $(tableId).DataTable( {
+            var table = $(tableId).DataTable( {
                 data: dataSet,
                 "destroy": true,
+                "searching": false,
             });
+
+            // Apply the search
+            table.columns().every( function () {
+                var that = this;
+
+                $( tableId + ' input' ).on( 'change', function () {
+                    console.log(that.search());
+                    if ( that.search() !== this.value ) {
+                        that.search( this.value ).draw();
+                    }
+                } );
+            } );
         });
     };
     return {
