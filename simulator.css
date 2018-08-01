@@ -592,3 +592,7 @@ footer .number-input button:after {
 #submitBtn.btn-success {
   border-color: #f8f9fa;
 }
+
+#taskRecordTable td:nth-child(3n) {
+  border-left: 1px black solid;
+}

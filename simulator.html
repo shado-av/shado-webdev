@@ -481,7 +481,7 @@
 
                         <!-- task affected by team coordination (task.affExoTeamCoord) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by exogenous type 2?</label>
+                            <label class="col-form-label">Is this task affected by weather?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
@@ -1233,28 +1233,6 @@
                                 <th colspan="2">Advanced Settings</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td>Type of simulation</td>
-                            <td><b>{{globalSettings.simType}}</b></td>
-                        </tr>
-                        <tr>
-                            <td>Shift Scheduled</td>
-                            <td>{{globalSettings.numHours }} hours</td>
-                        </tr>
-<!--
-                        <tr>
-                            <td>Traffic Levels By Hours</td>
-                            <td><svg id="trafficLevel" width="400" height="300"></svg></td>
-                        </tr>
--->
-                        <tr>
-                            <td>Transitioning Period</td>
-                            <td><b>{{hasTransitionForReview}}</b></td>
-                        </tr>
-                        <tr>
-                            <td>Exogenous factor</td>
-                            <td><b>{{hasExogenousForReview}}</b></td>
-                        </tr>
                     </table>
                 </div>
 
@@ -1412,7 +1390,7 @@
 
                     <!-- Results Utilization -->
                     <div class="tab-pane fade show active" id="results-utilization" role="tabpanel" aria-labelledby="results-utilization-tab">
-                        <h3 class='subtitle'>Average Utilization per Operator</h3>
+                        <h3 class='subtitle'>Utilization per Operator</h3>
                         <!-- Modal -->
                         <div class="modal fade" id="stackedBC1" role="dialog">
                             <div class="modal-dialog modal-lg">
@@ -1459,18 +1437,18 @@
                                         <th colspan="3">Failed Tasks and Caught</th>
                                     </tr>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
-                                        <th>#</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
-                                        <th>#</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
-                                        <th>#</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
+                                        <th class="left-border right-align" >Count</th>
+                                        <th class="right-align">Avg.</th>
+                                        <th class="right-align">Std. Dev.</th>
+                                        <th class="left-border right-align" >Count</th>
+                                        <th class="right-align">Avg.</th>
+                                        <th class="right-align">Std. Dev.</th>
+                                        <th class="left-border right-align" >Count</th>
+                                        <th class="right-align">Avg.</th>
+                                        <th class="right-align">Std. Dev.</th>
+                                        <th class="left-border right-align" >Count</th>
+                                        <th class="right-align">Avg.</th>
+                                        <th class="right-align">Std. Dev.</th>
                                     </tr>
                                 </thead>
                             </table>

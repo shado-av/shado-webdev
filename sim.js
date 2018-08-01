@@ -188,7 +188,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [0, 1],
-                        expertise: [[1],[1],[0]],
+                        expertise: [[1,1],[1,1],[0,1]],
                         priority: [
                             [1, 4, 6],
                         ],
@@ -211,7 +211,7 @@ var sim = new Vue({
                         strategy: "FIFO",
                         comms: "N",
                         tasks: [1, 2],
-                        expertise: [[0],[1],[1]],
+                        expertise: [[0,1],[1,1],[1,1]],
                         priority: [
                             [1, 1, 1],
                         ],

@@ -241,7 +241,7 @@ var BoxPlot = (function () {
     var barWidth = 25;
     var margin = {
         top: 40,
-        right: 20,
+        right: 50,
         bottom: 80,
         left: 50
     };
@@ -268,8 +268,8 @@ var BoxPlot = (function () {
         d3.json(url).then(function (json) {
             // save the json into jsonData for later use of stacked bar charts
 
-            stackedBC[index] = new StackedBarChart(index);
-            stackedBC[index].initStackedBarChart(json);
+            //stackedBC[index] = new StackedBarChart(index);
+            //stackedBC[index].initStackedBarChart(json);
 
             barWidth = 25;
 
@@ -333,7 +333,7 @@ var BoxPlot = (function () {
             }
 
             // calculat tick location within 0 ~ width - 20
-            width -= 50;
+            // width -= 50;
             var xTickLoc = [];
             var xTickVal = [];
             var xTickStr = [];
@@ -845,23 +845,29 @@ var FailedTaskAnalysis = (function () {
                 }
             }
 
-            var table = $(tableId).DataTable( {
+            var tableInstance = $(tableId).DataTable( {
                 data: dataSet,
                 "destroy": true,
                 "searching": false,
+                columnDefs: [
+                    {
+                        targets: 'right-align',
+                        className: 'dt-body-right'
+                    }
+                ],
+//                "initComplete": function(settings, json) {
+//                    // Apply the search
+//                    var column = this.api().columns(0);
+//                    console.log(column);
+//                    $(tableId + " input").on( 'change', function () {
+//                            column
+//                                .search( this.value )
+//                                .draw();
+//                        } );
+//                }
             });
 
-            // Apply the search
-            table.columns().every( function () {
-                var that = this;
 
-                $( tableId + ' input' ).on( 'change', function () {
-                    console.log(that.search());
-                    if ( that.search() !== this.value ) {
-                        that.search( this.value ).draw();
-                    }
-                } );
-            } );
         });
     };
     return {
