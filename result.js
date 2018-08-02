@@ -845,26 +845,29 @@ var FailedTaskAnalysis = (function () {
                 }
             }
 
-            var tableInstance = $(tableId).DataTable( {
+            $(tableId).DataTable( {
                 data: dataSet,
                 "destroy": true,
-                "searching": false,
+                "dom": 'lrtip',
                 columnDefs: [
                     {
                         targets: 'right-align',
                         className: 'dt-body-right'
                     }
                 ],
-//                "initComplete": function(settings, json) {
-//                    // Apply the search
-//                    var column = this.api().columns(0);
-//                    console.log(column);
-//                    $(tableId + " input").on( 'change', function () {
-//                            column
-//                                .search( this.value )
-//                                .draw();
-//                        } );
-//                }
+                "initComplete": function(settings, json) {
+                    // Apply the search
+                    var api = this.api();
+                    $(tableId).on('keyup change', 'input', function () {
+                        var column = api.column($(this).data("column"));
+
+                        if (column.search() !== this.value) {
+                            column.search(this.value).draw();
+                        }
+                    });
+
+                    $(tableId).removeClass("d-none");
+                }
             });
 
 
