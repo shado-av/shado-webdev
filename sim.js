@@ -649,7 +649,10 @@ var sim = new Vue({
             var ft = [];
 
             for (var i = 0; i < this.operatorSettings.teams.length; i++) {
-                ft.push(this.operatorSettings.teams[i].failThresh[0]);
+                ft.push([]);
+                for(var j=0; j < this.taskSettings.tasks.length;j++) {
+                    ft[i].push(this.operatorSettings.teams[i].failThresh[0][j] / 100);
+                }
             }
             return ft;
         },
