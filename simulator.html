@@ -896,6 +896,34 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <!-- OPERATOR TASKS -->
+                            <h5 class="mb-3">Operator Tasks/Fleets</h5>
+
+                            <!-- operator task checklist (team.tasks) -->
+                            <div class="form-group">
+                                <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
+                                <!-- adjust task/fleet operators are responsible for (team.expertise) -->
+                                <div class="table-responsive">
+                                    <table class="form-group table">
+                                        <thead class="thead-light">
+                                            <th>Task \ Fleet</th>
+                                            <th v-for="(fleet, i) in fleetSettings.fleets">
+                                                {{fleet.name}}
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                                <td>{{task.name}}</td>
+                                                <td v-for="(fleet, j) in fleetSettings.fleets">
+                                                    <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
                                 <label>Operator Strategies</label>
@@ -913,7 +941,7 @@
                                         <th>Priority</th>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
                                             <td>{{task.name}}</td>
                                             <td>
                                                 <select class="custom-select" v-model.number="team.priority[0][i]">
@@ -943,33 +971,6 @@
                                     <div>{{task.name}}</div>
                                     <percentage-input :value.sync="team.failThresh[0][i]"></percentage-input>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- OPERATOR TASKS -->
-                        <h5 class="mb-3">Operator Tasks/Fleets</h5>
-
-                        <!-- operator task checklist (team.tasks) -->
-                        <div class="form-group">
-                            <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
-                            <!-- adjust task/fleet operators are responsible for (team.expertise) -->
-                            <div class="table-responsive">
-                                <table class="form-group table">
-                                    <thead class="thead-light">
-                                        <th>Task \ Fleet</th>
-                                        <th v-for="(fleet, i) in fleetSettings.fleets">
-                                            {{fleet.name}}
-                                        </th>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
-                                            <td>{{task.name}}</td>
-                                            <td v-for="(fleet, j) in fleetSettings.fleets">
-                                                <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
 
@@ -1007,7 +1008,7 @@
                         <div :class="{options: team.AIDA.AIDAType[1]}">
                             <div class="form-group" v-show="team.AIDA.AIDAType[1]">
                                 <div class="mb-3">What tasks are this AI responsible for?</div>
-                                <div class="custom-control custom-checkbox item mb-2" v-for="i in team.tasks">
+                                <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
                                     <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
                                 </div>

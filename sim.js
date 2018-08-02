@@ -651,7 +651,9 @@ var sim = new Vue({
             for (var i = 0; i < this.operatorSettings.teams.length; i++) {
                 ft.push([]);
                 for(var j=0; j < this.taskSettings.tasks.length;j++) {
-                    ft[i].push(this.operatorSettings.teams[i].failThresh[0][j] / 100);
+                    if (this.taskSettings.tasks[i].include) {
+                        ft[i].push(this.operatorSettings.teams[i].failThresh[0][j] / 100);
+                    }
                 }
             }
             return ft;
@@ -1017,6 +1019,16 @@ var sim = new Vue({
         // check whether fleet has assigned this task
         disableOpExpertise(fleet, taskIndex) {
             return !fleet.tasks.includes(taskIndex);
+        },
+
+        // check wheteher the task is selected in the opExpertise matrix
+        checkIfTaskSelected(team, taskIndex) {
+            for (var i=0; i<this.fleetSettings.fleets.length;i++) {
+                var fleet = this.fleetSettings.fleets[i];
+                if (team.expertise[taskIndex][i] && fleet.tasks.includes(taskIndex))
+                    return true;
+            }
+            return false;
         },
 
         updateFleets() {
