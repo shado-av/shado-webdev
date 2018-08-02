@@ -270,24 +270,6 @@
                 <!-- different traffic levels (diffTrafficLevels) -->
                 <div class="form-group">
                     <label class="col-form-label">2. Check if there is a transitioning period at the beginning or ending of this shift:</label>
-<!--
-                    <div>
-                        <div class="custom-control custom-control-inline custom-radio">
-                            <input class="custom-control-input" type="radio" name="is-transition" id="is-transition-y" value="y" v-model="globalSettings.isTransition"
-                                @change="updateTransitions">
-                            <label class="custom-control-label" for="is-transition-y">Yes</label>
-                        </div>
-                        <div class="custom-control custom-control-inline custom-radio mr-0">
-                            <input class="custom-control-input" type="radio" name="is-transition" id="is-transition-n" value="n" v-model="globalSettings.isTransition"
-                                @change="updateTransitions">
-                            <label class="custom-control-label" for="is-transition-n">No</label>
-                        </div>
-                    </div>
--->
-<!--
-                </div>
-                <div class="form-group" v-show="globalSettings.isTransition === 'y'">
--->
                     <div v-show="globalSettings.isTransition === 'y'">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-beginning" class="custom-control-input" v-model="globalSettings.hasTransition[0]">
@@ -944,7 +926,10 @@
                                         <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
                                             <td>{{task.name}}</td>
                                             <td>
-                                                <select class="custom-select" v-model.number="team.priority[0][i]">
+                                                <select class="custom-select" v-show="task.essential==='y'" disabled='true'>
+                                                    <option>Essential</option>
+                                                </select>
+                                                <select class="custom-select" v-model.number="team.priority[0][i]" v-show="task.essential==='n'">
                                                     <option value="6">High</option>
                                                     <option value="5">Moderate</option>
                                                     <option value="4">Neutral</option>
