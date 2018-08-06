@@ -1259,6 +1259,20 @@
                                 <th colspan="2">Operators</th>
                             </tr>
                         </thead>
+                        <tr v-show="operatorSettings.hasFlexPosition">
+                            <td colspan="2">
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2">Flex Position Team</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td width="200px">Team Size</td>
+                                        <td>{{operatorSettings.flexTeamSize}}</td>
+                                    </tr>
+                                </table>
+                        </tr>
                         <tr v-for="(team, index) in operatorSettings.teams">
                             <td>
                                 <table class="form-group table">
