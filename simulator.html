@@ -1452,8 +1452,9 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Save Settings</button>
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Settings</button>
+            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span data-toggle="tooltip" data-placement="top" title="Save the current user settings"><span class="fas fa-info-circle"></span></span></button>
+
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData' :disabled="miscSettings.isLoading">Load Settings <span data-toggle="tooltip" data-placement="top" title="Load the previously saved user settings"><span class="fas fa-info-circle"></span></span></button>
 <!--
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>

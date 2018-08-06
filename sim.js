@@ -261,6 +261,8 @@ var sim = new Vue({
             downloadJsonData: "",
             downloadJsonVisible: false,
             onSubmit: false,
+            isSaving: false,
+            isLoading: false,
         }
     },
 
@@ -1094,7 +1096,10 @@ var sim = new Vue({
         },
 
         saveData() {
+            this.miscSettings.isSaving = true;
+            NProgress.start();
             localStorage.setItem('allData'+this.version, JSON.stringify(this.$data));
+            setTimeout(function() {NProgress.done(); sim.miscSettings.isSaving = false; }, 1000);
         },
 
         saveFile() {
@@ -1158,12 +1163,19 @@ var sim = new Vue({
                 // set all properties from newdata into data
                 // Object.entries(data).forEach(entry => Vue.set(this.$data, entry[0], entry[1]));
                 if (this.version === data.version) {
+                    this.miscSettings.isLoading = true;
+                    NProgress.start();
                     this.numReps = data.numReps;
                     this.globalSettings = data.globalSettings;
                     this.taskSettings = data.taskSettings;
                     this.operatorSettings = data.operatorSettings;
                     this.fleetSettings = data.fleetSettings;
+                    setTimeout(function() {NProgress.done(); sim.miscSettings.isLoading = false; }, 1000);
+                } else {
+                    alert("No previous setting is found.");
                 }
+            } else {
+                alert("No previous setting is found.")
             }
         },
 
