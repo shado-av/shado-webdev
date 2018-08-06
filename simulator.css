@@ -1,7 +1,7 @@
 #shado-sim,
 .navbar-container,
 .container-fluid {
-  max-width: 1080px;
+  max-width: 1150px;
   margin: auto;
 }
 
@@ -17,7 +17,7 @@ footer {
   align-items: center;
   position: fixed;
   bottom: 0px;
-  max-width: 1080px;
+  max-width: 1150px;
   margin: auto;
   background-color: #4981c7;
   color: white;
@@ -317,7 +317,7 @@ div.tooltipBox {
 }
 
 h3.subtitle {
-  padding: 20px 80px 0px;
+  padding: 20px 0px 0px;
 }
 
 div.modal-dialog.modal-lg {
@@ -479,7 +479,7 @@ footer .number-input button:after {
 }
 
 #boxSVG {
-  padding-left: 50px;
+/*  padding-left: 50px;*/
 }
 
 .options .form-group {

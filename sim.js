@@ -761,6 +761,17 @@ var sim = new Vue({
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
          * ------------------------------ */
+        // array with fleet names
+        fleetNames() {
+            var fleetNames = [];
+            for (i = 0; i < this.fleetSettings.fleets.length; i++) {
+                if (this.fleetSettings.fleets[i].name) {
+                    fleetNames.push(this.fleetSettings.fleets[i].name);
+                } else
+                    fleetNames.push("Fleet no name");
+            }
+            return fleetNames;
+        },
 
         // array with number of vehicles per fleet
         numVehicles() {
@@ -1189,6 +1200,7 @@ var sim = new Vue({
                 "TCALevel": sim.TCALevel,
 
                 "fleetTypes": sim.fleetSettings.fleetTypes,
+                "fleetNames": sim.fleetNames,
                 "numvehicles": sim.numVehicles,
                 "autolvl": sim.fleetAutoLevel,
                 "fleetHetero": sim.fleetHetero,

@@ -2,244 +2,12 @@ var div = d3.select("body").append("div")
     .attr("class", "tooltipBox")
     .style("opacity", 0);
 
-var StackedBarChart = (function (index) {
-    var jsonData = {};
-    var currentOperator = 0;
-    var svg;
-    var g;
-    var id = index || "";
-    var x;
-    var y;
-    var z = d3.scaleOrdinal()
-        .range(
-            //["#a0e3b7", "#710c9e", "#37b51f", "#ae2a51", "#a3c541", "#323d96", "#7ebef8", "#1c5872", "#21f0b6", "#6f3631", "#f3a4a8", "#166d2a", "#fd6ca0", "#d95e13", "#f2d174"]
-    ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
-        );
-    var keys = [];
-    var stacked;
-    var margin = {
-        top: 40,
-        right: 20,
-        bottom: 40,
-        left: 50
-    };
-    var minutes, barCounts;
-    var bandWidth;
-
-    var initStackedBarChart = function (json) {
-        jsonData = json;
-        keys = json.taskName;
-        barCounts = json.taskUtilization[0][0][0].length;
-        minutes = barCounts * 10;
-        console.log(minutes, barCounts);
-        svg = d3.select("#modalSVG" + id);
-        width = +svg.attr("width") - margin.left - margin.right;
-        height = +svg.attr("height") - margin.top - margin.bottom;
-        bandWidth = Math.floor((width - 150) / (barCounts + 1));
-
-        x = d3.scaleLinear().rangeRound([0, width - 150]);
-        y = d3.scaleLinear()
-            .rangeRound([height, 0]);
-
-        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        //console.log(keys, width, height);
-        // text label for the x axis
-        svg.append("text")
-            .attr("transform",
-                "translate(" + (width / 2) + " ," +
-                (height + margin.bottom + margin.top) + ")")
-            .style("text-anchor", "middle")
-            .attr("font-weight", "bold")
-            .text("Time (min)");
-
-        // text label for the y axis
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0) // - margin.left)
-            .attr("x", 0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .attr("font-weight", "bold")
-            .text("Utilization (%)");
-
-        // reset slider to 1
-        var slider = document.getElementById("replicationSlider" + id);
-        var output = document.getElementById("replicationTB" + id);
-
-        slider.value = 1;
-        slider.setAttribute("max", json.taskUtilization[0].length);
-        output.innerHTML = slider.value;
-
-        slider.oninput = function () {
-            output.innerHTML = this.value;
-            console.log(jsonData, currentOperator, this.value);
-            drawStackedBarChart(jsonData, currentOperator, this.value - 1);
-        }
-
-        // define domains
-        x.domain([0, minutes]); // data.map(function(d) { return d.x; }));
-        y.domain([0, 1]); //.nice()
-        z.domain(keys);
-
-        var ticks = [];
-        for (var j = 30; j <= minutes; j += 30) {
-            ticks.push(j);
-        }
-        // set ticks
-        g.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).tickValues(ticks));
-
-        g.append("g")
-            .attr("class", "axis")
-            .call(d3.axisLeft(y).ticks(null, 's').tickFormat(function (d) {
-                return d * 100;
-            }))
-            .append("text")
-            .attr("x", 2)
-            .attr("y", y(y.ticks().pop()) + 0.5)
-            .attr("dy", "0.32em")
-            .attr("fill", "#000")
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "start");
-
-        // set legends
-        var legend = g.append("g")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
-            .attr("text-anchor", "end")
-            .selectAll("g")
-            .data(keys.slice().reverse())
-            .enter().append("g")
-            .attr("transform", function (d, i) {
-                return "translate(0," + i * 20 + ")";
-            });
-
-        legend.append("rect")
-            .attr("x", width - 5)
-            .attr("width", 19)
-            .attr("height", 19)
-            .attr("fill", z);
-
-        legend.append("text")
-            .attr("x", width - 10)
-            .attr("y", 9.5)
-            .attr("dy", "0.32em")
-            .text(function (d) {
-                return d;
-            });
-
-        stacked = d3.stack().keys(keys); //(data);
-    };
-
-    var minsInTime = function (mins) {
-        var hh = Math.floor(mins / 60);
-        var mm = mins % 60;
-        //hh = hh < 10 ? '0' + hh : hh;
-        mm = mm < 10 ? '0' + mm : mm;
-        return hh + ":" + mm;
-    }
-
-    var drawStackedBarChart = function (json, operator, replication) {
-        // convert json data into d3 stack preferred form
-        currentOperator = operator;
-        var data = [];
-        for (var i = 0, j = 0; i <= minutes; i += 10, j++) {
-            data.push({
-                x: i,
-                total: 0
-            });
-        }
-
-        for (var i = 0; i < keys.length; i++) {
-            for (var j = 0; j < barCounts; j++) {
-                data[j][keys[i]] = json.taskUtilization[operator][replication][i][j];
-                data[j]["total"] += json.taskUtilization[operator][replication][i][j];
-            }
-            data[j][keys[i]] = 0; // prevent error for the last column 480
-        }
-
-        // draw stacked bar charts
-        // each data column (a.k.a "key" or "series") needs to be iterated over
-        // the variable alphabet represents the unique keys of the stacks
-        keys.forEach(function (key, key_index) {
-
-            var keyClassName = key.replace(/[ ()]/g, '_');
-            console.log(key, keyClassName, key_index);
-            var bar = g.selectAll(".bar-" + keyClassName)
-                .data(stacked(data)[key_index], function (d) {
-                    return d.data.x + "-" + keyClassName;
-                });
-
-            bar
-                .transition()
-                .attr("x", function (d) {
-                    return x(d.data.x) + 1;
-                })
-                .attr("y", function (d) {
-                    return y(d[1]);
-                })
-                .attr("height", function (d) {
-                    return y(d[0]) - y(d[1]);
-                });
-
-            bar.enter().append("rect")
-                .attr("class", function (d) {
-                    return "bar bar-" + keyClassName;
-                })
-                .attr("x", function (d) {
-                    return x(d.data.x) + 1;
-                })
-                .attr("y", function (d) {
-                    return y(d[1]);
-                })
-                .attr("height", function (d) {
-                    return y(d[0]) - y(d[1]);
-                })
-                .attr("width", bandWidth + 1) // x.bandwidth())
-                .attr("fill", function (d) {
-                    return z(key);
-                })
-        });
-
-        d3.select("#stackedBCTitle" + id).text(json.operatorName[operator] + " Workload");
-        // mouseover tips
-        svg.selectAll(".bar")
-            .on("mouseover", function (d, i) {
-                //console.log(d, i, i/49, data[i%49]);
-                var minutes = i % (barCounts + 1) * 10;
-
-                d3.select(this).attr("stroke", "blue").attr("stroke-width", 0.8);
-                div.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                //HH:MM-HH:MM, Busy for XX.XX minutes with Y tasks, Total Utilization: 100%
-                div.html("<table><tr><td>Time: " + minsInTime(minutes) + " to " + minsInTime(minutes + 10) + "</td></tr><tr><td>Busy for " + ((d[1] - d[0]) * 10).toFixed(2) + " minutes</td></tr><tr><td>with " + keys[parseInt(i / (barCounts + 1))] + " task</td></tr><tr><td>Total Utilization: " + (data[i % (barCounts + 1)]["total"] * 100).toFixed(2) + "%</td></tr></table>")
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
-                //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
-                //.style("top", (window.pageYOffset + matrix.f - 30) + "px");;
-            })
-            .on("mouseout", function (d) {
-                d3.select(this).attr("stroke", "pink").attr("stroke-width", 0.2);
-                div.transition()
-                    .duration(500)
-                    .style("opacity", 0);
-            });
-    };
-
-    return {
-        initStackedBarChart: initStackedBarChart,
-        drawStackedBarChart: drawStackedBarChart
-    };
-});
-
-var BarChartWithError = (function (index) {
+var BarChartWithError = (function (index, isFleet) {
     var jsonData = {};
     var svg;
     var g;
     var id = index || 0;
+    var isFleet = isFleet || 0;
     var x;
     var y;
     var z = d3.scaleOrdinal()
@@ -258,13 +26,28 @@ var BarChartWithError = (function (index) {
     var minutes, barCounts;
     var bandWidth;
 
-    var drawBarChartWithError = function (json, teamName) {
-        jsonData = json;
-        keys = ["Fleet 1", "Fleet 2"];
-        barCounts = json.averageBusyTime[id].length;
+    var drawBarChartWithError = function (json, teamName, svgId) {
+        var avgBusyTime;
+        var stdBusyTime;
+        var xAxisText;
 
-        console.log(barCounts);
-        svg = d3.select("#barGraph" + id);
+        jsonData = json;
+        if (isFleet) {
+            keys = json.fleetName;
+            avgBusyTime = json.averageBusyTimePerFleet[id];
+            stdBusyTime = json.stdBusyTimePerFleet[id];
+            xAxisText = "Fleet Name";
+        } else {
+            keys = json.taskName;
+            avgBusyTime = json.averageBusyTimePerTask[id];
+            stdBusyTime = json.stdBusyTimePerTask[id];
+            xAxisText = "Task Name";
+        }
+        barCounts = avgBusyTime.length;
+
+        console.log(barCounts, avgBusyTime);
+        svg = d3.select(svgId);
+        svg.selectAll("*").remove();
         console.log(svg);
         width = +svg.attr("width") - margin.left - margin.right;
         height = +svg.attr("height") - margin.top - margin.bottom;
@@ -285,7 +68,7 @@ var BarChartWithError = (function (index) {
                 (height + margin.bottom + margin.top) + ")")
             .style("text-anchor", "middle")
             .attr("font-weight", "bold")
-            .text("Fleet");
+            .text(xAxisText);
 
         // text label for the y axis
         svg.append("text")
@@ -345,66 +128,108 @@ var BarChartWithError = (function (index) {
                 return d;
             });
 
-        stacked = d3.stack().keys(keys); //(data);
-
         // convert json data into d3 stack preferred form
         var data = [];
-        for (var i = 0, j = 0; i <= keys.length; i ++, j++) {
+        for (var i = 0; i < keys.length; i ++) {
             data.push({
                 x: keys[i],
-                total: 0
+                avg: avgBusyTime[i],
+                std: stdBusyTime[i]
             });
-        }
-
-        for (var i = 0; i < keys.length; i++) {
-            data[i][keys[i]] = json.averageBusyTime[id][i];
-            data[i]["total"] += json.averageBusyTime[id][i];
         }
 
         console.log(data);
 
-        // draw stacked bar charts
-        // each data column (a.k.a "key" or "series") needs to be iterated over
-        // the variable alphabet represents the unique keys of the stacks
-        keys.forEach(function (key, key_index) {
-
-            var keyClassName = key.replace(/[ ()]/g, '_');
-            console.log(key, keyClassName, key_index);
-            var bar = g.selectAll(".bar-" + keyClassName)
-                .data(stacked(data)[key_index], function (d) {
-                    return d.data.x + "-" + keyClassName;
-                });
-
-            bar
-                .transition()
+        var bar = g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+                .attr("class", "bar")
                 .attr("x", function (d) {
-                    return x(d.data.x) + 1;
+                    return x(d.x);
                 })
                 .attr("y", function (d) {
-                    return y(d[1]);
+                    return y(d.avg);
                 })
                 .attr("height", function (d) {
-                    return y(d[0]) - y(d[1]);
-                });
-
-            bar.enter().append("rect")
-                .attr("class", function (d) {
-                    return "bar bar-" + keyClassName;
-                })
-                .attr("x", function (d) {
-                    return x(d.data.x) + 1;
-                })
-                .attr("y", function (d) {
-                    return y(d[1]);
-                })
-                .attr("height", function (d) {
-                    return y(d[0]) - y(d[1]);
+                    return height - y(d.avg);
                 })
                 .attr("width", x.bandwidth())
                 .attr("fill", function (d) {
-                    return z(key);
-                })
-        });
+                    return z(d.x);
+                });
+
+        // Draw the error bar vertical lines
+        var verticalLines = g.selectAll(".verticalLines")
+            .data(data)
+            .enter()
+            .append("line")
+            .attr("x1", function (d) {
+                return x(d.x) + x.bandwidth() / 2;
+            })
+            .attr("y1", function (d) {
+                return y(d.avg + d.std);
+            })
+            .attr("x2", function (d) {
+                return x(d.x) + x.bandwidth() / 2;
+            })
+            .attr("y2", function (d) {
+                return y(d.avg - d.std);
+            })
+            .attr("stroke", "#000")
+            .attr("stroke-width", 1)
+            .attr("fill", "none");
+
+        var barWidth = 25;
+        // Now render all the horizontal lines at once - the whiskers and the median
+        var horizontalLineConfigs = [
+        // Top whisker
+            {
+                x1: function (d) {
+                    return x(d.x) + ((x.bandwidth() > barWidth) ? x.bandwidth()/2 - barWidth/2 : 0);
+                },
+                y1: function (d) {
+                    return y(d.avg + d.std)
+                },
+                x2: function (d) {
+                    return x(d.x) + ((x.bandwidth() > barWidth) ? x.bandwidth()/2 + barWidth/2 : 0);
+                },
+                y2: function (d) {
+                    return y(d.avg + d.std)
+                }
+            },
+        // Bottom whisker
+            {
+                x1: function (d) {
+                    return x(d.x) + ((x.bandwidth() > barWidth) ? x.bandwidth()/2 - barWidth/2 : 0);
+                },
+                y1: function (d) {
+                    return y(d.avg - d.std)
+                },
+                x2: function (d) {
+                    return x(d.x) + ((x.bandwidth() > barWidth) ? x.bandwidth()/2 + barWidth/2 : 0);
+                },
+                y2: function (d) {
+                    return y(d.avg - d.std)
+                }
+            }
+        ];
+
+        for (var i = 0; i < horizontalLineConfigs.length; i++) {
+            var lineConfig = horizontalLineConfigs[i];
+
+            // Draw the whiskers at the min for this series
+            var horizontalLine = g.selectAll(".whiskers")
+                .data(data)
+                .enter()
+                .append("line")
+                .attr("x1", lineConfig.x1)
+                .attr("y1", lineConfig.y1)
+                .attr("x2", lineConfig.x2)
+                .attr("y2", lineConfig.y2)
+                .attr("stroke", "#000")
+                .attr("stroke-width", 1)
+                .attr("fill", "none");
+        }
 
         // mouseover tips
         svg.selectAll(".bar")
@@ -415,7 +240,7 @@ var BarChartWithError = (function (index) {
                     .style("opacity", .9);
                 console.log(d, i);
                 var k = Math.floor(i/4);
-                div.html("<table><tr><td>Busy Time Average:</td><td>" + json.averageBusyTime[id][k].toFixed(2) + "</td></tr><tr><td>Std. Dev.</td><td>" + json.stdBusyTime[id][k].toFixed(2) + "</td></tr></table>")
+                div.html("<table><tr><td>Busy Time Average:</td><td>" + d.avg.toFixed(2) + "</td></tr><tr><td>Std. Dev.</td><td>" + d.std.toFixed(2) + "</td></tr></table>")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
@@ -428,7 +253,7 @@ var BarChartWithError = (function (index) {
                     .style("opacity", 0);
             });
 
-        d3.select("#barChartTitle" + id).text(teamName + " Workload");
+        //d3.select("#barChartTitle" + id).text(teamName + " Workload");
     };
 
     return {
@@ -465,6 +290,8 @@ var BoxPlot = (function () {
         return a - b;
     };
     var barCharts = [];
+    var tabIds = [ "barGraphPerTask", "barGraphPerFleet"];
+
     var visualize = function (url, element, index) {
         d3.json(url).then(function (json) {
             barWidth = 25;
@@ -472,7 +299,8 @@ var BoxPlot = (function () {
             // parse json file into groupCounts
             var groupCounts = {};
             // number of operators in each team
-            var groupLength = [];
+            var groupLength = json.teamSize;
+            var groupName = json.teamName;     // operator team name
             //var globalCounts = [];
             // averageTaskUtilization [operator][replication]
             // timeUtilization        [operator][replication][time]
@@ -483,27 +311,48 @@ var BoxPlot = (function () {
             for (var i = 0, j=0; i < numOps; i++) {
                 var key = json.operatorName[i];
                 groupCounts[key + "_" + i] = [];
-                if (key.endsWith("_0") || k==-1)
-                    groupLength[++k] = 1;
-                else
-                    groupLength[k]++;
 
                 for(var j=0; j < json.timeUtilization[i].length; j++) {
                     groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(json.timeUtilization[i][j]);
                 }
-                //groupCounts[key + "_" + i] = json.averageTaskUtilization[i];
             }
             console.log("GroupCounts ", groupCounts);
             console.log("GroupLength ", groupLength);
 
+            // create tabviews with number to match the number of op teams
+
+            var id = $("#" + tabIds[0] + " .nav-tabs li").length;
+            if (groupLength.length > id) {
+                // add more tabs
+                for (j=0; j<tabIds.length; j++) {
+                    for(i = id; i<groupLength.length;i++) {
+                        var tabId = tabIds[j] + 'Tab_' + i;
+                        $("#" + tabIds[j] + " .nav-tabs").append('<li class="nav-item"><a href="#' + tabId + '" data-toggle="tab" class="nav-link">'+ groupName[i] +'</a></li>');
+                        $("#" + tabIds[j] + " .tab-content").append('<div class="tab-pane" id="' + tabId + '"><svg id="' + tabIds[j] + i + '" width="900" height="450"></svg>');
+                    }
+                }
+            } else if (groupLength.length < id) {
+                for (j=0; j<tabIds.length; j++) {
+                    // remove tabsbarGraphPerFleet
+                    for(i = id; i<groupLength.length;i++) {
+                        var tabId = tabIds[1] + 'Tab_' + i;
+                        $("#"+tabId).remove();
+                    }
+                }
+            }
+
             // Create a Bar chart for each team
-            for (i = 0, j = 0; i < groupLength.length; i++) {
-                var opName = json.operatorName[j];
+            for (j=0; j<tabIds.length; j++) {
+                for (i = 0; i < groupLength.length; i++) {
+                    var svgId = '#' + tabIds[j] + i;
+                    if (barCharts[i*2 +j] === undefined)
+                        barCharts[i * 2 + j] = new BarChartWithError(i, j);
 
-                barCharts[i] = new BarChartWithError(i);
-                barCharts[i].drawBarChartWithError(json, opName.substr(0, opName.lastIndexOf("_")));  // team name
+                    barCharts[i * 2 + j].drawBarChartWithError(json, groupName[i], svgId);
+                }
 
-                j+=groupLength[i];
+                // Just activate first tab
+                $("#" + tabIds[j] + " .nav-tabs li").children('a').first().click();
             }
 
             // Sort group counts so quantile methods work
@@ -555,8 +404,7 @@ var BoxPlot = (function () {
             for (i = 0, j = 0; i < groupLength.length; i++) {
                 j+=groupLength[i];
                 xTickVal[i] = (xStart + xEnd)/2;
-                xTickStr[i] = json.operatorName[j-1].substr(0,
-                                json.operatorName[j-1].lastIndexOf("_"));
+                xTickStr[i] = groupName[i];
                 if (i<groupLength.length-1) {
                     xStart = xEnd + barWidthExpected;
                     xEnd = xStart + (groupLength[i+1]) * barWidthExpected;
@@ -957,7 +805,7 @@ var FailedTaskAnalysis = (function () {
             var numTasks = json.taskName.length;
 
             var data = [{},{},{},{},{}];
-            var color = ["#DC3912", "#3366CC", "#109618", "#FF9900", "#990099"];
+            var color = ["#109618", "#DC3912", "#FF66CC", "#FF9900", "#990099"];
             console.log(numReps, numPhases, numTeams, numTasks);
 
             for(var i=0;i<5;i++) {
