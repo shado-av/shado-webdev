@@ -1229,7 +1229,7 @@
                                         </tr>
                                     </thead>
                                     <tr>
-                                        <td>Number of vehicles in fleet</td>
+                                        <td>Number of Vehicles in Fleet</td>
                                         <td>{{fleet.numVehicles}}</td>
                                     </tr>
                                     <tr>
@@ -1280,8 +1280,23 @@
                                         <td>{{team.strategy}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Operator Expertise</td>
-                                        <td>{{team.expertise}}</td>
+                                        <td>Tasks/Fleets associated with Operator</td>
+                                        <td>
+                                            <table class="form-group table">
+                                                <thead class="thead-light">
+                                                    <th>Task</th>
+                                                    <th>Fleet</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                                        <td width="100px">{{task.name}}</td>
+                                                        <td>
+                                                            {{fleetNamesOpExpertise(team, i)}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Artificial Intelligence</td>

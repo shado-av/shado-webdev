@@ -1075,6 +1075,21 @@ var sim = new Vue({
             return !fleet.tasks.includes(taskIndex);
         },
 
+        // return fleet names for review associated with a task
+        fleetNamesOpExpertise(team, taskIndex) {
+            var fleetNames = [];
+            for(var j=0;j<this.fleetSettings.fleets.length;j++) {
+                var fleet = this.fleetSettings.fleets[j];
+                if (team.expertise[taskIndex][j] && fleet.tasks.includes(taskIndex)) {
+                    fleetNames.push(fleet.name);
+                }
+            }
+            if (fleetNames.length) {
+                return fleetNames.join(", ");
+            } else
+                return "None";
+        },
+
         // check wheteher the task is selected in the opExpertise matrix
         checkIfTaskSelected(team, taskIndex) {
             for (var i=0; i<this.fleetSettings.fleets.length;i++) {
