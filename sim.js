@@ -78,7 +78,7 @@ var sim = new Vue({
             hasTransition: [false, false],  // has transitioning period at the beginning or at the ending
             transitionDists: ['U', 'U'],
             transitionPms: [[5,10], [12,15]],
-//            exoFactorsName: [ "Medical Emergency", "Weather"],
+            exoFactorsName: ["Medical Emergency", "Weather"],
             exoFactorsType: [false, false]
         },
 
@@ -328,11 +328,12 @@ var sim = new Vue({
             var exoFT = this.globalSettings.exoFactorsType;
             var exoRv = "None";
 
-//            if (exoFT[0] || exoFT[1]) {
-//                if (exoFT[0]) exoRv = this.globalSettings.exoFactorsName[0];
-//                if (exoFT[0] && exoFT[1]) exoRv += ", " + this.globalSettings.exoFactorsName[1];
-//                else if (exoFT[1]) exoRv = this.globalSettings.exoFactorsName[1];
-//            }
+            console.log("exoFactorsName", exoFT, this.globalSettings.exoFactorsName);
+            if (exoFT[0] || exoFT[1]) {
+                if (exoFT[0]) exoRv = this.globalSettings.exoFactorsName[0];
+                if (exoFT[0] && exoFT[1]) exoRv += ", " + this.globalSettings.exoFactorsName[1];
+                else if (exoFT[1]) exoRv = this.globalSettings.exoFactorsName[1];
+            }
 
             return exoRv;
         },
@@ -1212,10 +1213,10 @@ var sim = new Vue({
                     this.fleetSettings = data.fleetSettings;
                     setTimeout(function() {NProgress.done(); sim.miscSettings.isLoading = false; }, 1000);
                 } else {
-                    alert("No previous setting is found.");
+                    //alert("No previous setting is found.");
                 }
             } else {
-                alert("No previous setting is found.")
+                //alert("No previous setting is found.")
             }
         },
 

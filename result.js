@@ -683,7 +683,7 @@ var TrafficLevelBarChart = (function () {
             };
         }
 
-        console.log(data);
+        //console.log(data);
         var svg = d3.select(barChartId),
             margin = {
                 top: 20,

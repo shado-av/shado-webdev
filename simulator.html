@@ -362,15 +362,13 @@
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
                             <label class="custom-control-label" for="exo-type-1">
-                                Type 1
-<!--                                {{globalSettings.exoFactorsName[0]}}-->
+                                {{globalSettings.exoFactorsName[0]}}
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
                             <label class="custom-control-label" for="exo-type-2">
-                                Type 2
-<!--                                {{globalSettings.exoFactorsName[1]}}-->
+                                {{globalSettings.exoFactorsName[1]}}
                             </label>
                         </div>
                     </div>
@@ -471,7 +469,8 @@
 
                         <!-- task affected by team coordination (task.affExoTeamCoord) -->
                         <div class="form-group">
-<!--                            <label class="col-form-label">Is this task affected by {{globalSettings.exoFactorsName[1]}}?</label>-->
+                            <label class="col-form-label">Is this task affected by                              {{globalSettings.exoFactorsName[1].toLowerCase()}}?
+                            </label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
@@ -1230,20 +1229,20 @@
                                         </tr>
                                     </thead>
                                     <tr>
-                                        <td>Number of vehicles in fleet:</td>
+                                        <td>Number of vehicles in fleet</td>
                                         <td>{{fleet.numVehicles}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Vehivle to Vehicle Communications:</td>
+                                        <td>Vehivle to Vehicle Communications</td>
                                         <td>{{miscSettings.comms[fleet.comms]}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Tasks Associated with Fleet:</td>
+                                        <td>Tasks Associated with Fleet</td>
                                         <td>{{fleetTasksForReview[index].join(", ")}}</td>
                                     </tr>
                                     <tr>
                                         <td>Traffice Levels</td>
-                                        <td>{{fleet.trafficLevels}}
+                                        <td>
                                             <svg :id='"trafficLevel" + index' width="400" height="300"></svg>
                                         </td>
                                     </tr>
@@ -1294,6 +1293,7 @@
                     </table>
                 </div>
 
+<!--
                 <h5>Tasks</h5>
                 <ul>
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
@@ -1334,6 +1334,7 @@
                         </a>
                     </li>
                 </ul>
+-->
             </div>
 
             <!----------------------------------------- 
