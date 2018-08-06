@@ -78,6 +78,7 @@ var sim = new Vue({
             hasTransition: [false, false],  // has transitioning period at the beginning or at the ending
             transitionDists: ['U', 'U'],
             transitionPms: [[5,10], [12,15]],
+//            exoFactorsName: [ "Medical Emergency", "Weather"],
             exoFactorsType: [false, false]
         },
 
@@ -263,6 +264,9 @@ var sim = new Vue({
             onSubmit: false,
             isSaving: false,
             isLoading: false,
+
+            AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
+            comms: { "N" : "None", "S": "Some", "F": "Full"},
         }
     },
 
@@ -324,11 +328,11 @@ var sim = new Vue({
             var exoFT = this.globalSettings.exoFactorsType;
             var exoRv = "None";
 
-            if (exoFT[0] || exoFT[1]) {
-                if (exoFT[0]) exoRv = "Type 1";
-                if (exoFT[0] && exoFT[1]) exoRv += ", Type 2";
-                else if (exoFT[1]) exoRv = "Type 2";
-            }
+//            if (exoFT[0] || exoFT[1]) {
+//                if (exoFT[0]) exoRv = this.globalSettings.exoFactorsName[0];
+//                if (exoFT[0] && exoFT[1]) exoRv += ", " + this.globalSettings.exoFactorsName[1];
+//                else if (exoFT[1]) exoRv = this.globalSettings.exoFactorsName[1];
+//            }
 
             return exoRv;
         },
@@ -685,6 +689,27 @@ var sim = new Vue({
             }
             return aitypes;
         },
+
+        AIDATypeForReview() {
+            var aitypes = [];
+
+            for (var i = 0; i < this.operatorSettings.teams.length; i++) {
+                var ait = "", flagAdded=false;
+                for (var j=0; j < this.operatorSettings.teams[i].AIDA.AIDAType.length; j++) {
+                    if (this.operatorSettings.teams[i].AIDA.AIDAType[j]) {
+                        if (flagAdded) ait+=", ";
+                        ait += this.miscSettings.AIDATypeStr[j];
+                        flagAdded = true;
+                    }
+                }
+                if (flagAdded)
+                    aitypes.push(ait);
+                else
+                    aitypes.push("None");
+            }
+            return aitypes;
+        },
+
         // array containing ET Service Time
         ETServiceTime() {
             var st = [];
@@ -810,6 +835,21 @@ var sim = new Vue({
                 } else {
                     tasks.push([]);
                 }
+            }
+            return tasks;
+        },
+
+        fleetTasksForReview() {
+            var tasks = [];
+            for (i = 0; i < this.fleetSettings.fleets.length; i++) {
+                var k = this.fleetSettings.fleets[i].tasks.length;
+                if (k) {
+                    tasks.push([]);
+                    for (j = 0; j < k; j++) {
+                        tasks[i].push(this.taskSettings.tasks[this.fleetSettings.fleets[i].tasks[j]].name);
+                    }
+                } else
+                    tasks.push(["None"]);
             }
             return tasks;
         },
@@ -1405,9 +1445,13 @@ $(document).ready(function () {
     // pop-up simulation type chooser
     $('#sim-type').modal(true);
 
-//    $('#review-settings-tab').click( function() {
-//        TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", sim.globalSettings.trafficLevels);
-//    });
+    $('#review-settings-tab').click( function() {
+        for(var i=0;i<sim.fleetSettings.fleetTypes;i++) {
+            TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevel" + i,
+                                                          sim.fleetSettings.fleets[i].trafficLevels,
+                                                          sim.fleetSettings.fleets[i].diffTrafficLevels === 'y');
+        }
+    });
 });
 
 function showDownloadBtn() {

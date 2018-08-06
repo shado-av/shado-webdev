@@ -672,14 +672,14 @@ var TrafficLevelBarChart = (function () {
         "0": -0.1
     };
 
-    var drawTrafficeLevelBarChart = function (barChartId, trafficLevels) {
+    var drawTrafficLevelBarChart = function (barChartId, trafficLevels, isChanging) {
         var trafficHours = trafficLevels.length;
 
         var data = [];
         for (var i = 0; i < trafficHours; i++) {
             data[i] = {
                 hour: i,
-                level: trafficLevels[i]
+                level: (isChanging) ? trafficLevels[i] : 'm'
             };
         }
 
@@ -762,7 +762,7 @@ var TrafficLevelBarChart = (function () {
     }
 
     return {
-        drawTrafficeLevelBarChart: drawTrafficeLevelBarChart
+        drawTrafficLevelBarChart: drawTrafficLevelBarChart
     };
 })();
 

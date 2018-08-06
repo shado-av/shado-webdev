@@ -361,11 +361,17 @@
                     <div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
-                            <label class="custom-control-label" for="exo-type-1">Medical Emergency</label>
+                            <label class="custom-control-label" for="exo-type-1">
+                                Type 1
+<!--                                {{globalSettings.exoFactorsName[0]}}-->
+                            </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
-                            <label class="custom-control-label" for="exo-type-2">Weather</label>
+                            <label class="custom-control-label" for="exo-type-2">
+                                Type 2
+<!--                                {{globalSettings.exoFactorsName[1]}}-->
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -465,7 +471,7 @@
 
                         <!-- task affected by team coordination (task.affExoTeamCoord) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by weather?</label>
+<!--                            <label class="col-form-label">Is this task affected by {{globalSettings.exoFactorsName[1]}}?</label>-->
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
@@ -1191,25 +1197,19 @@
                         </thead>
                         <tr>
                             <td>Type of simulation</td>
-                            <td><b>{{globalSettings.simType}}</b></td>
+                            <td>{{globalSettings.simType}}</td>
                         </tr>
                         <tr>
                             <td>Shift Scheduled</td>
                             <td>{{globalSettings.numHours }} hours</td>
                         </tr>
-<!--
-                        <tr>
-                            <td>Traffic Levels By Hours</td>
-                            <td><svg id="trafficLevel" width="400" height="300"></svg></td>
-                        </tr>
--->
                         <tr>
                             <td>Transitioning Period</td>
-                            <td><b>{{hasTransitionForReview}}</b></td>
+                            <td>{{hasTransitionForReview}}</td>
                         </tr>
                         <tr>
                             <td>Exogenous factor</td>
-                            <td><b>{{hasExogenousForReview}}</b></td>
+                            <td>{{hasExogenousForReview}}</td>
                         </tr>
                     </table>
                 </div>
@@ -1218,9 +1218,79 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">Advanced Settings</th>
+                                <th colspan="2">Fleets</th>
                             </tr>
                         </thead>
+                        <tr v-for="(fleet, index) in fleetSettings.fleets">
+                            <td>
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2">{{ fleet.name }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Number of vehicles in fleet:</td>
+                                        <td>{{fleet.numVehicles}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vehivle to Vehicle Communications:</td>
+                                        <td>{{miscSettings.comms[fleet.comms]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasks Associated with Fleet:</td>
+                                        <td>{{fleetTasksForReview[index].join(", ")}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Traffice Levels</td>
+                                        <td>{{fleet.trafficLevels}}
+                                            <svg :id='"trafficLevel" + index' width="400" height="300"></svg>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="form-group table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th colspan="2">Operators</th>
+                            </tr>
+                        </thead>
+                        <tr v-for="(team, index) in operatorSettings.teams">
+                            <td>
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2">{{ team.name }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td width="200px">Team Size</td>
+                                        <td>{{team.size}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Communications</td>
+                                        <td>{{miscSettings.comms[team.comms]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Operator Strategy</td>
+                                        <td>{{team.strategy}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Operator Expertise</td>
+                                        <td>{{team.expertise}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Artificial Intelligence</td>
+                                        <td>{{AIDATypeForReview[index]}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                     </table>
                 </div>
 
@@ -1264,87 +1334,6 @@
                         </a>
                     </li>
                 </ul>
-                <h5>Operators</h5>
-                <ul>
-                    <li class="nav-item" v-for="(team, index) in operatorSettings.teams">
-                        <a class="nav-link disabled" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'"
-                            role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
-                            {{ team.name }}
-                            <ul>
-                                <li>Team Size:
-                                    <b>{{team.size}}</b>
-                                </li>
-                                <li>Operator Strategy:
-                                    <b>{{team.strategy}}</b>
-                                </li>
-                                <li>Communications:
-                                    <b>{{team.comms}}</b>
-                                </li>
-                                <li>Operator Tasks:
-                                    <b>{{team.tasks}}</b>
-                                </li>
-                                <li>Operator Priority:
-                                    <b>{{team.priority}}</b>
-                                </li>
-                                <li>Error Catching Chance:
-                                    <b>{{team.failThresh}}%</b>
-                                </li>
-                                <li>Artifical Intellegence</li>
-                                <ul>
-                                    <li>Equal Operator:
-                                        <b>{{team.AIDA.AIDAType[0]}}</b>
-                                        <ul v-show="team.AIDA.equalOperator">
-                                            <li>Affected Rate of Service Time : {{team.AIDA.ETServiceTime}} </li>
-                                            <li>Affected Rate of Error Rate : {{team.AIDA.ETErrorRate}} </li>
-                                            <li>Affected Rate of Error Catching Chance : {{team.AIDA.ETFailThreshold}} </li>
-                                        </ul>
-                                    </li>
-
-                                    <li>Assisting Individuals:
-                                        <b>{{team.AIDA.AIDAType[1]}}</b>
-                                        <ul v-show="team.AIDA.assistingIndividuals">
-                                            <li>Affected Tasks : {{team.AIDA.IATasks}} </li>
-                                            <li>Communication Level : {{team.AIDA.IALevel}} </li>
-                                        </ul>
-                                    </li>
-                                    <li>Assisting Team Coordination:
-                                        <b>{{team.AIDA.AIDAType[2]}}</b>
-                                        <ul v-show="team.AIDA.assistingTeamCoord">
-                                            <li>Communication Level : {{team.AIDA.TCALevel}} </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </ul>
-
-                        </a>
-                    </li>
-                </ul>
-                <h5>Fleets</h5>
-                <ul>
-                    <li class="nav-item" v-for="(fleet, index) in fleetSettings.fleets">
-                        <a class="nav-link disabled" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'"
-                            role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
-                            {{ fleet.name }}
-                            <ul>
-                                <li>Number of vehicles in fleet:
-                                    <b>{{fleet.numVehicles}}</b>
-                                </li>
-                                <li>Vehivle to Vehicle Communications:
-                                    <b>{{fleet.comms}}</b>
-                                </li>
-                                <li>Tasks Associated with Fleet:
-                                    <b>{{fleet.tasks}}</b>
-                                </li>
-                            </ul>
-                        </a>
-                    </li>
-                </ul>
-                <div id="container"></div>
-                <br>
-                <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div>
-                <br>
-
-
             </div>
 
             <!----------------------------------------- 
