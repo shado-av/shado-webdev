@@ -362,13 +362,13 @@
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
                             <label class="custom-control-label" for="exo-type-1">
-                                {{globalSettings.exoFactorsName[0]}}
+                                {{miscSettings.exoFactorsName[0]}}
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
                             <label class="custom-control-label" for="exo-type-2">
-                                {{globalSettings.exoFactorsName[1]}}
+                                {{miscSettings.exoFactorsName[1]}}
                             </label>
                         </div>
                     </div>
@@ -469,7 +469,7 @@
 
                         <!-- task affected by team coordination (task.affExoTeamCoord) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by                              {{globalSettings.exoFactorsName[1].toLowerCase()}}?
+                            <label class="col-form-label">Is this task affected by                              {{miscSettings.exoFactorsName[1].toLowerCase()}}?
                             </label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">

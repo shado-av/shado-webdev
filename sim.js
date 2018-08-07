@@ -78,7 +78,6 @@ var sim = new Vue({
             hasTransition: [false, false],  // has transitioning period at the beginning or at the ending
             transitionDists: ['U', 'U'],
             transitionPms: [[5,10], [12,15]],
-            exoFactorsName: ["Medical Emergency", "Weather"],
             exoFactorsType: [false, false]
         },
 
@@ -233,7 +232,7 @@ var sim = new Vue({
         },
 
         /* ------------------------------
-         * COMPUTED VALUES
+         * Fleet Settings
          * ------------------------------ */
 
         fleetSettings: {
@@ -258,6 +257,9 @@ var sim = new Vue({
             ]
         },
 
+        /* --------------------------------------------------------------------------------------------------------
+         * Misc Settings - These values are not saved or loaded. Only needed for temporary or description purpose.
+         * ------------------------------------------------------------------------------------------------------- */
         miscSettings: {
             downloadJsonData: "",
             downloadJsonVisible: false,
@@ -265,11 +267,15 @@ var sim = new Vue({
             isSaving: false,
             isLoading: false,
 
+            exoFactorsName: ["Medical Emergency", "Weather"],
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
         }
     },
 
+    /* ------------------------------
+     * COMPUTED VALUES
+     * ------------------------------ */
     computed: {
 
         /* ------------------------------
@@ -326,13 +332,14 @@ var sim = new Vue({
         // return review string for type of exo factors
         hasExogenousForReview() {
             var exoFT = this.globalSettings.exoFactorsType;
+            var exoFTName = this.miscSettings.exoFactorsName;
             var exoRv = "None";
 
-            console.log("exoFactorsName", exoFT, this.globalSettings.exoFactorsName);
+            //console.log("exoFactorsName", exoFT, exoFTName);
             if (exoFT[0] || exoFT[1]) {
-                if (exoFT[0]) exoRv = this.globalSettings.exoFactorsName[0];
-                if (exoFT[0] && exoFT[1]) exoRv += ", " + this.globalSettings.exoFactorsName[1];
-                else if (exoFT[1]) exoRv = this.globalSettings.exoFactorsName[1];
+                if (exoFT[0]) exoRv = exoFTName[0];
+                if (exoFT[0] && exoFT[1]) exoRv += ", " + exoFTName[1];
+                else if (exoFT[1]) exoRv = exoFTName[1];
             }
 
             return exoRv;
