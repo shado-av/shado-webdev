@@ -104,7 +104,7 @@ var sim = new Vue({
                         serviceParam: [
                             [0.5, 2],
                         ],
-                        expireDistribution: ["E"],
+                        expireDistribution: ["N"],
                         expireParam: [
                             [1440],
                         ],
@@ -131,7 +131,7 @@ var sim = new Vue({
                         serviceParam: [
                             [0.5, 2],
                         ],
-                        expireDistribution: ["E"],
+                        expireDistribution: ["N"],
                         expireParam: [
                             [1440],
                         ],
@@ -158,7 +158,7 @@ var sim = new Vue({
                         serviceParam: [
                             [0.5, 2],
                         ],
-                        expireDistribution: ["E"],
+                        expireDistribution: ["N"],
                         expireParam: [
                             [1440],
                         ],
@@ -964,7 +964,7 @@ var sim = new Vue({
                 serviceParam: [
                     [0.5, 2],
                 ],
-                expireDistribution: ["E"],
+                expireDistribution: ["N"],
                 expireParam: [
                     [1440],
                 ],

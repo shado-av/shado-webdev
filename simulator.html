@@ -665,7 +665,7 @@
                                         <option value="U">Uniform</option>
                                         <option value="C">Constant</option>
                                         <option value="T">Triangular</option>
-                                        <option value="N">None</option>
+                                        <option value="N">Never Expires</option>
                                     </select>
                                 </div>
 
@@ -726,11 +726,19 @@
 
                         <!-- traffic different (task.affectByIROPS) -->
                         <div class="form-group">
-                            <label class="mb-3">Adjust task traffic behavior:</label>
-                            <div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" :id="'task-' + index + 'traffic'" class="custom-control-input" v-model="task.affectByIROPS[0]">
-                                    <label class="custom-control-label" :for="'task-' + index + 'traffic'">Affected</label>
+                            <label class="col-form-label">Is this task affected by traffic?</label>
+                             <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio"
+                                        :id="'task-' + index + 'traffic-y'"
+                                        value="1" v-model.number="task.affectByIROPS[0]">
+                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-y'">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio"
+                                        :id="'task-' + index + 'traffic-n'"
+                                        value="0" v-model.number="task.affectByIROPS[0]">
+                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-n'">No</label>
                                 </div>
                             </div>
                         </div>
