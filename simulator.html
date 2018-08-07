@@ -219,7 +219,7 @@
                             <div class="modal-body">
                                 <div class="">
                                     <div class="column-4 image-card">
-                                        <a href="#" @click="setSimType('Aviation')">
+                                        <a href="javascript:void()" @click="setSimType('Aviation')">
                                             <img src="images/airport.jpg" class="img-responsive" alt="">
                                             <div class="overlay">
                                                 <h3 class="image-card-title">Aviation</h3>
@@ -227,7 +227,7 @@
                                         </a>
                                     </div>
                                     <div class="column-4 image-card">
-                                        <a href="#" @click="setSimType('Rail')">
+                                        <a href="javascript:void()" @click="setSimType('Rail')">
                                             <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                             <div class="overlay">
@@ -236,11 +236,13 @@
                                         </a>
                                     </div>
                                     <div class="column-4 image-card">
-                                        <img src="images/station.jpg" class="img-responsive" alt="">
+                                        <a href="javascript:void()" class="under-construction">
+                                            <img src="images/station.jpg" class="img-responsive" alt="">
 
-                                        <div class="overlay invisible">
-                                            <h3 class="image-card-title">Ground Logistics</h3>
-                                        </div>
+                                            <div class="overlay visible">
+                                                <h3 class="image-card-title">Under Construction</h3>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

@@ -504,6 +504,11 @@ footer .number-input button:after {
 .image-card {
   margin-bottom: 30px;
 }
+
+.image-card a.under-construction {
+  cursor: default;
+}
+
 .image-card a {
   display: block;
   position: relative;
@@ -539,14 +544,17 @@ footer .number-input button:after {
   transition: all 0.2s ease-out;
 }
 .image-card a:hover .overlay,
-.image-card a:focus .overlay {
+.image-card a:focus .overlay,
+.image-card a.under-construction .overlay {
   display: block;
   top: 0;
   opacity: 0.8;
   filter: alpha(opacity=80);
 }
+
 .image-card a:hover img,
-.image-card a:focus img {
+.image-card a:focus img,
+.image-card a.under-construction img {
   -webkit-transform: scale(1.2, 1.2);
   -ms-transform: scale(1.2, 1.2);
   transform: scale(1.2, 1.2);
