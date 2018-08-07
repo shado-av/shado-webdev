@@ -1217,11 +1217,11 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">Fleets</th>
+                                <th colspan="2">{{ fleetSettings.fleetTypes }} Fleets</th>
                             </tr>
                         </thead>
                         <tr v-for="(fleet, index) in fleetSettings.fleets">
-                            <td>
+                            <td colspan="2">
                                 <table class="form-group table">
                                     <thead class="thead-light">
                                         <tr>
@@ -1256,10 +1256,10 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">Operators</th>
+                                <th colspan="2">{{ totalOperatorTeams }} Operator Teams </th>
                             </tr>
                         </thead>
-                        <tr v-show="operatorSettings.hasFlexPosition">
+                        <tr v-show="operatorSettings.hasFlexPosition === 'y'">
                             <td colspan="2">
                                 <table class="form-group table">
                                     <thead class="thead-light">

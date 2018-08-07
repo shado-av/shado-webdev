@@ -559,6 +559,10 @@ var sim = new Vue({
             return (this.operatorSettings.hasFlexPosition === 'y') ? 1: 0;
         },
 
+        totalOperatorTeams() {
+            return this.operatorSettings.numTeams + ((this.operatorSettings.hasFlexPosition === 'y') ? 1: 0);
+        },
+
         flexTeamSize() {
             if (this.operatorSettings.hasFlexPosition === 'y') {
                 var fts = this.operatorSettings.flexTeamSize;
