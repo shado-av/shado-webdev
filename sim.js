@@ -263,10 +263,16 @@ var sim = new Vue({
         miscSettings: {
             downloadJsonData: "",
             downloadJsonVisible: false,
+
+            // Checking busy status
             onSubmit: false,
             isSaving: false,
             isLoading: false,
 
+            // This temporary stores text when input is focused. Later, this can be used to replace when user left with no text
+            inputString: "",
+
+            // System wide strings... usually required for Reviews.
             exoFactorsName: ["Medical Emergency", "Weather"],
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
@@ -1343,6 +1349,14 @@ var sim = new Vue({
                 document.getElementById("submitBtn").textContent = "Submit Again";
                 this.miscSettings.onSubmit = false;
             });
+        },
+
+        changeInputString(text, obj) {
+            //console.log("ChangeInputString", obj.name);
+            if (0 === obj.name.length || !obj.name.trim()) {
+                obj.name = this.miscSettings.inputString;
+                alert(text + "name should contain at least 1 characters. It reverts to " + obj.name + ".");
+            }
         }
     },
 

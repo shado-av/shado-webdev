@@ -219,7 +219,7 @@
                             <div class="modal-body">
                                 <div class="">
                                     <div class="column-4 image-card">
-                                        <a href="javascript:void()" @click="setSimType('Aviation')">
+                                        <a href="javascript:void(0)" @click="setSimType('Aviation')">
                                             <img src="images/airport.jpg" class="img-responsive" alt="">
                                             <div class="overlay">
                                                 <h3 class="image-card-title">Aviation</h3>
@@ -227,7 +227,7 @@
                                         </a>
                                     </div>
                                     <div class="column-4 image-card">
-                                        <a href="javascript:void()" @click="setSimType('Rail')">
+                                        <a href="javascript:void(0)" @click="setSimType('Rail')">
                                             <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                             <div class="overlay">
@@ -236,7 +236,7 @@
                                         </a>
                                     </div>
                                     <div class="column-4 image-card">
-                                        <a href="javascript:void()" class="under-construction">
+                                        <a href="javascript:void(0)" class="under-construction">
                                             <img src="images/station.jpg" class="img-responsive" alt="">
 
                                             <div class="overlay visible">
@@ -448,7 +448,8 @@
                         <div class="form-group form-row">
                             <label class="col-md-3 col-lg-2 col-form-label">Task Name</label>
                             <div class="col-md-9 col-lg-10">
-                                <input class="form-control" type="text" v-model="task.name">
+                                <input class="form-control" type="text" v-model="task.name"
+                                       @focus="miscSettings.inputString = task.name" @change = "changeInputString('Task', task)">
                             </div>
                         </div>
 
@@ -874,7 +875,7 @@
                             <div class="form-group form-row">
                                 <label class="col-md-3 col-lg-2 col-form-label">Team Name</label>
                                 <div class="col-md-9 col-lg-10">
-                                    <input class="form-control" type="text" v-model="team.name">
+                                    <input class="form-control" type="text" v-model="team.name" @focus="miscSettings.inputString = team.name" @change = "changeInputString('Team', team)">
                                 </div>
                             </div>
 
@@ -1109,7 +1110,8 @@
                         <div class="form-group form-row">
                             <label class="col-md-3 col-lg-2 col-form-label">Fleet Name</label>
                             <div class="col-md-9 col-lg-10">
-                                <input class="form-control" type="text" v-model="fleet.name">
+                                <input class="form-control" type="text" v-model="fleet.name"
+                                       @focus="miscSettings.inputString = fleet.name" @change = "changeInputString('Fleet', fleet)">
                             </div>
                         </div>
 
