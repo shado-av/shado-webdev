@@ -24,8 +24,14 @@
     }
 
     /* remove navigation */
-    nav, #sim-sidebar {
+    nav, #sim-sidebar,footer {
         display: none !important;
+    }
+    #shado-sim {
+        margin: 50px;
+    }
+    .spacer {
+        height: 0;
     }
 
     #sim-sidebar {
@@ -36,14 +42,32 @@
         margin: 0;
     }
 
+    #view-results .nav-tabs {
+        display: none;
+    }
+
+    #view-results-content > .tab-pane {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
     a,
     a:visited {
         text-decoration: underline;
     }
 
+    @page {
+        margin-top: 0.5in;
+        margin-bottom: 0.5in;
+        margin-left: 0.5in;
+        margin-right: 0.5in;
+    }
+/*
     a[href]:after {
         content: " (" attr(href) ")";
     }
+*/
 
     abbr[title]:after {
         content: " (" attr(title) ")";
