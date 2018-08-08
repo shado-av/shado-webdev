@@ -951,6 +951,9 @@
                 <h3 class="mb-4">Review Settings</h3>
 
                 <div class="form-group" id="warnings"></div>
+                <div class="form-group" v-show="miscSettings.showGoButton">
+                    <button class="btn btn-warning" @click="onSubmit(true)">Run simulation with warnings</button>
+                </div>
                 <div class="table-responsive">
                     <table class="form-group table">
                         <thead class="thead-light">
@@ -1249,7 +1252,7 @@
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
             <!--Submit Button-->
-            <button id="submitBtn" class="btn btn-success btn-sm ml-3" type="button" title="" @click="onSubmit" :disabled="miscSettings.onSubmit">Run Simulation</button>
+            <button id="submitBtn" class="btn btn-success btn-sm ml-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
         </footer>
     </div>
 </body>

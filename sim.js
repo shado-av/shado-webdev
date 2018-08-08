@@ -404,6 +404,7 @@ var sim = new Vue({
             onSubmit: false,
             isSaving: false,
             isLoading: false,
+            showGoButton: false,
 
             // This temporary stores text when input is focused. Later, this can be used to replace when user left with no text
             inputString: "",
@@ -1527,16 +1528,24 @@ var sim = new Vue({
             return count;
         },
 
-        onSubmit() {
-            var count =  this.checkInputData();
+        // when submit button is clicked! go checkes whether check the input or not...
+        onSubmit(go) {
+            //console.log("onSubmit", go);
+            if (!go) {  // false
+                var count =  this.checkInputData();
 
-            if (count[0] + count[1] > 0) {
-                alert("There are some warnings, please check the review settings page!");
-                this.$refs.reviewSettingsTab.click();
-                window.scrollTo(0,0);
-                return;
+                if (count[0] + count[1] > 0) {
+                    if (count[1] === 0) // only minor warnings...
+                        this.miscSettings.showGoButton = true;
+
+                    alert("There are some warnings, please check the review settings page!");
+                    this.$refs.reviewSettingsTab.click();
+                    window.scrollTo(0,0);
+                    return;
+                }
             }
 
+            this.miscSettings.showGoButton = false;
             this.miscSettings.onSubmit = true;
 
             var out = {
