@@ -408,6 +408,8 @@ var sim = new Vue({
 
             // This temporary stores text when input is focused. Later, this can be used to replace when user left with no text
             inputString: "",
+            // This string temporariliy stores warning message
+            warningMessage: "",
 
             // System wide strings... usually required for Reviews.
             exoFactorsName: ["Medical Emergency", "Weather"],
@@ -1407,21 +1409,22 @@ var sim = new Vue({
             const paramSize = { 'E': 1, 'C':1, 'U':2, 'L':2, 'T': 3};
 
             for(var i=0;i<length;i++) {
+                if (!this.checkNumbers(params[i], paramSize[dists[i]])) {
+                    this.miscSettings.warningMessage = "Distribution parameters should be greater than 0."
+                    return false;
+                }
                 switch(dists[i]) {
-                    case 'E':
-                    case 'C':
-                        if (!this.checkNumbers(params[i], 1)) return false;
-                        break;
-                    case 'L':
-                        if (!this.checkNumbers(params[i], 2)) return false;
-                        break;
                     case 'U':
-                        if (!this.checkNumbers(params[i], 2)) return false;
-                        if (params[i][0] > params[i][1]) return false;
+                        if (params[i][0] > params[i][1]) {
+                            this.miscSettings.warningMessage = "Minumum should be smaller than maximum.";
+                            return false;
+                        }
                         break;
                     case 'T':
-                        if (!this.checkNumbers(params[i], 3)) return false;
-                        if (params[i][0] > params[i][1] || params[i][0] > params[i][2] || params[i][1] > params[i][2]) return false;
+                        if (params[i][0] > params[i][1] || params[i][0] > params[i][2] || params[i][1] > params[i][2]) {
+                            this.miscSettings.warningMessage = "Minimum < Mode < Maximum";
+                            return false;
+                        }
                         break;
                 }
             }
@@ -1464,7 +1467,7 @@ var sim = new Vue({
             // check basic settings
             // turn over input complete?
             if (!this.checkDistribution(this.globalSettings.transitionDists, this.globalSettings.transitionPms, 2)) {
-                this.addReviewError("Check the transition phase parameters.", "basic-settings-tab", 2);
+                this.addReviewError("Check the transitioning period parameters. " + this.miscSettings.warningMessage, "basic-settings-tab", 2);
                 count[1]++;
             }
 
@@ -1473,22 +1476,22 @@ var sim = new Vue({
                 var task = this.taskSettings.tasks[i];
                 if (task.include) {
                     if (!this.checkDistribution(task.arrivalDistribution, task.arrivalParam, 1)) {
-                        this.addReviewError("Check the task " + task.name + " interarrival time parameters.", "tasks-" + i + "-settings-tab", 2);
+                        this.addReviewError("Fix the task, " + task.name + " interarrival time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
                         count[1]++;
                     }
 
                     if (!this.checkDistribution(task.serviceDistribution, task.serviceParam, 1)) {
-                        this.addReviewError("Check the task " + task.name + " service time parameters.", "tasks-" + i + "-settings-tab-tab", 2);
+                        this.addReviewError("Fix the task, " + task.name + " service time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab-tab", 2);
                         count[1]++;
                     }
 
                     if (!this.checkDistribution(task.expireDistribution, task.expireParam, 1)) {
-                        this.addReviewError("Check the task " + task.name + " expiration time parameters.", "tasks-" + i + "-settings-tab", 2);
+                        this.addReviewError("Fix the task, " + task.name + " expiration time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
                         count[1]++;
                     }
 
                     if (!this.checkDistribution(['T'], task.humanErrorProb, 1)) {
-                        this.addReviewError("Check the task " + task.name + " human error probability parameters.", "tasks-" + i + "-settings-tab", 2);
+                        this.addReviewError("Fix the task, " + task.name + " human error probability parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
                         count[1]++;
                     }
                 }
