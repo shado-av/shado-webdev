@@ -1388,17 +1388,167 @@ var sim = new Vue({
             }
         },
 
+        // check whether the params is numbers and greater than zero
+        checkNumbers(params, length) {
+            for(var i=0;i<length;i++) {
+               if (typeof params[i] !== 'number' || params[i] <= 0)
+                    return false;
+            }
+            return true;
+        },
+
+        // check whether the current distribution setting is correct
+        // bigger than 0
+        // min < max (uniform)
+        // min < mode < max (triangular)
+        checkDistribution(dists, params, length) {
+            if (dists.length !== length) return false;
+            const paramSize = { 'E': 1, 'C':1, 'U':2, 'L':2, 'T': 3};
+
+            for(var i=0;i<length;i++) {
+                switch(dists[i]) {
+                    case 'E':
+                    case 'C':
+                        if (!this.checkNumbers(params[i], 1)) return false;
+                        break;
+                    case 'L':
+                        if (!this.checkNumbers(params[i], 2)) return false;
+                        break;
+                    case 'U':
+                        if (!this.checkNumbers(params[i], 2)) return false;
+                        if (params[i][0] > params[i][1]) return false;
+                        break;
+                    case 'T':
+                        if (!this.checkNumbers(params[i], 3)) return false;
+                        if (params[i][0] > params[i][1] || params[i][0] > params[i][2] || params[i][1] > params[i][2]) return false;
+                        break;
+                }
+            }
+
+            return true;
+        },
+
+        // check wheter one active task/fleet is selected
+        checkExpertise(team) {
+            for(var i=0;i<this.taskSettings.tasks.length;i++) {
+                if (this.taskSettings.tasks[i].include && this.checkIfTaskSelected(team, i)) return true;
+            }
+            return false;
+        },
+
+        // add error or warning to the review settings
+        // error - 0(info), 1(warning), 2(error)
+        addReviewError(msg, tabId, errorLevel) {
+            var eLevel = errorLevel || 0;
+            const errorClass = ["info", "warning", "danger"];
+
+            var warningNode = document.getElementById('warnings');
+
+            var newNode = document.createElement('div');
+            newNode.className = 'alert alert-' + errorClass[eLevel];
+            newNode.innerHTML = msg + " <a href='javacrpt:void(0)' data-id='" + tabId + "'>Edit</a>";
+            warningNode.appendChild(newNode);
+        },
+
+        // check current user input
+        checkInputData() {
+            var count = [0,0];
+
+            // remove all warnings
+            var warningNode = document.getElementById('warnings');
+            while (warningNode.firstChild) {
+                warningNode.removeChild(warningNode.firstChild);
+            }
+
+            // check basic settings
+            // turn over input complete?
+            if (!this.checkDistribution(this.globalSettings.transitionDists, this.globalSettings.transitionPms, 2)) {
+                this.addReviewError("Check the transition phase parameters.", "basic-settings-tab", 2);
+                count[1]++;
+            }
+
+            // check task params
+            for(var i=0;i<this.taskSettings.tasks.length;i++) {
+                var task = this.taskSettings.tasks[i];
+                if (task.include) {
+                    if (!this.checkDistribution(task.arrivalDistribution, task.arrivalParam, 1)) {
+                        this.addReviewError("Check the task " + task.name + " interarrival time parameters.", "tasks-" + i + "-settings-tab", 2);
+                        count[1]++;
+                    }
+
+                    if (!this.checkDistribution(task.serviceDistribution, task.serviceParam, 1)) {
+                        this.addReviewError("Check the task " + task.name + " service time parameters.", "tasks-" + i + "-settings-tab-tab", 2);
+                        count[1]++;
+                    }
+
+                    if (!this.checkDistribution(task.expireDistribution, task.expireParam, 1)) {
+                        this.addReviewError("Check the task " + task.name + " expiration time parameters.", "tasks-" + i + "-settings-tab", 2);
+                        count[1]++;
+                    }
+
+                    if (!this.checkDistribution(['T'], task.humanErrorProb, 1)) {
+                        this.addReviewError("Check the task " + task.name + " human error probability parameters.", "tasks-" + i + "-settings-tab", 2);
+                        count[1]++;
+                    }
+                }
+            }
+
+            // check fleet params
+            // Any task is selected for each fleet? warning
+            if (this.fleetSettings.fleetTypes !== this.fleetSettings.fleets.length) {
+                this.addReviewError("Check the number of fleets settings.", "fleets-global-settings-tab");
+                count[0]++;
+            }
+            for(var i=0;i<this.fleetSettings.fleetTypes;i++) {
+                var fleet = this.fleetSettings.fleets[i];
+
+                if (fleet.tasks.length < 1) {
+                    this.addReviewError("At least one task needs to be selected for the fleet, " + fleet.name + ".", "fleet-" + i + "-settings-tab");
+                    count[0]++;
+                }
+            }
+
+            // check opteam params
+            for(var i=0;i<this.operatorSettings.numTeams;i++) {
+                var opteam = this.operatorSettings.teams[i];
+
+                // at least one expertise is selected, warning
+                if (!this.checkExpertise(opteam)) {
+                    this.addReviewError("At least one active tasks/fleets combo needs to be checked for the operator team " + opteam.name + ".", "opteam-" + i + "-settings-tab");
+                    count[0]++;
+                }
+                // at least one tasks for aida assisting individuals is selected, warning
+                if (opteam.AIDA.AIDAType[1] && opteam.AIDA.IATasks.length < 1) {
+                    this.addReviewError("At least one task needs to be associated with AIDA assisting individuals for the operator team, " + opteam.name + ".", "opteam-" + i + "-settings-tab");
+                    count[0]++;
+                }
+            }
+
+            return count;
+        },
+
         onSubmit() {
+            var count =  this.checkInputData();
+
+            if (count[0] + count[1] > 0) {
+                alert("There are some warnings, please check the review settings page!");
+                this.$refs.reviewSettingsTab.click();
+                window.scrollTo(0,0);
+                return;
+            }
+
             this.miscSettings.onSubmit = true;
+
             var out = {
+                // Basic Settings
                 "numHours": sim.globalSettings.numHours,
-                "traffic": sim.traffic,
                 "numReps": sim.numReps,
                 "hasTurnOver": sim.hasTransition,
                 "turnOverDists": sim.globalSettings.transitionDists,
                 "turnOverPms": sim.transitionPms,
                 "hasExogenous": sim.hasExogenous,
 
+                // Operators Settings
                 "numTeams": sim.operatorSettings.numTeams,
                 "teamSize": sim.teamSize,
                 "hasFlexPosition": sim.hasFlexPosition,
@@ -1412,6 +1562,7 @@ var sim = new Vue({
                 "humanError": sim.humanError,
                 "ECC": sim.teamFailThreshold,
 
+                // AIDA Settings
                 "AIDAtype": sim.AIDAType,
                 "ETServiceTime": sim.ETServiceTime,
                 "ETErrorRate": sim.ETErrorRate,
@@ -1420,12 +1571,15 @@ var sim = new Vue({
                 "IALevel": sim.IALevel,
                 "TCALevel": sim.TCALevel,
 
+                // Fleet Settings
                 "fleetTypes": sim.fleetSettings.fleetTypes,
                 "fleetNames": sim.fleetNames,
                 "numvehicles": sim.numVehicles,
                 "autolvl": sim.fleetAutoLevel,
                 "fleetHetero": sim.fleetHetero,
+                "traffic": sim.traffic,
 
+                // Task Settings
                 "numTaskTypes": sim.numTotalTaskTypes,
                 "taskNames": sim.taskNames,
                 "arrDists": sim.arrDists,
@@ -1628,6 +1782,21 @@ $(document).ready(function () {
                                                           sim.fleetSettings.fleets[i].trafficLevels,
                                                           sim.fleetSettings.fleets[i].diffTrafficLevels === 'y');
         }
+    });
+
+    $("#review-settings").on("click", "a", function() {
+        var id = $(this).data("id");
+
+        // double visiting...
+        if (id.startsWith("opteam-")) {
+            $('#operators-settings-tab').click();
+        } else if (id.startsWith("fleet-")) {
+            $('#fleets-settings-tab').click();
+        } else if (id.startsWith("tasks-")) {
+            $('#tasks-settings-tab').click();
+        }
+
+        $('#' + $(this).data("id")).click();
     });
 });
 

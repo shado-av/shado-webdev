@@ -140,7 +140,7 @@
 
                                 <!-- overview -->
                                 <li class="nav-item">
-                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false">
+                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false" ref="reviewSettingsTab">
                                         Review Settings
                                     </a>
                                 </li>
@@ -273,7 +273,7 @@
 
                 <!-- different traffic levels (diffTrafficLevels) -->
                 <div class="form-group">
-                    <label class="col-form-label">2. Check if there is a transitioning period at the beginning or ending of this shift:</label>
+                    <label class="col-form-label">2. Check if there is a transitioning period at the beginning or ending of this shift.</label>
                     <div v-show="globalSettings.isTransition === 'y'">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-beginning" class="custom-control-input" v-model="globalSettings.hasTransition[0]">
@@ -297,7 +297,7 @@
                 <!--                <h5 class="mb-3">Exogenous Factors</h5>-->
                 <!-- type of exogenous factors (exoFactorsType) -->
                 <div class="form-group">
-                    <label>3. Are there any extreme conditions?:</label>
+                    <label>3. Are there any extreme conditions?</label>
                     <div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
@@ -950,6 +950,7 @@
 
                 <h3 class="mb-4">Review Settings</h3>
 
+                <div class="form-group" id="warnings"></div>
                 <div class="table-responsive">
                     <table class="form-group table">
                         <thead class="thead-light">
