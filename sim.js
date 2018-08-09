@@ -819,7 +819,7 @@ var sim = new Vue({
             for (var i = 0; i < this.operatorSettings.teams.length; i++) {
                 ft.push([]);
                 for(var j=0; j < this.taskSettings.tasks.length;j++) {
-                    if (this.taskSettings.tasks[i].include) {
+                    if (this.taskSettings.tasks[j].include) {
                         ft[i].push(this.operatorSettings.teams[i].failThresh[0][j] / 100);
                     }
                 }
