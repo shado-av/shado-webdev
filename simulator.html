@@ -1241,7 +1241,7 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Save the current user settings"><span class="fas fa-info-circle"></span></span></button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Save the current user settings"><span class="fas fa-info-circle"></span></span></button>
 
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData' :disabled="miscSettings.isLoading">Load Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Load the previously saved user settings"><span class="fas fa-info-circle"></span></span></button>
 <!--
@@ -1250,12 +1250,13 @@
 -->
 
             <!--Number of replications selection-->
-            <span class="ml-auto">
-                <label for="num-reps"># Replications&nbsp;</label>
+            <span class="ml-md-auto">
+                <label class="d-sm-none"># Rep&nbsp;</label>
+                <label class="d-none d-sm-block"># Replications&nbsp;</label>
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
             <!--Submit Button-->
-            <button id="submitBtn" class="btn btn-success btn-sm ml-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
+            <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
         </footer>
     </div>
 </body>
