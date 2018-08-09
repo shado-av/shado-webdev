@@ -321,21 +321,26 @@ var BoxPlot = (function () {
 
             // create tabviews with number to match the number of op teams
 
-            var id = $("#" + tabIds[0] + " .nav-tabs li").length;
-            if (groupLength.length > id) {
+            var tabLength = $("#" + tabIds[0] + " .nav-tabs li").length;
+            console.log("Tab length", tabLength, groupLength.length);
+            if (groupLength.length > tabLength) {
                 // add more tabs
                 for (j=0; j<tabIds.length; j++) {
-                    for(i = id; i<groupLength.length;i++) {
+                    for(i = tabLength; i<groupLength.length;i++) {
                         var tabId = tabIds[j] + 'Tab_' + i;
-                        $("#" + tabIds[j] + " .nav-tabs").append('<li class="nav-item"><a href="#' + tabId + '" data-toggle="tab" class="nav-link">'+ groupName[i] +'</a></li>');
+                        var liId = tabIds[j] + "Li_" + i;
+                        $("#" + tabIds[j] + " .nav-tabs").append('<li class="nav-item" id="' + liId + '"><a href="#' + tabId + '" data-toggle="tab" class="nav-link">'+ groupName[i] +'</a></li>');
                         $("#" + tabIds[j] + " .tab-content").append('<div class="tab-pane" id="' + tabId + '"><svg id="' + tabIds[j] + i + '" width="900" height="450"></svg>');
                     }
                 }
-            } else if (groupLength.length < id) {
+            } else if (groupLength.length < tabLength) {
                 for (j=0; j<tabIds.length; j++) {
                     // remove tabsbarGraphPerFleet
-                    for(i = id; i<groupLength.length;i++) {
-                        var tabId = tabIds[1] + 'Tab_' + i;
+                    for(i = tabLength - 1; i>=groupLength.length;i--) {
+                        var tabId = tabIds[j] + 'Tab_' + i;
+                        var liId = tabIds[j] + "Li_" + i;
+                        console.log(tabId);
+                        $("#"+liId).remove();
                         $("#"+tabId).remove();
                     }
                 }
