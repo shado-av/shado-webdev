@@ -577,9 +577,10 @@
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
-                                <label for="num-operators">How many different teams of operators are there?</label>
-                                <input type="number" class="form-control width-small" min="1" max="99" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
-                                    @change="updateOperatorTeams">
+                                <div>How many different teams of operators are there?</div>
+                                <percentage-input :min=1 :max=99 :step=1 number-only
+                                    :value.sync="operatorSettings.numTeams" @change="updateOperatorTeams"
+                                    ></percentage-input>
                             </div>
 
                             <!-- Is this operator flexible? -->
@@ -604,8 +605,9 @@
                             </div>
                             <!-- How many operators are in the flex team? -->
                             <div class="form-group" v-show="operatorSettings.hasFlexPosition === 'y'">
-                                <label>How many operators are in the flex team?</label>
-                                <input class="form-control width-small" type="number" min="1" max="99" v-model.number="operatorSettings.flexTeamSize">
+                                <div>How many operators are in the flex team?</div>
+                                <percentage-input :min=1 :max=99 :step=1 number-only
+                                    :value.sync="operatorSettings.flexTeamSize"></percentage-input>
                             </div>
                     </div>
 
@@ -839,9 +841,9 @@
 
                         <!-- number of fleets (fleetTypes) -->
                         <div class="form-group">
-                            <label for="num-fleets">How many different fleets do the operators manage?</label>
-                            <input type="number" class="form-control width-small" min="1" max="99" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
-                                @change="updateFleets">
+                            <div>How many different fleets do the operators manage?</div>
+                            <percentage-input :min=1 :max=99 :step=1 number-only
+                                :value.sync="fleetSettings.fleetTypes" @change="updateFleets"></percentage-input>
                         </div>
                     </div>
 
@@ -868,8 +870,9 @@
 
                         <!-- number of vehicles (fleet.numVehicles) -->
                         <div class="form-group">
-                            <label for="num-fleets">How many vehicles are in this fleet?</label>
-                            <input type="number" class="form-control width-small" min="1" max="99" step="1" v-model.number="fleet.numVehicles">
+                            <div>How many vehicles are in this fleet?</div>
+                            <percentage-input :min=1 :max=99 :step=1 number-only
+                                :value.sync="fleet.numVehicles"></percentage-input>
                         </div>
 
                         <!-- fleet communications (fleet.comms) -->

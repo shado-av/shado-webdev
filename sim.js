@@ -161,23 +161,18 @@ Vue.component('percentage-input', {
             default: true
         }
     },
-    data: function () {
-        return {
-            counter: this.value
-        }
-    },
     methods: {
         stepNumberInput(step) {
-            this.counter += step;
-            this.validateInput(this.counter);
+            this.validateInput(this.value + step);
         },
 
         validateInput(val) {
-            this.counter = val;
-            if (this.counter < this.min) this.counter = this.min;
-            if (this.counter > this.max) this.counter = this.max;
-            this.$emit('update:value', this.counter);
-            this.$forceUpdate();    // sometimes update not working...
+            if (val < this.min) val = this.min;
+            if (val > this.max) val = this.max;
+
+            this.$emit('update:value', val);
+            this.$forceUpdate();    // not updating when you input more than max twice
+            this.$emit('change');   // change event...
         }
     },
     template: `<div :class="['number-input', {'mt-3' : margin}, {'mb-3' : margin}]">
