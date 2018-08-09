@@ -604,3 +604,11 @@ footer .number-input button:after {
 #taskRecordTable td:nth-child(3n) {
   border-left: 1px black solid;
 }
+
+#view-results-tab.previous {
+  color: #aaaaaa;
+}
+
+#view-results-tab.previous.nav-link.active, #view-results-tab.previous.nav-link:hover {
+  color: #888888;
+}

@@ -148,8 +148,8 @@
                                     Results
                                 </div>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
-                                        selected="false">
+                                    <a class="nav-link" :class="[miscSettings.viewResultsClass]" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
+                                        selected="false" :disabled="miscSettings.viewResultsDisabled">
                                         View Results
                                     </a>
                                 </li>
@@ -173,14 +173,14 @@
 
                 <div id="downloadBtn" style="display: none" align="center">
                     <div class="divider"></div>
-                    <button id="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
+                    <button @click="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
                     <div class="divider"></div>
 <!--
-                    <button id="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
+                    <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
                         <br> Output JSON</button>
 -->
                     <div class="divider"></div>
-                    <button id="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
+                    <button @click="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
                         <br> Summary</button>
                 </div>
                 <br>
@@ -955,7 +955,7 @@
 
                 <div class="form-group" id="warnings"></div>
                 <div class="form-group" v-show="miscSettings.showGoButton">
-                    <button class="btn btn-warning" @click="onSubmit(true)">Run simulation with warnings</button>
+                    <button class="btn" :class="[miscSettings.showGoClass]" @click="onSubmit(true)">{{miscSettings.showGoText}}</button>
                 </div>
                 <div class="table-responsive">
                     <table class="form-group table">

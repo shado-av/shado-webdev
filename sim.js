@@ -400,14 +400,24 @@ var sim = new Vue({
             isSaving: false,
             isLoading: false,
             showGoButton: false,
+            showGoText: "Run Simulation",
+            showGoClass: "btn-success",
+
+            viewResultsClass: "d-none",
 
             // This temporary stores text when input is focused. Later, this can be used to replace when user left with no text
             inputString: "",
             // This string temporariliy stores warning message
             warningMessage: "",
 
+            // When the results is available Id is set
+            sessionId: "",
+            sessionQuery: "",
+
             // System wide strings... usually required for Reviews.
             exoFactorsName: ["Medical Emergency", "Weather"],
+
+            // Other Constants... maybe moved to env? or some variable holding constants.
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
         }
@@ -1606,7 +1616,6 @@ var sim = new Vue({
             console.log("JSON output: ", out);
             //hide download
             document.getElementById("downloadBtn").style.display = "none";
-            // document.getElementById("downloadSummary").style.display = "none";
 
             //Download Json
             this.miscSettings.downloadJsonVisible = true;
@@ -1618,20 +1627,25 @@ var sim = new Vue({
                 }
             }).then((msg) => {
                 console.log("response success received");
-                console.log(msg.data);
-                var sessionId = msg.data.substr(msg.data.lastIndexOf(":") + 2);
-                var sessionQuery = "?sessionN=" +sessionId;
-                console.log(sessionId, sessionQuery);
+                this.miscSettings.sessionId = msg.data.substr(msg.data.lastIndexOf(":") + 2);
+                this.miscSettings.sessionQuery = "?sessionN=" + this.miscSettings.sessionId;
+                console.log(this.miscSettings.sessionId, this.miscSettings.sessionQuery);
                 alert("Simulation complete. View the results.");
 
                 // Show download button
-                showDownloadBtn();
-                BoxPlot.visualize(env.serverUrl + "/shado/getUtilizationJSON" + sessionQuery, "#boxSVG", "1");
+                document.getElementById("downloadBtn").style.display = "block";
+
+                BoxPlot.visualize(env.serverUrl + "/shado/getUtilizationJSON" + this.miscSettings.sessionQuery,
+                                  "#boxSVG", "1");
 
                 // pieChart only works when it is visible
-                FailedTaskAnalysis.analyze(env.serverUrl + "/shado/getTaskJSON" + sessionQuery, "pieChart", "#taskRecordTable");
+                FailedTaskAnalysis.analyze(env.serverUrl + "/shado/getTaskJSON" + this.miscSettings.sessionQuery,
+                                           "pieChart", "#taskRecordTable");
 
-                this.$refs.viewResultsTab.click();
+                this.miscSettings.viewResultsClass = "";
+                this.$nextTick( function() {
+                    this.$refs.viewResultsTab.click();
+                });
 
                 FailedTaskAnalysis.refreshPie();
             })
@@ -1654,6 +1668,19 @@ var sim = new Vue({
                 obj.name = this.miscSettings.inputString;
                 alert(text + "name should contain at least 1 characters. It reverts to " + obj.name + ".");
             }
+        },
+
+        // download links...
+        downloadCSV() {
+            window.location.href = env.serverUrl + "/shado/getRepDetail" + this.miscSettings.sessionQuery;
+        },
+
+        downloadSummary() {
+            window.location.href = env.serverUrl + "/shado/getSummary" + this.miscSettings.sessionQuery;
+        },
+
+        downloadJSON() {
+            window.location.href = env.serverUrl + "/shado/getUtilizationJSON" + this.miscSettings.sessionQuery;
         }
     },
 
@@ -1719,51 +1746,6 @@ var sim = new Vue({
 });
 
 $(document).ready(function () {
-    var serverName = env.serverUrl;
-    var sessionId = "";
-    var sessionQuery = "";
-
-    //Download  
-    $("#downloadCSV").click(function () {
-        //  $.get("http://localhost:8080/shado/getRepDetail");
-        window.location.href = serverName + "/shado/getRepDetail" + sessionQuery;
-        win.focus();
-        console.log("GET request 'getRepDetail' sent");
-    });
-
-    $("#downloadSummary").click(function () {
-        var xhttp = new XMLHttpRequest();
-        // $.get("http://localhost:8080/shado/getSummary");
-        // xhttp.open("GET", "http://localhost:8080/shado/getSummary", true);
-        window.location.href = serverName + "/shado/getSummary" + sessionQuery;
-        win.focus();
-        console.log("GET request 'getSummary' sent");
-    });
-
-    $("#downloadJSON").click(function () {
-        window.location.href = serverName + "/shado/getUtilizationJSON" + sessionQuery;
-        console.log("GET request 'getUtilizationJSON' sent");
-    });
-
-//    $(function () {
-//        $("form").submit(function () {
-//            return false;
-//        });
-//    });
-
-    // when tab is selected, focus on the first input
-    $("#sim-content").on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
-        var target = e.target.attributes.href.value;
-        var selectedTab = $(target + ' a.active');
-
-        if (selectedTab.length > 0) {
-            target = selectedTab[0].attributes.href.value;
-        }
-
-        if ($(target + ' input[type=text]').length > 0)
-            $(target + ' input[type=text]')[0].focus();
-    });
-
     // In Firefox, mousewheel should not change the value of the input number
     $("#sim-content").on('wheel', 'input[type=number]', function () {
         var el = $(this);
@@ -1783,14 +1765,40 @@ $(document).ready(function () {
     // pop-up simulation type chooser
     $('#sim-type').modal(true);
 
-    $('#review-settings-tab').click( function() {
+    // When review settings tab is clicked, redraw fleetSettings
+    $('#review-settings-tab').click( function(e) {
         for(var i=0;i<sim.fleetSettings.fleetTypes;i++) {
             TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevel" + i,
                                                           sim.fleetSettings.fleets[i].trafficLevels,
                                                           sim.fleetSettings.fleets[i].diffTrafficLevels === 'y');
         }
+
+        var count = sim.checkInputData();
+        if (count[1] > 0) // only minor warnings...
+            sim.miscSettings.showGoButton = false;
+        else {
+            sim.miscSettings.showGoButton = true;
+            if (count[0] > 0) {
+                sim.miscSettings.showGoText = "Run Simulation with Warnings";
+                sim.miscSettings.showGoClass = "btn-warning";
+            } else {
+                sim.miscSettings.showGoText = "Run Simulation";
+                sim.miscSettings.showGoClass = "btn-success";
+            }
+        }
     });
 
+    // If a main menu without view-results clicked...
+    $("#settings-nav a").click( function(e) {
+        var target = e.target.attributes.href.value;
+        if (target !== "#view-results") {
+            if (sim.miscSettings.viewResultsClass === "") {
+                sim.miscSettings.viewResultsClass = "previous";
+            }
+        }
+    });
+
+    // From review settings to each edit tab
     $("#review-settings").on("click", "a", function() {
         var id = $(this).data("id");
 
@@ -1805,9 +1813,17 @@ $(document).ready(function () {
 
         $('#' + $(this).data("id")).click();
     });
-});
 
-function showDownloadBtn() {
-    document.getElementById("downloadBtn").style.display = "block";
-    document.getElementById("downloadSummary").style.display = "block";
-}
+    // when tab is selected, focus on the first input
+    $("#sim-content").on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+        var target = e.target.attributes.href.value;
+        var selectedTab = $(target + ' a.active');
+
+        if (selectedTab.length > 0) {
+            target = selectedTab[0].attributes.href.value;
+        }
+
+        if ($(target + ' input[type=text]').length > 0)
+            $(target + ' input[type=text]')[0].focus();
+    });
+});
