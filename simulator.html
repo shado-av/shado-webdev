@@ -1168,10 +1168,12 @@
                     <!-- Results Utilization -->
                     <div class="tab-pane fade show active" id="results-utilization" role="tabpanel" aria-labelledby="results-utilization-tab">
                         <h3 class='subtitle'>Utilization per Operator</h3>
-                        <!-- Modal -->
-                        <svg id="boxSVG" width="960" height="450"></svg>
 
-                        <div class="form-group">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the operator’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
+                        <div class="table-responsive">
+                            <svg id="boxSVG" width="960" height="450"></svg>
+                        </div>
+
+                        <div class="form-group mt-5">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the operator’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
 
                         <h3 class='subtitle'>By Tasks</h3>
                         <div id="barGraphPerTask" class="mt-5 mb-5">
@@ -1201,7 +1203,8 @@
 
                         <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
 
-                        <div id="pieChart"></div>
+                        <div id="pieChart" class="table-responsive"></div>
+
 
                         <div class="form-group">Placeholder for explanation</div>
                         <div class="mb-5 mt-5 table-responsive">

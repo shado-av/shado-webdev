@@ -86,10 +86,14 @@ var BarChartWithError = (function (index, isFleet) {
         z.domain(keys);
 
         // set ticks
+        var showXTick = true;
+        if (barCounts > 10) {
+            showXTick = false;
+        }
         g.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ return showXTick; })));
 
         g.append("g")
             .attr("class", "axis")
@@ -267,8 +271,8 @@ var BoxPlot = (function () {
     var barWidth = 25;
     var margin = {
         top: 40,
-        right: 50,
-        bottom: 80,
+        right: 100,
+        bottom: 40,
         left: 50
     };
     var width = width - margin.left - margin.right,
@@ -330,7 +334,7 @@ var BoxPlot = (function () {
                         var tabId = tabIds[j] + 'Tab_' + i;
                         var liId = tabIds[j] + "Li_" + i;
                         $("#" + tabIds[j] + " .nav-tabs").append('<li class="nav-item" id="' + liId + '"><a href="#' + tabId + '" data-toggle="tab" class="nav-link">'+ groupName[i] +'</a></li>');
-                        $("#" + tabIds[j] + " .tab-content").append('<div class="tab-pane" id="' + tabId + '"><svg id="' + tabIds[j] + i + '" width="900" height="450"></svg>');
+                        $("#" + tabIds[j] + " .tab-content").append('<div class="tab-pane table-responsive" id="' + tabId + '"><svg id="' + tabIds[j] + i + '" width="900" height="450"></svg></div>');
                     }
                 }
             } else if (groupLength.length < tabLength) {
@@ -408,8 +412,10 @@ var BoxPlot = (function () {
 
             for (i = 0, j = 0; i < groupLength.length; i++) {
                 j+=groupLength[i];
-                xTickVal[i] = (xStart + xEnd)/2;
-                xTickStr[i] = groupName[i];
+                if (groupLength.length <= 10) {
+                    xTickVal[i] = (xStart + xEnd)/2;
+                    xTickStr[i] = groupName[i];
+                }
                 if (i<groupLength.length-1) {
                     xStart = xEnd + barWidthExpected;
                     xEnd = xStart + (groupLength[i+1]) * barWidthExpected;
@@ -646,10 +652,10 @@ var BoxPlot = (function () {
             svg.append("text")
                 .attr("transform",
                     "translate(" + (width / 2) + " ," +
-                    (height + margin.bottom) + ")")
+                    (height + margin.top + margin.bottom - 5) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .text("Operator Name");
+                .text("Operator Team Name");
 
             // text label for the y axis
             svg.append("text")
