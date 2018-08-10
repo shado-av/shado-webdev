@@ -115,68 +115,61 @@
                 <!-- links to different tabs -->
                 <ul class="nav nav-pills" id="sim-nav" role="tablist" aria-orientation="vertical">
 
-                    <!-- links to different settings tabs -->
-                    <li class="nav-item mb-3">
-                        <div id="settings-menu-toggle" class="nav-link nav-header">
-                            Settings
-                        </div>
-                        <div id="settings-nav" class="collapse show" data-parent="#sim-nav-submenus">
-                            <ul class="nav nav-pills">
+                    <li id="settings-menu-toggle" class="nav-link nav-header">
+                        Settings
+                    </li>
 
-                                <!-- basic settings -->
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings"
-                                        selected="true">Basic Settings</a>
-                                </li>
+                    <!-- basic settings -->
+                    <li class="nav-item">
+                        <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings"
+                            selected="true">Basic Settings</a>
+                    </li>
 
-                                <!-- tasks -->
-                                <li class="nav-item">
-                                    <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings"
-                                        selected="false">
-                                        Tasks
-                                    </a>
-                                </li>
+                    <!-- tasks -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings"
+                            selected="false">
+                            Tasks
+                        </a>
+                    </li>
 
-                                <!-- fleets -->
-                                <li class="nav-item">
-                                    <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
-                                        selected="false">
-                                        Fleets
-                                    </a>
-                                </li>
+                    <!-- fleets -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
+                            selected="false">
+                            Fleets
+                        </a>
+                    </li>
 
-                                <!-- operators -->
-                                <li class="nav-item">
-                                    <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
-                                        selected="false">
-                                        Operators
-                                    </a>
-                                </li>
+                    <!-- operators -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
+                            selected="false">
+                            Operators
+                        </a>
+                    </li>
 
-                                <!-- overview -->
-                                <li class="nav-item">
-                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false" ref="reviewSettingsTab">
-                                        Review Settings
-                                    </a>
-                                </li>
-                                <div class="nav-link nav-header">
-                                    Results
-                                </div>
-                                <li class="nav-item">
-                                    <a class="nav-link" :class="[miscSettings.viewResultsClass]" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
-                                        selected="false" :disabled="miscSettings.viewResultsDisabled">
-                                        View Results
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                    <!-- overview -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false" ref="reviewSettingsTab">
+                            Review Settings
+                        </a>
+                    </li>
+                    <div class="nav-link nav-header">
+                        Results
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link" :class="[miscSettings.viewResultsClass]" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
+                            selected="false" :disabled="miscSettings.viewResultsDisabled">
+                            View Results
+                        </a>
                         <!-- links to different results tabs -->
                     </li>
                 </ul>
             </div>
 
             <!-- run simulation controls -->
-            <div>
+            <div class="d-none d-md-block">
 
                 <!-- Download Buttons -->
                 <div class="form-row justify-content-center">
@@ -338,7 +331,7 @@
             <div class="tab-pane fade" id="tasks-settings" role="tabpanel" aria-lablledby="tasks-settings-tab">
 
                 <!-- TASK SIDEBAR NAVIGATION -->
-                <ul class="nav nav-tabs tabs-left">
+                <ul class="nav nav-tabs">
 
                     <!-- all tasks global settings -->
                     <li class="nav-item">
@@ -564,7 +557,7 @@
             <div class="tab-pane fade" id="operators-settings" role="tabpanel" aria-lablledby="operators-settings-tab">
 
                 <!-- OPERATOR SIDEBAR NAVIGATION -->
-                <ul class="nav nav-tabs tabs-left">
+                <ul class="nav nav-tabs">
 
                     <!-- all operator teams global settings -->
                     <li class="nav-item">
@@ -829,7 +822,7 @@
             <div class="tab-pane fade" id="fleets-settings" role="tabpanel" aria-lablledby="fleets-settings-tab">
 
                 <!-- FLEETS SIDEBAR NAVIGATION -->
-                <ul class="nav nav-tabs tabs-left">
+                <ul class="nav nav-tabs">
 
                     <!-- all fleets global settings -->
                     <li class="nav-item">
@@ -973,8 +966,8 @@
                 <div class="form-group" v-show="miscSettings.showGoButton">
                     <button class="btn" :class="[miscSettings.showGoClass]" @click="onSubmit(true)">{{miscSettings.showGoText}}</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="form-group table">
+                <div class="form-group table-responsive">
+                    <table class="table">
                         <thead class="thead-light">
                             <tr>
                                 <th colspan="2">Basic Settings</th>
@@ -999,7 +992,7 @@
                     </table>
                 </div>
 
-                <div class="table-responsive">
+                <div class="form-group table-responsive">
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
@@ -1038,8 +1031,8 @@
                     </table>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="form-group table">
+                <div class="form-group table-responsive">
+                    <table class="table">
                         <thead class="thead-light">
                             <tr>
                                 <th colspan="2">{{ totalOperatorTeams }} Operator Teams </th>
