@@ -1546,7 +1546,7 @@ var sim = new Vue({
                     if (count[1] === 0) // only minor warnings...
                         this.miscSettings.showGoButton = true;
 
-                    alert("There are some warnings, please check the review settings page!");
+                    alert("There are some warnings, please check the review!");
                     this.$refs.reviewSettingsTab.click();
                     window.scrollTo(0,0);
                     return;
@@ -1826,4 +1826,10 @@ $(document).ready(function () {
         if ($(target + ' input[type=text]').length > 0)
             $(target + ' input[type=text]')[0].focus();
     });
+
+    // replace javascript alert with bootstrap modal
+    window.alert = function () {
+      $("#alert-modal .modal-body").text(arguments[0]);
+      $("#alert-modal").modal('show');
+    };
 });
