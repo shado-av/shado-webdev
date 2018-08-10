@@ -1789,7 +1789,7 @@ $(document).ready(function () {
     });
 
     // If a main menu without view-results clicked...
-    $("#settings-nav a").click( function(e) {
+    $("#sim-nav-submenus a").click( function(e) {
         var target = e.target.attributes.href.value;
         if (target !== "#view-results") {
             if (sim.miscSettings.viewResultsClass === "") {
