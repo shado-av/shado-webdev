@@ -25,6 +25,11 @@ var BarChartWithError = (function (index, isFleet) {
     };
     var minutes, barCounts;
     var bandWidth;
+    var totalWidth = 960;
+    var totalHeight = 450;
+    var width = totalWidth - margin.left - margin.right;
+    var height = totalHeight - margin.top - margin.bottom;
+    var barWidth = 25;
 
     var drawBarChartWithError = function (json, teamName, svgId) {
         var avgBusyTime;
@@ -45,12 +50,25 @@ var BarChartWithError = (function (index, isFleet) {
         }
         barCounts = avgBusyTime.length;
 
-        console.log(barCounts, avgBusyTime);
+        // adjust width with the number of operator teams and total operators
+        if (barCounts > 10) {
+            totalWidth = 960 + barCounts * barWidth;
+            width = totalWidth - margin.left - margin.right;
+        } else {
+            totalWidth = 960;
+            width = totalWidth - margin.left - margin.right;
+        }
+
+        console.log(barCounts, barWidth, totalWidth, width, avgBusyTime);
         svg = d3.select(svgId);
         svg.selectAll("*").remove();
         console.log(svg);
-        width = +svg.attr("width") - margin.left - margin.right;
-        height = +svg.attr("height") - margin.top - margin.bottom;
+
+        svg.attr("width", totalWidth)
+           .attr("height", totalHeight);
+
+        //width = +svg.attr("width") - margin.left - margin.right;
+        //height = +svg.attr("height") - margin.top - margin.bottom;
         bandWidth = Math.floor((width - 150) / (barCounts + 1));
 
         x = d3.scaleBand().rangeRound([0, width - 150])
@@ -86,14 +104,10 @@ var BarChartWithError = (function (index, isFleet) {
         z.domain(keys);
 
         // set ticks
-        var showXTick = true;
-        if (barCounts > 10) {
-            showXTick = false;
-        }
         g.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ return showXTick; })));
+            .call(d3.axisBottom(x)); // .tickValues(x.domain().filter(function(d,i){ return showXTick; })));
 
         g.append("g")
             .attr("class", "axis")
@@ -183,7 +197,6 @@ var BarChartWithError = (function (index, isFleet) {
             .attr("stroke-width", 1)
             .attr("fill", "none");
 
-        var barWidth = 25;
         // Now render all the horizontal lines at once - the whiskers and the median
         var horizontalLineConfigs = [
         // Top whisker
@@ -266,8 +279,6 @@ var BarChartWithError = (function (index, isFleet) {
 });
 
 var BoxPlot = (function () {
-    var width = 960;
-    var height = 450;
     var barWidth = 25;
     var margin = {
         top: 40,
@@ -275,11 +286,10 @@ var BoxPlot = (function () {
         bottom: 40,
         left: 50
     };
-    var width = width - margin.left - margin.right,
-        height = height - margin.top - margin.bottom;
-
-    var totalWidth = width + margin.left + margin.right;
-    var totalheight = height + margin.top + margin.bottom;
+    var totalWidth = 960;
+    var totalHeight = 450;
+    var width = totalWidth - margin.left - margin.right;
+    var height = totalHeight - margin.top - margin.bottom;
 
     var boxQuartiles = function (d) {
         return [
@@ -296,6 +306,9 @@ var BoxPlot = (function () {
     var barCharts = [];
     var tabIds = [ "barGraphPerTask", "barGraphPerFleet"];
 
+    // Setup a color scale for filling each box
+    var colorScale = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+
     var visualize = function (url, element, index) {
         d3.json(url).then(function (json) {
             barWidth = 25;
@@ -311,6 +324,15 @@ var BoxPlot = (function () {
             var k = -1;
             // number of operators
             var numOps = json.operatorName.length;
+
+            // adjust width with the number of operator teams and total operators
+            if (groupLength.length > 10 || numOps > 20) {
+                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth;
+                width = totalWidth - margin.left - margin.right;
+            } else {
+                totalWidth = 960;
+                width = totalWidth - margin.left - margin.right;
+            }
 
             for (var i = 0, j=0; i < numOps; i++) {
                 var key = json.operatorName[i];
@@ -370,9 +392,6 @@ var BoxPlot = (function () {
                 groupCounts[key] = groupCount.sort(sortNumber);
             }
 
-            // Setup a color scale for filling each box
-            var colorScale = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
-
             // Prepare the data for the box plots
             var boxPlotData = [];
             for (i=0; i<numOps; i++) {
@@ -390,7 +409,7 @@ var BoxPlot = (function () {
                 record["counts"] = groupCount;
                 record["quartile"] = boxQuartiles(groupCount);
                 record["whiskers"] = [localMin, localMax];
-                var k = +opName.substr(opName.lastIndexOf("_") + 1)
+                var k = +opName.substr(opName.lastIndexOf("No. ")) - 1;
                 record["color"] = colorScale[ k ];
                 console.log(k);
                 boxPlotData.push(record);
@@ -412,10 +431,9 @@ var BoxPlot = (function () {
 
             for (i = 0, j = 0; i < groupLength.length; i++) {
                 j+=groupLength[i];
-                if (groupLength.length <= 10) {
-                    xTickVal[i] = (xStart + xEnd)/2;
-                    xTickStr[i] = groupName[i];
-                }
+                xTickVal[i] = (xStart + xEnd)/2;
+                xTickStr[i] = groupName[i];
+
                 if (i<groupLength.length-1) {
                     xStart = xEnd + barWidthExpected;
                     xEnd = xStart + (groupLength[i+1]) * barWidthExpected;
@@ -444,11 +462,8 @@ var BoxPlot = (function () {
                 //.padding([0.5]);
 
             // Compute a global y scale based on the global counts
-            // var min = d3.min(globalCounts);
-            // var max = d3.max(globalCounts);
             var yScale = d3.scaleLinear()
                 .domain([0, 1])
-                //.domain([min - 0.0001, max])
                 .range([height, 20]);
 
             // Setup the svg and group we will draw the box plot in
@@ -456,7 +471,7 @@ var BoxPlot = (function () {
             svg.selectAll("*").remove();
 
             var g = svg.attr("width", totalWidth)
-                .attr("height", totalheight)
+                .attr("height", totalHeight)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
