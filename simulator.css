@@ -1,7 +1,7 @@
 #shado-sim,
 .navbar-container,
 .container-fluid {
-  max-width: 1150px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -17,7 +17,7 @@ footer {
   align-items: center;
   position: fixed;
   bottom: 0px;
-  max-width: 1150px;
+  max-width: 1200px;
   margin: auto;
   background-color: #4981c7;
   color: white;
@@ -54,7 +54,7 @@ footer button {
 }
 
 .container-fluid {
-/*  padding: 20px;*/
+  padding: 20px 30px;
 }
 
 .downloadBtn {
@@ -121,7 +121,7 @@ footer button {
 }
 
 #sim-sidebar {
-  width: 200px;
+  width: 175px;
   position: fixed;
   top: 104px;
   left: auto;
@@ -186,9 +186,9 @@ footer button {
 }
 
 #sim-content {
-  margin-left: 200px;
+  margin-left: 175px;
   margin-bottom: 100px;
-  padding: 30px;
+  padding: 30px 15px 30px 30px;
   position: relative;
 }
 
@@ -611,4 +611,14 @@ footer .number-input button:after {
 
 #view-results-tab.previous.nav-link.active, #view-results-tab.previous.nav-link:hover {
   color: #888888;
+}
+
+/*
+#taskRecordTable {
+  table-layout: fixed;
+}
+*/
+
+#taskRecordTable input {
+  width:100%;
 }
