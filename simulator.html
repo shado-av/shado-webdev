@@ -635,8 +635,9 @@
                             <div class="form-group form-row">
                                 <!-- team size (team.size) -->
                                 <div class="col">
-                                    <label>How large is the team?</label>
-                                    <input class="form-control width-small" type="number" min="1" max="99" v-model.number="team.size">
+                                    <div>How large is the team?</div>
+                                    <percentage-input :min=1 :max=99 :step=1 number-only
+                                    :value.sync="team.size"></percentage-input>
                                 </div>
 
                                 <!-- team communications (team.comms) -->
