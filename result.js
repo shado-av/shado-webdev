@@ -191,7 +191,7 @@ var BarChartWithError = (function (index, isFleet) {
                 return x(d.x) + x.bandwidth() / 2;
             })
             .attr("y2", function (d) {
-                return y(d.avg - d.std);
+                return y((d.avg - d.std) > 0 ? d.avg - d.std : 0);
             })
             .attr("stroke", "#000")
             .attr("stroke-width", 1)
@@ -217,16 +217,16 @@ var BarChartWithError = (function (index, isFleet) {
         // Bottom whisker
             {
                 x1: function (d) {
-                    return x(d.x) + ((x.bandwidth() > barWidth) ? x.bandwidth()/2 - barWidth/2 : 0);
+                    return x(d.x) + ((x.bandwidth() > barWidth && (d.avg - d.std) > 0) ? x.bandwidth()/2 - barWidth/2 : 0);
                 },
                 y1: function (d) {
-                    return y(d.avg - d.std)
+                    return y((d.avg - d.std) > 0 ? d.avg - d.std : 0)
                 },
                 x2: function (d) {
-                    return x(d.x) + ((x.bandwidth() > barWidth) ? x.bandwidth()/2 + barWidth/2 : 0);
+                    return x(d.x) + ((x.bandwidth() > barWidth && (d.avg - d.std) > 0) ? x.bandwidth()/2 + barWidth/2 : 0);
                 },
                 y2: function (d) {
-                    return y(d.avg - d.std)
+                    return y((d.avg - d.std) > 0 ? d.avg - d.std : 0)
                 }
             }
         ];
