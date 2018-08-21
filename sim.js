@@ -1742,94 +1742,94 @@ var sim = new Vue({
         });
 
         this.loadData();
+
+        Vue.nextTick(function () {
+            // In Firefox, mousewheel should not change the value of the input number
+            $("#sim-content").on('wheel', 'input[type=number]', function () {
+                var el = $(this);
+                var focused = el.is(":focus");
+                el.blur();
+                //console.log("Scrolling?");
+                if (focused) {
+                    setTimeout(function () {
+                        el.focus();
+                    }, 100);
+                }
+            });
+
+            // enable tooltip
+            $('body').tooltip({selector:'[data-toggle=tooltip]'});
+
+            // pop-up simulation type chooser
+            $('#sim-type').modal(true);
+
+            // When review settings tab is clicked, redraw fleetSettings
+            $('#review-settings-tab').click( function(e) {
+                for(var i=0;i<sim.fleetSettings.fleetTypes;i++) {
+                    TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevel" + i,
+                                                                  sim.fleetSettings.fleets[i].trafficLevels,
+                                                                  sim.fleetSettings.fleets[i].diffTrafficLevels === 'y');
+                }
+
+                var count = sim.checkInputData();
+                if (count[1] > 0) // only minor warnings...
+                    sim.miscSettings.showGoButton = false;
+                else {
+                    sim.miscSettings.showGoButton = true;
+                    if (count[0] > 0) {
+                        sim.miscSettings.showGoText = "Run Simulation with Warnings";
+                        sim.miscSettings.showGoClass = "btn-warning";
+                    } else {
+                        sim.miscSettings.showGoText = "Run Simulation";
+                        sim.miscSettings.showGoClass = "btn-success";
+                    }
+                }
+            });
+
+            // If a main menu without view-results clicked...
+            $("#sim-nav-submenus a").click( function(e) {
+                var target = e.target.attributes.href.value;
+                if (target !== "#view-results") {
+                    if (sim.miscSettings.viewResultsClass === "") {
+                        sim.miscSettings.viewResultsClass = "previous";
+                    }
+                }
+            });
+
+            // From review settings to each edit tab
+            $("#review-settings").on("click", "a", function() {
+                var id = $(this).data("id");
+
+                // double visiting...
+                if (id.startsWith("opteam-")) {
+                    $('#operators-settings-tab').click();
+                } else if (id.startsWith("fleet-")) {
+                    $('#fleets-settings-tab').click();
+                } else if (id.startsWith("tasks-")) {
+                    $('#tasks-settings-tab').click();
+                }
+
+                $('#' + $(this).data("id")).click();
+            });
+
+            // when tab is selected, focus on the first input
+            $("#sim-content").on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+                var target = e.target.attributes.href.value;
+                var selectedTab = $(target + ' a.active');
+
+                if (selectedTab.length > 0) {
+                    target = selectedTab[0].attributes.href.value;
+                }
+
+                if ($(target + ' input[type=text]').length > 0)
+                    $(target + ' input[type=text]')[0].focus();
+            });
+
+            // replace javascript alert with bootstrap modal
+            window.alert = function () {
+              $("#alert-modal .modal-body").text(arguments[0]);
+              $("#alert-modal").modal('show');
+            };
+        }.bind(this))
     }
-});
-
-$(document).ready(function () {
-    // In Firefox, mousewheel should not change the value of the input number
-    $("#sim-content").on('wheel', 'input[type=number]', function () {
-        var el = $(this);
-        var focused = el.is(":focus");
-        el.blur();
-        //console.log("Scrolling?");
-        if (focused) {
-            setTimeout(function () {
-                el.focus();
-            }, 100);
-        }
-    });
-
-    // enable tooltip
-    $('body').tooltip({selector:'[data-toggle=tooltip]'});
-
-    // pop-up simulation type chooser
-    $('#sim-type').modal(true);
-
-    // When review settings tab is clicked, redraw fleetSettings
-    $('#review-settings-tab').click( function(e) {
-        for(var i=0;i<sim.fleetSettings.fleetTypes;i++) {
-            TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevel" + i,
-                                                          sim.fleetSettings.fleets[i].trafficLevels,
-                                                          sim.fleetSettings.fleets[i].diffTrafficLevels === 'y');
-        }
-
-        var count = sim.checkInputData();
-        if (count[1] > 0) // only minor warnings...
-            sim.miscSettings.showGoButton = false;
-        else {
-            sim.miscSettings.showGoButton = true;
-            if (count[0] > 0) {
-                sim.miscSettings.showGoText = "Run Simulation with Warnings";
-                sim.miscSettings.showGoClass = "btn-warning";
-            } else {
-                sim.miscSettings.showGoText = "Run Simulation";
-                sim.miscSettings.showGoClass = "btn-success";
-            }
-        }
-    });
-
-    // If a main menu without view-results clicked...
-    $("#sim-nav-submenus a").click( function(e) {
-        var target = e.target.attributes.href.value;
-        if (target !== "#view-results") {
-            if (sim.miscSettings.viewResultsClass === "") {
-                sim.miscSettings.viewResultsClass = "previous";
-            }
-        }
-    });
-
-    // From review settings to each edit tab
-    $("#review-settings").on("click", "a", function() {
-        var id = $(this).data("id");
-
-        // double visiting...
-        if (id.startsWith("opteam-")) {
-            $('#operators-settings-tab').click();
-        } else if (id.startsWith("fleet-")) {
-            $('#fleets-settings-tab').click();
-        } else if (id.startsWith("tasks-")) {
-            $('#tasks-settings-tab').click();
-        }
-
-        $('#' + $(this).data("id")).click();
-    });
-
-    // when tab is selected, focus on the first input
-    $("#sim-content").on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
-        var target = e.target.attributes.href.value;
-        var selectedTab = $(target + ' a.active');
-
-        if (selectedTab.length > 0) {
-            target = selectedTab[0].attributes.href.value;
-        }
-
-        if ($(target + ' input[type=text]').length > 0)
-            $(target + ' input[type=text]')[0].focus();
-    });
-
-    // replace javascript alert with bootstrap modal
-    window.alert = function () {
-      $("#alert-modal .modal-body").text(arguments[0]);
-      $("#alert-modal").modal('show');
-    };
 });
