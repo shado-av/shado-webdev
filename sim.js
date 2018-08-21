@@ -1455,7 +1455,7 @@ var sim = new Vue({
 
             var newNode = document.createElement('div');
             newNode.className = 'alert alert-' + errorClass[eLevel];
-            newNode.innerHTML = msg + " <a href='javacrpt:void(0)' data-id='" + tabId + "'>Edit</a>";
+            newNode.innerHTML = msg + " <a href='javascript:void(0)' data-id='" + tabId + "'>Edit</a>";
             warningNode.appendChild(newNode);
         },
 
