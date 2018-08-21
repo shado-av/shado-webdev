@@ -52,7 +52,7 @@ var BarChartWithError = (function (index, isFleet) {
 
         // adjust width with the number of operator teams and total operators
         if (barCounts > 10) {
-            totalWidth = 960 + barCounts * barWidth;
+            totalWidth = 960 + barCounts * barWidth * 2;
             width = totalWidth - margin.left - margin.right;
         } else {
             totalWidth = 960;
@@ -327,7 +327,7 @@ var BoxPlot = (function () {
 
             // adjust width with the number of operator teams and total operators
             if (groupLength.length > 10 || numOps > 20) {
-                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth;
+                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth * 2;
                 width = totalWidth - margin.left - margin.right;
             } else {
                 totalWidth = 960;
