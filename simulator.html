@@ -405,24 +405,7 @@
                             </div>
                         </div>
 
-                        <!-- task affected by team coordination (task.affTeamCoord) -->
-                        <div class="form-group">
-                            <label class="col-form-label">Is this task affected by team coordination?</label>
-                            <div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
-                                        value="y" v-model="task.affTeamCoord">
-                                    <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-y'">Yes</label>
-                                </div>
-                                <div class="custom-control custom-control-inline custom-radio mr-0">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-n'"
-                                        value="n" v-model="task.affTeamCoord">
-                                    <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-n'">No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- task affected by team coordination (task.affExoTeamCoord) -->
+                        <!-- task affected by type 2 condition (task.exoType2Aff) -->
                         <div class="form-group">
                             <label class="col-form-label">Is this task affected by                              {{miscSettings.exoFactorsName[1].toLowerCase()}}?
                             </label>
@@ -440,8 +423,45 @@
                             </div>
                         </div>
 
+                        <!-- TASK TRAFFIC -->
+                        <!-- traffic different (task.affectByIROPS) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task essential? An essential task can interrupt any other tasks but is not interruptable.</label>
+                            <label class="col-form-label">Is this task affected by traffic?</label>
+                             <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio"
+                                        :id="'task-' + index + 'traffic-y'"
+                                        value="1" v-model.number="task.affectByIROPS[0]">
+                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-y'">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio"
+                                        :id="'task-' + index + 'traffic-n'"
+                                        value="0" v-model.number="task.affectByIROPS[0]">
+                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-n'">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- task affected by team coordination (task.affTeamCoord) -->
+                        <div class="form-group">
+                            <label class="col-form-label">Is this task affected by team coordination?</label>
+                            <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
+                                        value="y" v-model="task.affTeamCoord">
+                                    <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-y'">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-n'"
+                                        value="n" v-model="task.affTeamCoord">
+                                    <label class="custom-control-label" :for="'task-' + index + 'team-coord-affects-n'">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Is this task essential? <span data-toggle="tooltip" data-placement="bottom" title="This means it’s a task of the highest priority."><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
@@ -457,7 +477,7 @@
                         </div>
 
                         <div class="form-group" v-show="task.essential==='n'">
-                            <label class="col-form-label">Is this task interruptable?</label>
+                            <label class="col-form-label">Is this task interruptable? <span data-toggle="tooltip" data-placement="bottom" title="This means they can put it on hold to complete other tasks and return to it later."><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
@@ -486,28 +506,6 @@
 
                         <!-- expiration time distribution (task.expireDistribution) -->
                         <distribution-params n-option dist-label="Expiration Time" params-label="Distribution Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
-
-                        <!-- TASK TRAFFIC -->
-                        <h5 class="mb-3">Traffic</h5>
-
-                        <!-- traffic different (task.affectByIROPS) -->
-                        <div class="form-group">
-                            <label class="col-form-label">Is this task affected by traffic?</label>
-                             <div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio"
-                                        :id="'task-' + index + 'traffic-y'"
-                                        value="1" v-model.number="task.affectByIROPS[0]">
-                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-y'">Yes</label>
-                                </div>
-                                <div class="custom-control custom-control-inline custom-radio mr-0">
-                                    <input class="custom-control-input" type="radio"
-                                        :id="'task-' + index + 'traffic-n'"
-                                        value="0" v-model.number="task.affectByIROPS[0]">
-                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-n'">No</label>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
