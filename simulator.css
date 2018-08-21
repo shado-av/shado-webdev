@@ -482,7 +482,7 @@ footer .number-input button:after {
 /*  padding-left: 50px;*/
 }
 
-.options .form-group {
+.options > .form-group {
   padding: 1rem;
   border: 2px solid #ddd;
   border-radius: 0.5rem;

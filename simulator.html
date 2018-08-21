@@ -286,8 +286,8 @@
                         </div>
                     </div>
                 </div>
-                <div v-for="n in [0, 1]">
-                    <div class="form-group" v-show="globalSettings.hasTransition[n]">
+                <div v-for="n in [0, 1]" :class="{options: globalSettings.hasTransition[n]}">
+                     <div class="form-group" v-show="globalSettings.hasTransition[n]">
                         <label>How long does the {{ globalSettings.transitionDesc[n].toLowerCase() }} transition last?</label>
                         <distribution-params :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]></distribution-params>
                     </div>
