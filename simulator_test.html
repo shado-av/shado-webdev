@@ -59,6 +59,20 @@
 </head>
 
 <body>
+    <!------------------------------------------------
+        Alert modal to replace javascript.alert
+    ------------------------------------------------->
+    <div class="modal fade" id="alert-modal">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary mx-auto">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-----------------------------------------
         TOP NAVIGATION
@@ -140,7 +154,7 @@
 
                                 <!-- overview -->
                                 <li class="nav-item">
-                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false">
+                                    <a class="nav-link" id="review-settings-tab" data-toggle="tab" href="#review-settings" role="tab" aria-controls="review-settings" selected="false" ref="reviewSettingsTab">
                                         Review Settings
                                     </a>
                                 </li>
@@ -148,8 +162,8 @@
                                     Results
                                 </div>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
-                                        selected="false">
+                                    <a class="nav-link" :class="[miscSettings.viewResultsClass]" id="view-results-tab" data-toggle="tab" href="#view-results" role="tab" aria-controls="view-results" ref="viewResultsTab"
+                                        selected="false" :disabled="miscSettings.viewResultsDisabled">
                                         View Results
                                     </a>
                                 </li>
@@ -173,12 +187,14 @@
 
                 <div id="downloadBtn" style="display: none" align="center">
                     <div class="divider"></div>
-                    <button id="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
+                    <button @click="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
                     <div class="divider"></div>
-                    <button id="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
+<!--
+                    <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
                         <br> Output JSON</button>
+-->
                     <div class="divider"></div>
-                    <button id="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
+                    <button @click="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
                         <br> Summary</button>
                 </div>
                 <br>
@@ -215,17 +231,17 @@
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <div class="">
-                                    <div class="column-4 image-card">
-                                        <a href="#" @click="setSimType('Aviation')">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-lg-4 image-card">
+                                        <a href="javascript:void(0)" @click="setSimType('Aviation')">
                                             <img src="images/airport.jpg" class="img-responsive" alt="">
                                             <div class="overlay">
                                                 <h3 class="image-card-title">Aviation</h3>
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="column-4 image-card">
-                                        <a href="#" @click="setSimType('Rail')">
+                                    <div class="col-12 col-sm-6 col-lg-4 image-card">
+                                        <a href="javascript:void(0)" @click="setSimType('Rail')">
                                             <img src="images/railway.jpg" class="img-responsive" alt="">
 
                                             <div class="overlay">
@@ -233,12 +249,14 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="column-4 image-card">
-                                        <img src="images/station.jpg" class="img-responsive" alt="">
+                                    <div class="col-12 col-sm-6 col-lg-4 image-card">
+                                        <a href="javascript:void(0)" class="under-construction">
+                                            <img src="images/station.jpg" class="img-responsive" alt="">
 
-                                        <div class="overlay invisible">
-                                            <h3 class="image-card-title">Ground Logistics</h3>
-                                        </div>
+                                            <div class="overlay visible">
+                                                <h3 class="image-card-title">Under Construction</h3>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -269,25 +287,7 @@
 
                 <!-- different traffic levels (diffTrafficLevels) -->
                 <div class="form-group">
-                    <label class="col-form-label">2. Check if there is a transitioning period at the beginning or ending of this shift:</label>
-<!--
-                    <div>
-                        <div class="custom-control custom-control-inline custom-radio">
-                            <input class="custom-control-input" type="radio" name="is-transition" id="is-transition-y" value="y" v-model="globalSettings.isTransition"
-                                @change="updateTransitions">
-                            <label class="custom-control-label" for="is-transition-y">Yes</label>
-                        </div>
-                        <div class="custom-control custom-control-inline custom-radio mr-0">
-                            <input class="custom-control-input" type="radio" name="is-transition" id="is-transition-n" value="n" v-model="globalSettings.isTransition"
-                                @change="updateTransitions">
-                            <label class="custom-control-label" for="is-transition-n">No</label>
-                        </div>
-                    </div>
--->
-<!--
-                </div>
-                <div class="form-group" v-show="globalSettings.isTransition === 'y'">
--->
+                    <label class="col-form-label">2. Check if there is a transitioning period at the beginning or ending of this shift.</label>
                     <div v-show="globalSettings.isTransition === 'y'">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-beginning" class="custom-control-input" v-model="globalSettings.hasTransition[0]">
@@ -300,72 +300,10 @@
                         </div>
                     </div>
                 </div>
-                <div v-for="n in [0, 1]">
-                    <div class="form-group" v-show="globalSettings.hasTransition[n]">
+                <div v-for="n in [0, 1]" :class="{options: globalSettings.hasTransition[n]}">
+                     <div class="form-group" v-show="globalSettings.hasTransition[n]">
                         <label>How long does the {{ globalSettings.transitionDesc[n].toLowerCase() }} transition last?</label>
-                        <div class="form-group form-row">
-                            <div class="col-3">
-                                <select class="custom-select" :id="'transition-' + n" v-model="globalSettings.transitionDists[n]" @change="globalSettings.transitionPms[n].splice(0)">
-                                    <option value="E">Exponential</option>
-                                    <option value="L">Log Normal</option>
-                                    <option value="U">Uniform</option>
-                                    <option value="C">Constant</option>
-                                    <option value="T">Triangular</option>
-                                    <option value="N">None</option>
-                                </select>
-                                <small class="form-text text-muted">Type</small>
-                            </div>
-
-                            <!-- arrival time distribution parameters (task.arrivalParam) -->
-                            <div class="col-9">
-                                <div v-if="globalSettings.transitionDists[n] === 'E'" class="row no-gutters">
-                                    <div class="col">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Mean (Minutes)</small>
-                                    </div>
-                                </div>
-                                <div v-if="globalSettings.transitionDists[n] === 'L'" class="row no-gutters">
-                                    <div class="col mr-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Mean (Minutes)</small>
-                                    </div>
-                                    <div class="col ml-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][1]">
-                                        <small class="form-text text-muted">Standard Deviation (Minutes)</small>
-                                    </div>
-                                </div>
-                                <div v-if="globalSettings.transitionDists[n] === 'U'" class="row no-gutters">
-                                    <div class="col mr-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Minimum (Minutes)</small>
-                                    </div>
-                                    <div class="col ml-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][1]">
-                                        <small class="form-text text-muted">Maximum (Minutes)</small>
-                                    </div>
-                                </div>
-                                <div v-if="globalSettings.transitionDists[n] === 'C'" class="row no-gutters">
-                                    <div class="col mr-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Number (Minutes)</small>
-                                    </div>
-                                </div>
-                                <div v-if="globalSettings.transitionDists[n] === 'T'" class="row no-gutters">
-                                    <div class="col mr-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][0]">
-                                        <small class="form-text text-muted">Minimum (Minutes)</small>
-                                    </div>
-                                    <div class="col mx-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][1]">
-                                        <small class="form-text text-muted">Mode (Minutes)</small>
-                                    </div>
-                                    <div class="col ml-1">
-                                        <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="globalSettings.transitionPms[n][2]">
-                                        <small class="form-text text-muted">Maximum (Minutes)</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <distribution-params :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]></distribution-params>
                     </div>
                 </div>
 
@@ -373,15 +311,19 @@
                 <!--                <h5 class="mb-3">Exogenous Factors</h5>-->
                 <!-- type of exogenous factors (exoFactorsType) -->
                 <div class="form-group">
-                    <label>3. Are there any extreme conditions?:</label>
+                    <label>3. Are there any extreme conditions?</label>
                     <div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
-                            <label class="custom-control-label" for="exo-type-1">Medical Emergency</label>
+                            <label class="custom-control-label" for="exo-type-1">
+                                {{miscSettings.exoFactorsName[0]}}
+                            </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
-                            <label class="custom-control-label" for="exo-type-2">Weather</label>
+                            <label class="custom-control-label" for="exo-type-2">
+                                {{miscSettings.exoFactorsName[1]}}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -458,7 +400,46 @@
                         <div class="form-group form-row">
                             <label class="col-md-3 col-lg-2 col-form-label">Task Name</label>
                             <div class="col-md-9 col-lg-10">
-                                <input class="form-control" type="text" v-model="task.name">
+                                <input class="form-control" type="text" v-model="task.name"
+                                       @focus="miscSettings.inputString = task.name" @change = "changeInputString('Task', task)">
+                            </div>
+                        </div>
+
+                        <!-- task affected by type 2 condition (task.exoType2Aff) -->
+                        <div class="form-group">
+                            <label class="col-form-label">Is this task affected by                              {{miscSettings.exoFactorsName[1].toLowerCase()}}?
+                            </label>
+                            <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
+                                        value="y" v-model="task.exoType2Aff">
+                                    <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-y'">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-n'"
+                                        value="n" v-model="task.exoType2Aff">
+                                    <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-n'">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TASK TRAFFIC -->
+                        <!-- traffic different (task.affectByIROPS) -->
+                        <div class="form-group">
+                            <label class="col-form-label">Is this task affected by traffic?</label>
+                             <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio"
+                                        :id="'task-' + index + 'traffic-y'"
+                                        value="1" v-model.number="task.affectByIROPS[0]">
+                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-y'">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio"
+                                        :id="'task-' + index + 'traffic-n'"
+                                        value="0" v-model.number="task.affectByIROPS[0]">
+                                    <label class="custom-control-label" :for="'task-' + index + 'traffic-n'">No</label>
+                                </div>
                             </div>
                         </div>
 
@@ -479,25 +460,8 @@
                             </div>
                         </div>
 
-                        <!-- task affected by team coordination (task.affExoTeamCoord) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by weather?</label>
-                            <div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
-                                        value="y" v-model="task.exoType2Aff">
-                                    <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-y'">Yes</label>
-                                </div>
-                                <div class="custom-control custom-control-inline custom-radio mr-0">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-n'"
-                                        value="n" v-model="task.exoType2Aff">
-                                    <label class="custom-control-label" :for="'task-' + index + 'exo-type2-affects-n'">No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-form-label">Is this task essential? An essential task can interrupt any other tasks but is not interruptable.</label>
+                            <label class="col-form-label">Is this task essential? <span data-toggle="tooltip" data-placement="bottom" title="This means it’s a task of the highest priority."><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
@@ -513,7 +477,7 @@
                         </div>
 
                         <div class="form-group" v-show="task.essential==='n'">
-                            <label class="col-form-label">Is this task interruptable?</label>
+                            <label class="col-form-label">Is this task interruptable? <span data-toggle="tooltip" data-placement="bottom" title="This means they can put it on hold to complete other tasks and return to it later."><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
@@ -532,217 +496,16 @@
                         <h5 class="mb-0">Distributions</h5>
                         <small class="form-text text-muted mb-4">Distribution types take different parameters.</small>
 
-                            <!-- arrival time distribution (task.arrivalDistribution) -->
-                            <div class="form-group form-row">
-                                <div class="col-3">
-                                    <label :for="'task-' + index + 'arr-dist'">Interarrival Time</label>
-                                    <select class="custom-select" :id="'task-' + index + 'arr-dist'" v-model="task.arrivalDistribution[0]" @change="task.arrivalParam[0].splice(0)">
-                                        <option value="E">Exponential</option>
-                                        <option value="L">Log Normal</option>
-                                        <option value="U">Uniform</option>
-                                        <option value="C">Constant</option>
-                                        <option value="T">Triangular</option>
-                                        <option value="N">None</option>
-                                    </select>
-                                </div>
+                        <!-- arrival time distribution (task.arrivalDistribution) -->
+                        <distribution-params dist-label="Interarrival Time" params-label="Distribution Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
+                        <hr/>
 
-                                <!-- arrival time distribution parameters (task.arrivalParam) -->
-                                <div class="col-9">
-                                    <label>Distribution Parameters</label>
-                                    <div v-if="task.arrivalDistribution[0] === 'E'" class="row no-gutters">
-                                        <div class="col">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Mean (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.arrivalDistribution[0] === 'L'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Mean (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][1]">
-                                            <small class="form-text text-muted">Standard Deviation (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.arrivalDistribution[0] === 'U'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Minimum (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][1]">
-                                            <small class="form-text text-muted">Maximum (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.arrivalDistribution[0] === 'C'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Number (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.arrivalDistribution[0] === 'T'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][0]">
-                                            <small class="form-text text-muted">Minimum (Minutes)</small>
-                                        </div>
-                                        <div class="col mx-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][1]">
-                                            <small class="form-text text-muted">Mode (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.arrivalParam[0][2]">
-                                            <small class="form-text text-muted">Maximum (Minutes)</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr/>
-                            <!-- service time distribution (task.serviceDistribution) -->
-                            <div class="form-group form-row" class="row no-gutters">
-                                <div class="col-3">
-                                    <label :for="'task-' + index + 'ser-dist'">Service Time</label>
-                                    <select class="custom-select" :id="'task-' + index + 'ser-dist'" v-model="task.serviceDistribution[0]" @change="task.serviceParam[0].splice(0)">
-                                        <option value="E">Exponential</option>
-                                        <option value="L">Log Normal</option>
-                                        <option value="U">Uniform</option>
-                                        <option value="C">Constant</option>
-                                        <option value="T">Triangular</option>
-                                        <option value="N">None</option>
-                                    </select>
-                                </div>
+                        <!-- service time distribution (task.serviceDistribution) -->
+                        <distribution-params dist-label="Service Time" params-label="Distribution Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
+                        <hr/>
 
-                                <!-- service time distribution parameters (task.serviceParam) -->
-                                <div class="col-9">
-                                    <label>Distribution Parameters</label>
-                                    <div v-if="task.serviceDistribution[0] === 'E'" class="row no-gutters">
-                                        <div class="col">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Mean (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.serviceDistribution[0] === 'L'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Mean (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][1]">
-                                            <small class="form-text text-muted">Standard Deviation (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.serviceDistribution[0] === 'U'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Minimum (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][1]">
-                                            <small class="form-text text-muted">Maximum (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.serviceDistribution[0] === 'C'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Number (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.serviceDistribution[0] === 'T'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][0]">
-                                            <small class="form-text text-muted">Minimum (Minutes)</small>
-                                        </div>
-                                        <div class="col mx-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][1]">
-                                            <small class="form-text text-muted">Mode (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.serviceParam[0][2]">
-                                            <small class="form-text text-muted">Maximum (Minutes)</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr/>
-                            <!-- expiration time distribution (task.expireDistribution) -->
-                            <div class="form-group form-row">
-                                <div class="col-3">
-                                    <label :for="'task-' + index + 'exp-dist'">Expiration Time</label>
-                                    <select class="custom-select" :id="'task-' + index + 'exp-dist'" v-model="task.expireDistribution[0]" @change="task.expireParam[0].splice(0)">
-                                        <option value="E">Exponential</option>
-                                        <option value="L">Log Normal</option>
-                                        <option value="U">Uniform</option>
-                                        <option value="C">Constant</option>
-                                        <option value="T">Triangular</option>
-                                        <option value="N">None</option>
-                                    </select>
-                                </div>
-
-                                <!-- expiration time distribution parameters (task.expireParam) -->
-                                <div class="col-9">
-                                    <label>Distribution Parameters</label>
-                                    <div v-if="task.expireDistribution[0] === 'E'" class="row no-gutters">
-                                        <div class="col">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Mean (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.expireDistribution[0] === 'L'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Mean (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][1]">
-                                            <small class="form-text text-muted">Standard Deviation (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.expireDistribution[0] === 'U'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Minimum (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][1]">
-                                            <small class="form-text text-muted">Maximum (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.expireDistribution[0] === 'C'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Number (Minutes)</small>
-                                        </div>
-                                    </div>
-                                    <div v-if="task.expireDistribution[0] === 'T'" class="row no-gutters">
-                                        <div class="col mr-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][0]">
-                                            <small class="form-text text-muted">Minimum (Minutes)</small>
-                                        </div>
-                                        <div class="col mx-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][1]">
-                                            <small class="form-text text-muted">Mode (Minutes)</small>
-                                        </div>
-                                        <div class="col ml-1">
-                                            <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="task.expireParam[0][2]">
-                                            <small class="form-text text-muted">Maximum (Minutes)</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <!-- TASK TRAFFIC -->
-                        <h5 class="mb-3">Traffic</h5>
-
-                        <!-- traffic different (task.affectByIROPS) -->
-                        <div class="form-group">
-                            <label class="mb-3">Adjust task traffic behavior:</label>
-                            <div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" :id="'task-' + index + 'traffic'" class="custom-control-input" v-model="task.affectByIROPS[0]">
-                                    <label class="custom-control-label" :for="'task-' + index + 'traffic'">Affected</label>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- expiration time distribution (task.expireDistribution) -->
+                        <distribution-params n-option dist-label="Expiration Time" params-label="Distribution Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
 
                         <!-- HUMAN ERROR PROBABILITY -->
                         <h5 class="mb-3">Human Error Probability</h5>
@@ -752,19 +515,19 @@
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][0]">
                                     <small class="form-text text-muted">
-                                        Minimum (Minutes)
+                                        Minimum
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][1]">
                                     <small class="form-text text-muted">
-                                        Mode (Minutes)
+                                        Mode
                                     </small>
                                 </div>
                                 <div class="col-sm-4">
                                     <input type="number" min="0" max="1" step="any" class="form-control" v-model.number="task.humanErrorProb[0][2]" placeholder="Enter #">
                                     <small class="form-text text-muted">
-                                        Maximum (Minutes)
+                                        Maximum
                                     </small>
                                 </div>
                             </div>
@@ -826,9 +589,10 @@
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
-                                <label for="num-operators">How many different teams of operators are there?</label>
-                                <input type="number" class="form-control width-small" min="1" max="99" step="1" id="num-operators" v-model.number="operatorSettings.numTeams"
-                                    @change="updateOperatorTeams">
+                                <div>How many different teams of operators are there?</div>
+                                <percentage-input :min=1 :max=99 :step=1 number-only
+                                    :value.sync="operatorSettings.numTeams" @change="updateOperatorTeams"
+                                    ></percentage-input>
                             </div>
 
                             <!-- Is this operator flexible? -->
@@ -853,8 +617,9 @@
                             </div>
                             <!-- How many operators are in the flex team? -->
                             <div class="form-group" v-show="operatorSettings.hasFlexPosition === 'y'">
-                                <label>How many operators are in the flex team?</label>
-                                <input class="form-control width-small" type="number" min="1" max="99" v-model.number="operatorSettings.flexTeamSize">
+                                <div>How many operators are in the flex team?</div>
+                                <percentage-input :min=1 :max=99 :step=1 number-only
+                                    :value.sync="operatorSettings.flexTeamSize"></percentage-input>
                             </div>
                     </div>
 
@@ -875,15 +640,16 @@
                             <div class="form-group form-row">
                                 <label class="col-md-3 col-lg-2 col-form-label">Team Name</label>
                                 <div class="col-md-9 col-lg-10">
-                                    <input class="form-control" type="text" v-model="team.name">
+                                    <input class="form-control" type="text" v-model="team.name" @focus="miscSettings.inputString = team.name" @change = "changeInputString('Team', team)">
                                 </div>
                             </div>
 
                             <div class="form-group form-row">
                                 <!-- team size (team.size) -->
                                 <div class="col">
-                                    <label>How large is the team?</label>
-                                    <input class="form-control width-small" type="number" min="1" max="99" v-model.number="team.size">
+                                    <div>How large is the team?</div>
+                                    <percentage-input :min=1 :max=99 :step=1 number-only
+                                    :value.sync="team.size"></percentage-input>
                                 </div>
 
                                 <!-- team communications (team.comms) -->
@@ -896,6 +662,34 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <!-- OPERATOR TASKS -->
+                            <h5 class="mb-3">Operator Tasks/Fleets</h5>
+
+                            <!-- operator task checklist (team.tasks) -->
+                            <div class="form-group">
+                                <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
+                                <!-- adjust task/fleet operators are responsible for (team.expertise) -->
+                                <div class="table-responsive">
+                                    <table class="form-group table">
+                                        <thead class="thead-light">
+                                            <th>Task \ Fleet</th>
+                                            <th v-for="(fleet, i) in fleetSettings.fleets">
+                                                {{fleet.name}}
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                                <td>{{task.name}}</td>
+                                                <td v-for="(fleet, j) in fleetSettings.fleets">
+                                                    <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
                                 <label>Operator Strategies</label>
@@ -913,10 +707,13 @@
                                         <th>Priority</th>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
                                             <td>{{task.name}}</td>
                                             <td>
-                                                <select class="custom-select" v-model.number="team.priority[0][i]">
+                                                <select class="custom-select" v-show="task.essential==='y'" disabled='true'>
+                                                    <option>Essential</option>
+                                                </select>
+                                                <select class="custom-select" v-model.number="team.priority[0][i]" v-show="task.essential==='n'">
                                                     <option value="6">High</option>
                                                     <option value="5">Moderate</option>
                                                     <option value="4">Neutral</option>
@@ -946,103 +743,76 @@
                             </div>
                         </div>
 
-                        <!-- OPERATOR TASKS -->
-                        <h5 class="mb-3">Operator Tasks/Fleets</h5>
-
-                        <!-- operator task checklist (team.tasks) -->
-                        <div class="form-group">
-                            <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
-                            <!-- adjust task/fleet operators are responsible for (team.expertise) -->
-                            <div class="table-responsive">
-                                <table class="form-group table">
-                                    <thead class="thead-light">
-                                        <th>Task \ Fleet</th>
-                                        <th v-for="(fleet, i) in fleetSettings.fleets">
-                                            {{fleet.name}}
-                                        </th>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
-                                            <td>{{task.name}}</td>
-                                            <td v-for="(fleet, j) in fleetSettings.fleets">
-                                                <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
                         <!-- AIDA -->
                         <h5 class="mb-3">Artificial Intelligence Decision Aid</h5>
 
-                            <!-- team AIDA (team.AIDA) -->
-                            <label class="mb-3">What level of AI does this team have?</label>
+                        <!-- team AIDA (team.AIDA) -->
+                        <label class="mb-3">What level of AI does this team have?</label>
 
-                            <!-- equal operator (AIDA.equalOperator) -->
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
-                                    <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">Equal Operator</label>
-                                </div>
+                        <!-- equal operator (AIDA.equalOperator) -->
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">Equal Operator</label>
                             </div>
-                            <div :class="{options:team.AIDA.equalOperator}">
-                                <div class="form-group" v-show="team.AIDA.AIDAType[0]">
-                                    <div class="">What percentage of the Service Time is affected by this AI?</div>
-                                    <percentage-input v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
-                                    <div class="">What percentage of the Error Rate is affected by this AI?</div>
-                                    <percentage-input v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
-                                    <div class="">What percentage of the Error Catching Chance is affected by this AI?</div>
-                                    <percentage-input v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
-                                </div>
+                        </div>
+                        <div :class="{options:team.AIDA.AIDAType[0]}">
+                            <div class="form-group" v-show="team.AIDA.AIDAType[0]">
+                                <div class="">What percentage of the Service Time is affected by this AI?</div>
+                                <percentage-input v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
+                                <div class="">What percentage of the Error Rate is affected by this AI?</div>
+                                <percentage-input v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
+                                <div class="">What percentage of the Error Catching Chance is affected by this AI?</div>
+                                <percentage-input v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
                             </div>
+                        </div>
 
-                            <!-- assisting individuals (AIDA.assistingIndividuals) -->
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
-                                    <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">Assisting Indivisuals</label>
+                        <!-- assisting individuals (AIDA.assistingIndividuals) -->
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">Assisting Indivisuals</label>
+                            </div>
+                        </div>
+                        <div :class="{options: team.AIDA.AIDAType[1]}">
+                            <div class="form-group" v-show="team.AIDA.AIDAType[1]">
+                                <div class="mb-3">What tasks are this AI responsible for?</div>
+                                <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
+                                    <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
+                                    <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
+                                </div>
+                                <div class="mb-3 mt-3">What is the level of this AI?</div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
+                                    <label class="custom-control-label" :for="'assist-indi-levels-some-'+index">Some</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" :id="'assist-indi-levels-full-' + index" value="F" v-model="team.AIDA.IALevel">
+                                    <label class="custom-control-label" :for="'assist-indi-levels-full-'+index">Full</label>
                                 </div>
                             </div>
-                            <div :class="{options: team.AIDA.assistingIndividuals}">
-                                <div class="form-group" v-show="team.AIDA.AIDAType[1]">
-                                    <div class="mb-3">What tasks are this AI responsible for?</div>
-                                    <div class="custom-control custom-checkbox item mb-2" v-for="i in team.tasks">
-                                        <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
-                                        <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
-                                    </div>
-                                    <div class="mb-3 mt-3">What is the level of this AI?</div>
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
-                                        <label class="custom-control-label" :for="'assist-indi-levels-some-'+index">Some</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="assist-indi-levels" :id="'assist-indi-levels-full-' + index" value="F" v-model="team.AIDA.IALevel">
-                                        <label class="custom-control-label" :for="'assist-indi-levels-full-'+index">Full</label>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
 
-                            <!-- assisting in team coordinations (AIDA.assistingTeamCoord) -->
-                            <div class="form-group" v-show="team.comms !== 'N'">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
-                                    <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">Assisting Team Coordination</label>
+                        <!-- assisting in team coordinations (AIDA.assistingTeamCoord) -->
+                        <div class="form-group" v-show="team.comms !== 'N'">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">Assisting Team Coordination</label>
+                            </div>
+                        </div>
+                        <div :class="{options:team.AIDA.AIDAType[2]}">
+                            <div class="form-group" v-show="team.AIDA.AIDAType[2]">
+                                <div class="mb-3">What is the level of this AI?</div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio" :id="'assist-team-levels-some-'+index" value="S" v-model="team.AIDA.TCALevel">
+                                    <label class="custom-control-label" :for="'assist-team-levels-some-'+index">Some</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio" :id="'assist-team-levels-full-'+index" value="F" v-model="team.AIDA.TCALevel">
+                                    <label class="custom-control-label" :for="'assist-team-levels-full-'+index">Full</label>
                                 </div>
                             </div>
-                            <div :class="{options:team.AIDA.assistingTeamCoord}">
-                                <div class="form-group" v-show="team.AIDA.AIDAType[2]">
-                                    <div class="mb-3">What is the level of this AI?</div>
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" name="assist-team-levels" :id="'assist-team-levels-some-'+index" value="S" v-model="team.AIDA.TCALevel">
-                                        <label class="custom-control-label" :for="'assist-team-levels-some-'+index">Some</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" name="assist-team-levels" :id="'assist-team-levels-full-'+index" value="F" v-model="team.AIDA.TCALevel">
-                                        <label class="custom-control-label" :for="'assist-team-levels-full-'+index">Full</label>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1084,9 +854,9 @@
 
                         <!-- number of fleets (fleetTypes) -->
                         <div class="form-group">
-                            <label for="num-fleets">How many different fleets do the operators manage?</label>
-                            <input type="number" class="form-control width-small" min="1" max="99" step="1" id="num-fleets" v-model.number="fleetSettings.fleetTypes"
-                                @change="updateFleets">
+                            <div>How many different fleets do the operators manage?</div>
+                            <percentage-input :min=1 :max=99 :step=1 number-only
+                                :value.sync="fleetSettings.fleetTypes" @change="updateFleets"></percentage-input>
                         </div>
                     </div>
 
@@ -1106,14 +876,16 @@
                         <div class="form-group form-row">
                             <label class="col-md-3 col-lg-2 col-form-label">Fleet Name</label>
                             <div class="col-md-9 col-lg-10">
-                                <input class="form-control" type="text" v-model="fleet.name">
+                                <input class="form-control" type="text" v-model="fleet.name"
+                                       @focus="miscSettings.inputString = fleet.name" @change = "changeInputString('Fleet', fleet)">
                             </div>
                         </div>
 
                         <!-- number of vehicles (fleet.numVehicles) -->
                         <div class="form-group">
-                            <label for="num-fleets">How many vehicles are in this fleet?</label>
-                            <input type="number" class="form-control width-small" min="1" max="99" step="1" v-model.number="fleet.numVehicles">
+                            <div>How many vehicles are in this fleet?</div>
+                            <percentage-input :min=1 :max=99 :step=1 number-only
+                                :value.sync="fleet.numVehicles"></percentage-input>
                         </div>
 
                         <!-- fleet communications (fleet.comms) -->
@@ -1194,6 +966,10 @@
 
                 <h3 class="mb-4">Review Settings</h3>
 
+                <div class="form-group" id="warnings"></div>
+                <div class="form-group" v-show="miscSettings.showGoButton">
+                    <button class="btn" :class="[miscSettings.showGoClass]" @click="onSubmit(true)">{{miscSettings.showGoText}}</button>
+                </div>
                 <div class="table-responsive">
                     <table class="form-group table">
                         <thead class="thead-light">
@@ -1203,25 +979,19 @@
                         </thead>
                         <tr>
                             <td>Type of simulation</td>
-                            <td><b>{{globalSettings.simType}}</b></td>
+                            <td>{{globalSettings.simType}}</td>
                         </tr>
                         <tr>
                             <td>Shift Scheduled</td>
                             <td>{{globalSettings.numHours }} hours</td>
                         </tr>
-<!--
-                        <tr>
-                            <td>Traffic Levels By Hours</td>
-                            <td><svg id="trafficLevel" width="400" height="300"></svg></td>
-                        </tr>
--->
                         <tr>
                             <td>Transitioning Period</td>
-                            <td><b>{{hasTransitionForReview}}</b></td>
+                            <td>{{hasTransitionForReview}}</td>
                         </tr>
                         <tr>
                             <td>Exogenous factor</td>
-                            <td><b>{{hasExogenousForReview}}</b></td>
+                            <td>{{hasExogenousForReview}}</td>
                         </tr>
                     </table>
                 </div>
@@ -1230,12 +1000,112 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">Advanced Settings</th>
+                                <th colspan="2">{{ fleetSettings.fleetTypes }} Fleets</th>
                             </tr>
                         </thead>
+                        <tr v-for="(fleet, index) in fleetSettings.fleets">
+                            <td colspan="2">
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2">{{ fleet.name }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Number of Vehicles in Fleet</td>
+                                        <td>{{fleet.numVehicles}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vehivle to Vehicle Communications</td>
+                                        <td>{{miscSettings.comms[fleet.comms]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasks Associated with Fleet</td>
+                                        <td>{{fleetTasksForReview[index].join(", ")}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Traffice Levels</td>
+                                        <td>
+                                            <svg :id='"trafficLevel" + index' width="400" height="300"></svg>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                     </table>
                 </div>
 
+                <div class="table-responsive">
+                    <table class="form-group table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th colspan="2">{{ totalOperatorTeams }} Operator Teams </th>
+                            </tr>
+                        </thead>
+                        <tr v-show="operatorSettings.hasFlexPosition === 'y'">
+                            <td colspan="2">
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2">Flex Position Team</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td width="200px">Team Size</td>
+                                        <td>{{operatorSettings.flexTeamSize}}</td>
+                                    </tr>
+                                </table>
+                        </tr>
+                        <tr v-for="(team, index) in operatorSettings.teams">
+                            <td>
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2">{{ team.name }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td width="200px">Team Size</td>
+                                        <td>{{team.size}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Communications</td>
+                                        <td>{{miscSettings.comms[team.comms]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Operator Strategy</td>
+                                        <td>{{team.strategy}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasks/Fleets associated with Operator</td>
+                                        <td>
+                                            <table class="form-group table">
+                                                <thead class="thead-light">
+                                                    <th>Task</th>
+                                                    <th>Fleet</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
+                                                        <td width="100px">{{task.name}}</td>
+                                                        <td>
+                                                            {{fleetNamesOpExpertise(team, i)}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Artificial Intelligence</td>
+                                        <td>{{AIDATypeForReview[index]}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+<!--
                 <h5>Tasks</h5>
                 <ul>
                     <li class="nav-item" v-for="(task, index) in taskSettings.tasks" v-if="task.include">
@@ -1276,87 +1146,7 @@
                         </a>
                     </li>
                 </ul>
-                <h5>Operators</h5>
-                <ul>
-                    <li class="nav-item" v-for="(team, index) in operatorSettings.teams">
-                        <a class="nav-link disabled" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'"
-                            role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
-                            {{ team.name }}
-                            <ul>
-                                <li>Team Size:
-                                    <b>{{team.size}}</b>
-                                </li>
-                                <li>Operator Strategy:
-                                    <b>{{team.strategy}}</b>
-                                </li>
-                                <li>Communications:
-                                    <b>{{team.comms}}</b>
-                                </li>
-                                <li>Operator Tasks:
-                                    <b>{{team.tasks}}</b>
-                                </li>
-                                <li>Operator Priority:
-                                    <b>{{team.priority}}</b>
-                                </li>
-                                <li>Error Catching Chance:
-                                    <b>{{team.failThresh}}%</b>
-                                </li>
-                                <li>Artifical Intellegence</li>
-                                <ul>
-                                    <li>Equal Operator:
-                                        <b>{{team.AIDA.AIDAType[0]}}</b>
-                                        <ul v-show="team.AIDA.equalOperator">
-                                            <li>Affected Rate of Service Time : {{team.AIDA.ETServiceTime}} </li>
-                                            <li>Affected Rate of Error Rate : {{team.AIDA.ETErrorRate}} </li>
-                                            <li>Affected Rate of Error Catching Chance : {{team.AIDA.ETFailThreshold}} </li>
-                                        </ul>
-                                    </li>
-
-                                    <li>Assisting Individuals:
-                                        <b>{{team.AIDA.AIDAType[1]}}</b>
-                                        <ul v-show="team.AIDA.assistingIndividuals">
-                                            <li>Affected Tasks : {{team.AIDA.IATasks}} </li>
-                                            <li>Communication Level : {{team.AIDA.IALevel}} </li>
-                                        </ul>
-                                    </li>
-                                    <li>Assisting Team Coordination:
-                                        <b>{{team.AIDA.AIDAType[2]}}</b>
-                                        <ul v-show="team.AIDA.assistingTeamCoord">
-                                            <li>Communication Level : {{team.AIDA.TCALevel}} </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </ul>
-
-                        </a>
-                    </li>
-                </ul>
-                <h5>Fleets</h5>
-                <ul>
-                    <li class="nav-item" v-for="(fleet, index) in fleetSettings.fleets">
-                        <a class="nav-link disabled" :id="'fleet-' + index + '-settings-tab'" data-toggle="tab" :href="'#fleet-' + index + '-settings'"
-                            role="tab" :aria-controls="'fleet-' + index + '-settings'" selected="false">
-                            {{ fleet.name }}
-                            <ul>
-                                <li>Number of vehicles in fleet:
-                                    <b>{{fleet.numVehicles}}</b>
-                                </li>
-                                <li>Vehivle to Vehicle Communications:
-                                    <b>{{fleet.comms}}</b>
-                                </li>
-                                <li>Tasks Associated with Fleet:
-                                    <b>{{fleet.tasks}}</b>
-                                </li>
-                            </ul>
-                        </a>
-                    </li>
-                </ul>
-                <div id="container"></div>
-                <br>
-                <div style=" text-align: center; margin-left :45% ; display:none" id="progress" class="loader"></div>
-                <br>
-
-
+-->
             </div>
 
             <!-----------------------------------------
@@ -1391,31 +1181,33 @@
                     <!-- Results Utilization -->
                     <div class="tab-pane fade show active" id="results-utilization" role="tabpanel" aria-labelledby="results-utilization-tab">
                         <h3 class='subtitle'>Utilization per Operator</h3>
-                        <!-- Modal -->
-                        <div class="modal fade" id="stackedBC1" role="dialog">
-                            <div class="modal-dialog modal-lg">
 
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <div class="col-sm">
-                                            <h3 id="stackedBCTitle1">Operator Workload per Replication</h3>
-                                        </div>
-                                        <div class="col-sm" id="replication1">
-                                            <label>Replication:
-                                                <span id="replicationTB1" /> </label>
-                                            <input type="range" min="1" max="10" value="1" step="1" id="replicationSlider1" class="slider" />
-                                        </div>
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <svg id="modalSVG1" width="960" height="450"></svg>
-                                    </div>
-                                </div>
+                        <div class="table-responsive">
+                            <svg id="boxSVG" width="960" height="450"></svg>
+                        </div>
 
+                        <div class="form-group mt-5">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the operator’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
+
+                        <h3 class='subtitle'>By Tasks</h3>
+                        <div id="barGraphPerTask" class="mt-5 mb-5">
+                            <ul class="nav nav-tabs">
+                            </ul>
+
+                            <div class="tab-content ">
                             </div>
                         </div>
-                        <svg id="boxSVG" width="960" height="450"></svg>
+
+                        <div class="form-group">Placeholder for explanation - Bar graph with error bars per task for each operator team.</div>
+
+                        <h3 class='subtitle'>By Fleets</h3>
+                        <div id="barGraphPerFleet" class="mt-5 mb-5">
+                            <ul class="nav nav-tabs">
+                            </ul>
+
+                            <div class="tab-content ">
+                            </div>
+                        </div>
+                        <div class="form-group">Placeholder for explanation - Bar graph with error bars per fleet for each operator team.</div>
                     </div>
 
                     <!-- Failed Task Analysis -->
@@ -1424,53 +1216,61 @@
 
                         <h3 class='subtitle mb-5'>Failed Task Analysis</h3>
 
-                        <div id="pieChart"></div>
-                        <div class="ml-5 mr-5 mb-5 mt-5">
-                            <table id="taskRecordTable" class="display" width="100%">
+                        <div id="pieChart" class="table-responsive"></div>
+
+
+                        <div class="form-group">Placeholder for explanation</div>
+                        <div class="mb-5 mt-5 table-responsive">
+                            <table id="taskRecordTable" class="display d-none" width="100%">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2">Operator Team</th>
-                                        <th rowspan="2">Task Name</th>
+                                        <th width="15%"><input data-column="0" type="text" placeholder="Filter Team" /></th>
+                                        <th width="15%"><input data-column="1" type="text" placeholder="Filter Task" /></th>
                                         <th colspan="3">Missed Tasks</th>
                                         <th colspan="3">Incomplete Tasks</th>
                                         <th colspan="3">Failed Tasks and Not Caught</th>
                                         <th colspan="3">Failed Tasks and Caught</th>
                                     </tr>
                                     <tr>
-                                        <th class="left-border" >Count</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
-                                        <th class="left-border" >Count</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
-                                        <th class="left-border" >Count</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
-                                        <th class="left-border" >Count</th>
-                                        <th>Avg.</th>
-                                        <th>Std. Dev.</th>
+                                        <th>Operator Team</th>
+                                        <th>Task Name</th>
+                                        <th class="left-border right-align" >Cnt</th>
+                                        <th class="right-align">Avg</th>
+                                        <th class="right-align">SD</th>
+                                        <th class="left-border right-align" >Cnt</th>
+                                        <th class="right-align">Avg</th>
+                                        <th class="right-align">SD</th>
+                                        <th class="left-border right-align" >Cnt</th>
+                                        <th class="right-align">Avg</th>
+                                        <th class="right-align">SD</th>
+                                        <th class="left-border right-align" >Cnt</th>
+                                        <th class="right-align">Avg</th>
+                                        <th class="right-align">SD</th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
+                        <div class="form-group">Placeholder for explanation</div>
                     </div>
                 </div>
             </div>
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="btn btn-outline-light btn-sm" type="button" title="" @click='saveData'>Save Settings</button>
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData'>Load Settings</button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Save the current user settings"><span class="fas fa-info-circle"></span></span></button>
+
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData' :disabled="miscSettings.isLoading">Load Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Load the previously saved user settings"><span class="fas fa-info-circle"></span></span></button>
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
 
             <!--Number of replications selection-->
-            <span class="ml-auto">
-                <label for="num-reps"># Replications&nbsp;</label>
+            <span class="ml-md-auto">
+                <label class="d-sm-none"># Rep&nbsp;</label>
+                <label class="d-none d-sm-block"># Replications&nbsp;</label>
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span>
             <!--Submit Button-->
-            <button id="submitBtn" class="btn btn-success btn-sm ml-3" type="button" title="" @click="onSubmit" :disabled="miscSettings.onSubmit">Run Simulation</button>
+            <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
         </footer>
     </div>
 </body>
