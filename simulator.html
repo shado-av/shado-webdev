@@ -11,9 +11,7 @@
     <!-- Bootstrap 4.1.1 libraries -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>
 
@@ -23,7 +21,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
     <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
-
+    <!-- vue tooltip library -->
+    <script src="script/v-tooltip.min.js"></script>
+    <!-- axios library for ajax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
     <!-- Fontawesome Icons -->
@@ -50,6 +50,8 @@
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="simulator.css">
     <script type="text/javascript" src="env.js"></script>
+    <script type="text/javascript" src="text.js"></script>
+    <script type="text/javascript" src="vue-component.js"></script>
     <script type="text/javascript" src="sim.js" defer></script>
     <script type="text/javascript" src="result.js" defer></script>
 
@@ -140,7 +142,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="fleets-settings-tab" data-toggle="tab" href="#fleets-settings" role="tab" aria-controls="fleets-settings"
                                         selected="false">
-                                        Fleets
+                                        {{textStrings.fleets}}
                                     </a>
                                 </li>
 
@@ -148,7 +150,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="operators-settings-tab" data-toggle="tab" href="#operators-settings" role="tab" aria-controls="operators-settings"
                                         selected="false">
-                                        Operators
+                                        {{textStrings.operators}}
                                     </a>
                                 </li>
 
@@ -250,11 +252,11 @@
                                         </a>
                                     </div>
                                     <div class="col-12 col-sm-6 col-lg-4 image-card">
-                                        <a href="javascript:void(0)" class="under-construction">
+                                        <a href="javascript:void(0)" @click="setSimType('General')">
                                             <img src="images/station.jpg" class="img-responsive" alt="">
 
-                                            <div class="overlay visible">
-                                                <h3 class="image-card-title">Under Construction</h3>
+                                            <div class="overlay">
+                                                <h3 class="image-card-title">General</h3>
                                             </div>
                                         </a>
                                     </div>
@@ -276,7 +278,10 @@
                 <!-- hours in shift (numHours) -->
                 <div class="form-group">
                     <label for="num-hours">
-                        1. How many hours are in this shift? <span data-toggle="tooltip" data-placement="bottom" title="This is an example tooltip!"><span class="fas fa-info-circle"></span></span>
+                        {{textStrings.questionHours}}
+                        <span v-tooltip.bottom="textStrings.tooltipHours">
+                            <span class="fas fa-info-circle"></span>
+                        </span>
                     </label>
                     <div>
                         <select class="custom-select width-small" id="num-hours" v-model.number="globalSettings.numHours" @change="updateTrafficLvls">
@@ -287,22 +292,22 @@
 
                 <!-- different traffic levels (diffTrafficLevels) -->
                 <div class="form-group">
-                    <label class="col-form-label">2. Check if there is a transitioning period at the beginning or ending of this shift.</label>
+                    <label class="col-form-label">{{textStrings.questionTransition}}</label>
                     <div v-show="globalSettings.isTransition === 'y'">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-beginning" class="custom-control-input" v-model="globalSettings.hasTransition[0]">
-                            <label class="custom-control-label" for="transition-beginning">Beginning of shift</label>
+                            <label class="custom-control-label" for="transition-beginning">{{textStrings.optionTransition[0]}}</label>
                         </div>
 
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-ending" class="custom-control-input" v-model="globalSettings.hasTransition[1]">
-                            <label class="custom-control-label" for="transition-ending">Ending of shift</label>
+                            <label class="custom-control-label" for="transition-ending">{{textStrings.optionTransition[1]}}</label>
                         </div>
                     </div>
                 </div>
                 <div v-for="n in [0, 1]" :class="{options: globalSettings.hasTransition[n]}">
                      <div class="form-group" v-show="globalSettings.hasTransition[n]">
-                        <label>How long does the {{ globalSettings.transitionDesc[n].toLowerCase() }} transition last?</label>
+                        <label>{{textStrings.questionTransitionDuration[n]}}</label>
                         <distribution-params :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]></distribution-params>
                     </div>
                 </div>
@@ -311,18 +316,18 @@
                 <!--                <h5 class="mb-3">Exogenous Factors</h5>-->
                 <!-- type of exogenous factors (exoFactorsType) -->
                 <div class="form-group">
-                    <label>3. Are there any extreme conditions?</label>
+                    <label>{{textStrings.questionExtremeCondition}}</label>
                     <div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
                             <label class="custom-control-label" for="exo-type-1">
-                                {{miscSettings.exoFactorsName[0]}}
+                                {{textStrings.optionExtremeCondition[0]}}
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
                             <label class="custom-control-label" for="exo-type-2">
-                                {{miscSettings.exoFactorsName[1]}}
+                                {{textStrings.optionExtremeCondition[1]}}
                             </label>
                         </div>
                     </div>
@@ -461,7 +466,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label">Is this task essential? <span data-toggle="tooltip" data-placement="bottom" title="This means it’s a task of the highest priority."><span class="fas fa-info-circle"></span></span></label>
+                            <label class="col-form-label">Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
@@ -477,7 +482,7 @@
                         </div>
 
                         <div class="form-group" v-show="task.essential==='n'">
-                            <label class="col-form-label">Is this task interruptable? <span data-toggle="tooltip" data-placement="bottom" title="This means they can put it on hold to complete other tasks and return to it later."><span class="fas fa-info-circle"></span></span></label>
+                            <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
@@ -930,7 +935,7 @@
                                            :name="'fleet-' + index + '-diff-traff-levels'"
                                            :id="'fleet-' + index + '-diff-traff-levels-n'"
                                            value="n" v-model="fleet.diffTrafficLevels" >
-                                    <label class="custom-control-label" :for="'fleet-' + index + '-diff-traff-levels-n'">No <span data-toggle="tooltip" data-placement="bottom" title="This is an example tooltip for radio button answer."><span class="fas fa-info-circle"></span></span></label>
+                                    <label class="custom-control-label" :for="'fleet-' + index + '-diff-traff-levels-n'">No <span v-tooltip.bottom="{ content: 'This is an example tooltip for radio button answer.'}"><span class="fas fa-info-circle"></span></span></label>
                                 </div>
                             </div>
                         </div>
@@ -1257,9 +1262,9 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Save the current user settings"><span class="fas fa-info-circle"></span></span></button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span class="mb-0" v-tooltip.top="{ content: 'Save the current user settings'}"><span class="fas fa-info-circle"></span></span></button>
 
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData' :disabled="miscSettings.isLoading">Load Settings <span class="mb-0" data-toggle="tooltip" data-placement="top" title="Load the previously saved user settings"><span class="fas fa-info-circle"></span></span></button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData' :disabled="miscSettings.isLoading">Load Settings <span class="mb-0" v-tooltip.top="{ content: 'Revert to the previously saved user settings'} "><span class="fas fa-info-circle"></span></span></button>
 <!--
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
