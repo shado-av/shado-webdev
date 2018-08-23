@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js" integrity="sha256-OI3N9zCKabDov2rZFzl8lJUXCcP7EmsGcGoP6DMXQCo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="result.js"></script>
+    <script src="../result.js"></script>
 
 </head>
 
@@ -47,10 +47,10 @@
 
             console.log(trafficLevels);
 
-            TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", trafficLevels);
+            TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevel", trafficLevels, true);
         }
 
-        TrafficLevelBarChart.drawTrafficeLevelBarChart("#trafficLevel", trafficLevels);
+        TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevel", trafficLevels, true);
     </script>
 
 </body>
