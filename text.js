@@ -28,6 +28,13 @@ var textStrings = {
 
     },
     Rail: {
-        questionHours: "1. How many hours of the train operators are in this shift?",
+        questionHours: "1. How many hours are your train dispatchers working?",
+        questionTransition: "2. If your dispatchers have transfer-of-duty periods, when do they occur?",
+        questionTransitionDuration: [
+            "At the beginning of their shifts, how long does this transfer-of-duty last?",
+            "At the ending of their shifts, how long does this transfer-of-duty last?",
+        ],
+        questionExtremeCondition: "3. Will there be any extreme conditions during this shift?",
+        optionExtremeCondition: [ "Derailment", "Poor Weather"],
     }
 };
