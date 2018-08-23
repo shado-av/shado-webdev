@@ -13,6 +13,11 @@ var textStrings = {
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
 
         // Tasks
+        qWeather: "2. Is this task affected by weather?",
+        qTraffic: "3. Is this task affected by traffic?",
+        qTeamCoordination: "4. Is this task affected by team coordination?",
+        qEssential: "5. Is this task essential?",
+        qInterruptable: "Is this task interruptable?",
 
         // Fleets
         fleets: "Fleets",       // for fleets menu
@@ -28,6 +33,7 @@ var textStrings = {
 
     },
     Rail: {
+        // basic settings
         questionHours: "1. How many hours are your train dispatchers working?",
         questionTransition: "2. If your dispatchers have transfer-of-duty periods, when do they occur?",
         questionTransitionDuration: [
@@ -36,5 +42,7 @@ var textStrings = {
         ],
         questionExtremeCondition: "3. Will there be any extreme conditions during this shift?",
         optionExtremeCondition: [ "Derailment", "Poor Weather"],
+
+        // task
     }
 };
