@@ -16,10 +16,10 @@ Vue.component('distribution-params', {
             type: String,
             default: ""
         },
-        nOption: {
-            type: Boolean,
-            default: false
-        }
+        nOption: {  // 0 - arrival, 1 - duration, 2 - expiration
+            type: Number,
+            default: 1
+        },
     },
     methods: {
         getPos(dist) {
@@ -68,66 +68,81 @@ Vue.component('distribution-params', {
         }
     },
     template:  `<div class="form-group form-row">
-                    <div class="col-3">
+                    <div class="col-12">
                         <label>{{distLabel}}</label>
-                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist">
-                            <option value="E">Exponential</option>
-                            <option value="L">Log Normal</option>
-                            <option value="U">Uniform</option>
-                            <option value="C">Constant</option>
-                            <option value="T">Triangular</option>
-                            <option value="N" v-show="nOption">Never Expires</option>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-if="nOption === 0">
+                            <option value="E">On average, once every X minutes</option>
+                            <option value="L">On average, once every X minutes +/- Y minutes</option>
+                            <option value="U">Once every X to Y minutes</option>
+                            <option value="T">Once every X to Y minutes, usually around Z minutes</option>
+                            <option value="C">Exactly once every X minutes</option>
                         </select>
-                        <small class="form-text text-muted">Type</small>
+                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-if="nOption === 1">
+                            <option value="E">On average, X minutes</option>
+                            <option value="L">On average, X minutes +/- Y minutes</option>
+                            <option value="U">X to Y minutes</option>
+                            <option value="T">X to Y minutes, usually around Z minutes</option>
+                            <option value="C">Exactly X minutes</option>
+                        </select>
+                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-if="nOption === 2">
+                            <option value="N" v-show="nOption">It can wait the whole shift time</option>
+                            <option value="E">It must be done on average by X minutes after it appears</option>
+                            <option value="L">It must be done on average by X minutes +/- Y minutes after it appears</option>
+                            <option value="U">It must be done by X to Y minutes after it appears</option>
+                            <option value="T">It must be done by X to Y minutes, usually around Z minutes after it appears</option>
+                            <option value="C">It must be done by exactly X minutes after it appears</option>
+                        </select>
+                        <small class="form-text text-muted">Select Type</small>
                     </div>
 
                     <!-- distribution parameters (task.arrivalParam) -->
-                    <div class="col-9">
-                        <label>{{paramsLabel}}</label>
+                    <div class="col-sm-6">
                         <div v-if="dist === 'E'" class="row no-gutters">
                             <div class="col">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">Mean (Minutes)</small>
+                                <small class="form-text text-muted">X Minutes</small>
                             </div>
                         </div>
                         <div v-if="dist === 'L'" class="row no-gutters">
-                            <div class="col mr-1">
+                            <div class="col-sm mr-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">Mean (Minutes)</small>
+                                <small class="form-text text-muted">X Minutes</small>
                             </div>
-                            <div class="col ml-1">
+                            <div class="col-sm ml-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
-                                <small class="form-text text-muted">Standard Deviation (Minutes)</small>
+                                <small class="form-text text-muted">Y Minutes</small>
                             </div>
                         </div>
                         <div v-if="dist === 'U'" class="row no-gutters">
-                            <div class="col mr-1">
+                            <div class="col-sm mr-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">Minimum (Minutes)</small>
+                                <small class="form-text text-muted">X Minutes</small>
                             </div>
-                            <div class="col ml-1">
+                            <div class="col-sm ml-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
-                                <small class="form-text text-muted">Maximum (Minutes)</small>
+                                <small class="form-text text-muted">Y Minutes</small>
                             </div>
                         </div>
                         <div v-if="dist === 'C'" class="row no-gutters">
-                            <div class="col mr-1">
+                            <div class="col-sm mr-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">Number (Minutes)</small>
+                                <small class="form-text text-muted">X Minutes</small>
                             </div>
                         </div>
                         <div v-if="dist === 'T'" class="row no-gutters">
-                            <div class="col mr-1">
+                            <div class="col-sm mr-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">Minimum (Minutes)</small>
+                                <small class="form-text text-muted">X Minutes</small>
                             </div>
-                            <div class="col mx-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
-                                <small class="form-text text-muted">Mode (Minutes)</small>
-                            </div>
-                            <div class="col ml-1">
+                            <div class="col-sm ml-1">
                                 <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[2]">
-                                <small class="form-text text-muted">Maximum (Minutes)</small>
+                                <small class="form-text text-muted">Y Minutes</small>
+                            </div>
+                            <div class="col-sm mx-1">
+                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
+                                <small class="form-text text-muted">Z Minutes</small>
                             </div>
                         </div>
                     </div>

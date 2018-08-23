@@ -307,8 +307,8 @@
                 </div>
                 <div v-for="n in [0, 1]" :class="{options: globalSettings.hasTransition[n]}">
                      <div class="form-group" v-show="globalSettings.hasTransition[n]">
-                        <label>{{textStrings.questionTransitionDuration[n]}}</label>
-                        <distribution-params :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]></distribution-params>
+                        <distribution-params :dist-label="textStrings.questionTransitionDuration[n]"
+                                             :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]></distribution-params>
                     </div>
                 </div>
 
@@ -403,7 +403,7 @@
 
                         <!-- task name (task.name) -->
                         <div class="form-group form-row">
-                            <label class="col-md-3 col-lg-2 col-form-label">Task Name</label>
+                            <label class="col-md-3 col-lg-2 col-form-label">1. Task Name</label>
                             <div class="col-md-9 col-lg-10">
                                 <input class="form-control" type="text" v-model="task.name"
                                        @focus="miscSettings.inputString = task.name" @change = "changeInputString('Task', task)">
@@ -412,7 +412,7 @@
 
                         <!-- task affected by type 2 condition (task.exoType2Aff) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by                              {{miscSettings.exoFactorsName[1].toLowerCase()}}?
+                            <label class="col-form-label">2. Is this task affected by                              {{miscSettings.exoFactorsName[1].toLowerCase()}}?
                             </label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
@@ -431,7 +431,7 @@
                         <!-- TASK TRAFFIC -->
                         <!-- traffic different (task.affectByIROPS) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by traffic?</label>
+                            <label class="col-form-label">3. Is this task affected by traffic?</label>
                              <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
@@ -450,7 +450,7 @@
 
                         <!-- task affected by team coordination (task.affTeamCoord) -->
                         <div class="form-group">
-                            <label class="col-form-label">Is this task affected by team coordination?</label>
+                            <label class="col-form-label">4. Is this task affected by team coordination?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
@@ -466,7 +466,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label">Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
+                            <label class="col-form-label">5. Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
@@ -498,44 +498,44 @@
                         </div>
 
                         <!-- DISTRIBUTIONS -->
+<!--
                         <h5 class="mb-0">Distributions</h5>
                         <small class="form-text text-muted mb-4">Distribution types take different parameters.</small>
+-->
 
                         <!-- arrival time distribution (task.arrivalDistribution) -->
-                        <distribution-params dist-label="Interarrival Time" params-label="Distribution Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
-                        <hr/>
-
-                        <!-- service time distribution (task.serviceDistribution) -->
-                        <distribution-params dist-label="Service Time" params-label="Distribution Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
-                        <hr/>
+                        <distribution-params :n-option=0 dist-label="6. How frequently does this task occur for a dispatcher?" params-label="Distribution Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
 
                         <!-- expiration time distribution (task.expireDistribution) -->
-                        <distribution-params n-option dist-label="Expiration Time" params-label="Distribution Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
+                        <distribution-params :n-option=2 dist-label="7. When this task appears, how much time can it wait to be completed before it becomes invalid?" params-label="Distribution Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
+
+                        <!-- service time distribution (task.serviceDistribution) -->
+                        <distribution-params dist-label="8. How long does it take a dispatcher to complete this task?" params-label="Distribution Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
 
                         <!-- HUMAN ERROR PROBABILITY -->
-                        <h5 class="mb-3">Human Error Probability</h5>
+<!--                        <h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
-
-                            <div class="form-group form-row">
-                                <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][0]">
-                                    <small class="form-text text-muted">
-                                        Minimum
-                                    </small>
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][1]">
-                                    <small class="form-text text-muted">
-                                        Mode
-                                    </small>
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="number" min="0" max="1" step="any" class="form-control" v-model.number="task.humanErrorProb[0][2]" placeholder="Enter #">
-                                    <small class="form-text text-muted">
-                                        Maximum
-                                    </small>
-                                </div>
+                        <label>9. How would you describe this task?</label>
+                        <div class="form-group form-row">
+                            <div class="col-sm-4">
+                                <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][0]">
+                                <small class="form-text text-muted">
+                                    Minimum
+                                </small>
                             </div>
+                            <div class="col-sm-4">
+                                <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][1]">
+                                <small class="form-text text-muted">
+                                    Mode
+                                </small>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" min="0" max="1" step="any" class="form-control" v-model.number="task.humanErrorProb[0][2]" placeholder="Enter #">
+                                <small class="form-text text-muted">
+                                    Maximum
+                                </small>
+                            </div>
+                        </div>
 
                         <div class="form-group" v-if="task.leadTask === -1">
                             <!-- tasks assigned to operators (task.include) -->
