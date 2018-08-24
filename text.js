@@ -23,7 +23,9 @@ var textStrings = {
 
         // Fleets
         fleets: "Fleets",       // for fleets menu
-
+        fleet_settings: "Fleet Settings",
+        qFleets: "How many different fleets do the operators manage?",
+        qNumVeh: "How many vehicles are in this fleet?",
         // Operator Teams
         operators: "Operators", // for operators menu
 
@@ -58,8 +60,10 @@ var textStrings = {
         qInterruptable: "Is this task interruptable?",
 
         // Fleets
-        fleets: "Fleets",       // for fleets menu
-
+        fleets: "Railroads",       // for fleets menu
+        fleet_settings: "Railroad Settings",
+        qFleets: "How many different railroads do the operators manage?",
+        qNumVeh: "How many subdivisions are on this railroad?",
         // Operator Teams
         operators: "Operators", // for operators menu
 
