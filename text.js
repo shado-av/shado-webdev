@@ -13,11 +13,13 @@ var textStrings = {
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
 
         // Tasks
-        qWeather: "2. Is this task affected by weather?",
-        qTraffic: "3. Is this task affected by traffic?",
-        qTeamCoordination: "4. Is this task affected by team coordination?",
-        qEssential: "5. Is this task essential?",
-        qInterruptable: "Is this task interruptable?",
+        qWeather: "2. Is the dispatcher's work on this task influenced by weather conditions?",
+        qTraffic: "3. Is the dispatcher's work on this task influenced by hourly traffic levels of railroad(s)?",
+        qTeamCoordination: "4. Do dispatchers need to coordinate with other dispatchers here to complete this task?",
+        qEssential: "5. Must a dispatcher prioritize this task over other tasks?",
+        qInterruptable: "Is it OK for a dispatcher to be interrupted while working on this task?",
+        tooltipInterruptable: "Yes means the dispatcher can put this task on hold to complete other tasks and return to this one later.",
+
 
         // Fleets
         fleets: "Fleets",       // for fleets menu
@@ -48,6 +50,26 @@ var textStrings = {
         questionExtremeCondition: "3. Will there be any extreme conditions during this shift?",
         optionExtremeCondition: [ "Derailment", "Poor Weather"],
 
-        // task
+        // Tasks
+        qWeather: "2. Is this task affected by weather?",
+        qTraffic: "3. Is this task affected by traffic?",
+        qTeamCoordination: "4. Is this task affected by team coordination?",
+        qEssential: "5. Is this task essential?",
+        qInterruptable: "Is this task interruptable?",
+
+        // Fleets
+        fleets: "Fleets",       // for fleets menu
+
+        // Operator Teams
+        operators: "Operators", // for operators menu
+
+        // Reviews
+
+        // Results
+
+        // Misc
+        mainMenu: [ "Basic Settings", "Tasks", "Fleets", "Operators", "Review Settings" ],
+        previousTab: "",
+        nextTab: "Tasks",
     }
 };
