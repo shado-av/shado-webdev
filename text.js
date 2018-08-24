@@ -28,6 +28,11 @@ var textStrings = {
         // Reviews
 
         // Results
+
+        // Misc
+        mainMenu: [ "Basic Settings", "Tasks", "Fleets", "Operators", "Review Settings" ],
+        previousTab: "",
+        nextTab: "Tasks",
     },
     Aviation: {
 

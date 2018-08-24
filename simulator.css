@@ -34,6 +34,10 @@ footer label {
   line-height: 40px !important;
 }
 
+footer .btn-file {
+  line-height: 30px !important;
+}
+
 footer span {
   margin-bottom:16px;
 /*  line-height: 30px !important;*/
@@ -646,7 +650,7 @@ footer .number-input button:after {
 }
 
 .tooltip[x-placement^="top"] {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .tooltip[x-placement^="top"] .tooltip-arrow {

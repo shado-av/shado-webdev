@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <!----------------------------------------- 
+    <!-----------------------------------------
         TOP NAVIGATION
     ------------------------------------------>
     <nav class="navbar fixed-top">
@@ -104,7 +104,7 @@
     <!-- VUE APP MOUNT -->
     <div id="shado-sim">
 
-        <!----------------------------------------- 
+        <!-----------------------------------------
             SIDEBAR NAVIGATION
         ------------------------------------------>
 
@@ -204,13 +204,13 @@
             </div>
         </div>
 
-        <!----------------------------------------- 
+        <!-----------------------------------------
             SIMULATOR TAB CONTENT
         ------------------------------------------>
 
         <div class="tab-content" id="sim-content">
 
-            <!----------------------------------------- 
+            <!-----------------------------------------
                 BASIC/GLOBAL SETTINGS
                 (globalSettings)
             ------------------------------------------>
@@ -334,7 +334,7 @@
                 </div>
             </div>
 
-            <!----------------------------------------- 
+            <!-----------------------------------------
                 TASK SETTINGS
                 (taskSettings)
             ------------------------------------------>
@@ -412,8 +412,7 @@
 
                         <!-- task affected by type 2 condition (task.exoType2Aff) -->
                         <div class="form-group">
-                            <label class="col-form-label">2. Is this task affected by                              {{miscSettings.exoFactorsName[1].toLowerCase()}}?
-                            </label>
+                            <label class="col-form-label">2. Is this task affected by weather?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
@@ -558,7 +557,7 @@
 
             </div>
 
-            <!----------------------------------------- 
+            <!-----------------------------------------
                 OPERATOR SETTINGS
                 (operatorSettings)
             ------------------------------------------>
@@ -823,7 +822,7 @@
 
             </div>
 
-            <!----------------------------------------- 
+            <!-----------------------------------------
                 FLEET SETTINGS
                 (fleetSettings)
             ------------------------------------------>
@@ -963,7 +962,7 @@
 
             </div>
 
-            <!----------------------------------------- 
+            <!-----------------------------------------
                 REVIEW SETTINGS
             ------------------------------------------>
 
@@ -1154,7 +1153,7 @@
 -->
             </div>
 
-            <!----------------------------------------- 
+            <!-----------------------------------------
                 View RESULTS
             ------------------------------------------>
 
@@ -1262,9 +1261,9 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' :disabled="miscSettings.isSaving">Save Settings <span class="mb-0" v-tooltip.top="{ content: 'Save the current user settings'}"><span class="fas fa-info-circle"></span></span></button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' v-tooltip.top="{ content: 'Save the current user settings'}":disabled="miscSettings.isSaving">Save Settings</button>
 
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='loadData' :disabled="miscSettings.isLoading">Load Settings <span class="mb-0" v-tooltip.top="{ content: 'Revert to the previously saved user settings'} "><span class="fas fa-info-circle"></span></span></button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" v-tooltip.top="{ content: 'Revert to the previously saved user settings'} " @click='loadData' :disabled="miscSettings.isLoading">Load Settings</button>
 <!--
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
@@ -1278,6 +1277,8 @@
             </span>
             <!--Submit Button-->
             <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
+            <button v-tooltip.top="textStrings.previousTab" :disabled="textStrings.previousTab === ''" class="btn btn-outline-light btn-sm ml-3 mr-sm-3" @click="onPrevTab"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button v-tooltip.top="textStrings.nextTab" :disabled="textStrings.nextTab === ''" class="btn btn-outline-light btn-sm mr-sm-3" @click="onNextTab"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         </footer>
     </div>
 </body>

@@ -226,8 +226,16 @@ var sim = new Vue({
             sessionId: "",
             sessionQuery: "",
 
+            globalMenuId: [
+                "basic-settings-tab",
+                "tasks-settings-tab",
+                "fleets-settings-tab",
+                "operators-settings-tab",
+                "review-settings-tab",
+                "view-results-tab",
+            ],
+
             // System wide strings... usually required for Reviews.
-            exoFactorsName: ["Medical Emergency", "Weather"],
 
             // Other Constants... maybe moved to env? or some variable holding constants.
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
@@ -295,7 +303,7 @@ var sim = new Vue({
         // return review string for type of exo factors
         hasExogenousForReview() {
             var exoFT = this.globalSettings.exoFactorsType;
-            var exoFTName = this.miscSettings.exoFactorsName;
+            var exoFTName = this.textStrings.optionExtremeCondition;
             var exoRv = "None";
 
             //console.log("exoFactorsName", exoFT, exoFTName);
@@ -1105,17 +1113,39 @@ var sim = new Vue({
 
         setSimType(str) {
             this.globalSettings.simType = str;
-            this.textStrings = textStrings.General;
+
+            // retrieve each default configuration and set
+            axios.get('/data/' + str + '.json')
+              .then((response) => {
+                // handle success
+                //this.console.log(response);
+                var data = response.data; // if same version!!!
+                if (this.version === data.version) {
+                    this.numReps = data.numReps;
+                    this.globalSettings = data.globalSettings;
+                    this.taskSettings = data.taskSettings;
+                    this.operatorSettings = data.operatorSettings;
+                    this.fleetSettings = data.fleetSettings;
+                } else {
+                    console.log("Data version is different.")
+                }
+              })
+              .catch((error) => {
+                // handle error
+                console.log(error);
+              })
+
+            // always use the latest textStrings...
+            this.textStrings = textStrings.General; // redundant???!
+
             // Base is General and override with each settings
             if (str !== "General") {
                 for(x in textStrings[str]) {
-                    console.log(x);
                     this.textStrings[x] = textStrings[str][x];
                 }
             }
-            console.log(this.textStrings);
 
-            this.$nextTick(function () {
+            this.$nextTick(() => {
                 $("#sim-type").modal('hide');
             });
         },
@@ -1468,6 +1498,8 @@ var sim = new Vue({
                 this.miscSettings.viewResultsClass = "";
                 this.$nextTick( function() {
                     this.$refs.viewResultsTab.click();
+                    if (this.textStrings.mainMenu.length <= 5)
+                        this.textStrings.mainMenu.push("View Results");
                 });
 
                 FailedTaskAnalysis.refreshPie();
@@ -1504,6 +1536,24 @@ var sim = new Vue({
 
         downloadJSON() {
             window.location.href = env.serverUrl + "/shado/getUtilizationJSON" + this.miscSettings.sessionQuery;
+        },
+
+        onPrevTab() {
+            var id = document.querySelector("#settings-nav .nav-link.active").id;
+            var index = this.miscSettings.globalMenuId.indexOf(id);
+            var elm = document.getElementById(this.miscSettings.globalMenuId[index-1]);
+            if (elm !== null) {
+                elm.click();
+            }
+        },
+
+        onNextTab() {
+            var id = document.querySelector("#settings-nav .nav-link.active").id;
+            var index = this.miscSettings.globalMenuId.indexOf(id);
+            var elm = document.getElementById(this.miscSettings.globalMenuId[index+1]);
+            if (elm !== null) {
+                elm.click();
+            }
         }
     },
 
@@ -1580,9 +1630,6 @@ var sim = new Vue({
                 }
             });
 
-            // enable tooltip
-            //$('body').tooltip({selector:'[data-toggle=tooltip]'});
-
             // pop-up simulation type chooser
             $('#sim-type').modal(true);
 
@@ -1650,9 +1697,17 @@ var sim = new Vue({
 
             // replace javascript alert with bootstrap modal
             window.alert = function () {
-              $("#alert-modal .modal-body").text(arguments[0]);
-              $("#alert-modal").modal('show');
+                $("#alert-modal .modal-body").text(arguments[0]);
+                $("#alert-modal").modal('show');
             };
+
+            $("#settings-nav .nav-link").click( function() {
+                console.log(this.id);
+                var index = sim.miscSettings.globalMenuId.indexOf(this.id);
+
+                sim.textStrings.nextTab = sim.textStrings.mainMenu[index+1] || "";
+                sim.textStrings.previousTab = (index>=1) ? sim.textStrings.mainMenu[index-1] : "";
+            });
         }.bind(this))
     }
 });
