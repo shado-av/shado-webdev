@@ -1,6 +1,7 @@
 var textStrings = {
     General : {
         // Basic Settings
+        //basic: "Basic Settings",
         questionHours: "1. How many hours are in this shift?",
         tooltipHours: "This is an example tooltip",
         questionTransition: "2. Check if there is a transitioning period at the beginning or ending of this shift.",
@@ -13,6 +14,7 @@ var textStrings = {
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
 
         // Tasks
+        tasks: "Tasks",
         qWeather: "2. Is the dispatcher's work on this task influenced by weather conditions?",
         qTraffic: "3. Is the dispatcher's work on this task influenced by hourly traffic levels of railroad(s)?",
         qTeamCoordination: "4. Do dispatchers need to coordinate with other dispatchers here to complete this task?",
@@ -53,6 +55,7 @@ var textStrings = {
         optionExtremeCondition: [ "Derailment", "Poor Weather"],
 
         // Tasks
+        tasks: "Dispatcher Tasks",
         qWeather: "2. Is this task affected by weather?",
         qTraffic: "3. Is this task affected by traffic?",
         qTeamCoordination: "4. Is this task affected by team coordination?",
@@ -72,7 +75,7 @@ var textStrings = {
         // Results
 
         // Misc
-        mainMenu: [ "Basic Settings", "Tasks", "Fleets", "Operators", "Review Settings" ],
+        mainMenu: [ "Shift", "Tasks", "Railroads", "Dispatchers", "Review" ],
         previousTab: "",
         nextTab: "Tasks",
     }
