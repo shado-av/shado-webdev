@@ -24,19 +24,19 @@ var textStrings = {
 
 
         // Fleets
-        fleets: "Fleet",       // for fleets menu
+        fleets: "Fleets",       // for fleets menu
         fleet_settings: "Fleet Settings",
         qFleets: "How many different fleets do the operators manage?",
         qNumVeh: "How many vehicles are in this fleet?",
         // Operator Teams
-        operators: "Operator", // for operators menu
+        operators: "Operators", // for operators menu
 
         // Reviews
 
         // Results
 
         // Misc
-        mainMenu: [ "Shift Settings", "Task Settings", "Fleet Settings", "Operator Settings", "Review Settings" ],
+        mainMenu: [ "Shift", "Tasks", "Fleets", "Operators", "Review Settings" ],
         previousTab: "",
         nextTab: "Tasks",
     },
