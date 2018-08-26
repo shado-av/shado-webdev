@@ -321,13 +321,13 @@
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
                             <label class="custom-control-label" for="exo-type-1">
-                                {{textStrings.optionExtremeCondition[0]}}
+                                {{textStrings.optionExtremeCondition[0]}} <span v-tooltip.bottom="{ content: 'This is an example tooltip for checkbox answer.'}"><span class="fas fa-info-circle"></span></span>
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
                             <label class="custom-control-label" for="exo-type-2">
-                                {{textStrings.optionExtremeCondition[1]}}
+                                {{textStrings.optionExtremeCondition[1]}} <span v-tooltip.bottom="{ content: 'This is an example tooltip for checkbox answer.'}"><span class="fas fa-info-circle"></span></span>
                             </label>
                         </div>
                     </div>
