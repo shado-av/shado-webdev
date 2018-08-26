@@ -14,7 +14,7 @@ var textStrings = {
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
 
         // Tasks
-        tasks: "Tasks",
+        tasks: "Task",
         qWeather: "2. Is the dispatcher's work on this task influenced by weather conditions?",
         qTraffic: "3. Is the dispatcher's work on this task influenced by hourly traffic levels of railroad(s)?",
         qTeamCoordination: "4. Do dispatchers need to coordinate with other dispatchers here to complete this task?",
@@ -24,19 +24,19 @@ var textStrings = {
 
 
         // Fleets
-        fleets: "Fleets",       // for fleets menu
+        fleets: "Fleet",       // for fleets menu
         fleet_settings: "Fleet Settings",
         qFleets: "How many different fleets do the operators manage?",
         qNumVeh: "How many vehicles are in this fleet?",
         // Operator Teams
-        operators: "Operators", // for operators menu
+        operators: "Operator", // for operators menu
 
         // Reviews
 
         // Results
 
         // Misc
-        mainMenu: [ "Basic Settings", "Tasks", "Fleets", "Operators", "Review Settings" ],
+        mainMenu: [ "Shift Settings", "Task Settings", "Fleet Settings", "Operator Settings", "Review Settings" ],
         previousTab: "",
         nextTab: "Tasks",
     },
@@ -45,7 +45,7 @@ var textStrings = {
     },
     Rail: {
         // basic settings
-        questionHours: "1. How many hours are your train dispatchers working?",
+        questionHours: "1. How many hours are your train dispatchers working this shift?",
         questionTransition: "2. If your dispatchers have transfer-of-duty periods, when do they occur?",
         questionTransitionDuration: [
             "At the beginning of their shifts, how long does this transfer-of-duty last?",
@@ -55,7 +55,7 @@ var textStrings = {
         optionExtremeCondition: [ "Derailment", "Poor Weather"],
 
         // Tasks
-        tasks: "Dispatcher Tasks",
+        tasks: "Task",
         qWeather: "2. Is this task affected by weather?",
         qTraffic: "3. Is this task affected by traffic?",
         qTeamCoordination: "4. Is this task affected by team coordination?",
@@ -63,19 +63,19 @@ var textStrings = {
         qInterruptable: "Is this task interruptable?",
 
         // Fleets
-        fleets: "Railroads",       // for fleets menu
+        fleets: "Railroad",       // for fleets menu
         fleet_settings: "Railroad Settings",
         qFleets: "How many different railroads do the operators manage?",
         qNumVeh: "How many subdivisions are on this railroad?",
         // Operator Teams
-        operators: "Operators", // for operators menu
+        operators: "Dispatcher", // for operators menu
 
         // Reviews
 
         // Results
 
         // Misc
-        mainMenu: [ "Shift", "Tasks", "Railroads", "Dispatchers", "Review" ],
+        mainMenu: [ "Shift Settings", "Task Settings", "Railroad Settings", "Dispatcher Settings", "Review Settings" ],
         previousTab: "",
         nextTab: "Tasks",
     }
