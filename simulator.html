@@ -480,18 +480,20 @@
                             </div>
                         </div>
 
-                        <div class="form-group" v-show="task.essential==='n'">
-                            <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
-                            <div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
-                                        value="y" v-model="task.interruptable">
-                                    <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
-                                </div>
-                                <div class="custom-control custom-control-inline custom-radio mr-0">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
-                                        value="n" v-model="task.interruptable">
-                                    <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                        <div :class="{options: task.essential==='n'}">
+                            <div class="form-group pb-4" v-show="task.essential==='n'">
+                                <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
+                                <div>
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
+                                            value="y" v-model="task.interruptable">
+                                        <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-0">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
+                                            value="n" v-model="task.interruptable">
+                                        <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
