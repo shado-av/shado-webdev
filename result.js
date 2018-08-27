@@ -41,7 +41,7 @@ var BarChartWithError = (function (index, isFleet) {
             keys = json.fleetName;
             avgBusyTime = json.averageBusyTimePerFleet[id];
             stdBusyTime = json.stdBusyTimePerFleet[id];
-            xAxisText = "Fleet Name";
+            xAxisText = sim.textStrings.fleet + " Name";
         } else {
             keys = json.taskName;
             avgBusyTime = json.averageBusyTimePerTask[id];
@@ -670,7 +670,7 @@ var BoxPlot = (function () {
                     (height + margin.top + margin.bottom - 5) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .text("Operator Team Name");
+                .text(sim.textStrings.operator + " Team Name");
 
             // text label for the y axis
             svg.append("text")

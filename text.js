@@ -24,15 +24,18 @@ var textStrings = {
 
 
         // Fleets
+        fleet: "Fleet",         // singular for fleet
         fleets: "Fleets",       // for fleets menu
-        fleet_settings: "Fleet Settings",
+        fleetSettings: "Fleet Settings",
+        vehicle: "Vehicle",
         qFleets: "How many different fleets do the operators manage?",
         qNumVeh: "How many vehicles are in this fleet?",
 
         // Operator Teams
+        operator: "Operator",
         operators: "Operators", // for operators menu
-        operator_list: "Operator List",
-        operator_settings: "Operator Settings",
+        operatorList: "Operator List",
+        operatorSettings: "Operator Settings",
 
         AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
 
@@ -68,15 +71,18 @@ var textStrings = {
         qInterruptable: "Is this task interruptable?",
 
         // Fleets
-        fleets: "Railroad",       // for fleets menu
-        fleet_settings: "Railroad Settings",
-        qFleets: "How many different railroads do the operators manage?",
+        fleet: "Railroad",
+        fleets: "Railroads",       // for fleets menu
+        fleetSettings: "Railroad Settings",
+        vehicle: "Subdivision",
+        qFleets: "How many different railroads do the dispatchers manage?",
         qNumVeh: "How many subdivisions are on this railroad?",
 
         // Operator Teams
-        operators: "Dispatcher", // for operators menu
-        operator_list: "Dispatcher List",
-        operator_settings: "Dispatcher Settings",
+        operator: "Dispatcher",
+        operators: "Dispatchers", // for operators menu
+        operatorList: "Dispatcher List",
+        operatorSettings: "Dispatcher Settings",
 
 
         // Reviews
@@ -84,7 +90,7 @@ var textStrings = {
         // Results
 
         // Misc
-        mainMenu: [ "Shift Settings", "Task Settings", "Railroad Settings", "Dispatcher Settings", "Review Settings" ],
+        mainMenu: [ "Shift", "Tasks", "Railroads", "Dispatchers", "Review Settings" ],
         previousTab: "",
         nextTab: "Tasks",
     }
