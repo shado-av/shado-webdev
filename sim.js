@@ -1233,7 +1233,7 @@ var sim = new Vue({
                                 sim.taskSettings = data.taskSettings;
                                 sim.operatorSettings = data.operatorSettings;
                                 sim.fleetSettings = data.fleetSettings;
-                                this.loadStrings(this.globalSettings.simType);
+                                sim.loadStrings(sim.globalSettings.simType);
 
                                 alert(files[0].name + " is loaded successfully!");
                             } else if (data.version) {

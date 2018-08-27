@@ -175,33 +175,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- run simulation controls -->
-            <div>
-
-                <!-- Download Buttons -->
-                <div class="form-row justify-content-center">
-                    <div id="container">
-                        <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Input JSON</a>
-                    </div>
-                    <br>
-                </div>
-
-                <div id="downloadBtn" style="display: none" align="center">
-                    <div class="divider"></div>
-                    <button @click="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
-                    <div class="divider"></div>
-<!--
-                    <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
-                        <br> Output JSON</button>
--->
-                    <div class="divider"></div>
-                    <button @click="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
-                        <br> Summary</button>
-                </div>
-                <br>
-                <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
-            </div>
         </div>
 
         <!-----------------------------------------
@@ -581,7 +554,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="operators-global-settings-tab" data-toggle="tab" href="#operators-global-settings" role="tab"
                             aria-controls="operators-global-settings" selected="true">
-                            {{textStrings.operator_list}}
+                            {{textStrings.operatorList}}
                         </a>
                     </li>
 
@@ -599,11 +572,11 @@
 
                     <!-- OPERATOR GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="operators-global-settings" role="tabpanel" aria-labelledby="operators-global-settings-tab">
-                        <h3 class="mb-4">{{textStrings.operator_settings}}</h3>
+                        <h3 class="mb-4">{{textStrings.operatorSettings}}</h3>
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
-                                <div>How many different teams of operators are there?</div>
+                                <div>How many different teams of {{textStrings.operators.toLowerCase()}} are there?</div>
                                 <percentage-input :min=1 :max=99 :step=1 number-only
                                     :value.sync="operatorSettings.numTeams" @change="updateOperatorTeams"
                                     ></percentage-input>
@@ -611,7 +584,7 @@
 
                             <!-- Is this operator flexible? -->
                             <div class="form-group">
-                                <label class="col-form-label">Is there a flex team who can handle any tasks/fleets?</label>
+                                <label class="col-form-label">Is there a flex team who can handle any tasks/{{textStrings.fleets.toLowerCase()}}?</label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input class="custom-control-input" type="radio" name="opteam-flexible"
@@ -631,7 +604,7 @@
                             </div>
                             <!-- How many operators are in the flex team? -->
                             <div class="form-group" v-show="operatorSettings.hasFlexPosition === 'y'">
-                                <div>How many operators are in the flex team?</div>
+                                <div>How many {{textStrings.operators.toLowerCase()}} are in the flex team?</div>
                                 <percentage-input :min=1 :max=99 :step=1 number-only
                                     :value.sync="operatorSettings.flexTeamSize"></percentage-input>
                             </div>
@@ -678,11 +651,11 @@
                             </div>
 
                             <!-- OPERATOR TASKS -->
-                            <h5 class="mb-3">Operator Tasks/Fleets</h5>
+                            <h5 class="mb-3">{{textStrings.operator}} Tasks/{{textStrings.fleets}}</h5>
 
                             <!-- operator task checklist (team.tasks) -->
                             <div class="form-group">
-                                <label class="mb-3">What tasks/fleets are these operators responsible for?</label>
+                                <label class="mb-3">What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
                                 <!-- adjust task/fleet operators are responsible for (team.expertise) -->
                                 <div class="table-responsive">
                                     <table class="form-group table">
@@ -706,7 +679,7 @@
 
                             <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
-                                <label>Operator Strategies</label>
+                                <label>{{textStrings.operator}} Strategies</label>
                                 <select class="custom-select" v-model="team.strategy">
                                     <option value="FIFO">First In First Out</option>
                                     <option value="STF">Shortest Task First</option>
@@ -846,7 +819,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="fleets-global-settings-tab" data-toggle="tab" href="#fleets-global-settings" role="tab" aria-controls="fleets-global-settings"
                             selected="true">
-                            All Fleets
+                            {{ textStrings.fleet }} List
                         </a>
                     </li>
 
@@ -864,11 +837,11 @@
 
                     <!-- FLEET GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="fleets-global-settings" role="tabpanel" aria-labelledby="fleets-global-settings-tab">
-                        <h3 class="mb-4">Fleets Settings</h3>
+                        <h3 class="mb-4">{{ textStrings.fleetSettings }}</h3>
 
                         <!-- number of fleets (fleetTypes) -->
                         <div class="form-group">
-                            <div>How many different fleets do the operators manage?</div>
+                            <div>{{ textStrings.qFleets }}</div>
                             <percentage-input :min=1 :max=99 :step=1 number-only
                                 :value.sync="fleetSettings.fleetTypes" @change="updateFleets"></percentage-input>
                         </div>
@@ -888,7 +861,7 @@
                         <!-- FLEET SETTINGS -->
                         <!-- fleet name (fleet.name) -->
                         <div class="form-group form-row">
-                            <label class="col-md-3 col-lg-2 col-form-label">Fleet Name</label>
+                            <label class="col-md-3 col-lg-2 col-form-label">{{ textStrings.fleet}} Name</label>
                             <div class="col-md-9 col-lg-10">
                                 <input class="form-control" type="text" v-model="fleet.name"
                                        @focus="miscSettings.inputString = fleet.name" @change = "changeInputString('Fleet', fleet)">
@@ -897,14 +870,14 @@
 
                         <!-- number of vehicles (fleet.numVehicles) -->
                         <div class="form-group">
-                            <div>How many vehicles are in this fleet?</div>
+                            <div>{{ textStrings.qNumVeh }}</div>
                             <percentage-input :min=1 :max=99 :step=1 number-only
                                 :value.sync="fleet.numVehicles"></percentage-input>
                         </div>
 
                         <!-- fleet communications (fleet.comms) -->
                         <div class="form-group">
-                            <label>Does this fleet have some level of vehicle-to-vehicle communication?</label>
+                            <label>Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?</label>
                             <br/>
                             <select class="custom-select width-small" v-model="fleet.comms">
                                 <option value="N">None</option>
@@ -915,11 +888,11 @@
 
 
                         <!-- FLEET TASKS -->
-                        <h5 class="mb-3">Fleet Tasks</h5>
+                        <h5 class="mb-3">{{ textStrings.fleet}} Tasks</h5>
 
                         <!-- fleet task checklist (fleet.tasks) -->
                         <div class="form-group">
-                            <label class="mb-3">Which tasks are associated with this fleet?</label>
+                            <label class="mb-3">Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?</label>
                             <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
                                 <input class="custom-control-input" type="checkbox" :id="'fleet-' + index + '-task-' + i" :value="i" v-model="fleet.tasks">
                                 <label class="custom-control-label" :for="'fleet-' + index + '-task-' + i">{{ task.name }}</label>
@@ -930,7 +903,7 @@
                         <!-- <h5 class="mb-3">Traffic</h5>-->
                         <!-- different traffic levels (diffTrafficLevels) -->
                         <div class="form-group">
-                            <label class="col-form-label">Are there different traffic levels for during this shift for this fleet?</label>
+                            <label class="col-form-label">Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
@@ -1004,7 +977,7 @@
                             <td>{{hasTransitionForReview}}</td>
                         </tr>
                         <tr>
-                            <td>Exogenous factor</td>
+                            <td>Extreme Conditions</td>
                             <td>{{hasExogenousForReview}}</td>
                         </tr>
                     </table>
@@ -1014,7 +987,7 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">{{ fleetSettings.fleetTypes }} Fleets</th>
+                                <th colspan="2">{{ fleetSettings.fleetTypes }} {{ textStrings.fleets }}</th>
                             </tr>
                         </thead>
                         <tr v-for="(fleet, index) in fleetSettings.fleets">
@@ -1026,15 +999,15 @@
                                         </tr>
                                     </thead>
                                     <tr>
-                                        <td>Number of Vehicles in Fleet</td>
+                                        <td>Number of {{ textStrings.vehicle }}s in {{ textStrings.fleets }}</td>
                                         <td>{{fleet.numVehicles}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Vehivle to Vehicle Communications</td>
+                                        <td>{{ textStrings.vehicle }} to {{ textStrings.vehicle }} Communications</td>
                                         <td>{{miscSettings.comms[fleet.comms]}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Tasks Associated with Fleet</td>
+                                        <td>Tasks Associated with {{ textStrings.fleet }}</td>
                                         <td>{{fleetTasksForReview[index].join(", ")}}</td>
                                     </tr>
                                     <tr>
@@ -1053,7 +1026,7 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">{{ totalOperatorTeams }} Operator Teams </th>
+                                <th colspan="2">{{ totalOperatorTeams }} {{ textStrings.operator }} Teams </th>
                             </tr>
                         </thead>
                         <tr v-show="operatorSettings.hasFlexPosition === 'y'">
@@ -1087,16 +1060,16 @@
                                         <td>{{miscSettings.comms[team.comms]}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Operator Strategy</td>
+                                        <td>{{ textStrings.operator }} Strategy</td>
                                         <td>{{team.strategy}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Tasks/Fleets associated with Operator</td>
+                                        <td>Tasks/{{ textStrings.fleets }} associated with {{ textStrings.operator }}</td>
                                         <td>
                                             <table class="form-group table">
                                                 <thead class="thead-light">
                                                     <th>Task</th>
-                                                    <th>Fleet</th>
+                                                    <th>{{ textStrings.fleet }}</th>
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
@@ -1187,6 +1160,14 @@
                             Failed Task Analysis
                         </a>
                     </li>
+
+                    <!-- Download Section -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="results-download-tab" data-toggle="tab" href="#results-download"
+                           role="tab" aria-controls="results-download" selected="false">
+                            Download Section
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- VIEW RESULTS CONTENT -->
@@ -1194,13 +1175,13 @@
 
                     <!-- Results Utilization -->
                     <div class="tab-pane fade show active" id="results-utilization" role="tabpanel" aria-labelledby="results-utilization-tab">
-                        <h3 class='subtitle'>Utilization per Operator</h3>
+                        <h3 class='subtitle'>Utilization per {{ textStrings.operator }}</h3>
 
                         <div class="table-responsive">
                             <svg id="boxSVG" width="960" height="450"></svg>
                         </div>
 
-                        <div class="form-group mt-5">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the operator’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
+                        <div class="form-group mt-5">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the {{ textStrings.operator.toLowerCase() }}’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
 
                         <h3 class='subtitle'>By Tasks</h3>
                         <div id="barGraphPerTask" class="mt-5 mb-5">
@@ -1211,9 +1192,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group">Placeholder for explanation - Bar graph with error bars per task for each operator team.</div>
+                        <div class="form-group">Placeholder for explanation - Bar graph with error bars per task for each {{ textStrings.operator.toLowerCase() }} team.</div>
 
-                        <h3 class='subtitle'>By Fleets</h3>
+                        <h3 class='subtitle'>By {{ textStrings.fleets }}</h3>
                         <div id="barGraphPerFleet" class="mt-5 mb-5">
                             <ul class="nav nav-tabs">
                             </ul>
@@ -1221,7 +1202,7 @@
                             <div class="tab-content ">
                             </div>
                         </div>
-                        <div class="form-group">Placeholder for explanation - Bar graph with error bars per fleet for each operator team.</div>
+                        <div class="form-group">Placeholder for explanation - Bar graph with error bars per {{ textStrings.fleet.toLowerCase() }} for each {{ textStrings.operator.toLowerCase() }} team.</div>
                     </div>
 
                     <!-- Failed Task Analysis -->
@@ -1246,7 +1227,7 @@
                                         <th colspan="3">Failed Tasks and Caught</th>
                                     </tr>
                                     <tr>
-                                        <th>Operator Team</th>
+                                        <th>{{ textStrings.operator }} Team</th>
                                         <th>Task Name</th>
                                         <th class="left-border right-align" >Cnt</th>
                                         <th class="right-align">Avg</th>
@@ -1266,6 +1247,30 @@
                         </div>
                         <div class="form-group">Placeholder for explanation</div>
                     </div>
+
+                    <!-- Download Section -->
+                    <div class="tab-pane fade show" id="results-download" role="tabpanel" aria-labelledby="results-download-tab">
+
+                        <!-- Download Buttons -->
+                        <div class="form-row justify-content-center d-none">
+                            <div id="container">
+                                <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Input JSON</a>
+                            </div>
+                            <br>
+                        </div>
+
+                        <div id="downloadBtn">
+                            <div class="divider"></div>
+                            <button @click="downloadCSV" class="btn btn-secondary">Download Utilization Data</button>
+                            <div class="divider"></div>
+                            <!--
+                            <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
+                                <br> Output JSON</button>
+                            <div class="divider"></div>
+                            -->
+                            <button @click="downloadSummary" class="btn btn-secondary">Download Summary</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1276,7 +1281,6 @@
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" v-tooltip.top="{ content: 'Revert to the previously saved user settings'} " @click='loadData' :disabled="miscSettings.isLoading">Load Settings</button>
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
-
 
             <!--Number of replications selection-->
             <span class="ml-md-auto">
