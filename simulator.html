@@ -175,33 +175,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- run simulation controls -->
-            <div>
-
-                <!-- Download Buttons -->
-                <div class="form-row justify-content-center">
-                    <div id="container">
-                        <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Input JSON</a>
-                    </div>
-                    <br>
-                </div>
-
-                <div id="downloadBtn" style="display: none" align="center">
-                    <div class="divider"></div>
-                    <button @click="downloadCSV" class="btn btn-secondary btn-sm" title="">Download CSV</button>
-                    <div class="divider"></div>
-<!--
-                    <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
-                        <br> Output JSON</button>
--->
-                    <div class="divider"></div>
-                    <button @click="downloadSummary" class="btn btn-secondary btn-sm" title="">Download
-                        <br> Summary</button>
-                </div>
-                <br>
-                <div style=" text-align: center; margin-top :45% ; display:none" id="progress" class="loader"></div>
-            </div>
         </div>
 
         <!-----------------------------------------
@@ -1187,6 +1160,14 @@
                             Failed Task Analysis
                         </a>
                     </li>
+
+                    <!-- Download Section -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="results-download-tab" data-toggle="tab" href="#results-download"
+                           role="tab" aria-controls="results-download" selected="false">
+                            Download Section
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- VIEW RESULTS CONTENT -->
@@ -1265,6 +1246,30 @@
                             </table>
                         </div>
                         <div class="form-group">Placeholder for explanation</div>
+                    </div>
+
+                    <!-- Download Section -->
+                    <div class="tab-pane fade show" id="results-download" role="tabpanel" aria-labelledby="results-download-tab">
+
+                        <!-- Download Buttons -->
+                        <div class="form-row justify-content-center d-none">
+                            <div id="container">
+                                <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Input JSON</a>
+                            </div>
+                            <br>
+                        </div>
+
+                        <div id="downloadBtn">
+                            <div class="divider"></div>
+                            <button @click="downloadCSV" class="btn btn-secondary">Download Utilization Data</button>
+                            <div class="divider"></div>
+                            <!--
+                            <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
+                                <br> Output JSON</button>
+                            <div class="divider"></div>
+                            -->
+                            <button @click="downloadSummary" class="btn btn-secondary">Download Summary</button>
+                        </div>
                     </div>
                 </div>
             </div>
