@@ -1125,6 +1125,18 @@ var sim = new Vue({
             $("#fleets-global-settings-tab").click();
         },
 
+        loadStrings(str) {
+            // always use the latest textStrings...
+            this.textStrings = textStrings.General; // redundant???!
+
+            // Base is General and override with each settings
+            if (str !== "General") {
+                for(x in textStrings[str]) {
+                    this.textStrings[x] = textStrings[str][x];
+                }
+            }
+        },
+
         setSimType(str) {
             this.globalSettings.simType = str;
 
@@ -1140,6 +1152,7 @@ var sim = new Vue({
                     this.taskSettings = data.taskSettings;
                     this.operatorSettings = data.operatorSettings;
                     this.fleetSettings = data.fleetSettings;
+                    this.loadStrings(str);
                 } else {
                     console.log("Data version is different.")
                 }
@@ -1220,6 +1233,7 @@ var sim = new Vue({
                                 sim.taskSettings = data.taskSettings;
                                 sim.operatorSettings = data.operatorSettings;
                                 sim.fleetSettings = data.fleetSettings;
+                                this.loadStrings(this.globalSettings.simType);
 
                                 alert(files[0].name + " is loaded successfully!");
                             } else if (data.version) {
@@ -1254,6 +1268,8 @@ var sim = new Vue({
                     this.taskSettings = data.taskSettings;
                     this.operatorSettings = data.operatorSettings;
                     this.fleetSettings = data.fleetSettings;
+                    console.log(this.globalSettings.simType);
+                    this.loadStrings(this.globalSettings.simType);
                     setTimeout(function() {NProgress.done(); sim.miscSettings.isLoading = false; }, 1000);
                 } else {
                     //alert("No previous setting is found.");
@@ -1288,13 +1304,13 @@ var sim = new Vue({
                 switch(dists[i]) {
                     case 'U':
                         if (params[i][0] > params[i][1]) {
-                            this.miscSettings.warningMessage = "Minumum should be smaller than maximum.";
+                            this.miscSettings.warningMessage = "X should be smaller than Y.";
                             return false;
                         }
                         break;
                     case 'T':
                         if (params[i][0] > params[i][1] || params[i][0] > params[i][2] || params[i][1] > params[i][2]) {
-                            this.miscSettings.warningMessage = "Minimum < Mode < Maximum";
+                            this.miscSettings.warningMessage = "X < Z < Y";
                             return false;
                         }
                         break;
@@ -1348,17 +1364,17 @@ var sim = new Vue({
                 var task = this.taskSettings.tasks[i];
                 if (task.include) {
                     if (!this.checkDistribution(task.arrivalDistribution, task.arrivalParam, 1)) {
-                        this.addReviewError("Fix the task, " + task.name + " interarrival time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
-                        count[1]++;
-                    }
-
-                    if (!this.checkDistribution(task.serviceDistribution, task.serviceParam, 1)) {
-                        this.addReviewError("Fix the task, " + task.name + " service time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab-tab", 2);
+                        this.addReviewError("Fix the task, " + task.name + " question 6 parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
                         count[1]++;
                     }
 
                     if (!this.checkDistribution(task.expireDistribution, task.expireParam, 1)) {
-                        this.addReviewError("Fix the task, " + task.name + " expiration time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
+                        this.addReviewError("Fix the task, " + task.name + " question 7 time parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
+                        count[1]++;
+                    }
+
+                    if (!this.checkDistribution(task.serviceDistribution, task.serviceParam, 1)) {
+                        this.addReviewError("Fix the task, " + task.name + " question 8 parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab-tab", 2);
                         count[1]++;
                     }
 
@@ -1372,14 +1388,14 @@ var sim = new Vue({
             // check fleet params
             // Any task is selected for each fleet? warning
             if (this.fleetSettings.fleetTypes !== this.fleetSettings.fleets.length) {
-                this.addReviewError("Check the number of fleets settings.", "fleets-global-settings-tab");
+                this.addReviewError("Check the number of " + this.textStrings.fleets.toLowerCase() + " settings.", "fleets-global-settings-tab");
                 count[0]++;
             }
             for(var i=0;i<this.fleetSettings.fleetTypes;i++) {
                 var fleet = this.fleetSettings.fleets[i];
 
                 if (fleet.tasks.length < 1) {
-                    this.addReviewError("At least one task needs to be selected for the fleet, " + fleet.name + ".", "fleet-" + i + "-settings-tab");
+                    this.addReviewError("At least one task needs to be selected for the " + this.textStrings.fleet.toLowerCase() + ", " + fleet.name + ".", "fleet-" + i + "-settings-tab");
                     count[0]++;
                 }
             }
@@ -1390,12 +1406,12 @@ var sim = new Vue({
 
                 // at least one expertise is selected, warning
                 if (!this.checkExpertise(opteam)) {
-                    this.addReviewError("At least one active tasks/fleets combo needs to be checked for the operator team " + opteam.name + ".", "opteam-" + i + "-settings-tab");
+                    this.addReviewError("At least one active tasks/" + this.textStrings.fleets.toLowerCase() + " combo needs to be checked for the " + this.textStrings.operator.toLowerCase() + " team, " + opteam.name + ".", "opteam-" + i + "-settings-tab");
                     count[0]++;
                 }
                 // at least one tasks for aida assisting individuals is selected, warning
                 if (opteam.AIDA.AIDAType[1] && opteam.AIDA.IATasks.length < 1) {
-                    this.addReviewError("At least one task needs to be associated with AIDA assisting individuals for the operator team, " + opteam.name + ".", "opteam-" + i + "-settings-tab");
+                    this.addReviewError("At least one task needs to be associated with AIDA " + this.textStrings.AIDATypeStr[1].toLowerCase() + " for the " + this.textStrings.operator.toLowerCase() + " team, " + opteam.name + ".", "opteam-" + i + "-settings-tab");
                     count[0]++;
                 }
             }
