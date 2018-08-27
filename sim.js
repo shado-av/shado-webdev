@@ -52,6 +52,7 @@ var sim = new Vue({
                             [1440],
                         ],
                         affectByIROPS: [0],
+                        humanErrorSelect: "Communicating",
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                         ],
@@ -79,6 +80,7 @@ var sim = new Vue({
                             [1440],
                         ],
                         affectByIROPS: [0],
+                        humanErrorSelect: "Communicating",
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                         ],
@@ -106,6 +108,7 @@ var sim = new Vue({
                             [1440],
                         ],
                         affectByIROPS: [0],
+                        humanErrorSelect: "Communicating",
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                         ],
@@ -240,6 +243,10 @@ var sim = new Vue({
             // Other Constants... maybe moved to env? or some variable holding constants.
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
+            humanErrorProb: {
+                "Communicating", [0.00008, 0.0004, 0.007],
+                // add more values...
+            }
         },
         textStrings: textStrings.General,
     },
@@ -508,6 +515,14 @@ var sim = new Vue({
                 }
             }
             return probs;
+        },
+
+        // update human error probability
+        updateHumanErrorProb(task) {
+            task.humanErrorProb =
+            if (task.humanErrorSelect) {
+
+            }
         },
 
         /* ------------------------------
@@ -940,6 +955,7 @@ var sim = new Vue({
                     [1440],
                 ],
                 affectByIROPS: [0],
+                humanErrorSelect: "Communicating",
                 humanErrorProb: [
                     [0.00008, 0.0004, 0.007],
                 ],
