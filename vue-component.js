@@ -71,7 +71,7 @@ Vue.component('distribution-params', {
                     <div class="col-12">
                         <label>{{distLabel}}</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-if="nOption === 0">
                             <option value="E">On average, once every X minutes</option>
                             <option value="L">On average, once every X minutes +/- Y minutes</option>
@@ -94,56 +94,74 @@ Vue.component('distribution-params', {
                             <option value="T">It must be done by X to Y minutes, usually around Z minutes after it appears</option>
                             <option value="C">It must be done by exactly X minutes after it appears</option>
                         </select>
-                        <small class="form-text text-muted">Select Type</small>
+                        <small class="form-text text-muted mb-2">Select Question Type</small>
                     </div>
 
                     <!-- distribution parameters (task.arrivalParam) -->
-                    <div class="col-sm-6">
-                        <div v-if="dist === 'E'" class="row no-gutters">
-                            <div class="col">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">X Minutes</small>
-                            </div>
+                    <div class="col-sm-12">
+                        <div v-if="dist === 'E'" class="form-inline no-gutters">
+                            <span v-if="nOption === 2">It must be done on average by </span>
+                            <span v-if="nOption === 1">On average, </span>
+                            <span v-if="nOption === 0">On average, once every </span>
+                            <span class="mr-2 ml-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                            </span>
+                            <span>&nbsp;minutes&nbsp;</span>
+                            <span class="ml-2" v-if="nOption === 2">after it appears</span>
                         </div>
-                        <div v-if="dist === 'L'" class="row no-gutters">
-                            <div class="col-sm mr-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">X Minutes</small>
+                        <div v-if="dist === 'L'" class="form-inline  no-gutters">
+                            <span v-if="nOption === 2">It must be done on average by </span>
+                            <span v-if="nOption === 1">On average, </span>
+                            <span v-if="nOption === 0">On average, once every </span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
                             </div>
-                            <div class="col-sm ml-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
-                                <small class="form-text text-muted">Y Minutes</small>
+                            <span>minutes +-</span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]">
                             </div>
+                            <span>minutes</span>
+                            <span class="ml-2" v-if="nOption === 2">after it appears</span>
                         </div>
-                        <div v-if="dist === 'U'" class="row no-gutters">
-                            <div class="col-sm mr-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">X Minutes</small>
+                        <div v-if="dist === 'U'" class="form-inline  no-gutters">
+                            <span class="mr-2" v-if="nOption === 0">Once every</span>
+                            <span class="mr-2" v-if="nOption === 2">It must be done by</span>
+                            <div class="mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
                             </div>
-                            <div class="col-sm ml-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
-                                <small class="form-text text-muted">Y Minutes</small>
+                            <span>to</span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]">
                             </div>
+                            <span>minutes</span>
+                            <span class="ml-2" v-if="nOption === 2">after it appears</span>
+                       </div>
+                        <div v-if="dist === 'C'" class="form-inline no-gutters">
+                            <span v-if="nOption === 0">Exactly once every</span>
+                            <span v-if="nOption === 1">Exactly</span>
+                            <span v-if="nOption === 2">It must be done by exactly</span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                            </div>
+                            <span>minutes</span>
+                            <span class="ml-2" v-if="nOption === 2">after it appears</span>
                         </div>
-                        <div v-if="dist === 'C'" class="row no-gutters">
-                            <div class="col-sm mr-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">X Minutes</small>
+                        <div v-if="dist === 'T'" class="form-inline  no-gutters">
+                            <span v-if="nOption === 0">Once every</span>
+                            <span v-if="nOption === 2">It must be done by</span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
                             </div>
-                        </div>
-                        <div v-if="dist === 'T'" class="row no-gutters">
-                            <div class="col-sm mr-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[0]">
-                                <small class="form-text text-muted">X Minutes</small>
+                            <span>to</span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]">
                             </div>
-                            <div class="col-sm ml-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[2]">
-                                <small class="form-text text-muted">Y Minutes</small>
+                            <span>minutes, usually around</span>
+                            <div class="ml-2 mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Z" v-model.number="params[2]">
                             </div>
-                            <div class="col-sm mx-1">
-                                <input class="form-control" type="number" step="any" placeholder="Enter #" v-model.number="params[1]">
-                                <small class="form-text text-muted">Z Minutes</small>
-                            </div>
+                            <span>minutes</span>
+                            <span class="ml-2" v-if="nOption === 2">after it appears</span>
                         </div>
                     </div>
                 </div>`

@@ -397,6 +397,9 @@ div.modal-dialog.modal-lg {
 .width-150 {
   width: 150px;
 }
+.width-100 {
+  width: 100px !important;
+}
 .input-group.width-small {
   width: 150px;
 }
