@@ -127,14 +127,14 @@
                                 <!-- basic settings -->
                                 <li class="nav-item">
                                     <a class="nav-link active" id="basic-settings-tab" data-toggle="tab" href="#basic-settings" role="tab" aria-controls="basic-settings"
-                                        selected="true">Basic Settings</a>
+                                        selected="true">Shift</a>
                                 </li>
 
                                 <!-- tasks -->
                                 <li class="nav-item">
                                     <a class="nav-link" id="tasks-settings-tab" data-toggle="tab" href="#tasks-settings" role="tab" aria-controls="tasks-settings"
                                         selected="false">
-                                        Tasks
+                                        Task
                                     </a>
                                 </li>
 
@@ -216,7 +216,7 @@
             ------------------------------------------>
 
             <div class="tab-pane fade active show" id="basic-settings" role="tabpanel" aria-lablledby="basic-settings-tab">
-                <h3 class="mb-4">Basic Settings</h3>
+                <h3 class="mb-4">Shift</h3>
 
                 <!-- TYPE & HOURS -->
 
@@ -321,13 +321,13 @@
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-1" class="custom-control-input" v-model="globalSettings.exoFactorsType[0]">
                             <label class="custom-control-label" for="exo-type-1">
-                                {{textStrings.optionExtremeCondition[0]}}
+                                {{textStrings.optionExtremeCondition[0]}} <span v-tooltip.bottom="{ content: 'This is an example tooltip for checkbox answer.'}"><span class="fas fa-info-circle"></span></span>
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="exo-type-2" class="custom-control-input" v-model="globalSettings.exoFactorsType[1]">
                             <label class="custom-control-label" for="exo-type-2">
-                                {{textStrings.optionExtremeCondition[1]}}
+                                {{textStrings.optionExtremeCondition[1]}} <span v-tooltip.bottom="{ content: 'This is an example tooltip for checkbox answer.'}"><span class="fas fa-info-circle"></span></span>
                             </label>
                         </div>
                     </div>
@@ -348,7 +348,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="tasks-global-settings-tab" data-toggle="tab" href="#tasks-global-settings" role="tab" aria-controls="tasks-global-settings"
                             selected="true">
-                            All Tasks
+                            Task List
                         </a>
                     </li>
 
@@ -367,7 +367,7 @@
                     <!-- TASK GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="tasks-global-settings" role="tabpanel" aria-labelledby="tasks-global-settings-tab">
 
-                        <h3 class="mb-4">Tasks Settings</h3>
+                        <h3 class="mb-4">Task Settings</h3>
 
                         <!-- tasks assigned to operators (task.include) -->
                         <h5>Which tasks are assigned to the operators?</h5>
@@ -480,18 +480,20 @@
                             </div>
                         </div>
 
-                        <div class="form-group" v-show="task.essential==='n'">
-                            <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
-                            <div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
-                                        value="y" v-model="task.interruptable">
-                                    <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
-                                </div>
-                                <div class="custom-control custom-control-inline custom-radio mr-0">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
-                                        value="n" v-model="task.interruptable">
-                                    <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                        <div :class="{options: task.essential==='n'}">
+                            <div class="form-group pb-4" v-show="task.essential==='n'">
+                                <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
+                                <div>
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
+                                            value="y" v-model="task.interruptable">
+                                        <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-0">
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
+                                            value="n" v-model="task.interruptable">
+                                        <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -515,6 +517,13 @@
 <!--                        <h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
                         <label>9. How would you describe this task?</label>
+                        <div class="form-group">
+                            <select class="custom-select width-small" v-model="task.humanErrorSelect"
+                                    @change="updateHumanErrorProb(task)">
+                                <option selected>Communicating</option>
+                            </select>
+                        </div>
+<!--
                         <div class="form-group form-row">
                             <div class="col-sm-4">
                                 <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][0]">
@@ -535,6 +544,7 @@
                                 </small>
                             </div>
                         </div>
+-->
 
                         <div class="form-group" v-if="task.leadTask === -1">
                             <!-- tasks assigned to operators (task.include) -->
@@ -571,7 +581,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="operators-global-settings-tab" data-toggle="tab" href="#operators-global-settings" role="tab"
                             aria-controls="operators-global-settings" selected="true">
-                            All Teams
+                            {{textStrings.operator_list}}
                         </a>
                     </li>
 
@@ -589,7 +599,7 @@
 
                     <!-- OPERATOR GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="operators-global-settings" role="tabpanel" aria-labelledby="operators-global-settings-tab">
-                        <h3 class="mb-4">Operators Settings</h3>
+                        <h3 class="mb-4">{{textStrings.operator_settings}}</h3>
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
@@ -677,7 +687,7 @@
                                 <div class="table-responsive">
                                     <table class="form-group table">
                                         <thead class="thead-light">
-                                            <th>Task \ Fleet</th>
+                                            <th></th>
                                             <th v-for="(fleet, i) in fleetSettings.fleets">
                                                 {{fleet.name}}
                                             </th>
@@ -757,7 +767,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">Equal Operator</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">{{textStrings.AIDATypeStr[0]}}</label>
                             </div>
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[0]}">
@@ -775,7 +785,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">Assisting Indivisuals</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">{{textStrings.AIDATypeStr[1]}}</label>
                             </div>
                         </div>
                         <div :class="{options: team.AIDA.AIDAType[1]}">
@@ -801,7 +811,7 @@
                         <div class="form-group" v-show="team.comms !== 'N'">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">Assisting Team Coordination</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">{{textStrings.AIDATypeStr[2]}}</label>
                             </div>
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[2]}">
@@ -978,7 +988,7 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">Basic Settings</th>
+                                <th colspan="2">Shift</th>
                             </tr>
                         </thead>
                         <tr>
@@ -1264,9 +1274,9 @@
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' v-tooltip.top="{ content: 'Save the current user settings'}":disabled="miscSettings.isSaving">Save Settings</button>
 
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" v-tooltip.top="{ content: 'Revert to the previously saved user settings'} " @click='loadData' :disabled="miscSettings.isLoading">Load Settings</button>
-
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
+
 
             <!--Number of replications selection-->
             <span class="ml-md-auto">
