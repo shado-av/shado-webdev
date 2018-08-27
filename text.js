@@ -28,11 +28,13 @@ var textStrings = {
         fleet_settings: "Fleet Settings",
         qFleets: "How many different fleets do the operators manage?",
         qNumVeh: "How many vehicles are in this fleet?",
-        
+
         // Operator Teams
         operators: "Operators", // for operators menu
         operator_list: "Operator List",
         operator_settings: "Operator Settings",
+
+        AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
 
         // Reviews
 
@@ -70,12 +72,12 @@ var textStrings = {
         fleet_settings: "Railroad Settings",
         qFleets: "How many different railroads do the operators manage?",
         qNumVeh: "How many subdivisions are on this railroad?",
-        
+
         // Operator Teams
         operators: "Dispatcher", // for operators menu
         operator_list: "Dispatcher List",
         operator_settings: "Dispatcher Settings",
-        
+
 
         // Reviews
 

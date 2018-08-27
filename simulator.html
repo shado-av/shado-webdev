@@ -517,7 +517,7 @@
                         <label>9. How would you describe this task?</label>
                         <div class="form-group">
                             <select class="custom-select width-small" v-model="task.humanErrorSelect"
-                                    @change="updateHumanErrorProb">
+                                    @change="updateHumanErrorProb(task)">
                                 <option selected>Communicating</option>
                             </select>
                         </div>
@@ -765,7 +765,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">Equal Operator</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">{{textStrings.AIDATypeStr[0]}}</label>
                             </div>
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[0]}">
@@ -783,7 +783,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">Assisting Indivisuals</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">{{textStrings.AIDATypeStr[1]}}</label>
                             </div>
                         </div>
                         <div :class="{options: team.AIDA.AIDAType[1]}">
@@ -809,7 +809,7 @@
                         <div class="form-group" v-show="team.comms !== 'N'">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">Assisting Team Coordination</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">{{textStrings.AIDATypeStr[2]}}</label>
                             </div>
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[2]}">

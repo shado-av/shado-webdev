@@ -244,7 +244,7 @@ var sim = new Vue({
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
             humanErrorProb: {
-                "Communicating", [0.00008, 0.0004, 0.007],
+                "Communicating": [0.00008, 0.0004, 0.007],
                 // add more values...
             }
         },
@@ -517,14 +517,6 @@ var sim = new Vue({
             return probs;
         },
 
-        // update human error probability
-        updateHumanErrorProb(task) {
-            task.humanErrorProb =
-            if (task.humanErrorSelect) {
-
-            }
-        },
-
         /* ------------------------------
          * OPERATOR SETTINGS COMPUTED VALUES
          * ------------------------------ */
@@ -696,7 +688,7 @@ var sim = new Vue({
                 for (var j=0; j < this.operatorSettings.teams[i].AIDA.AIDAType.length; j++) {
                     if (this.operatorSettings.teams[i].AIDA.AIDAType[j]) {
                         if (flagAdded) ait+=", ";
-                        ait += this.miscSettings.AIDATypeStr[j];
+                        ait += this.textStrings.AIDATypeStr[j];
                         flagAdded = true;
                     }
                 }
@@ -1010,6 +1002,12 @@ var sim = new Vue({
             }
         },
 
+        // update human error probability
+        updateHumanErrorProb(task) {
+            console.log(task.humanErrorSelect);
+            task.humanErrorProb[0] = this.miscSettings.humanErrorProb[task.humanErrorSelect];
+        },
+
         updateOperatorTeams() {
             var teams = this.operatorSettings.teams;
             if (this.operatorSettings.numTeams > teams.length) {
@@ -1131,7 +1129,7 @@ var sim = new Vue({
             this.globalSettings.simType = str;
 
             // retrieve each default configuration and set
-            axios.get('/data/' + str + '.json')
+            axios.get('data/' + str + '.json')
               .then((response) => {
                 // handle success
                 //this.console.log(response);
