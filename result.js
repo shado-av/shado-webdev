@@ -926,7 +926,16 @@ var FailedTaskAnalysis = (function () {
             $(tableId).DataTable( {
                 data: dataSet,
                 "destroy": true,
-                "dom": 'lrtip',
+                "dom": 'Brtip',
+                buttons: [
+                    {
+                        extend:    'csv',
+                        text:      'Download CSV',
+                        customize: function(doc){
+                            return ",,Missed Tasks,,,Incomplete Tasks,,,Failed Tasks and Not Caught,,,Failed Tasks and Caught\n" + doc;
+                        }
+                    }
+                ],
                 columnDefs: [
                     {
                         targets: 'right-align',
