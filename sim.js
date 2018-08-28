@@ -1516,7 +1516,7 @@ var sim = new Vue({
             };
             console.log("JSON output: ", out);
             //hide download
-            document.getElementById("downloadBtn").style.display = "none";
+            //document.getElementById("downloadBtn").style.display = "none";
 
             //Download Json
             this.miscSettings.downloadJsonVisible = true;
@@ -1534,7 +1534,7 @@ var sim = new Vue({
                 alert("Simulation complete. View the results.");
 
                 // Show download button
-                document.getElementById("downloadBtn").style.display = "block";
+                // document.getElementById("downloadBtn").style.display = "block";
 
                 BoxPlot.visualize(env.serverUrl + "/shado/getUtilizationJSON" + this.miscSettings.sessionQuery,
                                   "#boxSVG", "1");
@@ -1602,6 +1602,10 @@ var sim = new Vue({
             if (elm !== null) {
                 elm.click();
             }
+        },
+
+        printResults() {
+            window.print();
         }
     },
 

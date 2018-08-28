@@ -1262,17 +1262,18 @@
                             <br>
                         </div>
 
-                        <div id="downloadBtn">
-                            <div class="divider"></div>
-                            <button @click="downloadCSV" class="btn btn-secondary">Download Utilization Data</button>
-                            <div class="divider"></div>
+                        <button @click="downloadCSV" class="btn btn-secondary">Download Utilization Data</button>
+                        <div>Placeholder for explanation - This includes utilization raw data for each {{textStrings.operator}}.</div>
                             <!--
                             <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
                                 <br> Output JSON</button>
                             <div class="divider"></div>
                             -->
-                            <button @click="downloadSummary" class="btn btn-secondary">Download Summary</button>
-                        </div>
+                        <button @click="downloadSummary" class="btn btn-secondary">Download Summary</button>
+                        <div>Placeholder for explanation - This includes failed task raw data and its summary.</div>
+
+                        <button @click="printResults" class="btn btn-secondary">Print Results</button>
+                        <div>This will print the current result page.</div>
                     </div>
                 </div>
             </div>
