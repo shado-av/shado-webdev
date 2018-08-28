@@ -1,3 +1,5 @@
+const EventBus = new Vue();
+
 var sim = new Vue({
     el: '#shado-sim',
     data: {
@@ -1328,6 +1330,20 @@ var sim = new Vue({
             return false;
         },
 
+        checkIATask(team) {
+            for(var i=0;i<this.taskSettings.tasks.length;i++) {
+                if (this.taskSettings.tasks[i].include && this.checkIfTaskSelected(team,i) && team.AIDA.IATasks.includes(i)) return true;
+            }
+            return false;
+        },
+
+        checkFleetTask(fleet) {
+            for(var i=0;i<this.taskSettings.tasks.length;i++) {
+                if (this.taskSettings.tasks[i].include && fleet.tasks.includes(i)) return true;
+            }
+            return false;
+        },
+
         // add error or warning to the review settings
         // error - 0(info), 1(warning), 2(error)
         addReviewError(msg, tabId, errorLevel) {
@@ -1344,6 +1360,8 @@ var sim = new Vue({
 
         // check current user input
         checkInputData() {
+            EventBus.$emit('validateInput', true);
+
             var count = [0,0];
 
             // remove all warnings
@@ -1394,7 +1412,7 @@ var sim = new Vue({
             for(var i=0;i<this.fleetSettings.fleetTypes;i++) {
                 var fleet = this.fleetSettings.fleets[i];
 
-                if (fleet.tasks.length < 1) {
+                if (!this.checkFleetTask(fleet)) {
                     this.addReviewError("At least one task needs to be selected for the " + this.textStrings.fleet.toLowerCase() + ", " + fleet.name + ".", "fleet-" + i + "-settings-tab");
                     count[0]++;
                 }
@@ -1410,7 +1428,7 @@ var sim = new Vue({
                     count[0]++;
                 }
                 // at least one tasks for aida assisting individuals is selected, warning
-                if (opteam.AIDA.AIDAType[1] && opteam.AIDA.IATasks.length < 1) {
+                if (opteam.AIDA.AIDAType[1] && !this.checkIATask(opteam)) {
                     this.addReviewError("At least one task needs to be associated with AIDA " + this.textStrings.AIDATypeStr[1].toLowerCase() + " for the " + this.textStrings.operator.toLowerCase() + " team, " + opteam.name + ".", "opteam-" + i + "-settings-tab");
                     count[0]++;
                 }

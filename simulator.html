@@ -23,6 +23,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
     <!-- vue tooltip library -->
     <script src="script/v-tooltip.min.js"></script>
+    <!-- vue validation library -->
+    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
     <!-- axios library for ajax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
@@ -279,10 +281,9 @@
                     </div>
                 </div>
                 <div v-for="n in [0, 1]" :class="{options: globalSettings.hasTransition[n]}">
-                     <div class="form-group" v-show="globalSettings.hasTransition[n]">
-                        <distribution-params :dist-label="textStrings.questionTransitionDuration[n]"
-                                             :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]></distribution-params>
-                    </div>
+                    <distribution-params :dist-label="textStrings.questionTransitionDuration[n]"
+                                         :dist.sync=globalSettings.transitionDists[n] :params.sync=globalSettings.transitionPms[n]
+                                         v-show="globalSettings.hasTransition[n]"></distribution-params>
                 </div>
 
                 <!-- EXOGENOUS FACTORS -->
@@ -625,7 +626,7 @@
 
                             <!-- operator team name (team.name) -->
                             <div class="form-group form-row">
-                                <label class="col-md-3 col-lg-2 col-form-label">Team Name</label>
+                                <label class="col-md-3 col-lg-2 col-form-label">1. Team Name</label>
                                 <div class="col-md-9 col-lg-10">
                                     <input class="form-control" type="text" v-model="team.name" @focus="miscSettings.inputString = team.name" @change = "changeInputString('Team', team)">
                                 </div>
@@ -633,15 +634,15 @@
 
                             <div class="form-group form-row">
                                 <!-- team size (team.size) -->
-                                <div class="col">
-                                    <div>How large is the team?</div>
+                                <div class="col-12">
+                                    <div>2. How large is the team?</div>
                                     <percentage-input :min=1 :max=99 :step=1 number-only
                                     :value.sync="team.size"></percentage-input>
                                 </div>
 
                                 <!-- team communications (team.comms) -->
-                                <div class="col">
-                                    <label>Does this team have some level of communications?</label>
+                                <div class="col-12">
+                                    <label>3. Does this team have some level of communications?</label>
                                     <select class="custom-select" v-model="team.comms">
                                         <option value="N">None</option>
                                         <option value="S">Some</option>
@@ -651,12 +652,15 @@
                             </div>
 
                             <!-- OPERATOR TASKS -->
-                            <h5 class="mb-3">{{textStrings.operator}} Tasks/{{textStrings.fleets}}</h5>
+<!--                            <h5 class="mb-3">{{textStrings.operator}} Tasks/{{textStrings.fleets}}</h5>-->
 
                             <!-- operator task checklist (team.tasks) -->
                             <div class="form-group">
-                                <label class="mb-3">What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
+                                <label class="mb-3">4. What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
                                 <!-- adjust task/fleet operators are responsible for (team.expertise) -->
+                                <div class="alert alert-info" v-if="!checkExpertise(team)">
+                                    At least one active task/{{textStrings.fleet.toLowerCase()}} combo needs to be selected for this operator.
+                                </div>
                                 <div class="table-responsive">
                                     <table class="form-group table">
                                         <thead class="thead-light">
@@ -679,7 +683,7 @@
 
                             <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
-                                <label>{{textStrings.operator}} Strategies</label>
+                                <label>5. {{textStrings.operator}} Strategies</label>
                                 <select class="custom-select" v-model="team.strategy">
                                     <option value="FIFO">First In First Out</option>
                                     <option value="STF">Shortest Task First</option>
@@ -714,11 +718,11 @@
                                 </table>
                             </div>
                         <!-- Error Catching Chance -->
-                        <h5 class="mb-3">Error Catching Chance</h5>
+<!--                        <h5 class="mb-3">Error Catching Chance</h5>-->
 
                         <!-- fail threshold (team.failThresh) -->
                         <div class="form-group">
-                            <div class="mb-3">For every error, what is the chance that the team will catch it for each task?</div>
+                            <div class="mb-3">6. For every error, what is the chance that the team will catch it for each task?</div>
                         </div>
 
                         <div class="form-group row">
@@ -731,10 +735,10 @@
                         </div>
 
                         <!-- AIDA -->
-                        <h5 class="mb-3">Artificial Intelligence Decision Aid</h5>
+<!--                        <h5 class="mb-3">Artificial Intelligence Decision Aid</h5>-->
 
                         <!-- team AIDA (team.AIDA) -->
-                        <label class="mb-3">What level of AI does this team have?</label>
+                        <label class="mb-3">7. What level of AI does this team have?</label>
 
                         <!-- equal operator (AIDA.equalOperator) -->
                         <div class="form-group">
@@ -764,6 +768,9 @@
                         <div :class="{options: team.AIDA.AIDAType[1]}">
                             <div class="form-group" v-show="team.AIDA.AIDAType[1]">
                                 <div class="mb-3">What tasks are this AI responsible for?</div>
+                                <div class="alert alert-info" v-if="!checkIATask(team)">
+                                    At least one task needs to be selected for this AI.
+                                </div>
                                 <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
                                     <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
@@ -861,7 +868,7 @@
                         <!-- FLEET SETTINGS -->
                         <!-- fleet name (fleet.name) -->
                         <div class="form-group form-row">
-                            <label class="col-md-3 col-lg-2 col-form-label">{{ textStrings.fleet}} Name</label>
+                            <label class="col-md-3 col-lg-2 col-form-label">1. {{ textStrings.fleet}} Name</label>
                             <div class="col-md-9 col-lg-10">
                                 <input class="form-control" type="text" v-model="fleet.name"
                                        @focus="miscSettings.inputString = fleet.name" @change = "changeInputString('Fleet', fleet)">
@@ -870,14 +877,14 @@
 
                         <!-- number of vehicles (fleet.numVehicles) -->
                         <div class="form-group">
-                            <div>{{ textStrings.qNumVeh }}</div>
+                            <div>2. {{ textStrings.qNumVeh }}</div>
                             <percentage-input :min=1 :max=99 :step=1 number-only
                                 :value.sync="fleet.numVehicles"></percentage-input>
                         </div>
 
                         <!-- fleet communications (fleet.comms) -->
                         <div class="form-group">
-                            <label>Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?</label>
+                            <label>3. Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?</label>
                             <br/>
                             <select class="custom-select width-small" v-model="fleet.comms">
                                 <option value="N">None</option>
@@ -888,11 +895,14 @@
 
 
                         <!-- FLEET TASKS -->
-                        <h5 class="mb-3">{{ textStrings.fleet}} Tasks</h5>
+<!--                        <h5 class="mb-3">{{ textStrings.fleet}} Tasks</h5>-->
 
                         <!-- fleet task checklist (fleet.tasks) -->
                         <div class="form-group">
-                            <label class="mb-3">Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <label class="mb-3">4. Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <div class="alert alert-info" v-if="!checkFleetTask(fleet)">
+                                At least one task needs to be selected for the fleet.
+                            </div>
                             <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
                                 <input class="custom-control-input" type="checkbox" :id="'fleet-' + index + '-task-' + i" :value="i" v-model="fleet.tasks">
                                 <label class="custom-control-label" :for="'fleet-' + index + '-task-' + i">{{ task.name }}</label>
@@ -903,7 +913,7 @@
                         <!-- <h5 class="mb-3">Traffic</h5>-->
                         <!-- different traffic levels (diffTrafficLevels) -->
                         <div class="form-group">
-                            <label class="col-form-label">Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <label class="col-form-label">5. Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"

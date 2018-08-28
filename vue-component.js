@@ -6,7 +6,7 @@ Vue.component('distribution-params', {
         },
         params: {   // [4, 6, 8]
             type: Array,
-            default: []
+            default: () => []
         },
         distLabel: {
             type: String,
@@ -20,6 +20,9 @@ Vue.component('distribution-params', {
             type: Number,
             default: 1
         },
+    },
+    data: function() {
+        return { errors: [] };
     },
     methods: {
         getPos(dist) {
@@ -65,7 +68,49 @@ Vue.component('distribution-params', {
             this.$emit('update:dist', d_dist);
             this.$emit('update:params', d_params);
             //this.$forceUpdate();
-        }
+        },
+        // check whether the params is numbers and greater than zero
+        checkNumbers(params, length) {
+            for(var i=0;i<length;i++) {
+               if (typeof params[i] !== 'number' || params[i] <= 0)
+                    return false;
+            }
+            return true;
+        },
+        validateInput(isDisplying) {
+            // check whether the current distribution setting is correct
+            // bigger than 0
+            // min < max (uniform)
+            // min < mode < max (triangular)
+            const paramSize = { 'E': 1, 'C':1, 'U':2, 'L':2, 'T': 3};
+
+            this.errors = [];
+            //console.log("ValidateInput", this.params, this.dist);
+            if (!this.checkNumbers(this.params, paramSize[this.dist])) {
+                this.errors.push("Distribution parameters should be greater than 0.");
+            }
+            switch(this.dist) {
+                case 'U':
+                    if (this.params[0] > this.params[1]) {
+                        this.errors.push("X should be smaller than Y.");
+                    }
+                    break;
+                case 'T':
+                    if (this.params[0] > this.params[1] || this.params[0] > this.params[2]
+                        || this.params[1] > this.params[2]) {
+                        this.errors.push("X < Z < Y");
+                    }
+                    break;
+            }
+
+            if (this.errors.length > 0)
+                return false;
+
+            return true;
+        },
+    },
+    mounted() {
+        EventBus.$on("validateInput", this.validateInput);
     },
     template:  `<div class="form-group form-row">
                     <div class="col-12">
@@ -94,7 +139,7 @@ Vue.component('distribution-params', {
                             <option value="T">It must be done by X to Y minutes, usually around Z minutes after it appears</option>
                             <option value="C">It must be done by exactly X minutes after it appears</option>
                         </select>
-                        <small class="form-text text-muted mb-2">Select Question Type</small>
+                        <small class="form-text text-muted mb-3">Select Question Type</small>
                     </div>
 
                     <!-- distribution parameters (task.arrivalParam) -->
@@ -104,7 +149,7 @@ Vue.component('distribution-params', {
                             <span v-if="nOption === 1">On average, </span>
                             <span v-if="nOption === 0">On average, once every </span>
                             <span class="mr-2 ml-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </span>
                             <span>&nbsp;minutes&nbsp;</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears</span>
@@ -114,11 +159,11 @@ Vue.component('distribution-params', {
                             <span v-if="nOption === 1">On average, </span>
                             <span v-if="nOption === 0">On average, once every </span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
                             <span>minutes +-</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]" @change="validateInput">
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears</span>
@@ -127,11 +172,11 @@ Vue.component('distribution-params', {
                             <span class="mr-2" v-if="nOption === 0">Once every</span>
                             <span class="mr-2" v-if="nOption === 2">It must be done by</span>
                             <div class="mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
                             <span>to</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]" @change="validateInput">
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears</span>
@@ -141,27 +186,30 @@ Vue.component('distribution-params', {
                             <span v-if="nOption === 1">Exactly</span>
                             <span v-if="nOption === 2">It must be done by exactly</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears</span>
                         </div>
                         <div v-if="dist === 'T'" class="form-inline  no-gutters">
-                            <span v-if="nOption === 0">Once every</span>
-                            <span v-if="nOption === 2">It must be done by</span>
-                            <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]">
+                            <span class="mr-2" v-if="nOption === 0">Once every</span>
+                            <span class="mr-2" v-if="nOption === 2">It must be done by</span>
+                            <div class="mr-2 form-group">
+                                <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
                             <span>to</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]" @change="validateInput">
                             </div>
                             <span>minutes, usually around</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="Z" v-model.number="params[2]">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Z" v-model.number="params[2]" @change="validateInput">
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears</span>
+                        </div>
+                        <div class="mt-3 alert alert-danger" v-if="errors.length">
+                            <span v-for="error in errors">{{ error }}</span>
                         </div>
                     </div>
                 </div>`
