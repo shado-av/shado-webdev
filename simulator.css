@@ -125,16 +125,12 @@ footer button {
 }
 
 #sim-sidebar {
-  width: 175px;
-  position: fixed;
-  top: 104px;
-  left: auto;
-  height: calc(100vh - 104px);
+  width: 100%;
+  position: relative;
   transition: all 0.3s;
   background-color: #f8f9fa;
-  padding: 30px 0 100px;
+  padding: 10px;
   overflow: auto;
-  z-index: 50;
 }
 
 #sim-nav {
@@ -156,12 +152,12 @@ footer button {
   color: #212529;
 }
 
-#sim-nav .nav-item li .nav-link {
-  padding-left: 32px;
+#sim-nav .nav-item {
+  width: auto;
 }
 
-#sim-nav .nav-item {
-  width: 100%;
+#sim-nav .nav-header.nav-link {
+  display: none;
 }
 
 #sim-nav .nav-header {
@@ -190,10 +186,48 @@ footer button {
 }
 
 #sim-content {
-  margin-left: 175px;
-  margin-bottom: 100px;
-  padding: 30px 15px 30px 30px;
+  margin-left: 0px;
+  padding: 15px;
   position: relative;
+  margin-bottom: 256px;
+}
+
+@media screen and (min-width: 768px) {
+    #sim-sidebar {
+      width: 175px;
+      position: fixed;
+      top: 104px;
+      left: auto;
+      height: calc(100vh - 104px);
+      transition: all 0.3s;
+      background-color: #f8f9fa;
+      padding: 30px 0 100px;
+      overflow: auto;
+      z-index: 50;
+    }
+
+    #sim-nav .nav-item {
+        width: 100%;
+    }
+
+    #sim-nav .nav-header.nav-link {
+      display: block;
+    }
+
+    #sim-nav li .nav-link {
+      padding-left: 32px;
+    }
+
+    #sim-nav .nav-header {
+        display: block;
+    }
+
+    #sim-content {
+        margin-left: 175px;
+        margin-bottom: 100px;
+        padding: 30px 15px 30px 30px;
+        position: relative;
+    }
 }
 
 .slider {
@@ -260,44 +294,6 @@ footer button {
   margin-right: 10px;
   margin-bottom: 10px;
 }
-
-/*
-.tabs-left {
-    position: absolute;
-    top: 30px;
-    bottom: 30px;
-    left: 30px;
-    width: 150px;
-    border-bottom: none;
-    border-right: 1px solid #dee2e6;
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-.tabs-left .nav-item {
-    float: none;
-    margin-bottom: 2px;
-    margin-right: -1px;
-}
-
-.tabs-left .nav-link {
-    border-radius: 4px 0 0 4px;
-    margin-right: 0;
-    display: block;
-}
-
-.tabs-left .nav-link:hover,
-.tabs-left .nav-link:focus {
-    border-color: #e9ecef transparent #e9ecef #dee2e6;
-}
-
-.tabs-left .nav-link.active,
-.tabs-left .nav-item.show .nav-link {
-    color: #495057;
-    background-color: #fff;
-    border-color: #dee2e6 #fff #dee2e6 #dee2e6;
-}
-*/
 
 .delete {
   float: right;
