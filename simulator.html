@@ -485,11 +485,12 @@
                         <!-- HUMAN ERROR PROBABILITY -->
 <!--                        <h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <label>9. How would you describe this task?</label>
+                        <label>9. What does this task involve?<span v-tooltip.bottom="{ content: 'This is an example tooltip for radio button answer.'}"><span class="fas fa-info-circle"></span></span></label>
                         <div class="form-group">
                             <select class="custom-select width-small" v-model="task.humanErrorSelect"
                                     @change="updateHumanErrorProb(task)">
-                                <option selected>Communicating</option>
+                                <option selected>Completely familiar, well designed, highly practiced task which is routine.</option>
+                                <option>Restore or shift a system to original or new state, following procedures with some checking.</option>
                             </select>
                         </div>
 <!--
