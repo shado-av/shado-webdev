@@ -1257,7 +1257,7 @@
                     <div class="tab-pane fade show" id="results-download" role="tabpanel" aria-labelledby="results-download-tab">
 
                         <!-- Download Buttons -->
-                        <div class="form-row justify-content-center d-none">
+                        <div class="form-row justify-content-center">
                             <div id="container">
                                 <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Input JSON</a>
                             </div>
@@ -1266,11 +1266,11 @@
 
                         <button @click="downloadCSV" class="mt-3 mb-3 btn btn-secondary"><i class="fas fa-file-download"></i> Download Utilization Data</button>
                         <div>Placeholder for explanation - This includes utilization raw data for each {{textStrings.operator}}.</div>
-                            <!--
+                            
                             <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
                                 <br> Output JSON</button>
                             <div class="divider"></div>
-                            -->
+                            
                         <button @click="downloadSummary" class="mt-3 mb-3 btn btn-secondary"><i class="fas fa-file-download"></i> Download Summary</button>
                         <div>
                             Placeholder for explanation - This includes failed task raw data and its summary.
