@@ -54,7 +54,7 @@ var sim = new Vue({
                             [1440],
                         ],
                         affectByIROPS: [0],
-                        humanErrorSelect: "Communicating",
+                        humanErrorSelect: "0",
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                         ],
@@ -82,7 +82,7 @@ var sim = new Vue({
                             [1440],
                         ],
                         affectByIROPS: [0],
-                        humanErrorSelect: "Communicating",
+                        humanErrorSelect: "0",
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                         ],
@@ -110,7 +110,7 @@ var sim = new Vue({
                             [1440],
                         ],
                         affectByIROPS: [0],
-                        humanErrorSelect: "Communicating",
+                        humanErrorSelect: "0",
                         humanErrorProb: [
                             [0.00008, 0.0004, 0.007],
                         ],
@@ -246,7 +246,8 @@ var sim = new Vue({
             AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
             humanErrorProb: {
-                "Communicating": [0.00008, 0.0004, 0.007],
+                "0": [0.00008, 0.0004, 0.007],
+                "1": [0.00008, 0.0004, 0.007],
                 // add more values...
             }
         },
@@ -949,7 +950,7 @@ var sim = new Vue({
                     [1440],
                 ],
                 affectByIROPS: [0],
-                humanErrorSelect: "Communicating",
+                humanErrorSelect: "0",
                 humanErrorProb: [
                     [0.00008, 0.0004, 0.007],
                 ],
