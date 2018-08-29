@@ -1587,7 +1587,7 @@ var sim = new Vue({
         },
 
         onPrevTab() {
-            var id = document.querySelector("#settings-nav .nav-link.active").id;
+            var id = document.querySelector("#sim-nav .nav-link.active").id;
             var index = this.miscSettings.globalMenuId.indexOf(id);
             var elm = document.getElementById(this.miscSettings.globalMenuId[index-1]);
             if (elm !== null) {
@@ -1596,7 +1596,7 @@ var sim = new Vue({
         },
 
         onNextTab() {
-            var id = document.querySelector("#settings-nav .nav-link.active").id;
+            var id = document.querySelector("#sim-nav .nav-link.active").id;
             var index = this.miscSettings.globalMenuId.indexOf(id);
             var elm = document.getElementById(this.miscSettings.globalMenuId[index+1]);
             if (elm !== null) {
@@ -1753,7 +1753,7 @@ var sim = new Vue({
                 $("#alert-modal").modal('show');
             };
 
-            $("#settings-nav .nav-link").click( function() {
+            $("#sim-nav .nav-link").click( function() {
                 console.log(this.id);
                 var index = sim.miscSettings.globalMenuId.indexOf(this.id);
 
