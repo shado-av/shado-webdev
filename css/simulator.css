@@ -194,7 +194,7 @@ footer button {
 
 @media screen and (min-width: 768px) {
     #sim-sidebar {
-      width: 175px;
+      width: 170px;
       position: fixed;
       top: 104px;
       left: auto;
@@ -223,9 +223,9 @@ footer button {
     }
 
     #sim-content {
-        margin-left: 175px;
+        margin-left: 170px;
         margin-bottom: 100px;
-        padding: 30px 15px 30px 30px;
+        padding: 25px 15px 30px 25px;
         position: relative;
     }
 }
