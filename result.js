@@ -928,9 +928,10 @@ var FailedTaskAnalysis = (function () {
                 "destroy": true,
                 "dom": 'Brtip',
                 buttons: [
+                    'pageLength',
                     {
                         extend:    'csv',
-                        text:      'Download CSV',
+                        text:      '<i class="fas fa-file-download"></i> Download CSV',
                         customize: function(doc){
                             return ",,Missed Tasks,,,Incomplete Tasks,,,Failed Tasks and Not Caught,,,Failed Tasks and Caught\n" + doc;
                         }
