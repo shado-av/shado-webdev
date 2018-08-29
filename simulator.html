@@ -1296,10 +1296,10 @@
 
             <!--Number of replications selection-->
             <span class="ml-md-auto">
-                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}"><span class="ml-3 btn btn-outline-light btn-sm"><label class="d-sm-none"># Rep&nbsp;</label>
+                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}"><label class="d-sm-none"># Rep&nbsp;</label>
                 <label class="d-none d-sm-block"># Days:&nbsp;</label>
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
-            </span></span></span>
+            </span></span>
             <!--Submit Button-->
             <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
             <button v-tooltip.top="textStrings.previousTab" :disabled="textStrings.previousTab === ''" class="btn btn-outline-light btn-sm ml-3 mr-sm-3" @click="onPrevTab"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
