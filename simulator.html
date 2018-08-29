@@ -1286,9 +1286,9 @@
         </div>
         <footer class="w-100">
             <!-- Save/Load State/File Buttons -->
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' v-tooltip.top="{ content: 'Save the current user settings'}":disabled="miscSettings.isSaving">Save Settings</button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveData' v-tooltip.top="{ content: 'Save all your current settings'}":disabled="miscSettings.isSaving">Save Settings</button>
 
-            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" v-tooltip.top="{ content: 'Revert to the previously saved user settings'} " @click='loadData' :disabled="miscSettings.isLoading">Load Settings</button>
+            <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" v-tooltip.top="{ content: 'Revert to your last saved settings'} " @click='loadData' :disabled="miscSettings.isLoading">Reload Settings</button>
 <!--
             <button class="ml-3 btn btn-outline-light btn-sm" type="button" title="" @click='saveFile'>Download Settings</button>
             <label class="ml-3 btn btn-outline-light btn-sm btn-file">Settings From File<input type="file" style="display: none;" @change='loadFile'></label>
@@ -1296,10 +1296,10 @@
 
             <!--Number of replications selection-->
             <span class="ml-md-auto">
-                <label class="d-sm-none"># Rep&nbsp;</label>
-                <label class="d-none d-sm-block"># Replications&nbsp;</label>
+                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}"><label class="d-sm-none"># Rep&nbsp;</label>
+                <label class="d-none d-sm-block"># Days:&nbsp;</label>
                 <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
-            </span>
+            </span></span>
             <!--Submit Button-->
             <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
             <button v-tooltip.top="textStrings.previousTab" :disabled="textStrings.previousTab === ''" class="btn btn-outline-light btn-sm ml-3 mr-sm-3" @click="onPrevTab"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
