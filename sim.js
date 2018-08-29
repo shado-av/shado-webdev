@@ -243,8 +243,9 @@ var sim = new Vue({
             // System wide strings... usually required for Reviews.
 
             // Other Constants... maybe moved to env? or some variable holding constants.
-            AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
             comms: { "N" : "None", "S": "Some", "F": "Full"},
+
+            // Please match the option with the options in simulator.html
             humanErrorProb: {
                 "0": [0.00008, 0.0004, 0.007],
                 "1": [0.00008, 0.0004, 0.007],

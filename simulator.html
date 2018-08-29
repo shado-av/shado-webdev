@@ -483,38 +483,17 @@
                         <distribution-params dist-label="8. How long does it take a dispatcher to complete this task?" params-label="Distribution Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
 
                         <!-- HUMAN ERROR PROBABILITY -->
-<!--                        <h5 class="mb-3">Human Error Probability</h5>-->
+                        <!--<h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
                         <label>9. What does this task involve?<span v-tooltip.bottom="{ content: 'This is an example tooltip for radio button answer.'}"><span class="fas fa-info-circle"></span></span></label>
                         <div class="form-group">
                             <select class="custom-select width-small" v-model="task.humanErrorSelect"
                                     @change="updateHumanErrorProb(task)">
+                                <!-- If you edit an option here, you should edit the miscSettings.humanErrorProb array as well.-->
                                 <option value="0">Completely familiar, well designed, highly practiced task which is routine.</option>
                                 <option value="1">Restore or shift a system to original or new state, following procedures with some checking.</option>
                             </select>
                         </div>
-<!--
-                        <div class="form-group form-row">
-                            <div class="col-sm-4">
-                                <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][0]">
-                                <small class="form-text text-muted">
-                                    Minimum
-                                </small>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="number" min="0" max="1" step="any" class="form-control" placeholder="Enter #" v-model.number="task.humanErrorProb[0][1]">
-                                <small class="form-text text-muted">
-                                    Mode
-                                </small>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="number" min="0" max="1" step="any" class="form-control" v-model.number="task.humanErrorProb[0][2]" placeholder="Enter #">
-                                <small class="form-text text-muted">
-                                    Maximum
-                                </small>
-                            </div>
-                        </div>
--->
 
                         <div class="form-group" v-if="task.leadTask === -1">
                             <!-- tasks assigned to operators (task.include) -->
