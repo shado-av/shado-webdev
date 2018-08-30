@@ -253,10 +253,10 @@
                             <span class="fas fa-info-circle"></span>
                         </span>
                     </label>
-                    <div>
-                        <select class="custom-select width-small" id="num-hours" v-model.number="globalSettings.numHours" @change="updateTrafficLvls">
-                            <option v-for="n in 12">{{n}}</option>
-                        </select>
+                    <div class="mb-3">
+                        <percentage-input :min=1 :max=12 :step=1 number-only
+                                    :value.sync="globalSettings.numHours" @change="updateTrafficLvls"
+                                    ></percentage-input>
                     </div>
                 </div>
 
@@ -433,35 +433,36 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-form-label">5. Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
-                            <div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
-                                        value="y" v-model="task.essential" @change="task.interruptable='n'">
-                                    <label class="custom-control-label" :for="'task-' + index + 'essential-y'">Yes</label>
-                                </div>
-                                <div class="custom-control custom-control-inline custom-radio mr-0">
-                                    <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-n'"
-                                        value="n" v-model="task.essential">
-                                    <label class="custom-control-label" :for="'task-' + index + 'essential-n'">No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div :class="{options: task.essential==='n'}">
-                            <div class="form-group pb-4" v-show="task.essential==='n'">
-                                <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
+                        <div>5. Essential / interruptable</div>
+                        <div class="pt-3 options">
+                            <div class="form-group">
+                                <label class="col-form-label">Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
-                                            value="y" v-model="task.interruptable">
-                                        <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
+                                            value="y" v-model="task.essential" @change="task.interruptable='n'">
+                                        <label class="custom-control-label" :for="'task-' + index + 'essential-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
-                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
-                                            value="n" v-model="task.interruptable">
-                                        <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                                        <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-n'"
+                                            value="n" v-model="task.essential">
+                                        <label class="custom-control-label" :for="'task-' + index + 'essential-n'">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="pt-3" v-show="task.essential==='n'">
+                                    <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
+                                    <div>
+                                        <div class="custom-control custom-control-inline custom-radio">
+                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
+                                                value="y" v-model="task.interruptable">
+                                            <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-control-inline custom-radio mr-0">
+                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
+                                                value="n" v-model="task.interruptable">
+                                            <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -474,14 +475,22 @@
 -->
 
                         <!-- arrival time distribution (task.arrivalDistribution) -->
-                        <distribution-params :n-option=0 dist-label="6. How frequently does this task occur for a dispatcher?" params-label="Distribution Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
+                        <div>6. How frequently does this task occur for a dispatcher?</div>
+                        <div class="options mt-3">
+                            <distribution-params :n-option=0 params-label="Interarrival Time Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
+                        </div>
 
                         <!-- expiration time distribution (task.expireDistribution) -->
-                        <distribution-params :n-option=2 dist-label="7. When this task appears, how much time can it wait to be completed before it becomes invalid?" params-label="Distribution Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
+                        <div>7. When this task appears, how much time can it wait to be completed before it becomes invalid?</div>
+                        <div class="options mt-3">
+                            <distribution-params :n-option=2 params-label="Expiration Time Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
+                        </div>
 
                         <!-- service time distribution (task.serviceDistribution) -->
-                        <distribution-params dist-label="8. How long does it take a dispatcher to complete this task?" params-label="Distribution Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
-
+                        <div>8. How long does it take a dispatcher to complete this task?</div>
+                        <div class="options mt-3">
+                            <distribution-params params-label="Service Time Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
+                        </div>
                         <!-- HUMAN ERROR PROBABILITY -->
                         <!--<h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
@@ -552,7 +561,7 @@
 
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
-                                <div>How many different teams of {{textStrings.operators.toLowerCase()}} are there?</div>
+                                <div class="mb-3">How many different teams of {{textStrings.operators.toLowerCase()}} are there?</div>
                                 <percentage-input :min=1 :max=99 :step=1 number-only
                                     :value.sync="operatorSettings.numTeams" @change="updateOperatorTeams"
                                     ></percentage-input>
@@ -580,7 +589,7 @@
                             </div>
                             <!-- How many operators are in the flex team? -->
                             <div class="form-group" v-show="operatorSettings.hasFlexPosition === 'y'">
-                                <div>How many {{textStrings.operators.toLowerCase()}} are in the flex team?</div>
+                                <div class="mb-3">How many {{textStrings.operators.toLowerCase()}} are in the flex team?</div>
                                 <percentage-input :min=1 :max=99 :step=1 number-only
                                     :value.sync="operatorSettings.flexTeamSize"></percentage-input>
                             </div>
@@ -600,30 +609,28 @@
                         <!-- TEAM SETTINGS-->
 
                             <!-- operator team name (team.name) -->
-                            <div class="form-group form-row">
+                            <div class="form-group">
                                 <label class="col-md-3 col-lg-2 col-form-label">1. Team Name</label>
                                 <div class="col-md-9 col-lg-10">
                                     <input class="form-control" type="text" v-model="team.name" @focus="miscSettings.inputString = team.name" @change = "changeInputString('Team', team)">
                                 </div>
                             </div>
 
-                            <div class="form-group form-row">
+                            <div class="form-group">
                                 <!-- team size (team.size) -->
-                                <div class="col-12">
-                                    <div>2. How large is the team?</div>
-                                    <percentage-input :min=1 :max=99 :step=1 number-only
-                                    :value.sync="team.size"></percentage-input>
-                                </div>
+                                <div class="mb-3">2. How large is the team?</div>
+                                <percentage-input :min=1 :max=99 :step=1 number-only
+                                :value.sync="team.size"></percentage-input>
+                            </div>
 
-                                <!-- team communications (team.comms) -->
-                                <div class="col-12">
-                                    <label>3. Does this team have some level of communications?</label>
-                                    <select class="custom-select" v-model="team.comms">
-                                        <option value="N">None</option>
-                                        <option value="S">Some</option>
-                                        <option value="F">Full</option>
-                                    </select>
-                                </div>
+                            <!-- team communications (team.comms) -->
+                            <div class="form-group">
+                                <label>3. Does this team have some level of communications?</label>
+                                <select class="custom-select" v-model="team.comms">
+                                    <option value="N">None</option>
+                                    <option value="S">Some</option>
+                                    <option value="F">Full</option>
+                                </select>
                             </div>
 
                             <!-- OPERATOR TASKS -->
@@ -696,15 +703,13 @@
 <!--                        <h5 class="mb-3">Error Catching Chance</h5>-->
 
                         <!-- fail threshold (team.failThresh) -->
-                        <div class="form-group">
-                            <div class="mb-3">6. For every error, what is the chance that the team will catch it for each task?</div>
-                        </div>
+                        <div class="mb-3">6. For every error, what is the chance that the team will catch it for each task?</div>
 
                         <div class="form-group row">
                             <div class="col">
                                 <div class="item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
                                     <div>{{task.name}}</div>
-                                    <percentage-input :value.sync="team.failThresh[0][i]"></percentage-input>
+                                    <percentage-input margin :value.sync="team.failThresh[0][i]"></percentage-input>
                                 </div>
                             </div>
                         </div>
@@ -716,7 +721,7 @@
                         <label class="mb-3">7. What level of AI does this team have?</label>
 
                         <!-- equal operator (AIDA.equalOperator) -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
                                 <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">{{textStrings.AIDATypeStr[0]}}</label>
@@ -725,16 +730,16 @@
                         <div :class="{options:team.AIDA.AIDAType[0]}">
                             <div class="form-group" v-show="team.AIDA.AIDAType[0]">
                                 <div class="">What percentage of the Service Time is affected by this AI?</div>
-                                <percentage-input v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
+                                <percentage-input margin v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
                                 <div class="">What percentage of the Error Rate is affected by this AI?</div>
-                                <percentage-input v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
+                                <percentage-input margin v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
                                 <div class="">What percentage of the Error Catching Chance is affected by this AI?</div>
-                                <percentage-input v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
+                                <percentage-input margin v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
                             </div>
                         </div>
 
                         <!-- assisting individuals (AIDA.assistingIndividuals) -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
                                 <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">{{textStrings.AIDATypeStr[1]}}</label>
@@ -763,7 +768,7 @@
                         </div>
 
                         <!-- assisting in team coordinations (AIDA.assistingTeamCoord) -->
-                        <div class="form-group" v-show="team.comms !== 'N'">
+                        <div class="mb-3" v-show="team.comms !== 'N'">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
                                 <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">{{textStrings.AIDATypeStr[2]}}</label>
@@ -823,7 +828,7 @@
 
                         <!-- number of fleets (fleetTypes) -->
                         <div class="form-group">
-                            <div>{{ textStrings.qFleets }}</div>
+                            <div class="mb-3">{{ textStrings.qFleets }}</div>
                             <percentage-input :min=1 :max=99 :step=1 number-only
                                 :value.sync="fleetSettings.fleetTypes" @change="updateFleets"></percentage-input>
                         </div>
@@ -852,7 +857,7 @@
 
                         <!-- number of vehicles (fleet.numVehicles) -->
                         <div class="form-group">
-                            <div>2. {{ textStrings.qNumVeh }}</div>
+                            <div class="mb-3">2. {{ textStrings.qNumVeh }}</div>
                             <percentage-input :min=1 :max=99 :step=1 number-only
                                 :value.sync="fleet.numVehicles"></percentage-input>
                         </div>
@@ -1276,9 +1281,8 @@
 
             <!--Number of replications selection-->
             <span class="ml-md-auto">
-                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}"><label class="d-sm-none"># Rep&nbsp;</label>
-                <label class="d-none d-sm-block"># Days:&nbsp;</label>
-                <percentage-input :margin=false :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
+                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}">     <label class="d-none d-sm-block"># Days:&nbsp;</label>
+                <percentage-input :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
             </span></span>
             <!--Submit Button-->
             <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>

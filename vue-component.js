@@ -113,7 +113,7 @@ Vue.component('distribution-params', {
         EventBus.$on("validateInput", this.validateInput);
     },
     template:  `<div class="form-group form-row">
-                    <div class="col-12">
+                    <div class="col-12" v-if='distLabel !== ""'>
                         <label>{{distLabel}}</label>
                     </div>
                     <div class="col-sm-12">
@@ -239,7 +239,7 @@ Vue.component('percentage-input', {
         },
         margin: {
             type:Boolean,
-            default: true
+            default: false
         }
     },
     methods: {

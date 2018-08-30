@@ -487,8 +487,9 @@ footer .number-input button:after {
 
 .options > .form-group {
   padding: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f8f8;
 }
 
 .img-responsive {
