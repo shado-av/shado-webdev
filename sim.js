@@ -56,7 +56,7 @@ var sim = new Vue({
                         affectByIROPS: [0],
                         humanErrorSelect: "0",
                         humanErrorProb: [
-                            [0.00008, 0.0004, 0.007],
+                            humanErrorProbConfig["0"].value,
                         ],
 
                         leadTask: -1,
@@ -84,7 +84,7 @@ var sim = new Vue({
                         affectByIROPS: [0],
                         humanErrorSelect: "0",
                         humanErrorProb: [
-                            [0.00008, 0.0004, 0.007],
+                            humanErrorProbConfig["0"].value,,
                         ],
 
                         leadTask: -1,
@@ -112,7 +112,7 @@ var sim = new Vue({
                         affectByIROPS: [0],
                         humanErrorSelect: "0",
                         humanErrorProb: [
-                            [0.00008, 0.0004, 0.007],
+                            humanErrorProbConfig["0"].value,
                         ],
 
                         leadTask: -1,
@@ -246,11 +246,7 @@ var sim = new Vue({
             comms: { "N" : "None", "S": "Some", "F": "Full"},
 
             // Please match the option with the options in simulator.html
-            humanErrorProb: {
-                "0": [0.00008, 0.0004, 0.007],
-                "1": [0.00008, 0.0004, 0.007],
-                // add more values...
-            }
+            humanErrorProb: humanErrorProbConfig,
         },
         textStrings: textStrings.General,
     },
@@ -953,7 +949,7 @@ var sim = new Vue({
                 affectByIROPS: [0],
                 humanErrorSelect: "0",
                 humanErrorProb: [
-                    [0.00008, 0.0004, 0.007],
+                    humanErrorProbConfig["0"].value,,
                 ],
                 leadTask: leadTask,
             });
@@ -1008,8 +1004,7 @@ var sim = new Vue({
 
         // update human error probability
         updateHumanErrorProb(task) {
-            console.log(task.humanErrorSelect);
-            task.humanErrorProb[0] = this.miscSettings.humanErrorProb[task.humanErrorSelect];
+            task.humanErrorProb[0] = this.miscSettings.humanErrorProb[task.humanErrorSelect].value;
         },
 
         updateOperatorTeams() {

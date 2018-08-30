@@ -95,3 +95,17 @@ var textStrings = {
         nextTab: "Tasks",
     }
 };
+
+// Customize settings for human error probability
+// If you remove an option, please change the default 3 json files respectivley.
+// Please don't remove "0" option.
+var humanErrorProbConfig = {
+    "0" : {
+        value: [0.00008, 0.0004, 0.007],
+        text: "Completely familiar, well designed, highly practiced task which is routine."
+    },
+    "1" : {
+        value: [0.00008, 0.0004, 0.007],
+        text: "Restore or shift a system to original or new state, following procedures with some checking."
+    },
+};

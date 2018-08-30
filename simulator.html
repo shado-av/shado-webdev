@@ -498,9 +498,7 @@
                         <div class="form-group">
                             <select class="custom-select width-small" v-model="task.humanErrorSelect"
                                     @change="updateHumanErrorProb(task)">
-                                <!-- If you edit an option here, you should edit the miscSettings.humanErrorProb array as well.-->
-                                <option value="0">Completely familiar, well designed, highly practiced task which is routine.</option>
-                                <option value="1">Restore or shift a system to original or new state, following procedures with some checking.</option>
+                                <option :value="key" v-for="(value, key) in miscSettings.humanErrorProb">{{value.text}}</option>
                             </select>
                         </div>
 
