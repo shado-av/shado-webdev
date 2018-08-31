@@ -2,12 +2,13 @@ var div = d3.select("body").append("div")
     .attr("class", "tooltipBox")
     .style("opacity", 0);
 
-var BarChartWithError = (function (index, isFleet) {
+var BarChartWithError = (function (index, isFleet, timeText) {
     var jsonData = {};
     var svg;
     var g;
     var id = index || 0;
     var isFleet = isFleet || 0;
+    var timeText = timeText || "Busy Time";
     var x;
     var y;
     var z = d3.scaleOrdinal()
@@ -32,23 +33,37 @@ var BarChartWithError = (function (index, isFleet) {
     var barWidth = 25;
 
     var drawBarChartWithError = function (json, teamName, svgId) {
-        var avgBusyTime;
-        var stdBusyTime;
+        var avgTime;
+        var stdTime;
         var xAxisText;
+        var yMax = 100;
 
         jsonData = json;
         if (isFleet) {
             keys = json.fleetName;
-            avgBusyTime = json.averageBusyTimePerFleet[id];
-            stdBusyTime = json.stdBusyTimePerFleet[id];
+
+            if(json.hasOwnProperty('averageBusyTimePerFleet')){
+                avgTime = json.averageBusyTimePerFleet[id];
+                stdTime = json.stdBusyTimePerFleet[id];
+            } else {
+                avgTime = json.averageWaitTimePerFleet[id];
+                stdTime = json.stdWaitTimePerFleet[id];
+            }
+
             xAxisText = sim.textStrings.fleet + " Name";
         } else {
             keys = json.taskName;
-            avgBusyTime = json.averageBusyTimePerTask[id];
-            stdBusyTime = json.stdBusyTimePerTask[id];
+
+            if(json.hasOwnProperty('averageBusyTimePerTask')){
+                avgTime = json.averageBusyTimePerTask[id];
+                stdTime = json.stdBusyTimePerTask[id];
+            } else {
+                avgTime = json.averageWaitTimePerTask[id];
+                stdTime = json.stdWaitTimePerTask[id];
+            }
             xAxisText = "Task Name";
         }
-        barCounts = avgBusyTime.length;
+        barCounts = avgTime.length;
 
         // adjust width with the number of operator teams and total operators
         if (barCounts > 10) {
@@ -59,7 +74,7 @@ var BarChartWithError = (function (index, isFleet) {
             width = totalWidth - margin.left - margin.right;
         }
 
-        console.log(barCounts, barWidth, totalWidth, width, avgBusyTime);
+        console.log(barCounts, barWidth, totalWidth, width, avgTime);
         svg = d3.select(svgId);
         svg.selectAll("*").remove();
         console.log(svg);
@@ -96,11 +111,11 @@ var BarChartWithError = (function (index, isFleet) {
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .attr("font-weight", "bold")
-            .text("Busy Time");
+            .text(timeText);
 
         // define domains
         x.domain(keys); // data.map(function(d) { return d.x; }));
-        y.domain([0, 100]); //.nice()
+        y.domain([0, yMax]); //.nice()
         z.domain(keys);
 
         // set ticks
@@ -151,8 +166,8 @@ var BarChartWithError = (function (index, isFleet) {
         for (var i = 0; i < keys.length; i ++) {
             data.push({
                 x: keys[i],
-                avg: avgBusyTime[i],
-                std: stdBusyTime[i]
+                avg: avgTime[i],
+                std: stdTime[i]
             });
         }
 
@@ -248,8 +263,30 @@ var BarChartWithError = (function (index, isFleet) {
                 .attr("fill", "none");
         }
 
+        // Draw the invisible boxes of the box plot for making clickable area larger
+        var rects = g.selectAll(".clickable")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("width", x.bandwidth())
+            .attr("height", function (d) {
+               return y(0) - y(yMax);
+            })
+            .attr("x", function (d) {
+                return x(d.x);
+            })
+            .attr("y", function (d) {
+                return y(yMax);
+            })
+            .attr("fill", "none")
+            .attr("class", "clickable")
+            .attr("pointer-events", "visible")
+            .attr("stroke", "transparent")
+//               .style("cursor", "pointer")
+            .attr("stroke-width", 1);
+
         // mouseover tips
-        svg.selectAll(".bar")
+        svg.selectAll(".clickable")
             .on("mouseover", function (d, i) {
                 d3.select(this).attr("stroke", "blue").attr("stroke-width", 0.8);
                 div.transition()
@@ -257,7 +294,8 @@ var BarChartWithError = (function (index, isFleet) {
                     .style("opacity", .9);
                 console.log(d, i);
                 var k = Math.floor(i/4);
-                div.html("<table><tr><td>Busy Time Average:</td><td>" + d.avg.toFixed(2) + "</td></tr><tr><td>Std. Dev.</td><td>" + d.std.toFixed(2) + "</td></tr></table>")
+                div.html("<table><tr><td>" + xAxisText + ":</td><td>" + keys[i] + "</td></tr><tr><td>"
+                         + timeText + " Average:</td><td>" + d.avg.toFixed(2) + "</td></tr><tr><td>Std. Dev.</td><td>" + d.std.toFixed(2) + "</td></tr></table>")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 //.style("left", (window.pageXOffset + matrix.e + 15) + "px")
