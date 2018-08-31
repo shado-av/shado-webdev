@@ -53,6 +53,13 @@ h3.subtitle {
 
     <script src='../result.js'></script>
     <script>
+        var sim = {
+            textStrings: {
+                fleet: "Fleet",
+                operator: "Operator",
+            }
+        };
+
         $(function() {
             BoxPlot.visualize('Utilization.json', '#boxSVG', '1');
         });
