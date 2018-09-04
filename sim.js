@@ -1519,7 +1519,7 @@ var sim = new Vue({
             this.miscSettings.downloadJsonVisible = true;
             this.miscSettings.downloadJsonData = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
 
-            axios.post(env.serverUrl + "/shado/testpost", JSON.stringify(out), {
+            axios.post(env.serverUrl + "/shado/runShado", JSON.stringify(out), {
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
                 }
@@ -1539,6 +1539,9 @@ var sim = new Vue({
                 // pieChart only works when it is visible
                 FailedTaskAnalysis.analyze(env.serverUrl + "/shado/getTaskJSON" + this.miscSettings.sessionQuery,
                                            "pieChart", "#taskRecordTable");
+
+                WaitTime.visualize(env.serverUrl + "/shado/getWaitTimeJSON" + this.miscSettings.sessionQuery,
+                                "#waitTimeSVG", "1");
 
                 this.miscSettings.viewResultsClass = "";
                 this.$nextTick( function() {
