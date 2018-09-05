@@ -128,8 +128,8 @@ var WaitTime = (function () {
                 record["avg"] = d3.mean(groupCount);
                 record["std"] = d3.deviation(groupCount);
                 var maxCan = d3.max(groupCount);
-                if (yMax < maxCan)
-                    yMax = maxCan;
+                if (yMax < record["avg"] + record["std"])
+                    yMax = record["avg"] + record["std"];
                 var k = +opName.substr(opName.lastIndexOf("No. ")) - 1;
                 record["color"] = colorScale[ k ];
                 boxPlotData.push(record);

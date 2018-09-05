@@ -27,7 +27,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
     var minutes, barCounts;
     var bandWidth;
     var totalWidth = 960;
-    var totalHeight = 450;
+    var totalHeight = 400;
     var width = totalWidth - margin.left - margin.right;
     var height = totalHeight - margin.top - margin.bottom;
     var barWidth = 25;
@@ -37,6 +37,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         var stdTime;
         var xAxisText;
         var yMax = 100;
+        var resultSet;
 
         jsonData = json;
         if (isFleet) {
@@ -45,9 +46,11 @@ var BarChartWithError = (function (index, isFleet, timeText) {
             if(json.hasOwnProperty('averageBusyTimePerFleet')){
                 avgTime = json.averageBusyTimePerFleet[id];
                 stdTime = json.stdBusyTimePerFleet[id];
+                resultSet = "busyTimePerFleet";
             } else {
                 avgTime = json.averageWaitTimePerFleet[id];
                 stdTime = json.stdWaitTimePerFleet[id];
+                resultSet = "waitTimePerFleet";
             }
 
             xAxisText = sim.textStrings.fleet + " Name";
@@ -57,13 +60,24 @@ var BarChartWithError = (function (index, isFleet, timeText) {
             if(json.hasOwnProperty('averageBusyTimePerTask')){
                 avgTime = json.averageBusyTimePerTask[id];
                 stdTime = json.stdBusyTimePerTask[id];
+                resultSet = "busyTimePerTask";
             } else {
                 avgTime = json.averageWaitTimePerTask[id];
                 stdTime = json.stdWaitTimePerTask[id];
+                resultSet = "waitTimePerTask";
             }
             xAxisText = "Task Name";
         }
         barCounts = avgTime.length;
+
+        // put report variables isFleet, timeText
+        if (isFleet) {
+            sim.resultSettings[resultSet] += teamName + " spent, on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of " + sim.textStrings.fleet.toLowerCase() + "s. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
+        } else {
+            sim.resultSettings[resultSet] += teamName + " spent, on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of tasks. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
+        }
+
+        console.log("ResultSettings", sim.resultSettings);
 
         // adjust width with the number of operator teams and total operators
         if (barCounts > 10) {
@@ -111,7 +125,14 @@ var BarChartWithError = (function (index, isFleet, timeText) {
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .attr("font-weight", "bold")
-            .text(timeText);
+            .text(timeText + " (minutes)");
+
+        yMax = 1;
+        for(i=0;i<avgTime.length;i++) {
+            if (yMax < avgTime[i] + stdTime[i]) {
+                yMax = avgTime[i] + stdTime[i];
+            }
+        }
 
         // define domains
         x.domain(keys); // data.map(function(d) { return d.x; }));
@@ -351,6 +372,13 @@ var BoxPlot = (function () {
         d3.json(url).then(function (json) {
             barWidth = 25;
 
+            // low utilization minutes per operator
+            var lowUtilMinutes = [];
+            var highUtilMinutes = [];
+            var lowUtilTeams = [];
+            var highUtilTeams = [];
+            var numMinutes = json.timeUtilization[0][0].length; // how many 10 minutes
+
             // parse json file into groupCounts
             var groupCounts = {};
             // number of operators in each team
@@ -375,11 +403,63 @@ var BoxPlot = (function () {
             for (var i = 0, j=0; i < numOps; i++) {
                 var key = json.operatorName[i];
                 groupCounts[key + "_" + i] = [];
+                lowUtilMinutes[i] = [];
+                highUtilMinutes[i] = [];
 
                 for(var j=0; j < json.timeUtilization[i].length; j++) {
                     groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(json.timeUtilization[i][j]);
+                    lowUtilMinutes[i][j] = 0;
+                    highUtilMinutes[i][j] = 0;
+                    for( var k=0; k<numMinutes; k++) {
+                        if (json.timeUtilization[i][j][k] > 0.7) highUtilMinutes[i][j]+=10;
+                        if (json.timeUtilization[i][j][k] < 0.3) lowUtilMinutes[i][j]+=10;
+                    }
                 }
             }
+
+            var avg = 0;
+            for (i = 0, j = 0; i < groupLength.length; i++) {
+                for(k = j+1; k < j+groupLength[i]; k++) {
+                    highUtilMinutes[j].concat(highUtilMinutes[k]);
+                    lowUtilMinutes[j].concat(lowUtilMinutes[k]);
+                }
+                avg = d3.mean(highUtilMinutes[j]);
+                if (avg >= numMinutes / 2) {
+                    highUtilTeams.push(i);
+                }
+                avg = d3.mean(lowUtilMinutes[j]);
+                if (avg >= numMinutes / 2) {
+                    lowUtilTeams.push(i);
+                }
+                j += groupLength[i];
+            }
+
+            k = highUtilTeams.length;
+            if (k===0) sim.resultSettings.highWorkloadTeams = "No team";
+            else {
+                for (i=0;i<k;i++) {
+                    if (i < k - 2)
+                        sim.resultSettings.highWorkloadTeams += groupName[i] + ", ";
+                    else if (i === k - 2)
+                        sim.resultSettings.highWorkloadTeams += groupName[i] + " and ";
+                    else
+                        sim.resultSettings.highWorkloadTeams += groupName[i];
+                }
+            }
+
+            k = lowUtilTeams.length;
+            if (k===0) sim.resultSettings.lowWorkloadTeams = "No team";
+            else {
+                for (i=0;i<k;i++) {
+                    if (i < k - 2)
+                        sim.resultSettings.lowWorkloadTeams += groupName[i] + ", ";
+                    else if (i === k - 2)
+                        sim.resultSettings.lowWorkloadTeams += groupName[i] + " and ";
+                    else
+                        sim.resultSettings.lowWorkloadTeams += groupName[i];
+                }
+            }
+
             console.log("GroupCounts ", groupCounts);
             console.log("GroupLength ", groupLength);
 
@@ -432,6 +512,7 @@ var BoxPlot = (function () {
 
             // Prepare the data for the box plots
             var boxPlotData = [];
+            sim.resultSettings.busyTimePerOp = "";
             for (i=0; i<numOps; i++) {
                 var opName = json.operatorName[i];
                 key = opName + "_" + i;
@@ -451,6 +532,10 @@ var BoxPlot = (function () {
                 record["color"] = colorScale[ k ];
                 console.log(k);
                 boxPlotData.push(record);
+
+                sim.resultSettings.busyTimePerOp += json.operatorName[i] + " was between " + (record["quartile"][0] * 100).toFixed(0) + "-" + (record["quartile"][2] * 100).toFixed(0) + "% busy";
+                if (i === numOps - 2) sim.resultSettings.busyTimePerOp += ", and ";
+                else if (i < numOps - 2) sim.resultSettings.busyTimePerOp += ', ';
             }
 
             // calculat tick location within 0 ~ width - 20
@@ -708,7 +793,7 @@ var BoxPlot = (function () {
                     (height + margin.top + margin.bottom - 5) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .text(sim.textStrings.operator + " Team Name");
+                .text(sim.textStrings.operator + " Team");
 
             // text label for the y axis
             svg.append("text")

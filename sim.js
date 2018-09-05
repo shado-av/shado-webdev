@@ -248,6 +248,21 @@ var sim = new Vue({
             // Please match the option with the options in simulator.html
             humanErrorProb: humanErrorProbConfig,
         },
+        /* --------------------------------------------------------------------------------------------------------
+         * ResultSettings - Specific result settings/value when the simulation runs
+         * ------------------------------------------------------------------------------------------------------- */
+        resultSettings: {
+            numReps: 100,
+            hours: 8,
+            exoFactors: [],
+            busyTimePerFleet: "",
+            busyTimePerTask: "",
+            waitTimePerFleet: "",
+            waitTimePerTask: "",
+            busyTimePerOp: "",
+            lowWorkloadTeams: "",
+            highWorkloadTeams: "",
+        },
         textStrings: textStrings.General,
     },
 
@@ -317,6 +332,22 @@ var sim = new Vue({
             if (exoFT[0] || exoFT[1]) {
                 if (exoFT[0]) exoRv = exoFTName[0];
                 if (exoFT[0] && exoFT[1]) exoRv += ", " + exoFTName[1];
+                else if (exoFT[1]) exoRv = exoFTName[1];
+            }
+
+            return exoRv;
+        },
+// return review string for type of exo factors
+        hasExogenousForResults() {
+            var exoFT = this.globalSettings.exoFactorsType;
+            var exoFTName = this.textStrings.optionExtremeCondition;
+            var exoRv = "";
+
+            //console.log("exoFactorsName", exoFT, exoFTName);
+            if (exoFT[0] || exoFT[1]) {
+                exoRv = "with ";
+                if (exoFT[0]) exoRv += exoFTName[0];
+                if (exoFT[0] && exoFT[1]) exoRv += " and " + exoFTName[1];
                 else if (exoFT[1]) exoRv = exoFTName[1];
             }
 
@@ -1529,6 +1560,10 @@ var sim = new Vue({
                 this.miscSettings.sessionQuery = "?sessionN=" + this.miscSettings.sessionId;
                 console.log(this.miscSettings.sessionId, this.miscSettings.sessionQuery);
                 alert("Simulation complete. View the results.");
+
+                this.resultSettings.numReps = this.numReps;
+                this.resultSettings.numHours = this.globalSettings.hours;
+                this.resultSettings.exoFactors = this.hasExogenousForResults;
 
                 // Show download button
                 // document.getElementById("downloadBtn").style.display = "block";
