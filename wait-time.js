@@ -53,10 +53,10 @@ var WaitTime = (function () {
                 for(var j=0; j < json.timeWaitTime[i].length; j++) {
                     //groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(json.timeWaitTime[i][j]);
                     groupCounts[key + "_" + i].push(d3.sum(json.timeWaitTime[i][j]));
-                    if (i==0 && j>=95) {
-                        console.log(json.timeWaitTime[i][j], d3.sum(json.timeWaitTime[i][j]), groupCounts[key + "_" + i][j]);
-                        console.log(groupCounts);
-                    }
+//                    if (i==0 && j>=95) {
+//                        console.log(json.timeWaitTime[i][j], d3.sum(json.timeWaitTime[i][j]), groupCounts[key + "_" + i][j]);
+//                        console.log(groupCounts);
+//                    }
                 }
             }
             console.log("GroupCounts ", groupCounts);
@@ -64,7 +64,7 @@ var WaitTime = (function () {
 
             // create tabviews with number to match the number of op teams
             var tabLength = $("#" + tabIds[0] + " .nav-tabs li").length;
-            console.log("Tab length", tabLength, groupLength.length);
+            // console.log("Tab length", tabLength, groupLength.length);
             if (groupLength.length > tabLength) {
                 // add more tabs
                 for (j=0; j<tabIds.length; j++) {
@@ -175,7 +175,7 @@ var WaitTime = (function () {
                     if (++j>=groupLength[k]) { j=0; k++; }
                 }
             }
-            console.log("x Tick Location: ", xTickLoc, barWidthExpected, barWidth, width);
+            //console.log("x Tick Location: ", xTickLoc, barWidthExpected, barWidth, width);
             // Compute an ordinal xScale for the keys in boxPlotData
             var xScale = d3.scaleLinear()
                 .domain([0, width])
@@ -371,7 +371,7 @@ var WaitTime = (function () {
                     (height + margin.top + margin.bottom - 5) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .text(sim.textStrings.operator + " Team Name");
+                .text(sim.textStrings.operator + " Team");
 
             // text label for the y axis
             svg.append("text")
@@ -381,7 +381,7 @@ var WaitTime = (function () {
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .text("Wait Time");
+                .text("Wait Time (minutes)");
 
         });
     };

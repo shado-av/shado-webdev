@@ -76,14 +76,13 @@ var BarChartWithError = (function (index, isFleet, timeText) {
             strAction = " waited";
         }
 
-        sim.resultSettings[resultSet] = "";
         if (isFleet) {
             sim.resultSettings[resultSet] += teamName + strAction + ", on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of " + sim.textStrings.fleet.toLowerCase() + "s. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
         } else {
             sim.resultSettings[resultSet] += teamName + strAction + ", on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of tasks. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
         }
 
-        console.log("ResultSettings", sim.resultSettings);
+        //console.log("ResultSettings", sim.resultSettings);
 
         // adjust width with the number of operator teams and total operators
         if (barCounts > 10) {
@@ -97,7 +96,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         console.log(barCounts, barWidth, totalWidth, width, avgTime);
         svg = d3.select(svgId);
         svg.selectAll("*").remove();
-        console.log(svg);
+        //console.log(svg);
 
         svg.attr("width", totalWidth)
            .attr("height", totalHeight);
@@ -472,7 +471,7 @@ var BoxPlot = (function () {
             // create tabviews with number to match the number of op teams
 
             var tabLength = $("#" + tabIds[0] + " .nav-tabs li").length;
-            console.log("Tab length", tabLength, groupLength.length);
+            //console.log("Tab length", tabLength, groupLength.length);
             if (groupLength.length > tabLength) {
                 // add more tabs
                 for (j=0; j<tabIds.length; j++) {
@@ -536,7 +535,7 @@ var BoxPlot = (function () {
                 record["whiskers"] = [localMin, localMax];
                 var k = +opName.substr(opName.lastIndexOf("No. ")) - 1;
                 record["color"] = colorScale[ k ];
-                console.log(k);
+                //console.log(k);
                 boxPlotData.push(record);
 
                 sim.resultSettings.busyTimePerOp += json.operatorName[i] + " was between " + (record["quartile"][0] * 100).toFixed(0) + "-" + (record["quartile"][2] * 100).toFixed(0) + "% busy";
@@ -583,7 +582,7 @@ var BoxPlot = (function () {
                     if (++j>=groupLength[k]) { j=0; k++; }
                 }
             }
-            console.log("x Tick Location: ", xTickLoc, barWidthExpected, barWidth, width);
+            //console.log("x Tick Location: ", xTickLoc, barWidthExpected, barWidth, width);
             // Compute an ordinal xScale for the keys in boxPlotData
             var xScale = d3.scaleLinear()
                 .domain([0, width])

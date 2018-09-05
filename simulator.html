@@ -1269,15 +1269,15 @@
 
                     <!-- WaitTime Section -->
                     <div class="tab-pane fade show" id="results-wait-time" role="tabpanel" aria-labelledby="results-wait-time-tab">
-                        <h3 class='subtitle'>WaitTime per {{ textStrings.operator }}</h3>
+                        <h3 class='subtitle'>{{ textStrings.operator }} Wait Time</h3>
 
                         <div class="table-responsive">
                             <svg id="waitTimeSVG" width="960" height="450"></svg>
                         </div>
 
-                        <div class="form-group mt-5">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the {{ textStrings.operator.toLowerCase() }}’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
+                        <div class="form-group mt-5">Placeholder for explanation -----------------.</div>
 
-                        <h3 class='subtitle'>By Tasks</h3>
+                        <h3 class='subtitle'>Breakdown of Time by By Tasks Per Team</h3>
                         <div id="barWaitTimePerTask" class="mt-5 mb-5">
                             <ul class="nav nav-tabs">
                             </ul>
@@ -1288,7 +1288,7 @@
 
                         <div class="form-group">{{ resultSettings.waitTimePerTask }}</div>
 
-                        <h3 class='subtitle'>By {{ textStrings.fleets }}</h3>
+                        <h3 class='subtitle'>Breakdown of Time by By {{ textStrings.fleets }} Per Team</h3>
                         <div id="barWaitTimePerFleet" class="mt-5 mb-5">
                             <ul class="nav nav-tabs">
                             </ul>

@@ -1564,6 +1564,10 @@ var sim = new Vue({
                 this.resultSettings.numReps = this.numReps;
                 this.resultSettings.numHours = this.globalSettings.hours;
                 this.resultSettings.exoFactors = this.hasExogenousForResults;
+                this.resultSettings.busyTimePerFleet = "";
+                this.resultSettings.busyTimePerTask = "";
+                this.resultSettings.waitTimePerFleet = "";
+                this.resultSettings.waitTimePerTask = "";
 
                 // Show download button
                 // document.getElementById("downloadBtn").style.display = "block";
