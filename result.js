@@ -38,6 +38,11 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         var xAxisText;
         var yMax = 100;
         var resultSet;
+        var strAction = " spent";
+
+        if (timeText.startsWith("Wait")) {
+            strAction = " waited";
+        }
 
         jsonData = json;
         if (isFleet) {
@@ -72,9 +77,9 @@ var BarChartWithError = (function (index, isFleet, timeText) {
 
         // put report variables isFleet, timeText
         if (isFleet) {
-            sim.resultSettings[resultSet] += teamName + " spent, on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of " + sim.textStrings.fleet.toLowerCase() + "s. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
+            sim.resultSettings[resultSet] += teamName + strAction + ", on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of " + sim.textStrings.fleet.toLowerCase() + "s. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
         } else {
-            sim.resultSettings[resultSet] += teamName + " spent, on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of tasks. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
+            sim.resultSettings[resultSet] += teamName + strAction + ", on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of tasks. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
         }
 
         console.log("ResultSettings", sim.resultSettings);
