@@ -40,10 +40,6 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         var resultSet;
         var strAction = " spent";
 
-        if (timeText.startsWith("Wait")) {
-            strAction = " waited";
-        }
-
         jsonData = json;
         if (isFleet) {
             keys = json.fleetName;
@@ -75,7 +71,12 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         }
         barCounts = avgTime.length;
 
-        // put report variables isFleet, timeText
+        // put report variables using isFleet, timeText
+        if (timeText.startsWith("Wait")) {
+            strAction = " waited";
+        }
+
+        sim.resultSettings[resultSet] = "";
         if (isFleet) {
             sim.resultSettings[resultSet] += teamName + strAction + ", on average, more time on " + keys[avgTime.indexOf(d3.max(avgTime))] + " than any other type of " + sim.textStrings.fleet.toLowerCase() + "s. They were least busy with " +keys[avgTime.indexOf(d3.min(avgTime))]+ ". ";
         } else {
@@ -1056,7 +1057,7 @@ var FailedTaskAnalysis = (function () {
                 "destroy": true,
                 "dom": 'Brtip',
                 buttons: [
-                    'pageLength',
+                    //'pageLength',
                     {
                         extend:    'csv',
                         text:      '<i class="fas fa-file-download"></i> Download CSV',
