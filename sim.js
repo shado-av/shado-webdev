@@ -348,7 +348,7 @@ var sim = new Vue({
                 exoRv = "with ";
                 if (exoFT[0]) exoRv += exoFTName[0];
                 if (exoFT[0] && exoFT[1]) exoRv += " and " + exoFTName[1];
-                else if (exoFT[1]) exoRv = exoFTName[1];
+                else if (exoFT[1]) exoRv += exoFTName[1];
             }
 
             return exoRv;
