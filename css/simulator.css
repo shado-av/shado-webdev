@@ -471,7 +471,7 @@ footer .number-input button:after {
 
 .number-input input[type="number"] {
   font-family: sans-serif;
-  max-width: 5rem;
+  max-width: 4rem;
   padding: 0.5rem;
   border: solid #ddd;
   border-width: 1px 0;
@@ -479,6 +479,16 @@ footer .number-input button:after {
   height: 2.5rem;
   font-weight: normal;
   text-align: center;
+}
+
+.number-input.small button {
+  height: 2rem;
+  width: 2rem;
+}
+
+.number-input.small input[type="number"] {
+  height: 2rem;
+  max-width: 3.5rem;
 }
 
 #boxSVG {
