@@ -199,11 +199,11 @@ Vue.component('distribution-params', {
                             </div>
                             <span>to</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[1]" @change="validateInput">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Y" v-model.number="params[2]" @change="validateInput">
                             </div>
                             <span>minutes, usually around</span>
                             <div class="ml-2 mr-2 form-group">
-                                <input class="form-control width-100" type="number" step="any" placeholder="Z" v-model.number="params[2]" @change="validateInput">
+                                <input class="form-control width-100" type="number" step="any" placeholder="Z" v-model.number="params[1]" @change="validateInput">
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears.</span>
