@@ -215,15 +215,15 @@ Vue.component('distribution-params', {
                 </div>`
 });
 
-Vue.component('percentage-input', {
+Vue.component('number-input', {
     props: {
         value: {
             type: Number,
             default: 50
         },
-        numberOnly: {
-            type:Boolean,
-            default: false
+        textEnd: {
+            type:String,
+            default: ""
         },
         max: {
             type: Number,
@@ -260,9 +260,9 @@ Vue.component('percentage-input', {
                 <button @click="stepNumberInput(-step)" class="minus"></button>
                 <input type="number" @change="validateInput(parseInt($event.target.value))"
                     :value="value">
-                <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : numberOnly }]"></button>
-                <div class="input-group-append" v-if="!numberOnly">
-                        <span class="input-group-text">%</span>
+                <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : textEnd!=='' }]"></button>
+                <div class="input-group-append" v-if="textEnd!==''">
+                        <span class="input-group-text">{{textEnd}}</span>
                 </div>
             </div>`
 });

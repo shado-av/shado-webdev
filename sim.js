@@ -150,7 +150,7 @@ var sim = new Vue({
                             TCALevel: 'S'
                         },
                         failThresh: [
-                            [10, 20, 30],
+                            [1, 2, 3],
                         ]
                     },
                     {
@@ -173,7 +173,7 @@ var sim = new Vue({
                             TCALevel: 'S'
                         },
                         failThresh: [
-                            [10, 20, 30],
+                            [1, 2, 3],
                         ]
                     }
                 ]
@@ -679,7 +679,7 @@ var sim = new Vue({
                 ft.push([]);
                 for(var j=0; j < this.taskSettings.tasks.length;j++) {
                     if (this.taskSettings.tasks[j].include) {
-                        ft[i].push(this.operatorSettings.teams[i].failThresh[0][j] / 100);
+                        ft[i].push(this.operatorSettings.teams[i].failThresh[0][j] / 10);
                     }
                 }
             }
@@ -989,7 +989,7 @@ var sim = new Vue({
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
                 this.operatorSettings.teams[i].priority[0].push(1);
                 // add fail threshold
-                this.operatorSettings.teams[i].failThresh[0].push(50);
+                this.operatorSettings.teams[i].failThresh[0].push(5);
             }
 
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
@@ -1045,7 +1045,7 @@ var sim = new Vue({
                 var ft = []; // failThreshold default value for each task
                 var exp = [];
                 for (var i = 0; i < this.taskSettings.tasks.length; i++) {
-                    ft.push(50);
+                    ft.push(5);
                     exp.push([]);
                     for(var j=0; j < this.fleetSettings.fleets.length;j++) {
                         exp[i][j] = true;
