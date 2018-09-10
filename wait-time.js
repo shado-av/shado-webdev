@@ -204,6 +204,28 @@ var WaitTime = (function () {
             //var g = svg.append("g")
             //    .attr("transform", "translate(0,0)");
 
+            // Draw the boxes of the box plot, filled in white and on top of vertical lines
+            var rects = g.selectAll("rect")
+                .data(boxPlotData)
+                .enter()
+                .append("rect")
+                .attr("width", barWidth)
+                .attr("height", function (datum) {
+                    var height = yScale(0) - yScale(datum.avg);
+                    return height;
+                })
+                .attr("x", function (datum) {
+                    return xScale(xTickLoc[datum.index]);
+                })
+                .attr("y", function (datum) {
+                    return yScale(datum.avg);
+                })
+                .attr("fill", function (datum) {
+                    return datum.color;
+                })
+                .attr("stroke", "#000")
+                .attr("stroke-width", 1);
+
             // Draw the box plot vertical lines
             var verticalLines = g.selectAll(".verticalLines")
                 .data(boxPlotData)
@@ -226,28 +248,6 @@ var WaitTime = (function () {
                 .attr("stroke", "#000")
                 .attr("stroke-width", 1)
                 .attr("fill", "none");
-
-            // Draw the boxes of the box plot, filled in white and on top of vertical lines
-            var rects = g.selectAll("rect")
-                .data(boxPlotData)
-                .enter()
-                .append("rect")
-                .attr("width", barWidth)
-                .attr("height", function (datum) {
-                    var height = yScale(0) - yScale(datum.avg);
-                    return height;
-                })
-                .attr("x", function (datum) {
-                    return xScale(xTickLoc[datum.index]);
-                })
-                .attr("y", function (datum) {
-                    return yScale(datum.avg);
-                })
-                .attr("fill", function (datum) {
-                    return datum.color;
-                })
-                .attr("stroke", "#000")
-                .attr("stroke-width", 1);
 
             // Draw the invisible boxes of the box plot for making clickable area larger
             var rects = g.selectAll(".clickable")
