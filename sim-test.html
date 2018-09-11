@@ -14,26 +14,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-    <!-- Vue.js libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
-    <!-- CDNJS :: Sortable (https://cdnjs.com/) -->
-    <script src="//cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
-    <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
-
     <!-- Fontawesome Icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
 
-    <!--D3 Libraries-->
-    <script src="https://d3js.org/d3.v5.js"></script>
-
-    <!--noUIiSlider library-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.js"></script>
-
     <!-- custom CSS and JavaScript -->
-    <link rel="stylesheet" href="simulator.css">
+    <script src="env.js"></script>
+    <link rel="stylesheet" href="css/simulator.css">
 
     <!-- title -->
     <title>SHADO Test for Developers</title>
@@ -65,7 +51,7 @@
             <div class="row">
                 <h3 class="col mt-5 mb-5">Simulation by JSON Input file</h3>
             </div>
-            Select JSON Input file:<input id="file" type="file" />
+            Select JSON Input file: <input id="file" type="file" />
             <output id="list"></output>
             <!-- run sim button -->
             <div class="mt-3 mb-3">
@@ -90,6 +76,8 @@
             $('#submitBtn').prop('disabled', true);
 
             var json;
+            var sessionId = "";
+            var sessionQuery = "";
 
             function handleFileSelect(evt) {
                 var files = evt.target.files; // FileList object
@@ -125,7 +113,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://apps.hal.pratt.duke.edu:8080/shado/testpost",
+                    url: env.serverUrl + "/shado/runShado",
                     // The key needs to match your method's input parameter (case-sensitive).
                     data: JSON.stringify(json),
                     contentType: "application/json; charset=utf-8",
@@ -147,6 +135,8 @@
                         }
                         if (msg.status == 200) {
                             alert(msg.responseText);
+                            sessionId = msg.responseText.substr(msg.responseText.lastIndexOf(":") + 2);
+                            sessionQuery = "?sessionN=" + sessionId;
                             showDownloadBtn();
                         }
                         document.getElementById("submitBtn").textContent = "Submit Again";
@@ -159,14 +149,14 @@
             });
             $("#downloadCSV").click(function() {
                 //  $.get("http://localhost:8080/shado/getRepDetail");
-                window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getRepDetail";
+                window.location.href = env.serverUrl + "/shado/getRepDetail" + sessionQuery;
                 win.focus();
                 console.log("GET request 'getRepDetail' sent");
             });
 
             $("#downloadSummary").click(function() {
                 var xhttp = new XMLHttpRequest();
-                window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getSummary";
+                window.location.href = env.serverUrl + "/shado/getSummary" + sessionQuery;
                 win.focus();
                 console.log("GET request 'getSummary' sent");
             });
