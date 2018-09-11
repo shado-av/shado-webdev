@@ -150,14 +150,12 @@
             $("#downloadCSV").click(function() {
                 //  $.get("http://localhost:8080/shado/getRepDetail");
                 window.location.href = env.serverUrl + "/shado/getRepDetail" + sessionQuery;
-                win.focus();
                 console.log("GET request 'getRepDetail' sent");
             });
 
             $("#downloadSummary").click(function() {
                 var xhttp = new XMLHttpRequest();
                 window.location.href = env.serverUrl + "/shado/getSummary" + sessionQuery;
-                win.focus();
                 console.log("GET request 'getSummary' sent");
             });
 
