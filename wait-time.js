@@ -59,8 +59,8 @@ var WaitTime = (function () {
 //                    }
                 }
             }
-            console.log("GroupCounts ", groupCounts);
-            console.log("GroupLength ", groupLength);
+            console.log("WaitGroupCounts ", groupCounts);
+            console.log("WaitGroupLength ", groupLength);
 
             // create tabviews with number to match the number of op teams
             var tabLength = $("#" + tabIds[0] + " .nav-tabs li").length;
@@ -111,6 +111,7 @@ var WaitTime = (function () {
             // Prepare the data for the box plots
             var boxPlotData = [];
             var yMax = 0;
+			var lk = -1;
             for (i=0; i<numOps; i++) {
                 var opName = json.operatorName[i];
                 key = opName + "_" + i;
@@ -131,6 +132,8 @@ var WaitTime = (function () {
                 if (yMax < record["avg"] + record["std"])
                     yMax = record["avg"] + record["std"];
                 var k = +opName.substr(opName.lastIndexOf("No. ")) - 1;
+				if (isNaN(k) || k < 0) k = lk + 1;
+				lk = k;
                 record["color"] = colorScale[ k ];
                 boxPlotData.push(record);
             }

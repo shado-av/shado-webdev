@@ -93,7 +93,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
             width = totalWidth - margin.left - margin.right;
         }
 
-        console.log(barCounts, barWidth, totalWidth, width, avgTime);
+        //console.log(barCounts, barWidth, totalWidth, width, avgTime);
         svg = d3.select(svgId);
         svg.selectAll("*").remove();
         //console.log(svg);
@@ -197,7 +197,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
             });
         }
 
-        console.log(data);
+        //console.log(data);
 
         var bar = g.selectAll(".bar")
             .data(data)
@@ -517,6 +517,7 @@ var BoxPlot = (function () {
 
             // Prepare the data for the box plots
             var boxPlotData = [];
+			var lk = -1;
             sim.resultSettings.busyTimePerOp = "";
             for (i=0; i<numOps; i++) {
                 var opName = json.operatorName[i];
@@ -534,6 +535,8 @@ var BoxPlot = (function () {
                 record["quartile"] = boxQuartiles(groupCount);
                 record["whiskers"] = [localMin, localMax];
                 var k = +opName.substr(opName.lastIndexOf("No. ")) - 1;
+				if (isNaN(k) || k < 0) k = lk + 1;
+				lk = k;
                 record["color"] = colorScale[ k ];
                 //console.log(k);
                 boxPlotData.push(record);
@@ -960,7 +963,7 @@ var FailedTaskAnalysis = (function () {
 
             var data = [{},{},{},{},{}];
             var color = ["#109618", "#DC3912", "#FF66CC", "#FF9900", "#990099"];
-            console.log(numReps, numPhases, numTeams, numTasks);
+            //console.log(numReps, numPhases, numTeams, numTasks);
 
             for(var i=0;i<5;i++) {
                 data.push({});
