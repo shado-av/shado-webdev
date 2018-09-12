@@ -1055,7 +1055,7 @@ var sim = new Vue({
                 while (teams.length < this.operatorSettings.numTeams) {
                     var x = this.operatorSettings.numNameTeam++;
                     teams.push({
-                        name: "Operator Team " + x,
+                        name: this.textStrings.operator + " Team " + x,
                         size: 1,
                         strategy: "FIFO",
                         comms: "N",
@@ -1080,7 +1080,7 @@ var sim = new Vue({
         },
 
         removeOperatorTeam(team) {
-            if (confirm("Are you sure you want to delete this operator team?")) {
+            if (confirm("Are you sure you want to delete this team?")) {
                 this.operatorSettings.teams.splice(this.operatorSettings.teams.indexOf(team), 1);
             }
             this.operatorSettings.numTeams = this.operatorSettings.teams.length;
@@ -1132,7 +1132,7 @@ var sim = new Vue({
                 while (fleets.length < this.fleetSettings.fleetTypes) {
                     var x = this.fleetSettings.numNameFleet++;
                     fleets.push({
-                        name: "Fleet " + x,
+                        name: this.textStrings.fleet + " " + x,
                         numVehicles: 1,
                         comms: "N",
                         tasks: [],
