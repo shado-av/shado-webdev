@@ -264,9 +264,9 @@
                         </span>
                     </label>
                     <div class="mb-3">
-                        <percentage-input :min=1 :max=12 :step=1 number-only
+                        <number-input :min=1 :max=12 :step=1
                                     :value.sync="globalSettings.numHours" @change="updateTrafficLvls"
-                                    ></percentage-input>
+                                    ></number-input>
                     </div>
                 </div>
 
@@ -570,9 +570,9 @@
                             <!-- number of operator teams (numTeams) -->
                             <div class="form-group">
                                 <div class="mb-3">How many different teams of {{textStrings.operators.toLowerCase()}} are there?</div>
-                                <percentage-input :min=1 :max=99 :step=1 number-only
+                                <number-input :min=1 :max=99 :step=1
                                     :value.sync="operatorSettings.numTeams" @change="updateOperatorTeams"
-                                    ></percentage-input>
+                                    ></number-input>
                             </div>
 
                             <!-- Is this operator flexible? -->
@@ -598,8 +598,8 @@
                             <!-- How many operators are in the flex team? -->
                             <div class="form-group" v-show="operatorSettings.hasFlexPosition === 'y'">
                                 <div class="mb-3">How many {{textStrings.operators.toLowerCase()}} are in the flex team?</div>
-                                <percentage-input :min=1 :max=99 :step=1 number-only
-                                    :value.sync="operatorSettings.flexTeamSize"></percentage-input>
+                                <number-input :min=1 :max=99 :step=1
+                                    :value.sync="operatorSettings.flexTeamSize"></number-input>
                             </div>
                     </div>
 
@@ -627,8 +627,8 @@
                             <div class="form-group">
                                 <!-- team size (team.size) -->
                                 <div class="mb-3">2. How large is the team?</div>
-                                <percentage-input :min=1 :max=99 :step=1 number-only
-                                :value.sync="team.size"></percentage-input>
+                                <number-input :min=1 :max=99 :step=1
+                                :value.sync="team.size"></number-input>
                             </div>
 
                             <!-- team communications (team.comms) -->
@@ -717,7 +717,7 @@
                             <div class="col">
                                 <div class="item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
                                     <div>{{task.name}}</div>
-                                    <percentage-input margin :value.sync="team.failThresh[0][i]"></percentage-input>
+                                    <number-input :min=1 :max=10 :step=1 text-end="out of every 10" margin :value.sync="team.failThresh[0][i]"></number-input>
                                 </div>
                             </div>
                         </div>
@@ -738,11 +738,11 @@
                         <div :class="{options:team.AIDA.AIDAType[0]}">
                             <div class="form-group" v-show="team.AIDA.AIDAType[0]">
                                 <div class="">What percentage of the Service Time is affected by this AI?</div>
-                                <percentage-input margin v-bind:value.sync="team.AIDA.ETServiceTime"></percentage-input>
+                                <number-input text-end="%" margin v-bind:value.sync="team.AIDA.ETServiceTime"></number-input>
                                 <div class="">What percentage of the Error Rate is affected by this AI?</div>
-                                <percentage-input margin v-bind:value.sync="team.AIDA.ETErrorRate"></percentage-input>
+                                <number-input text-end="%" margin v-bind:value.sync="team.AIDA.ETErrorRate"></number-input>
                                 <div class="">What percentage of the Error Catching Chance is affected by this AI?</div>
-                                <percentage-input margin v-bind:value.sync="team.AIDA.ETFailThreshold"></percentage-input>
+                                <number-input text-end="%" margin v-bind:value.sync="team.AIDA.ETFailThreshold"></number-input>
                             </div>
                         </div>
 
@@ -837,8 +837,8 @@
                         <!-- number of fleets (fleetTypes) -->
                         <div class="form-group">
                             <div class="mb-3">{{ textStrings.qFleets }}</div>
-                            <percentage-input :min=1 :max=99 :step=1 number-only
-                                :value.sync="fleetSettings.fleetTypes" @change="updateFleets"></percentage-input>
+                            <number-input :min=1 :max=99 :step=1
+                                :value.sync="fleetSettings.fleetTypes" @change="updateFleets"></number-input>
                         </div>
                     </div>
 
@@ -866,8 +866,8 @@
                         <!-- number of vehicles (fleet.numVehicles) -->
                         <div class="form-group">
                             <div class="mb-3">2. {{ textStrings.qNumVeh }}</div>
-                            <percentage-input :min=1 :max=99 :step=1 number-only
-                                :value.sync="fleet.numVehicles"></percentage-input>
+                            <number-input :min=1 :max=99 :step=1
+                                :value.sync="fleet.numVehicles"></number-input>
                         </div>
 
                         <!-- fleet communications (fleet.comms) -->
@@ -1009,7 +1009,7 @@
                                         <td>{{fleetTasksForReview[index].join(", ")}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Traffice Levels</td>
+                                        <td>Traffic Levels</td>
                                         <td>
                                             <svg :id='"trafficLevel" + index' width="400" height="300"></svg>
                                         </td>
@@ -1269,15 +1269,15 @@
 
                     <!-- WaitTime Section -->
                     <div class="tab-pane fade show" id="results-wait-time" role="tabpanel" aria-labelledby="results-wait-time-tab">
-                        <h3 class='subtitle'>WaitTime per {{ textStrings.operator }}</h3>
+                        <h3 class='subtitle'>{{ textStrings.operator }} Wait Time</h3>
 
                         <div class="table-responsive">
                             <svg id="waitTimeSVG" width="960" height="450"></svg>
                         </div>
 
-                        <div class="form-group mt-5">Placeholder for explanation - The next sentence is from the old SHOW. We simulated {{numReps}} trips and plotted the mean value per interval of time. The model shows that 8.78% of the {{ textStrings.operator.toLowerCase() }}’s time can be attributed to signal response management. Signal response management involves maintaining attentiveness to direction from track signaling system and responsive to proper control system within a safely allotted time.</div>
+                        <div class="form-group mt-5">Placeholder for explanation -----------------.</div>
 
-                        <h3 class='subtitle'>By Tasks</h3>
+                        <h3 class='subtitle'>Breakdown of Time by By Tasks Per Team</h3>
                         <div id="barWaitTimePerTask" class="mt-5 mb-5">
                             <ul class="nav nav-tabs">
                             </ul>
@@ -1288,7 +1288,7 @@
 
                         <div class="form-group">{{ resultSettings.waitTimePerTask }}</div>
 
-                        <h3 class='subtitle'>By {{ textStrings.fleets }}</h3>
+                        <h3 class='subtitle'>Breakdown of Time by By {{ textStrings.fleets }} Per Team</h3>
                         <div id="barWaitTimePerFleet" class="mt-5 mb-5">
                             <ul class="nav nav-tabs">
                             </ul>
@@ -1331,8 +1331,8 @@
 
             <!--Number of replications selection-->
             <span class="ml-md-auto">
-                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}">     <label class="d-none d-sm-block"># Days:&nbsp;</label>
-                <percentage-input :min=1 :max=10000 :step=100 number-only :value.sync="numReps"></percentage-input>
+                <span v-tooltip.top="{ content: 'The more days we run the simulation, the more realistic your results.'}">     <label># Days:&nbsp;</label>
+                <number-input :min=1 :max=10000 :step=100 :value.sync="numReps"></number-input>
             </span></span>
             <!--Submit Button-->
             <button id="submitBtn" class="btn btn-success btn-sm ml-3 mr-sm-3" type="button" title="" @click="onSubmit(false)" :disabled="miscSettings.onSubmit">Run Simulation</button>
