@@ -126,8 +126,13 @@ var WaitTime = (function () {
                 record["index"] = i;
                 record["okey"] = opName;
                 record["counts"] = groupCount;
-                record["avg"] = d3.mean(groupCount);
-                record["std"] = d3.deviation(groupCount);
+				record["avg"] = d3.mean(groupCount);
+
+				if (groupCount.length === 1) {
+					record["std"] = 0; // undefined...
+				} else {
+					record["std"] = d3.deviation(groupCount);
+				}
                 var maxCan = d3.max(groupCount);
                 if (yMax < record["avg"] + record["std"])
                     yMax = record["avg"] + record["std"];
