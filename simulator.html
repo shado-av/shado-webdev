@@ -173,14 +173,17 @@
                     </li>
                 </ul>
             </div>
-            <div>
+            <div class="d-none">
                 <!-- Download Buttons -->
-                <div class="form-row justify-content-center d-none">
-                    <div id="container">
+                <div class="form-row justify-content-center">
+                    <div>
                         <a :href="'data:' + miscSettings.downloadJsonData" download="shadoParams.json" v-show="miscSettings.downloadJsonVisible">Download <br> Server Input</a>
                     </div>
-                    <br>
                 </div>
+				<div class="divider"></div>
+                <div class="form-row justify-content-center">
+					<a href="sim-test.html" target="_blank">Sim. With<br>Server Input</a>
+				</div>
             </div>
         </div>
 
