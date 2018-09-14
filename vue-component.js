@@ -87,7 +87,7 @@ Vue.component('distribution-params', {
             this.errors = [];
             //console.log("ValidateInput", this.params, this.dist);
             if (!this.checkNumbers(this.params, paramSize[this.dist])) {
-                this.errors.push("Distribution parameters should be greater than 0.");
+                this.errors.push("Distribution parameters should be greater than 0. ");
             }
             switch(this.dist) {
                 case 'U':
