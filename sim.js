@@ -1588,8 +1588,6 @@ var sim = new Vue({
                     if (this.textStrings.mainMenu.length <= 5)
                         this.textStrings.mainMenu.push("View Results");
                 });
-
-                FailedTaskAnalysis.refreshPie();
             })
             .catch((err) => {
                 console.log(err.response);
@@ -1644,7 +1642,13 @@ var sim = new Vue({
         },
 
         printResults() {
-            window.print();
+			// make sure pie chart display correctly...
+			$("#results-failed-task-tab").click();
+			setTimeout(function() {
+				FailedTaskAnalysis.refreshPie();
+				$("#results-download-tab").click();
+				setTimeout(function() { window.print(); }, 500);
+			}, 500);
         }
     },
 
@@ -1784,6 +1788,11 @@ var sim = new Vue({
 
                 if ($(target + ' input[type=text]').length > 0)
                     $(target + ' input[type=text]')[0].focus();
+            });
+
+			// when failed analysis tab is selected and shown, refresh pie charts
+			$("#results-failed-task-tab").on('shown.bs.tab', function (e) {
+				FailedTaskAnalysis.refreshPie();
             });
 
             // replace javascript alert with bootstrap modal
