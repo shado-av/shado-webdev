@@ -33,13 +33,13 @@ var WaitTime = (function () {
             var numOps = json.operatorName.length;
 
             // adjust width with the number of operator teams and total operators
-            if (groupLength.length > 10 || numOps > 20) {
-                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth * 2;
-                width = totalWidth - margin.left - margin.right;
-            } else {
-                totalWidth = 960;
-                width = totalWidth - margin.left - margin.right;
-            }
+//            if (groupLength.length > 10 || numOps > 20) {
+//                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth * 2;
+//                width = totalWidth - margin.left - margin.right;
+//            } else {
+//                totalWidth = 960;
+//                width = totalWidth - margin.left - margin.right;
+//            }
 
             // operator loop
             for (var i = 0; i < numOps; i++) {
@@ -364,10 +364,14 @@ var WaitTime = (function () {
 
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
-            axisBG.append("g")
-                .call(axisBottom.tickValues(xTickVal).tickFormat(function(d, i) {
-                    return xTickStr[i];
-                }));
+			if (groupLength.length > 7) {
+				axisBG.append("g").call(axisBottom.tickValues([]));
+			} else {
+            	axisBG.append("g")
+                	.call(axisBottom.tickValues(xTickVal).tickFormat(function(d, i) {
+                    	return xTickStr[i];
+                	}));
+			}
 
             // text label for the x axis
             svg.append("text")

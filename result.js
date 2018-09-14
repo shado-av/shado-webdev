@@ -91,13 +91,13 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         //console.log("ResultSettings", sim.resultSettings);
 
         // adjust width with the number of operator teams and total operators
-        if (barCounts > 10) {
-            totalWidth = 960 + barCounts * barWidth * 2;
-            width = totalWidth - margin.left - margin.right;
-        } else {
-            totalWidth = 960;
-            width = totalWidth - margin.left - margin.right;
-        }
+//        if (barCounts > 10) {
+//            totalWidth = 960 + barCounts * barWidth * 2;
+//            width = totalWidth - margin.left - margin.right;
+//        } else {
+//            totalWidth = 960;
+//            width = totalWidth - margin.left - margin.right;
+//        }
 
         //console.log(barCounts, barWidth, totalWidth, width, avgTime);
         svg = d3.select(svgId);
@@ -154,7 +154,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
         g.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x)); // .tickValues(x.domain().filter(function(d,i){ return showXTick; })));
+            .call(d3.axisBottom(x).tickValues([]));
 
         g.append("g")
             .attr("class", "axis")
@@ -400,13 +400,13 @@ var BoxPlot = (function () {
             var numOps = json.operatorName.length;
 
             // adjust width with the number of operator teams and total operators
-            if (groupLength.length > 10 || numOps > 20) {
-                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth * 2;
-                width = totalWidth - margin.left - margin.right;
-            } else {
-                totalWidth = 960;
-                width = totalWidth - margin.left - margin.right;
-            }
+//            if (groupLength.length > 10 || numOps > 20) {
+//                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth * 2;
+//                width = totalWidth - margin.left - margin.right;
+//            } else {
+//                totalWidth = 960;
+//                width = totalWidth - margin.left - margin.right;
+//            }
 
             for (var i = 0, j=0; i < numOps; i++) {
                 var key = json.operatorName[i];
@@ -794,10 +794,14 @@ var BoxPlot = (function () {
                 }));
             // Setup a series axis on the bottom
             var axisBottom = d3.axisBottom(xScale);
-            axisBG.append("g")
-                .call(axisBottom.tickValues(xTickVal).tickFormat(function(d, i) {
-                    return xTickStr[i];
-                }));
+			if (groupLength.length > 7) {
+				axisBG.append("g").call(axisBottom.tickValues([]));
+			} else {
+            	axisBG.append("g")
+                	.call(axisBottom.tickValues(xTickVal).tickFormat(function(d, i) {
+                    	return xTickStr[i];
+                	}));
+			}
 
             // text label for the x axis
             svg.append("text")
