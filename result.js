@@ -386,6 +386,8 @@ var BoxPlot = (function () {
             var lowUtilTeams = [];
             var highUtilTeams = [];
             var numMinutes = json.timeUtilization[0][0].length; // how many 10 minutes
+			var numFactors = 6;	// 60 minutes = 1 hour
+			var numHours = Math.ceil(numMinutes / numFactors); // how many hours
 
             // parse json file into groupCounts
             var groupCounts = {};
@@ -408,19 +410,30 @@ var BoxPlot = (function () {
 //                width = totalWidth - margin.left - margin.right;
 //            }
 
-            for (var i = 0, j=0; i < numOps; i++) {
+			// Convert 10 mins interval into 1 hours
+			// calculate high/low workload teams...
+			var temp = [];
+            for (var i = 0, j=0; i < numOps; i++) {	// for each operators
                 var key = json.operatorName[i];
                 groupCounts[key + "_" + i] = [];
                 lowUtilMinutes[i] = [];
                 highUtilMinutes[i] = [];
 
-                for(var j=0; j < json.timeUtilization[i].length; j++) {
-                    groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(json.timeUtilization[i][j]);
+                for(var j=0; j < json.timeUtilization[i].length; j++) { // for each replications
+					for( var k=0; k<numHours; k++) {
+						temp[k] = 0;
+					}
+
+					for( var k=0; k<numMinutes; k++) {
+						temp[k/numFactors] += json.timeUtilization[i][j][k];
+					}
+
+                    groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(temp);
                     lowUtilMinutes[i][j] = 0;
                     highUtilMinutes[i][j] = 0;
-                    for( var k=0; k<numMinutes; k++) {
-                        if (json.timeUtilization[i][j][k] > 0.7) highUtilMinutes[i][j]+=10;
-                        if (json.timeUtilization[i][j][k] < 0.3) lowUtilMinutes[i][j]+=10;
+                    for( var k=0; k<numHours; k++) {
+                        if (json.timeUtilization[i][j][k] > 0.7) highUtilMinutes[i][j]+=numFactors * 10;
+                        if (json.timeUtilization[i][j][k] < 0.3) lowUtilMinutes[i][j]+=numFactors * 10;
                     }
                 }
             }
@@ -432,11 +445,11 @@ var BoxPlot = (function () {
                     lowUtilMinutes[j].concat(lowUtilMinutes[k]);
                 }
                 avg = d3.mean(highUtilMinutes[j]);
-                if (avg >= numMinutes / 2) {
+                if (avg >= numHours / 2) {
                     highUtilTeams.push(i);
                 }
                 avg = d3.mean(lowUtilMinutes[j]);
-                if (avg >= numMinutes / 2) {
+                if (avg >= numHours / 2) {
                     lowUtilTeams.push(i);
                 }
                 j += groupLength[i];
