@@ -882,7 +882,7 @@ var sim = new Vue({
             var tasks = [];
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
                 var k = this.fleetSettings.fleets[i].tasks.length;
-				console.log("FleetTasksForRewvie tasks length", i, k, this.taskSettings.tasks);
+				//console.log("FleetTasksForReview tasks length", i, k, this.taskSettings.tasks);
                 if (k) {
                     tasks.push([]);
                     for (j = 0; j < k; j++) {
@@ -969,6 +969,18 @@ var sim = new Vue({
 
             return task;
         },
+
+		// add new task and select the newly created tab
+		addTask() {
+			this.addCustomTask();
+
+			// select the newly created task
+            this.$nextTick(() => {
+				console.log(document.querySelectorAll('#tasks-settings .nav-item'));
+
+				document.querySelectorAll('#tasks-settings .nav-item')[this.numTaskTypes[0]].querySelector('a').click();
+            });
+		},
 
         addCustomTask() {
             var x = this.taskSettings.numNameTask++;
@@ -1082,6 +1094,17 @@ var sim = new Vue({
             task.humanErrorProb[0] = this.miscSettings.humanErrorProb[task.humanErrorSelect].value;
         },
 
+		// add new operator team and select the newly created tab
+		addOperatorTeam() {
+			this.operatorSettings.numTeams++;
+			this.updateOperatorTeams();
+
+			// select the newly created task
+            this.$nextTick(() => {
+				document.querySelectorAll('#operators-settings .nav-item')[this.operatorSettings.numTeams].querySelector('a').click();
+            });
+		},
+
         updateOperatorTeams() {
             var teams = this.operatorSettings.teams;
             if (this.operatorSettings.numTeams > teams.length) {
@@ -1169,6 +1192,17 @@ var sim = new Vue({
             }
             return false;
         },
+
+		// add new fleet and select the newly created tab
+		addFleet() {
+			this.fleetSettings.fleetTypes++;
+			this.updateFleets();
+
+			// select the newly created task
+            this.$nextTick(() => {
+				document.querySelectorAll('#fleets-settings .nav-item')[this.fleetSettings.fleetTypes].querySelector('a').click();
+            });
+		},
 
         updateFleets() {
             var fleets = this.fleetSettings.fleets;

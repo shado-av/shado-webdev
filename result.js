@@ -324,7 +324,7 @@ var BarChartWithError = (function (index, isFleet, timeText) {
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                console.log(d, i);
+                //console.log(d, i);
                 var k = Math.floor(i/4);
                 div.html("<table><tr><td>" + xAxisText + ":</td><td>" + keys[i] + "</td></tr><tr><td>"
                          + timeText + " Average:</td><td>" + d.avg.toFixed(2) + "</td></tr><tr><td>Std. Dev.</td><td>" + d.std.toFixed(2) + "</td></tr></table>")
