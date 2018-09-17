@@ -358,6 +358,10 @@ var sim = new Vue({
          * TASK SETTINGS COMPUTED VALUES
          * ------------------------------ */
 
+		noTasksIncluded() {
+			return this.numTaskTypes[0]<1;
+		},
+
         // true if 15 tasks
         maxTasksReached() {
             return this.numTaskTypes[0] >= 15;
@@ -656,7 +660,12 @@ var sim = new Vue({
         opPriority() {
             var prty = [];
             for (var i = 0; i < this.operatorSettings.teams.length; i++) {
-                prty.push(this.operatorSettings.teams[i].priority[0]);
+				prty.push([]);
+				for (var j=0; j < this.taskSettings.tasks.length; j++) {
+					if (this.taskSettings.tasks[j].include)
+                		prty[i].push(this.operatorSettings.teams[i].priority[0][j]);
+				}
+				console.log("OP Prioirty:", this.operatorSettings.teams[i].priority[0]);
             }
             return prty;
         },
@@ -769,14 +778,16 @@ var sim = new Vue({
             var tasks = [];
             for (var i = 0; i < this.operatorSettings.teams.length; i++) {
                 tasks.push([]);
-                if (this.operatorSettings.teams[i].AIDA.IATasks) {
-                    for(var j=0; j < this.operatorSettings.teams[i].AIDA.IATasks.length; j++) {
-                        var k = this.operatorSettings.teams[i].AIDA.IATasks[j];
-                        // only tasks included in op teams...
-                        if (this.operatorSettings.teams[i].tasks.includes(k)) {
-                            tasks[i].push(k);
-                        }
-                    }
+				var iaTasks = this.operatorSettings.teams[i].AIDA.IATasks;
+                if (iaTasks) {
+					// [0, 1, 2] only task includes [0, 2], then [0, 2] => [0, 1]
+					for (var k=0, l=0; k<this.taskSettings.tasks.length;k++) {
+						if (this.taskSettings.tasks[k].include) {
+							if (iaTasks.includes(k) && this.checkIfTaskSelected(this.operatorSettings.teams[i],k))
+								tasks[i].push(l);
+							l++;
+						}
+					}
                 }
             }
             return tasks;
@@ -850,12 +861,19 @@ var sim = new Vue({
         // array containing fleet tasks arrays
         fleetHetero() {
             var tasks = [];
-            for (i = 0; i < this.fleetSettings.fleets.length; i++) {
-                if (this.fleetSettings.fleets[i].tasks) {
-                    tasks.push(this.fleetSettings.fleets[i].tasks);
-                } else {
-                    tasks.push([]);
-                }
+            for (var i = 0; i < this.fleetSettings.fleets.length; i++) {
+				tasks.push([]);
+				var ftasks = this.fleetSettings.fleets[i].tasks;
+				if (ftasks) {
+					// [0, 1, 2] only task includes [0, 2], then [0, 2] => [0, 1]
+					for (var k=0, l=0; k<this.taskSettings.tasks.length;k++) {
+						if (this.taskSettings.tasks[k].include) {
+							if (ftasks.includes(k))
+								tasks[i].push(l);
+							l++;
+						}
+					}
+				}
             }
             return tasks;
         },
@@ -864,6 +882,7 @@ var sim = new Vue({
             var tasks = [];
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
                 var k = this.fleetSettings.fleets[i].tasks.length;
+				console.log("FleetTasksForRewvie tasks length", i, k, this.taskSettings.tasks);
                 if (k) {
                     tasks.push([]);
                     for (j = 0; j < k; j++) {
@@ -953,7 +972,7 @@ var sim = new Vue({
 
         addCustomTask() {
             var x = this.taskSettings.numNameTask++;
-            sim.newTask("Custom Task " + x, -1);
+            sim.newTask("Task " + x, -1);
         },
 
         newTask(name, leadTask) {
@@ -1001,20 +1020,45 @@ var sim = new Vue({
         removeTask(task) {
             // remove from taskSettings.tasks
             var taskIndex = this.taskSettings.tasks.indexOf(task);
-            this.taskSettings.tasks.splice(taskIndex, 1);
+			this.taskSettings.tasks.splice(taskIndex, 1);
 
-            //console.log(taskIndex, this.operatorSettings.teams[0].failThresh[0]);
-            // remove priority for each operatorSettings.teams
+			// remove tasks for each fleet
+			// tasks [0, 1, 2], remove task 1 => [0, 2] => [0, 1]
+			for (i = 0; i< this.fleetSettings.fleets.length; i++) {
+				var fleet = this.fleetSettings.fleets[i];
+				for (k = 0; k< fleet.tasks.length; k++) {
+					if (fleet.tasks[k] === taskIndex) fleet.tasks.splice(k, 1);
+					if (fleet.tasks[k] > taskIndex) fleet.tasks[k]--;
+				}
+				// console.log(fleet.tasks);
+			}
+
+            // remove priority, failthresh, expertise, AIDA IA tasks for each operatorSettings.teams
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                console.log(taskIndex, this.operatorSettings.teams[i].failThresh[0]);
+                //console.log(taskIndex, this.operatorSettings.teams[i].failThresh[0]);
                 this.operatorSettings.teams[i].priority[0].splice(taskIndex, 1);
                 this.operatorSettings.teams[i].failThresh[0].splice(taskIndex, 1);
-                console.log(taskIndex, i, this.operatorSettings.teams[i].failThresh[0]);
+                //console.log(taskIndex, i, this.operatorSettings.teams[i].failThresh[0]);
+				this.operatorSettings.teams[i].expertise.splice(taskIndex, 1);
+
+				// AIDA IA Tasks remove the current task
+				var teamAI = this.operatorSettings.teams[i].AIDA;
+				for (k = 0; k< teamAI.IATasks.length; k++) {
+					if (teamAI.IATasks[k] === taskIndex) teamAI.IATasks.splice(k, 1);
+					if (teamAI.IATasks[k] > taskIndex) teamAI.IATasks[k]--;
+				}
             }
-        },
+		},
 
         removeCustomTask(task) {
-            if (confirm("Are you sure you want to delete this custom task?")) {
+            if (confirm("Are you sure you want to delete this task?")) {
+
+				// remove following tasks
+				var taskIndex = this.taskSettings.tasks.indexOf(task);
+				for (var i = 0; i< this.taskSettings.tasks.length; i++) {
+					while (i<this.taskSettings.tasks.length && this.taskSettings.tasks[i].leadTask === taskIndex)
+						this.removeTask(this.taskSettings.tasks[i]);
+				}
 
                 this.removeTask(task);
 
@@ -1405,6 +1449,11 @@ var sim = new Vue({
                 count[1]++;
             }
 
+			//Check included tasks > 0
+			if  (this.noTasksIncluded) {
+				this.addReviewError("Please include at least one task!",  "tasks-global-settings-tab", 2)
+			}
+
             // check task params
             for(var i=0;i<this.taskSettings.tasks.length;i++) {
                 var task = this.taskSettings.tasks[i];
@@ -1501,7 +1550,7 @@ var sim = new Vue({
                 "flexTeamSize": sim.flexTeamSize,
                 "opNames": sim.opNames,
                 "opStrats": sim.teamStrategy,
-                "opTasks": sim.opTasks,
+                //"opTasks": sim.opTasks,
                 "opExpertise": sim.opExpertise,
                 "taskPrty": sim.opPriority,
                 "teamComm": sim.teamComm,
