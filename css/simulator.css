@@ -742,3 +742,6 @@ footer .number-input button:after {
   opacity: 1;
   transition: opacity .15s;
 }
+
+a.nav-link span { display: none; }
+a.nav-link:hover span { display: inline-block; }

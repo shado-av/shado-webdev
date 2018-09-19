@@ -339,6 +339,13 @@
                         <a class="nav-link" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'" role="tab"
                             :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
+<!--							<span  @click="removeCustomTask(task)"><i class="fas fa-minus-square" style="color:red"></i></span>-->
+                        </a>
+                    </li>
+                    <!-- add task -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="tasks-add-tab" href="#" @click="addTask" role="tab" aria-controls="tasks-add">
+                            <i class="fas fa-plus-square"></i> Add
                         </a>
                     </li>
                 </ul>
@@ -365,14 +372,14 @@
                             <input class="custom-control-input" type="checkbox" :id="'task-type-' + index" v-model="task.include" :disabled="disableAddTask(task)">
                             <label class="custom-control-label h6" :for="'task-type-' + index">{{ task.name }}</label>
                             <button type="button" class="delete btn badge badge-danger" @click="removeCustomTask(task)" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <i class="fas fa-times"></i>
                             </button>
 <!--                            <p class="pr-4">Details about the task and an overview of its default parameters will go here.</p>-->
                         </div>
 
                         <!-- ADD A CUSTOM TASK -->
                         <button type="button" class="btn btn-secondary btn-sm" @click="addCustomTask" :disabled="maxTasksReached">
-                            <i class="fas fa-plus fa-xs"></i> Add Task</button>
+							<i class="fas fa-plus fa-xs"></i> Add Task</button>
                     </div>
 
                     <!-- INDIVIDUAL TASK SETTINGS -->
@@ -381,7 +388,7 @@
 
                         <!-- DELETE TASK -->
                         <button type="button" class="delete btn badge badge-danger"  @click="removeCustomTask(task)" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <i class="fas fa-times"></i>
                         </button>
 
                         <!-- NAME -->
@@ -565,6 +572,13 @@
                             {{ team.name }}
                         </a>
                     </li>
+
+					<!-- add operator -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="operators-add-tab" href="#" @click="addOperatorTeam" role="tab" aria-controls="operators-add">
+                            <i class="fas fa-plus-square"></i> Add
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- OPERATOR TAB CONTENT -->
@@ -617,7 +631,7 @@
                         <!-- DELETE TEAM -->
                         <button type="button" class="delete btn badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                           <i class="fas fa-times"></i>
                         </button>
                         <h3 class="mb-4">{{ team.name }}</h3>
 
@@ -832,6 +846,12 @@
                             {{ fleet.name }}
                         </a>
                     </li>
+					<!-- add fleet -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="fleets-add-tab" href="#" @click="addFleet" role="tab" aria-controls="fleets-add">
+                            <i class="fas fa-plus-square"></i> Add
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- FLEETS TAB CONTENT -->
@@ -854,9 +874,9 @@
                         :aria-labelledby="'fleet-' + index + '-settings-tab'">
 
                         <!-- DELETE FLEET -->
-                        <button type="button" class="delete btn badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
+                        <button type="button" class="delete btn badge badge-danger" v-show="fleetSettings.fleetTypes > 1" @click="removeFleet(fleet)"
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <i class="fas fa-times"></i>
                         </button>
                         <h3 class="mb-4">{{ fleet.name }}</h3>
 

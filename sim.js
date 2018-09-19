@@ -1074,7 +1074,10 @@ var sim = new Vue({
 
                 this.removeTask(task);
 
-                $("#tasks-global-settings-tab").click();
+ 				this.$nextTick(() => {
+					if (document.querySelector("#tasks-settings .nav-link.active") === null) // no tab is selected
+						document.querySelector("#tasks-global-settings-tab").click();
+				});
             }
         },
 
@@ -1151,7 +1154,7 @@ var sim = new Vue({
                 this.operatorSettings.teams.splice(this.operatorSettings.teams.indexOf(team), 1);
             }
             this.operatorSettings.numTeams = this.operatorSettings.teams.length;
-            $("#operators-global-settings-tab").click();
+            document.querySelector("#operators-global-settings-tab").click();
         },
 
         // update whole matrix to true
@@ -1230,7 +1233,7 @@ var sim = new Vue({
                 this.fleetSettings.fleets.splice(this.fleetSettings.fleets.indexOf(fleet), 1);
             }
             this.fleetSettings.fleetTypes = this.fleetSettings.fleets.length;
-            $("#fleets-global-settings-tab").click();
+            document.querySelector("#fleets-global-settings-tab").click();
         },
 
         loadStrings(str) {
@@ -1726,10 +1729,10 @@ var sim = new Vue({
 
         printResults() {
 			// make sure pie chart display correctly...
-			$("#results-failed-task-tab").click();
+			document.querySelector("#results-failed-task-tab").click();
 			setTimeout(function() {
 				FailedTaskAnalysis.refreshPie();
-				$("#results-download-tab").click();
+				document.querySelector("#results-download-tab").click();
 				setTimeout(function() { window.print(); }, 500);
 			}, 500);
         }
