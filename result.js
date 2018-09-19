@@ -401,6 +401,19 @@ var BoxPlot = (function () {
             // number of operators
             var numOps = json.operatorName.length;
 
+			// Delete Equal Operators
+ 			for (var i = 0, j = 0; i < groupLength.length; i++) {
+
+				var key = json.operatorName[j + groupLength[i] - 1];
+				if (key == "Equal Operator") {
+					json.operatorName.splice(j+groupLength[i]-1, 1);	// delete equal operator team name
+					json.timeUtilization.splice(j+groupLength[i]-1, 1); // delete waitTime...
+					groupLength[i]--;												   // decrease the length
+					numOps--;
+				}
+
+				j += groupLength[i];
+			}
             // adjust width with the number of operator teams and total operators
 //            if (groupLength.length > 10 || numOps > 20) {
 //                totalWidth = 960 + (numOps - 10 + groupLength.length) * barWidth * 2;
