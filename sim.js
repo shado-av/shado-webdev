@@ -3,10 +3,11 @@ const EventBus = new Vue();
 var sim = new Vue({
     el: '#shado-sim',
     data: {
+		// 0.9.4 add Other Sources
         // 0.9.3 add flex position, change traffic per fleet
         // 0.9.2 remove phase and add turnOver settings
         // 0.9.1 add opExpertise settings
-        version: "0.9.3", // data version for checking valid data when loading JSON file
+        version: "0.9.4", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
@@ -201,8 +202,16 @@ var sim = new Vue({
                     tasks: [1, 2],
                     diffTrafficLevels: "n",
                     trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
-                }
-            ]
+                },
+            ],
+			otherSources: {
+				name: "Other Sources",
+				numVehicles: 1,
+				comms: "N",
+				tasks: [],
+				diffTrafficLevels: "n",
+				trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
+			}
         },
 
         /* --------------------------------------------------------------------------------------------------------
@@ -942,6 +951,18 @@ var sim = new Vue({
                     lvls.splice(this.globalSettings.numHours);
                 }
             }
+
+			// update other sources traffic level
+			var lvls = this.fleetSettings.otherSources.trafficLevels;
+			var l = lvls.length;
+			if (this.globalSettings.numHours > l) {
+				while (l < this.globalSettings.numHours) {
+					lvls.push("m");
+					l++;
+				}
+			} else {
+				lvls.splice(this.globalSettings.numHours);
+			}
         },
 
         disableAddTask(task) {

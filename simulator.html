@@ -850,6 +850,11 @@
                             {{ fleet.name }}
                         </a>
                     </li>
+					<li class="nav-item">
+                        <a class="nav-link" id="fleets-other-sources-settings-tab" data-toggle="tab" href="#fleets-other-sources-settings" role="tab" aria-controls="fleets-other-sources-settings">
+							Other Sources
+                        </a>
+					</li>
 					<!-- add fleet -->
                     <li class="nav-item">
                         <a class="nav-link" id="fleets-add-tab" href="#" @click="addFleet" role="tab" aria-controls="fleets-add">
@@ -966,6 +971,65 @@
                                         </div>
                                     </div>
                                     <select class="custom-select" v-model="fleet.trafficLevels[ind]">
+                                        <option value="l">Low</option>
+                                        <option value="m">Medium</option>
+                                        <option value="h">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OTHER SOURCES -->
+                    <div class="tab-pane fade" id="fleets-other-sources-settings" role="tabpanel" aria-labelledby="fleets-other-sources-settings-tab">
+
+                        <h3 class="mb-4">{{ fleetSettings.otherSources.name }}</h3>
+
+                        <!-- FLEET TASKS -->
+
+                        <!-- fleet task checklist (fleet.tasks) -->
+                        <div class="form-group">
+                            <label class="mb-3">1. Which tasks are associated with other sources?</label>
+                            <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
+                                <input class="custom-control-input" type="checkbox" :id="'fleet-other-sources-task-' + i" :value="i" v-model="fleetSettings.otherSources.tasks">
+                                <label class="custom-control-label" :for="'fleet-other-sources-task-' + i">{{ task.name }}</label>
+                            </div>
+                        </div>
+
+                        <!-- TRAFFIC -->
+                        <!-- <h5 class="mb-3">Traffic</h5>-->
+                        <!-- different traffic levels (diffTrafficLevels) -->
+                        <div class="form-group">
+                            <label class="col-form-label">2. Are there different traffic levels for during this shift for other sources?</label>
+                            <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio"
+                                           name="fleet-os-diff-traff-levels"
+                                           id="fleet-os-diff-traff-levels-y"
+                                           value="y" v-model="fleetSettings.otherSources.diffTrafficLevels" >
+                                    <label class="custom-control-label" for="fleet-os-diff-traff-levels-y">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio"
+                                           name="fleet-os-diff-traff-levels"
+                                           id="fleet-os-diff-traff-levels-n"
+                                           value="n" v-model="fleetSettings.otherSources.diffTrafficLevels" >
+                                    <label class="custom-control-label" for="fleet-os-diff-traff-levels-n">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- adjust traffic levels per hour  (traffic) -->
+                        <div class="form-group" v-show="fleetSettings.otherSources.diffTrafficLevels === 'y'">
+                            <label>Adjust traffic levels per hour:</label>
+                            <div class="traffic-levels">
+                                <div class="input-group traffic-level" v-for="(traffLvl, ind) in fleetSettings.otherSources.trafficLevels">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            {{ ind + 1 }}
+                                        </div>
+                                    </div>
+                                    <select class="custom-select" v-model="fleetSettings.otherSources.trafficLevels[ind]">
                                         <option value="l">Low</option>
                                         <option value="m">Medium</option>
                                         <option value="h">High</option>
