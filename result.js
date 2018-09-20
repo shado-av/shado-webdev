@@ -437,8 +437,14 @@ var BoxPlot = (function () {
 						temp[k] = 0;
 					}
 
+					// Add utilization per  1 hour
 					for( var k=0; k<numMinutes; k++) {
-						temp[k/numFactors] += json.timeUtilization[i][j][k];
+						temp[Math.floor(k/numFactors)] += json.timeUtilization[i][j][k];
+					}
+
+					// Average it to caculate the hour utilization
+					for( var k=0; k<numHours; k++) {
+						temp[k] /= numFactors;
 					}
 
                     groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(temp);
