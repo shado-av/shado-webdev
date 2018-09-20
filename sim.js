@@ -674,9 +674,12 @@ var sim = new Vue({
         teamComm() {
             var comms = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                if (this.operatorSettings.teams[i].comms) {
+				if (this.operatorSettings.teams[i].size < 2)
+					comms.push('N');
+				else if (this.operatorSettings.teams[i].comms) {
                     comms.push(this.operatorSettings.teams[i].comms);
-                }
+                } else
+					comms.push('N');
             }
             return comms;
         },
@@ -849,10 +852,12 @@ var sim = new Vue({
         fleetAutoLevel() {
             var al = [];
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
-                if (this.fleetSettings.fleets[i].comms) {
+				if (this.fleetSettings.fleets[i].numVehicles < 2)
+					al.push('N');
+				else if (this.fleetSettings.fleets[i].comms) {
                     al.push(this.fleetSettings.fleets[i].comms);
                 } else {
-                    al.push([]);
+                    al.push(['N']);
                 }
             }
             return al;
