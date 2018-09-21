@@ -1363,16 +1363,19 @@ var sim = new Vue({
             document.querySelector("#fleets-global-settings-tab").click();
         },
 
-        loadStrings(str) {
+        loadStrings(str, texts) {
             // always use the latest textStrings...
-            this.textStrings = textStrings.General; // redundant???!
+            this.textStrings = texts["General"]; // redundant???!
+			console.log("texts", texts[str], texts.General, str);
 
-            // Base is General and override with each settings
+			// Base is General and override with each settings
             if (str !== "General") {
-                for(x in textStrings[str]) {
-                    this.textStrings[x] = textStrings[str][x];
+                for(x in texts[str]) {
+                    this.textStrings[x] = texts[str][x];
                 }
             }
+
+			console.log(this.textStrings);
         },
 
         setSimType(str) {
@@ -1382,7 +1385,7 @@ var sim = new Vue({
             axios.get('data/' + str + '.json')
               .then((response) => {
                 // handle success
-                //this.console.log(response);
+                console.log(response.data, str);
                 var data = response.data; // if same version!!!
                 if (this.version === data.version) {
                     this.numReps = data.numReps;
@@ -1390,7 +1393,6 @@ var sim = new Vue({
                     this.taskSettings = data.taskSettings;
                     this.operatorSettings = data.operatorSettings;
                     this.fleetSettings = data.fleetSettings;
-                    this.loadStrings(str);
                 } else {
                     console.log("Data version is different.")
                 }
@@ -1399,20 +1401,13 @@ var sim = new Vue({
                 // handle error
                 console.log(error);
               })
-
-            // always use the latest textStrings...
-            this.textStrings = textStrings.General; // redundant???!
-
-            // Base is General and override with each settings
-            if (str !== "General") {
-                for(x in textStrings[str]) {
-                    this.textStrings[x] = textStrings[str][x];
-                }
-            }
-
-            this.$nextTick(() => {
-                $("#sim-type").modal('hide');
-            });
+			  .then(() => {
+	            this.$nextTick(() => {
+					console.log(textStrings);
+					this.loadStrings(str, textStrings);
+					$("#sim-type").modal('hide');
+				});
+			  });
         },
 
         // return exact number of params depending on distribution
@@ -1471,7 +1466,7 @@ var sim = new Vue({
                                 sim.taskSettings = data.taskSettings;
                                 sim.operatorSettings = data.operatorSettings;
                                 sim.fleetSettings = data.fleetSettings;
-                                sim.loadStrings(sim.globalSettings.simType);
+                                sim.loadStrings(sim.globalSettings.simType, textStrings);
 
                                 alert(files[0].name + " is loaded successfully!");
                             } else if (data.version) {
@@ -1507,7 +1502,7 @@ var sim = new Vue({
                     this.operatorSettings = data.operatorSettings;
                     this.fleetSettings = data.fleetSettings;
                     console.log(this.globalSettings.simType);
-                    this.loadStrings(this.globalSettings.simType);
+                    this.loadStrings(this.globalSettings.simType, textStrings);
                     setTimeout(function() {NProgress.done(); sim.miscSettings.isLoading = false; }, 1000);
                 } else {
                     //alert("No previous setting is found.");
@@ -1923,7 +1918,8 @@ var sim = new Vue({
           return Promise.reject(error);
         });
 
-        this.loadData();
+		//Bug - this call overrides global textStrings...-_-
+        //this.loadData();
 
         Vue.nextTick(function () {
             // In Firefox, mousewheel should not change the value of the input number
