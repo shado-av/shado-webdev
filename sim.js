@@ -3,11 +3,12 @@ const EventBus = new Vue();
 var sim = new Vue({
     el: '#shado-sim',
     data: {
+		// 0.9.5 add expertiseOS for other sources per each operator
 		// 0.9.4 add Other Sources
         // 0.9.3 add flex position, change traffic per fleet
         // 0.9.2 remove phase and add turnOver settings
         // 0.9.1 add opExpertise settings
-        version: "0.9.4", // data version for checking valid data when loading JSON file
+        version: "0.9.5", // data version for checking valid data when loading JSON file
         numReps: 100, // number of replications (1 - 1000)
 
         /* ------------------------------
@@ -138,6 +139,7 @@ var sim = new Vue({
                         comms: "N",
                         tasks: [0, 1],
                         expertise: [[1,1],[1,1],[0,1]],
+					    expertiseOS: [0, 0, 0],
                         priority: [
                             [1, 4, 6],
                         ],
@@ -161,6 +163,7 @@ var sim = new Vue({
                         comms: "N",
                         tasks: [1, 2],
                         expertise: [[0,1],[1,1],[1,1]],
+					    expertiseOS: [0, 0, 0],
                         priority: [
                             [1, 1, 1],
                         ],
@@ -205,9 +208,9 @@ var sim = new Vue({
                 },
             ],
 			otherSources: {
-				name: "Other Sources",
-				numVehicles: 1,
-				comms: "N",
+				name: "Other Sources",	// not needed
+				numVehicles: 1,				// not needed
+				comms: "N",					// not needed
 				tasks: [],
 				diffTrafficLevels: "n",
 				trafficLevels: ["m", "m", "m", "m", "m", "m", "m", "m"], // traffic levels l (low), m (medium), h (high)
@@ -646,6 +649,15 @@ var sim = new Vue({
                             } else
                                 exps.push(0);
                         }
+
+						// Other Sources... always or not
+						if (this.checkOtherSources) {
+							if (opteam.expertiseOS[j] &&  this.checkOpExpertiseOS(j))
+								exps.push(1);
+							else
+								exps.push(0);
+						}
+
                         expertise[i].push(exps);
                     }
                 }
@@ -795,7 +807,7 @@ var sim = new Vue({
 					// [0, 1, 2] only task includes [0, 2], then [0, 2] => [0, 1]
 					for (var k=0, l=0; k<this.taskSettings.tasks.length;k++) {
 						if (this.taskSettings.tasks[k].include) {
-							if (iaTasks.includes(k) && this.checkIfTaskSelected(this.operatorSettings.teams[i],k))
+							if (iaTasks.includes(k) && this.checkIfTaskSelected(this.operatorSettings.teams[i],k, true))
 								tasks[i].push(l);
 							l++;
 						}
@@ -832,6 +844,16 @@ var sim = new Vue({
         /* ------------------------------
          * FLEET SETTINGS COMPUTED VALUES
          * ------------------------------ */
+
+		// number of total fleet types
+		numTotalFleetTypes() {
+			var x = this.fleetSettings.fleetTypes;
+			if (this.checkOtherSources) {
+				x++;
+			}
+			return x;
+		},
+
         // array with fleet names
         fleetNames() {
             var fleetNames = [];
@@ -839,8 +861,10 @@ var sim = new Vue({
                 if (this.fleetSettings.fleets[i].name) {
                     fleetNames.push(this.fleetSettings.fleets[i].name);
                 } else
-                    fleetNames.push("Fleet no name");
+                    fleetNames.push("Fleet no name " + i);
             }
+			if (this.checkOtherSources)
+				fleetNames.push(this.textStrings.otherSources);
             return fleetNames;
         },
 
@@ -851,9 +875,12 @@ var sim = new Vue({
                 if (this.fleetSettings.fleets[i].numVehicles) {
                     vehicles.push(this.fleetSettings.fleets[i].numVehicles);
                 } else {
-                    vehicles.push(0);
+                    vehicles.push(1);
                 }
             }
+			if (this.checkOtherSources)
+				vehicles.push(1);
+
             return vehicles;
         },
 
@@ -866,56 +893,112 @@ var sim = new Vue({
 				else if (this.fleetSettings.fleets[i].comms) {
                     al.push(this.fleetSettings.fleets[i].comms);
                 } else {
-                    al.push(['N']);
+                    al.push('N');
                 }
             }
+			if (this.checkOtherSources)
+				al.push('N');
+
             return al;
         },
 
         // array containing fleet tasks arrays
         fleetHetero() {
             var tasks = [];
-            for (var i = 0; i < this.fleetSettings.fleets.length; i++) {
+			var ostasks =  this.fleetSettings.otherSources.tasks;
+			var i;
+            for (i = 0; i < this.fleetSettings.fleets.length; i++) {
 				tasks.push([]);
 				var ftasks = this.fleetSettings.fleets[i].tasks;
 				if (ftasks) {
 					// [0, 1, 2] only task includes [0, 2], then [0, 2] => [0, 1]
 					for (var k=0, l=0; k<this.taskSettings.tasks.length;k++) {
 						if (this.taskSettings.tasks[k].include) {
-							if (ftasks.includes(k))
+							if (ftasks.includes(k) && !ostasks.includes(k))
 								tasks[i].push(l);
 							l++;
 						}
 					}
 				}
             }
+
+			if (this.checkOtherSources) {
+				tasks.push([]);
+				if (ostasks) {
+					// [0, 1, 2] only task includes [0, 2], then [0, 2] => [0, 1]
+					for (var k=0, l=0; k<this.taskSettings.tasks.length;k++) {
+						if (this.taskSettings.tasks[k].include) {
+							if (ostasks.includes(k))
+								tasks[i].push(l);
+							l++;
+						}
+					}
+				}
+			}
+
             return tasks;
         },
+
+		// check whether any enabled task is selected for other sources...
+		checkOtherSources() {
+			for (j = 0; j < this.taskSettings.tasks.length; j++) {
+				if (this.taskSettings.tasks[j].include && this.fleetSettings.otherSources.tasks.includes(j)) return true;
+			}
+
+			return false;
+		},
 
         fleetTasksForReview() {
             var tasks = [];
             for (i = 0; i < this.fleetSettings.fleets.length; i++) {
-                var k = this.fleetSettings.fleets[i].tasks.length;
+				var x = 0;
 				//console.log("FleetTasksForReview tasks length", i, k, this.taskSettings.tasks);
-                if (k) {
-                    tasks.push([]);
-                    for (j = 0; j < k; j++) {
-                        tasks[i].push(this.taskSettings.tasks[this.fleetSettings.fleets[i].tasks[j]].name);
-                    }
-                } else
-                    tasks.push(["None"]);
+				tasks.push([]);
+				for (j = 0; j < this.taskSettings.tasks.length; j++) {
+					if (this.taskSettings.tasks[j].include && this.checkOpExpertise(this.fleetSettings.fleets[i], i)) {
+						tasks[i].push(this.taskSettings.tasks[j].name);
+						x++;
+					}
+				}
+				if (x===0)
+					tasks[i].push(["None"]);
             }
+            return tasks;
+        },
+
+        fleetOSTasksForReview() {
+            var tasks = [];
+
+			var x = 0;
+			for (j = 0; j < this.taskSettings.tasks.length; j++) {
+				if (this.taskSettings.tasks[j].include && this.checkOpExpertiseOS(j)) {
+					tasks.push(this.taskSettings.tasks[j].name);
+					x++;
+				}
+			}
+			if (x===0)
+				tasks.push(["None"]);
+
             return tasks;
         },
 
         // array of traffic levels per hour of 0=no traffic, 0.5=low, 1=medium or 2 = high per each fleet
         traffic() {
             var traff = [];
+			var x = this.checkOtherSources ? 1 : 0;
+ 			var traffOrig, noDiff;
 
-            for(var f=0;f<this.fleetSettings.fleets.length;f++) {
-                var traffOrig = this.fleetSettings.fleets[f].trafficLevels;
-                var noDiff = this.fleetSettings.fleets[f].diffTrafficLevels === 'n';
-                traff.push([]);
+            for(var f=0;f<this.fleetSettings.fleets.length + x;f++) {
+
+				if (f === this.fleetSettings.fleets.length) {
+                	traffOrig = this.fleetSettings.otherSources.trafficLevels;
+                	noDiff = this.fleetSettings.otherSources.diffTrafficLevels === 'n';
+				} else {
+                	traffOrig = this.fleetSettings.fleets[f].trafficLevels;
+                	noDiff = this.fleetSettings.fleets[f].diffTrafficLevels === 'n';
+				}
+
+				traff.push([]);
                 for (i = 0; i < traffOrig.length; i++) {
                     if (noDiff) {
                         traff[f][i] = 1;
@@ -930,7 +1013,7 @@ var sim = new Vue({
                         traff[f][i] = 0;
                 }
             }
-            return traff;
+			return traff;
         },
 
     },
@@ -1140,9 +1223,11 @@ var sim = new Vue({
                 var tasks = sim.getTaskArray(); // default priority for each task
                 var ft = []; // failThreshold default value for each task
                 var exp = [];
+				var expOS = [];
                 for (var i = 0; i < this.taskSettings.tasks.length; i++) {
                     ft.push(5);
                     exp.push([]);
+					expOS.push(true);
                     for(var j=0; j < this.fleetSettings.fleets.length;j++) {
                         exp[i][j] = true;
                     }
@@ -1157,6 +1242,7 @@ var sim = new Vue({
                         comms: "N",
                         tasks: [],
                         expertise: exp,
+						expertiseOS: expOS,
                         priority: [tasks],
                         AIDA: {
                             AIDAType: [false, false, false],
@@ -1192,20 +1278,29 @@ var sim = new Vue({
             }
         },
 
-        // check whether fleet has assigned this task
-        disableOpExpertise(fleet, taskIndex) {
-            return !fleet.tasks.includes(taskIndex);
+        // check whether fleet has assigned this task and other sources doesn't assign it
+        checkOpExpertise(fleet, taskIndex) {
+            return fleet.tasks.includes(taskIndex) && !this.fleetSettings.otherSources.tasks.includes(taskIndex);
         },
+
+		// check whether other sources assigned this task
+		checkOpExpertiseOS(taskIndex) {
+            return this.fleetSettings.otherSources.tasks.includes(taskIndex);
+		},
 
         // return fleet names for review associated with a task
         fleetNamesOpExpertise(team, taskIndex) {
             var fleetNames = [];
             for(var j=0;j<this.fleetSettings.fleets.length;j++) {
                 var fleet = this.fleetSettings.fleets[j];
-                if (team.expertise[taskIndex][j] && fleet.tasks.includes(taskIndex)) {
+                if (team.expertise[taskIndex][j] && this.checkOpExpertise(fleet, taskIndex)) {
                     fleetNames.push(fleet.name);
                 }
             }
+
+			if (team.expertiseOS[taskIndex] && this.checkOpExpertiseOS(taskIndex))
+				fleetNames.push(textStrings.otherSources);
+
             if (fleetNames.length) {
                 return fleetNames.join(", ");
             } else
@@ -1213,13 +1308,19 @@ var sim = new Vue({
         },
 
         // check wheteher the task is selected in the opExpertise matrix
-        checkIfTaskSelected(team, taskIndex) {
+        checkIfTaskSelected(team, taskIndex, isAI) {
+			var isAI = isAI || false;
             for (var i=0; i<this.fleetSettings.fleets.length;i++) {
                 var fleet = this.fleetSettings.fleets[i];
-                if (team.expertise[taskIndex][i] && fleet.tasks.includes(taskIndex))
+                if (team.expertise[taskIndex][i] && this.checkOpExpertise(fleet, taskIndex))
                     return true;
             }
-            return false;
+
+			// check expertise other sources
+			if (!isAI && team.expertiseOS[taskIndex] && this.checkOpExpertiseOS(taskIndex))
+            	return true;
+
+			return false;
         },
 
 		// add new fleet and select the newly created tab
@@ -1467,14 +1568,15 @@ var sim = new Vue({
 
         checkIATask(team) {
             for(var i=0;i<this.taskSettings.tasks.length;i++) {
-                if (this.taskSettings.tasks[i].include && this.checkIfTaskSelected(team,i) && team.AIDA.IATasks.includes(i)) return true;
+                if (this.taskSettings.tasks[i].include && this.checkIfTaskSelected(team,i,true) && team.AIDA.IATasks.includes(i)) return true;
             }
             return false;
         },
 
+		// no need to check other sources...
         checkFleetTask(fleet) {
             for(var i=0;i<this.taskSettings.tasks.length;i++) {
-                if (this.taskSettings.tasks[i].include && fleet.tasks.includes(i)) return true;
+                if (this.taskSettings.tasks[i].include && this.checkOpExpertise(fleet, i)) return true;
             }
             return false;
         },
@@ -1630,7 +1732,7 @@ var sim = new Vue({
                 "TCALevel": sim.TCALevel,
 
                 // Fleet Settings
-                "fleetTypes": sim.fleetSettings.fleetTypes,
+                "fleetTypes": sim.numTotalFleetTypes,
                 "fleetNames": sim.fleetNames,
                 "numvehicles": sim.numVehicles,
                 "autolvl": sim.fleetAutoLevel,
@@ -1847,6 +1949,9 @@ var sim = new Vue({
                                                                   sim.fleetSettings.fleets[i].trafficLevels,
                                                                   sim.fleetSettings.fleets[i].diffTrafficLevels === 'y');
                 }
+				TrafficLevelBarChart.drawTrafficLevelBarChart("#trafficLevelOS",
+                                                                  sim.fleetSettings.otherSources.trafficLevels,
+                                                                  sim.fleetSettings.otherSources.diffTrafficLevels === 'y');
 
                 var count = sim.checkInputData();
                 if (count[1] > 0) // only minor warnings...

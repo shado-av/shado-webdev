@@ -30,6 +30,7 @@ var textStrings = {
         vehicle: "Vehicle",
         qFleets: "How many different fleets do the operators manage?",
         qNumVeh: "How many vehicles are in this fleet?",
+		otherSources: "Other Sources",
 
         // Operator Teams
         operator: "Operator",

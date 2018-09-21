@@ -666,10 +666,10 @@
 								</div>
 						</div>
 
-                            <!-- OPERATOR TASKS -->
+                            <!-- OPERATOR EXPERTISE -->
 <!--                            <h5 class="mb-3">{{textStrings.operator}} Tasks/{{textStrings.fleets}}</h5>-->
 
-                            <!-- operator task checklist (team.tasks) -->
+                            <!-- operator expertise checklist (team.expertise) -->
                             <div class="form-group">
                                 <label class="mb-3">3. What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
                                 <!-- adjust task/fleet operators are responsible for (team.expertise) -->
@@ -683,13 +683,17 @@
                                             <th v-for="(fleet, i) in fleetSettings.fleets">
                                                 {{fleet.name}}
                                             </th>
+											<th>{{textStrings.otherSources}}</th>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
                                                 <td>{{task.name}}</td>
                                                 <td v-for="(fleet, j) in fleetSettings.fleets">
-                                                    <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
+                                                    <input type="checkbox" v-model="team.expertise[i][j]" :disabled="!checkOpExpertise(fleet, i)"/>
                                                 </td>
+												<td>
+                                                    <input type="checkbox" v-model="team.expertiseOS[i]" :disabled="!checkOpExpertiseOS(i)"/>
+												</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -784,7 +788,7 @@
                                 <div class="alert alert-info" v-if="!checkIATask(team)">
                                     At least one task needs to be selected for this AI.
                                 </div>
-                                <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
+                                <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i,true)">
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
                                     <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
                                 </div>
@@ -852,7 +856,7 @@
                     </li>
 					<li class="nav-item">
                         <a class="nav-link" id="fleets-other-sources-settings-tab" data-toggle="tab" href="#fleets-other-sources-settings" role="tab" aria-controls="fleets-other-sources-settings">
-							Other Sources
+							{{textStrings.otherSources}}
                         </a>
 					</li>
 					<!-- add fleet -->
@@ -931,7 +935,7 @@
                             <div class="alert alert-info" v-if="!checkFleetTask(fleet)">
                                 At least one task needs to be selected for the fleet.
                             </div>
-                            <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
+                            <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include && !fleetSettings.otherSources.tasks.includes(i)">
                                 <input class="custom-control-input" type="checkbox" :id="'fleet-' + index + '-task-' + i" :value="i" v-model="fleet.tasks">
                                 <label class="custom-control-label" :for="'fleet-' + index + '-task-' + i">{{ task.name }}</label>
                             </div>
@@ -983,13 +987,13 @@
                     <!-- OTHER SOURCES -->
                     <div class="tab-pane fade" id="fleets-other-sources-settings" role="tabpanel" aria-labelledby="fleets-other-sources-settings-tab">
 
-                        <h3 class="mb-4">{{ fleetSettings.otherSources.name }}</h3>
+                        <h3 class="mb-4">{{textStrings.otherSources}}</h3>
 
                         <!-- FLEET TASKS -->
 
                         <!-- fleet task checklist (fleet.tasks) -->
                         <div class="form-group">
-                            <label class="mb-3">1. Which tasks are associated with other sources?</label>
+                            <label class="mb-3">1. Which tasks are associated with {{textStrings.otherSources.toLowerCase()}}?</label>
                             <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
                                 <input class="custom-control-input" type="checkbox" :id="'fleet-other-sources-task-' + i" :value="i" v-model="fleetSettings.otherSources.tasks">
                                 <label class="custom-control-label" :for="'fleet-other-sources-task-' + i">{{ task.name }}</label>
@@ -1000,7 +1004,7 @@
                         <!-- <h5 class="mb-3">Traffic</h5>-->
                         <!-- different traffic levels (diffTrafficLevels) -->
                         <div class="form-group">
-                            <label class="col-form-label">2. Are there different traffic levels for during this shift for other sources?</label>
+                            <label class="col-form-label">2. Are there different traffic levels for during this shift for {{textStrings.otherSources.toLowerCase()}}?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
@@ -1084,7 +1088,7 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">{{ fleetSettings.fleetTypes }} {{ textStrings.fleets }}</th>
+                                <th colspan="2">{{ fleetSettings.fleetTypes }} {{ textStrings.fleets }} <span v-show="checkOtherSources">with Other Sources</span></th>
                             </tr>
                         </thead>
                         <tr v-for="(fleet, index) in fleetSettings.fleets">
@@ -1116,6 +1120,27 @@
                                         <td>Traffic Levels</td>
                                         <td>
                                             <svg :id='"trafficLevel" + index' width="400" height="300"></svg>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr v-show="checkOtherSources">
+                            <td colspan="2">
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2"> {{ textStrings.otherSources }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Tasks Associated</td>
+                                        <td>{{fleetOSTasksForReview.join(", ")}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Traffic Levels</td>
+                                        <td>
+                                            <svg id="trafficLevelOS" width="400" height="300"></svg>
                                         </td>
                                     </tr>
                                 </table>
