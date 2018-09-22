@@ -101,39 +101,43 @@ var textStrings = {
 // Please don't remove "0" option.
 var humanErrorProbConfig = {
     "0" : {
-        value: [0.00008, 0.0004, 0.007],
-        text: "Completely familiar, highly practiced, routine, automated skill"
+        value: [0.000006, 0.00002, 0.0009],
+        text: "Well-designed, human-centered automation."
     },
     "1" : {
-        value: [0.0008, 0.003, 0.007],
-        text: "Restore or shift a system to original or new state, following procedures with some checking."
+        value: [0.00008, 0.0004, 0.007],
+        text: "Straightforward, completely familiar, highly practiced, routine."
     },
     "2" : {
         value: [0.00008, 0.0004, 0.007],
-        text: "Simple response to a dedicated alarm and execution of actions covered in procedures."
+        text: "Straightforward, requiring simple response to a dedicated alarm, covered in procedures."
     },
     "3" : {
-        value: [0.02, 0.07, 0.17],
-        text: "Identification of situation requiring interpretation of alarm/indication patterns."
+        value: [0.002, 0.003, 0.004],
+        text: "Manual, visual or communication with opportunity for confusion between data."
     },
     "4" : {
         value: [0.06, 0.09, 0.13],
-        text: "Fairly simple task performed rapidly or given insufficient or inadequate attention."
+        text: "Simple but quickly performed with reduced attention or accuracy."
     },
     "5" : {
-        value: [0.002, 0.003, 0.004],
-        text: "Skill-based tasks when there is some opportunity for confusion."
+        value: [0.0008, 0.003, 0.007],
+        text: "Not automated nor routine; procedures must be followed to restore or shift system state."
     },
     "6" : {
-        value: [0.12, 0.16, 0.28],
-        text: "Complex task requiring a high level of understanding and skill."
+        value: [0.02, 0.07, 0.17],
+        text: "Requiring rules to identify situation and interpret alarm or indication patterns."
     },
     "7" : {
-        value: [0.0001, 0.0001, 0.0001],
-        text: "Other, with no decision support tools."
+        value: [0.12, 0.16, 0.28],
+        text: "Complex, requiring a high level of understanding and skill."
     },
     "8" : {
+        value: [0.0001, 0.0001, 0.0001],
+        text: "Other, with no decision support."
+    },
+    "9" : {
         value: [0.00001, 0.00001, 0.00001],
-        text: "Other, with decision support tools."
+        text: "Other, with decision support."
     },
 };
