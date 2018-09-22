@@ -102,10 +102,38 @@ var textStrings = {
 var humanErrorProbConfig = {
     "0" : {
         value: [0.00008, 0.0004, 0.007],
-        text: "Completely familiar, well designed, highly practiced task which is routine."
+        text: "Completely familiar, highly practiced, routine, automated skill"
     },
     "1" : {
-        value: [0.00008, 0.0004, 0.007],
+        value: [0.0008, 0.003, 0.007],
         text: "Restore or shift a system to original or new state, following procedures with some checking."
+    },
+    "2" : {
+        value: [0.00008, 0.0004, 0.007],
+        text: "Simple response to a dedicated alarm and execution of actions covered in procedures."
+    },
+    "3" : {
+        value: [0.02, 0.07, 0.17],
+        text: "Identification of situation requiring interpretation of alarm/indication patterns."
+    },
+    "4" : {
+        value: [0.06, 0.09, 0.13],
+        text: "Fairly simple task performed rapidly or given insufficient or inadequate attention."
+    },
+    "5" : {
+        value: [0.002, 0.003, 0.004],
+        text: "Skill-based tasks when there is some opportunity for confusion."
+    },
+    "6" : {
+        value: [0.12, 0.16, 0.28],
+        text: "Complex task requiring a high level of understanding and skill."
+    },
+    "7" : {
+        value: [0.0001, 0.0001, 0.0001],
+        text: "Other, with no decision support tools."
+    },
+    "8" : {
+        value: [0.00001, 0.00001, 0.00001],
+        text: "Other, with decision support tools."
     },
 };
