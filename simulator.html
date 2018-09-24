@@ -457,14 +457,14 @@
                             </div>
                         </div>
 
-                        <div>5. Essential / interruptable</div>
+                        <div>5. Essential / interruptible</div>
                         <div class="pt-3 options">
                             <div class="form-group">
                                 <label class="col-form-label">Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
-                                            value="y" v-model="task.essential" @change="task.interruptable='n'">
+                                            value="y" v-model="task.essential" @change="task.interruptible='n'">
                                         <label class="custom-control-label" :for="'task-' + index + 'essential-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
@@ -475,17 +475,17 @@
                                 </div>
 
                                 <div class="pt-3" v-show="task.essential==='n'">
-                                    <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
+                                    <label class="col-form-label">{{textStrings.qInterruptible}} <span v-tooltip.bottom="{ content: textStrings.tooltipInterruptible}"><span class="fas fa-info-circle"></span></span></label>
                                     <div>
                                         <div class="custom-control custom-control-inline custom-radio">
-                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
-                                                value="y" v-model="task.interruptable">
-                                            <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
+                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptible'" :id="'task-' + index + 'interruptible-y'"
+                                                value="y" v-model="task.interruptible">
+                                            <label class="custom-control-label" :for="'task-' + index + 'interruptible-y'">Yes</label>
                                         </div>
                                         <div class="custom-control custom-control-inline custom-radio mr-0">
-                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
-                                                value="n" v-model="task.interruptable">
-                                            <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptible'" :id="'task-' + index + 'interruptible-n'"
+                                                value="n" v-model="task.interruptible">
+                                            <label class="custom-control-label" :for="'task-' + index + 'interruptible-n'">No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -1233,7 +1233,7 @@
                             {{ task.name }}
                             <ul>
                                 <li>Is this task affected by team coordination?{{task.affTeamCoord}}</li>
-                                <li>Is this task interruptable?{{task.interruptable}}</li>
+                                <li>Is this task interruptible?{{task.interruptible}}</li>
                                 <li>Distributions</li>
                                 <ul>
                                     <li>Arrival Time:

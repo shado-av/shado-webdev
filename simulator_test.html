@@ -339,6 +339,13 @@
                         <a class="nav-link" :id="'tasks-' + index + '-settings-tab'" data-toggle="tab" :href="'#tasks-' + index + '-settings'" role="tab"
                             :aria-controls="'tasks-' + index + '-settings'" selected="false">
                             {{ task.name }}
+<!--							<span  @click="removeCustomTask(task)"><i class="fas fa-minus-square" style="color:red"></i></span>-->
+                        </a>
+                    </li>
+                    <!-- add task -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="tasks-add-tab" href="#" @click="addTask" role="tab" aria-controls="tasks-add">
+                            <i class="fas fa-plus-square"></i> Add
                         </a>
                     </li>
                 </ul>
@@ -354,21 +361,25 @@
                         <!-- tasks assigned to operators (task.include) -->
                         <h5>Which tasks are assigned to the operators?</h5>
                         <p class="text-muted small">Include up to
-                            <b>15</b> task types from the list of provided tasks or add custom tasks.</p>
+                            <b>15</b> task types from the list of provided tasks or add tasks.</p>
+
+                        <div class="mt-3 alert alert-danger" v-if="noTasksIncluded">
+							Please include at least one task.
+                        </div>
 
                         <!-- LIST OF TASKS -->
                         <div class="custom-control custom-checkbox mb-4 task" v-for="(task, index) in taskSettings.tasks" v-if="task.leadTask === -1">
                             <input class="custom-control-input" type="checkbox" :id="'task-type-' + index" v-model="task.include" :disabled="disableAddTask(task)">
                             <label class="custom-control-label h6" :for="'task-type-' + index">{{ task.name }}</label>
-                            <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            <button type="button" class="delete btn badge badge-danger" @click="removeCustomTask(task)" aria-label="Close">
+                                <i class="fas fa-times"></i>
                             </button>
 <!--                            <p class="pr-4">Details about the task and an overview of its default parameters will go here.</p>-->
                         </div>
 
                         <!-- ADD A CUSTOM TASK -->
                         <button type="button" class="btn btn-secondary btn-sm" @click="addCustomTask" :disabled="maxTasksReached">
-                            <i class="fas fa-plus fa-xs"></i> Add Custom Task</button>
+							<i class="fas fa-plus fa-xs"></i> Add Task</button>
                     </div>
 
                     <!-- INDIVIDUAL TASK SETTINGS -->
@@ -376,8 +387,8 @@
                         role="tabpanel" :aria-labelledby="'tasks-' + index + '-settings-tab'">
 
                         <!-- DELETE TASK -->
-                        <button type="button" class="delete btn badge badge-danger" v-show="task.isCustom" @click="removeCustomTask(task)" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="delete btn badge badge-danger"  @click="removeCustomTask(task)" aria-label="Close">
+                            <i class="fas fa-times"></i>
                         </button>
 
                         <!-- NAME -->
@@ -446,14 +457,14 @@
                             </div>
                         </div>
 
-                        <div>5. Essential / interruptable</div>
+                        <div>5. Essential / interruptible</div>
                         <div class="pt-3 options">
                             <div class="form-group">
                                 <label class="col-form-label">Is this task essential? <span v-tooltip.bottom="{ content: 'This is a task of the highest priority.'}"><span class="fas fa-info-circle"></span></span></label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input class="custom-control-input" type="radio" :name="'task-' + index + 'essential'" :id="'task-' + index + 'essential-y'"
-                                            value="y" v-model="task.essential" @change="task.interruptable='n'">
+                                            value="y" v-model="task.essential" @change="task.interruptible='n'">
                                         <label class="custom-control-label" :for="'task-' + index + 'essential-y'">Yes</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio mr-0">
@@ -464,17 +475,17 @@
                                 </div>
 
                                 <div class="pt-3" v-show="task.essential==='n'">
-                                    <label class="col-form-label">Is this task interruptable? <span v-tooltip.bottom="{ content: 'This means they can put it on hold to complete other tasks and return to it later.'}"><span class="fas fa-info-circle"></span></span></label>
+                                    <label class="col-form-label">{{textStrings.qInterruptible}} <span v-tooltip.bottom="{ content: textStrings.tooltipInterruptible}"><span class="fas fa-info-circle"></span></span></label>
                                     <div>
                                         <div class="custom-control custom-control-inline custom-radio">
-                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-y'"
-                                                value="y" v-model="task.interruptable">
-                                            <label class="custom-control-label" :for="'task-' + index + 'interruptable-y'">Yes</label>
+                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptible'" :id="'task-' + index + 'interruptible-y'"
+                                                value="y" v-model="task.interruptible">
+                                            <label class="custom-control-label" :for="'task-' + index + 'interruptible-y'">Yes</label>
                                         </div>
                                         <div class="custom-control custom-control-inline custom-radio mr-0">
-                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptable'" :id="'task-' + index + 'interruptable-n'"
-                                                value="n" v-model="task.interruptable">
-                                            <label class="custom-control-label" :for="'task-' + index + 'interruptable-n'">No</label>
+                                            <input class="custom-control-input" type="radio" :name="'task-' + index + 'interruptible'" :id="'task-' + index + 'interruptible-n'"
+                                                value="n" v-model="task.interruptible">
+                                            <label class="custom-control-label" :for="'task-' + index + 'interruptible-n'">No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -507,7 +518,7 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <!--<h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <label>9. What does this task involve?<span v-tooltip.bottom="{ content: 'This is an example tooltip for radio button answer.'}"><span class="fas fa-info-circle"></span></span></label>
+                        <label>9. How would you describe this task?<span v-tooltip.bottom="{ content: 'This determines chance of human error, whether the task generally is more automated and based on skills or more effortful and based on rules or involves thinking outside procedures, based on knowledge.'}"><span class="fas fa-info-circle"></span></span></label>
                         <div class="form-group">
                             <select class="custom-select width-small" v-model="task.humanErrorSelect"
                                     @change="updateHumanErrorProb(task)">
@@ -559,6 +570,13 @@
                         <a class="nav-link" :id="'opteam-' + index + '-settings-tab'" data-toggle="tab" :href="'#opteam-' + index + '-settings'"
                             role="tab" :aria-controls="'opteam-' + index + '-settings'" selected="false">
                             {{ team.name }}
+                        </a>
+                    </li>
+
+					<!-- add operator -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="operators-add-tab" href="#" @click="addOperatorTeam" role="tab" aria-controls="operators-add">
+                            <i class="fas fa-plus-square"></i> Add
                         </a>
                     </li>
                 </ul>
@@ -613,7 +631,7 @@
                         <!-- DELETE TEAM -->
                         <button type="button" class="delete btn badge badge-danger" v-show="operatorSettings.numTeams > 1" @click="removeOperatorTeam(team)"
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                           <i class="fas fa-times"></i>
                         </button>
                         <h3 class="mb-4">{{ team.name }}</h3>
 
@@ -627,29 +645,33 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <!-- team size (team.size) -->
-                                <div class="mb-3">2. How large is the team?</div>
-                                <number-input :min=1 :max=99 :step=1
-                                :value.sync="team.size"></number-input>
-                            </div>
+							<div class="mb-3">2. Team Size / Communication</div>
+						    <div class="options">
+								<div class="form-group">
+									<!-- team size (team.size) -->
+									<div class="mb-3">How large is the team?</div>
+									<div>
+										<number-input :min=1 :max=99 :step=1 :value.sync="team.size"></number-input>
+									</div>
+									<!-- team communications (team.comms) -->
+									<div v-show="team.size>1">
+										<label class="mt-3 mb-3">Does this team have some level of communications?</label>
+										<br/>
+										<select class="custom-select width-small" v-model="team.comms">
+											<option value="N">None</option>
+											<option value="S">Some</option>
+											<option value="F">Full</option>
+										</select>
+									</div>
+								</div>
+						</div>
 
-                            <!-- team communications (team.comms) -->
-                            <div class="form-group">
-                                <label>3. Does this team have some level of communications?</label>
-                                <select class="custom-select" v-model="team.comms">
-                                    <option value="N">None</option>
-                                    <option value="S">Some</option>
-                                    <option value="F">Full</option>
-                                </select>
-                            </div>
-
-                            <!-- OPERATOR TASKS -->
+                            <!-- OPERATOR EXPERTISE -->
 <!--                            <h5 class="mb-3">{{textStrings.operator}} Tasks/{{textStrings.fleets}}</h5>-->
 
-                            <!-- operator task checklist (team.tasks) -->
+                            <!-- operator expertise checklist (team.expertise) -->
                             <div class="form-group">
-                                <label class="mb-3">4. What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
+                                <label class="mb-3">3. What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
                                 <!-- adjust task/fleet operators are responsible for (team.expertise) -->
                                 <div class="alert alert-info" v-if="!checkExpertise(team)">
                                     At least one active task/{{textStrings.fleet.toLowerCase()}} combo needs to be selected for this operator.
@@ -661,13 +683,17 @@
                                             <th v-for="(fleet, i) in fleetSettings.fleets">
                                                 {{fleet.name}}
                                             </th>
+											<th>{{textStrings.otherSources}}</th>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include">
                                                 <td>{{task.name}}</td>
                                                 <td v-for="(fleet, j) in fleetSettings.fleets">
-                                                    <input type="checkbox" v-model="team.expertise[i][j]" :disabled="disableOpExpertise(fleet, i)"/>
+                                                    <input type="checkbox" v-model="team.expertise[i][j]" :disabled="!checkOpExpertise(fleet, i)"/>
                                                 </td>
+												<td>
+                                                    <input type="checkbox" v-model="team.expertiseOS[i]" :disabled="!checkOpExpertiseOS(i)"/>
+												</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -676,7 +702,7 @@
 
                             <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
-                                <label>5. {{textStrings.operator}} Strategies</label>
+                                <label>4. {{textStrings.operator}} Strategies</label>
                                 <select class="custom-select" v-model="team.strategy">
                                     <option value="FIFO">First In First Out</option>
                                     <option value="STF">Shortest Task First</option>
@@ -714,7 +740,7 @@
 <!--                        <h5 class="mb-3">Error Catching Chance</h5>-->
 
                         <!-- fail threshold (team.failThresh) -->
-                        <div class="mb-3">6. For every error, what is the chance that the team will catch it for each task?</div>
+                        <div class="mb-3">5. For every error, what is the chance that the team will catch it for each task?</div>
 
                         <div class="form-group row">
                             <div class="col">
@@ -729,7 +755,7 @@
 <!--                        <h5 class="mb-3">Artificial Intelligence Decision Aid</h5>-->
 
                         <!-- team AIDA (team.AIDA) -->
-                        <label class="mb-3">7. What level of AI does this team have?</label>
+                        <label class="mb-3">6. What level of AI does this team have?</label>
 
                         <!-- equal operator (AIDA.equalOperator) -->
                         <div class="mb-3">
@@ -762,7 +788,7 @@
                                 <div class="alert alert-info" v-if="!checkIATask(team)">
                                     At least one task needs to be selected for this AI.
                                 </div>
-                                <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
+                                <div class="custom-control custom-checkbox item mb-2" v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i,true)">
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
                                     <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
                                 </div>
@@ -828,6 +854,17 @@
                             {{ fleet.name }}
                         </a>
                     </li>
+					<li class="nav-item">
+                        <a class="nav-link" id="fleets-other-sources-settings-tab" data-toggle="tab" href="#fleets-other-sources-settings" role="tab" aria-controls="fleets-other-sources-settings">
+							{{textStrings.otherSources}}
+                        </a>
+					</li>
+					<!-- add fleet -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="fleets-add-tab" href="#" @click="addFleet" role="tab" aria-controls="fleets-add">
+                            <i class="fas fa-plus-square"></i> Add
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- FLEETS TAB CONTENT -->
@@ -850,9 +887,9 @@
                         :aria-labelledby="'fleet-' + index + '-settings-tab'">
 
                         <!-- DELETE FLEET -->
-                        <button type="button" class="delete btn badge badge-danger" v-show="fleetSettings.fleetTypes > 2" @click="removeFleet(fleet)"
+                        <button type="button" class="delete btn badge badge-danger" v-show="fleetSettings.fleetTypes > 1" @click="removeFleet(fleet)"
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <i class="fas fa-times"></i>
                         </button>
                         <h3 class="mb-4">{{ fleet.name }}</h3>
 
@@ -866,23 +903,27 @@
                             </div>
                         </div>
 
-                        <!-- number of vehicles (fleet.numVehicles) -->
-                        <div class="form-group">
-                            <div class="mb-3">2. {{ textStrings.qNumVeh }}</div>
-                            <number-input :min=1 :max=99 :step=1
-                                :value.sync="fleet.numVehicles"></number-input>
-                        </div>
+						<div>2. {{ textStrings.fleet}} Size / Communication</div>
+						<div class="mt-3 options">
+							<!-- number of vehicles (fleet.numVehicles) -->
+							<div class="form-group">
+								<div class="mb-3">{{ textStrings.qNumVeh }}</div>
+								<div>
+									<number-input :min=1 :max=99 :step=1 :value.sync="fleet.numVehicles"></number-input>
+								</div>
 
-                        <!-- fleet communications (fleet.comms) -->
-                        <div class="form-group">
-                            <label>3. Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?</label>
-                            <br/>
-                            <select class="custom-select width-small" v-model="fleet.comms">
-                                <option value="N">None</option>
-                                <option value="S">Some</option>
-                                <option value="F">Full</option>
-                            </select>
-                        </div>
+								<!-- fleet communications (fleet.comms) -->
+								<div v-show="fleet.numVehicles > 1">
+									<label class="mt-3 mb-3">Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?</label>
+									<br/>
+									<select class="custom-select width-small" v-model="fleet.comms">
+										<option value="N">None</option>
+										<option value="S">Some</option>
+										<option value="F">Full</option>
+									</select>
+								</div>
+							</div>
+						</div>
 
 
                         <!-- FLEET TASKS -->
@@ -890,11 +931,11 @@
 
                         <!-- fleet task checklist (fleet.tasks) -->
                         <div class="form-group">
-                            <label class="mb-3">4. Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <label class="mb-3">3. Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?</label>
                             <div class="alert alert-info" v-if="!checkFleetTask(fleet)">
                                 At least one task needs to be selected for the fleet.
                             </div>
-                            <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
+                            <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include && !fleetSettings.otherSources.tasks.includes(i)">
                                 <input class="custom-control-input" type="checkbox" :id="'fleet-' + index + '-task-' + i" :value="i" v-model="fleet.tasks">
                                 <label class="custom-control-label" :for="'fleet-' + index + '-task-' + i">{{ task.name }}</label>
                             </div>
@@ -904,7 +945,7 @@
                         <!-- <h5 class="mb-3">Traffic</h5>-->
                         <!-- different traffic levels (diffTrafficLevels) -->
                         <div class="form-group">
-                            <label class="col-form-label">5. Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <label class="col-form-label">4. Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
@@ -934,6 +975,65 @@
                                         </div>
                                     </div>
                                     <select class="custom-select" v-model="fleet.trafficLevels[ind]">
+                                        <option value="l">Low</option>
+                                        <option value="m">Medium</option>
+                                        <option value="h">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OTHER SOURCES -->
+                    <div class="tab-pane fade" id="fleets-other-sources-settings" role="tabpanel" aria-labelledby="fleets-other-sources-settings-tab">
+
+                        <h3 class="mb-4">{{textStrings.otherSources}}</h3>
+
+                        <!-- FLEET TASKS -->
+
+                        <!-- fleet task checklist (fleet.tasks) -->
+                        <div class="form-group">
+                            <label class="mb-3">1. Which tasks are associated with {{textStrings.otherSources.toLowerCase()}}?</label>
+                            <div class="custom-control custom-checkbox mb-2" v-for="(task, i) in taskSettings.tasks" v-show="task.include">
+                                <input class="custom-control-input" type="checkbox" :id="'fleet-other-sources-task-' + i" :value="i" v-model="fleetSettings.otherSources.tasks">
+                                <label class="custom-control-label" :for="'fleet-other-sources-task-' + i">{{ task.name }}</label>
+                            </div>
+                        </div>
+
+                        <!-- TRAFFIC -->
+                        <!-- <h5 class="mb-3">Traffic</h5>-->
+                        <!-- different traffic levels (diffTrafficLevels) -->
+                        <div class="form-group">
+                            <label class="col-form-label">2. Are there different traffic levels for during this shift for {{textStrings.otherSources.toLowerCase()}}?</label>
+                            <div>
+                                <div class="custom-control custom-control-inline custom-radio">
+                                    <input class="custom-control-input" type="radio"
+                                           name="fleet-os-diff-traff-levels"
+                                           id="fleet-os-diff-traff-levels-y"
+                                           value="y" v-model="fleetSettings.otherSources.diffTrafficLevels" >
+                                    <label class="custom-control-label" for="fleet-os-diff-traff-levels-y">Yes</label>
+                                </div>
+                                <div class="custom-control custom-control-inline custom-radio mr-0">
+                                    <input class="custom-control-input" type="radio"
+                                           name="fleet-os-diff-traff-levels"
+                                           id="fleet-os-diff-traff-levels-n"
+                                           value="n" v-model="fleetSettings.otherSources.diffTrafficLevels" >
+                                    <label class="custom-control-label" for="fleet-os-diff-traff-levels-n">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- adjust traffic levels per hour  (traffic) -->
+                        <div class="form-group" v-show="fleetSettings.otherSources.diffTrafficLevels === 'y'">
+                            <label>Adjust traffic levels per hour:</label>
+                            <div class="traffic-levels">
+                                <div class="input-group traffic-level" v-for="(traffLvl, ind) in fleetSettings.otherSources.trafficLevels">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            {{ ind + 1 }}
+                                        </div>
+                                    </div>
+                                    <select class="custom-select" v-model="fleetSettings.otherSources.trafficLevels[ind]">
                                         <option value="l">Low</option>
                                         <option value="m">Medium</option>
                                         <option value="h">High</option>
@@ -988,7 +1088,7 @@
                     <table class="form-group table">
                         <thead class="thead-light">
                             <tr>
-                                <th colspan="2">{{ fleetSettings.fleetTypes }} {{ textStrings.fleets }}</th>
+                                <th colspan="2">{{ fleetSettings.fleetTypes }} {{ textStrings.fleets }} <span v-show="checkOtherSources">with Other Sources</span></th>
                             </tr>
                         </thead>
                         <tr v-for="(fleet, index) in fleetSettings.fleets">
@@ -1005,7 +1105,12 @@
                                     </tr>
                                     <tr>
                                         <td>{{ textStrings.vehicle }} to {{ textStrings.vehicle }} Communications</td>
-                                        <td>{{miscSettings.comms[fleet.comms]}}</td>
+                                        <td v-if="fleet.numVehicles>1">
+											{{miscSettings.comms[fleet.comms]}}
+										</td>
+                                        <td v-else>
+											{{miscSettings.comms['N']}}
+										</td>
                                     </tr>
                                     <tr>
                                         <td>Tasks Associated with {{ textStrings.fleet }}</td>
@@ -1015,6 +1120,27 @@
                                         <td>Traffic Levels</td>
                                         <td>
                                             <svg :id='"trafficLevel" + index' width="400" height="300"></svg>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr v-show="checkOtherSources">
+                            <td colspan="2">
+                                <table class="form-group table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th colspan="2"> {{ textStrings.otherSources }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Tasks Associated</td>
+                                        <td>{{fleetOSTasksForReview.join(", ")}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Traffic Levels</td>
+                                        <td>
+                                            <svg id="trafficLevelOS" width="400" height="300"></svg>
                                         </td>
                                     </tr>
                                 </table>
@@ -1058,7 +1184,12 @@
                                     </tr>
                                     <tr>
                                         <td>Communications</td>
-                                        <td>{{miscSettings.comms[team.comms]}}</td>
+                                        <td v-if="team.size>1">
+											{{miscSettings.comms[team.comms]}}
+										</td>
+                                        <td v-else>
+											{{miscSettings.comms['N']}}
+										</td>
                                     </tr>
                                     <tr>
                                         <td>{{ textStrings.operator }} Strategy</td>
@@ -1102,7 +1233,7 @@
                             {{ task.name }}
                             <ul>
                                 <li>Is this task affected by team coordination?{{task.affTeamCoord}}</li>
-                                <li>Is this task interruptable?{{task.interruptable}}</li>
+                                <li>Is this task interruptible?{{task.interruptible}}</li>
                                 <li>Distributions</li>
                                 <ul>
                                     <li>Arrival Time:

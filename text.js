@@ -19,8 +19,8 @@ var textStrings = {
         qTraffic: "3. Is the dispatcher's work on this task influenced by hourly traffic levels of railroad(s)?",
         qTeamCoordination: "4. Do dispatchers need to coordinate with other dispatchers here to complete this task?",
         qEssential: "5. Must a dispatcher prioritize this task over other tasks?",
-        qInterruptable: "Is it OK for a dispatcher to be interrupted while working on this task?",
-        tooltipInterruptable: "Yes means the dispatcher can put this task on hold to complete other tasks and return to this one later.",
+        qInterruptible: "Is it OK for a dispatcher to be interrupted while working on this task?",
+        tooltipInterruptible: "Yes means the dispatcher can put this task on hold to complete other tasks and return to this one later.",
 
 
         // Fleets
@@ -69,7 +69,7 @@ var textStrings = {
         qTraffic: "3. Is this task affected by traffic?",
         qTeamCoordination: "4. Is this task affected by team coordination?",
         qEssential: "5. Is this task essential?",
-        qInterruptable: "Is this task interruptable?",
+        qInterruptible: "Is this task interruptible?",
 
         // Fleets
         fleet: "Railroad",
