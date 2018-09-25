@@ -4,6 +4,10 @@ Vue.component('distribution-params', {
             type: String,
             default: "E",
         },
+			  leadTask: {
+					 type: Number,
+					 default: -1,
+				},
         params: {   // [4, 6, 8]
             type: Array,
             default: () => []
@@ -117,7 +121,14 @@ Vue.component('distribution-params', {
                         <label>{{distLabel}}</label>
                     </div>
                     <div class="col-sm-12">
-                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-if="nOption === 0">
+                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-if="leadTask >= 0">
+                            <option value="E">On average, X minutes later.</option>
+                            <option value="L">On average, X minutes +/- Y minutes later.</option>
+                            <option value="U">On average, X to Y minutes later.</option>
+                            <option value="T">On average, X to Y minutes, usually around Z minutes later.</option>
+                            <option value="C">Exactly X minutes later.</option>
+                        </select>
+                        <select class="custom-select" id="transition" :value="dist" @change="onChangeDist" v-else-if="nOption === 0">
                             <option value="E">On average, once every X minutes.</option>
                             <option value="L">On average, once every X minutes +/- Y minutes.</option>
                             <option value="U">Once every X to Y minutes.</option>
@@ -146,18 +157,19 @@ Vue.component('distribution-params', {
                     <div class="col-sm-12">
                         <div v-if="dist === 'E'" class="form-inline no-gutters">
                             <span v-if="nOption === 2">It must be done, on average, by </span>
-                            <span v-if="nOption === 1">On average, </span>
-                            <span v-if="nOption === 0">On average, once every </span>
+                            <span v-else-if="nOption === 1 || leadTask >= 0">On average, </span>
+                            <span v-else-if="nOption === 0">On average, once every </span>
                             <span class="mr-2 ml-2 form-group">
                                 <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </span>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears.</span>
+														<span class="ml-2" v-if="leadTask >=0">later.</span>
                         </div>
                         <div v-if="dist === 'L'" class="form-inline  no-gutters">
                             <span v-if="nOption === 2">It must be done, on average, by </span>
-                            <span v-if="nOption === 1">On average, </span>
-                            <span v-if="nOption === 0">On average, once every </span>
+                            <span v-else-if="nOption === 1 || leadTask >= 0">On average, </span>
+                            <span v-else-if="nOption === 0">On average, once every </span>
                             <div class="ml-2 mr-2 form-group">
                                 <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
@@ -167,10 +179,12 @@ Vue.component('distribution-params', {
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears.</span>
+														<span class="ml-2" v-if="leadTask >=0">later.</span>
                         </div>
                         <div v-if="dist === 'U'" class="form-inline  no-gutters">
-                            <span class="mr-2" v-if="nOption === 0">Once every</span>
-                            <span class="mr-2" v-if="nOption === 2">It must be done by</span>
+                            <span class="mr-2" v-if="leadTask >= 0">On average, </span>
+                            <span class="mr-2" v-else-if="nOption === 0">Once every</span>
+                            <span class="mr-2" v-else-if="nOption === 2">It must be done by</span>
                             <div class="mr-2 form-group">
                                 <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
@@ -180,20 +194,23 @@ Vue.component('distribution-params', {
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears.</span>
+														<span class="ml-2" v-if="leadTask >=0">later.</span>
                        </div>
                         <div v-if="dist === 'C'" class="form-inline no-gutters">
-                            <span v-if="nOption === 0">Exactly once every</span>
-                            <span v-if="nOption === 1">Exactly</span>
-                            <span v-if="nOption === 2">It must be done by exactly</span>
+                            <span v-if="nOption === 1 || leadTask >= 0">Exactly</span>
+                            <span v-else-if="nOption === 2">It must be done by exactly</span>
+                            <span v-else-if="nOption === 0">Exactly once every</span>
                             <div class="ml-2 mr-2 form-group">
                                 <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears</span>
+														<span class="ml-2" v-if="leadTask >=0">later.</span>
                         </div>
                         <div v-if="dist === 'T'" class="form-inline  no-gutters">
-                            <span class="mr-2" v-if="nOption === 0">Once every</span>
                             <span class="mr-2" v-if="nOption === 2">It must be done by</span>
+                            <span class="mr-2" v-else-if="leadTask >= 0">On average,</span>
+                            <span class="mr-2" v-else-if="nOption === 0">Once every</span>
                             <div class="mr-2 form-group">
                                 <input class="form-control width-100" type="number" step="any" placeholder="X" v-model.number="params[0]" @change="validateInput">
                             </div>
@@ -207,6 +224,7 @@ Vue.component('distribution-params', {
                             </div>
                             <span>minutes</span>
                             <span class="ml-2" v-if="nOption === 2">after it appears.</span>
+														<span class="ml-2" v-if="leadTask >=0">later.</span>
                         </div>
                         <div class="mt-3 alert alert-danger" v-if="errors.length">
                             <span v-for="error in errors">{{ error }}</span>

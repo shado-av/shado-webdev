@@ -485,9 +485,10 @@
 -->
 
                         <!-- arrival time distribution (task.arrivalDistribution) -->
-                        <div>6. How frequently does this task occur for a dispatcher?</div>
+                        <div v-if="task.leadTask === - 1">6. How frequently does this task occur for a dispatcher?</div>
+											  <div v-else>6. After {{ taskSettings.tasks[task.leadTask].name }} task arrives, when does this task follow?</div>
                         <div class="options mt-3">
-                            <distribution-params :n-option=0 params-label="Interarrival Time Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
+                            <distribution-params :lead-task=task.leadTask :n-option=0 params-label="Interarrival Time Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
                         </div>
 
                         <!-- expiration time distribution (task.expireDistribution) -->
