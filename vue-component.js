@@ -239,6 +239,14 @@ Vue.component('number-input', {
             type: Number,
             default: 50
         },
+		float: {
+			type: Boolean,
+			default: false
+		},
+		fixed: {
+			type: Number,
+			default: 2
+		},
         textEnd: {
             type:String,
             default: ""
@@ -266,6 +274,11 @@ Vue.component('number-input', {
         },
 
         validateInput(val) {
+			if (!this.float) {
+				val = parseInt(val);
+			} else {
+				val = val.toFixed(this.fixed);
+			}
             if (val < this.min) val = this.min;
             if (val > this.max) val = this.max;
 
@@ -276,7 +289,7 @@ Vue.component('number-input', {
     },
     template: `<div :class="['number-input', {'mt-3' : margin}, {'mb-3' : margin}]">
                 <button @click="stepNumberInput(-step)" class="minus"></button>
-                <input type="number" @change="validateInput(parseInt($event.target.value))"
+                <input type="number" @change="validateInput(parseFloat($event.target.value))"
                     :value="value">
                 <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : textEnd!=='' }]"></button>
                 <div class="input-group-append" v-if="textEnd!==''">
