@@ -145,9 +145,12 @@ var sim = new Vue({
                         ],
                         AIDA: {
                             AIDAType: [false, false, false],
-                            ETServiceTime: 0,
-                            ETErrorRate: 0,
-                            ETFailThreshold: 0,
+                            ETServiceTimeQ: 'E',
+							ETErrorRateQ: 'E',
+                            ETFailThresholdQ: 'E',
+                            ETServiceTime: 1,
+                            ETErrorRate: 1,
+                            ETFailThreshold: 1,
                             IATasks: [],
                             IALevel: 'S',
                             TCALevel: 'S'
@@ -169,9 +172,12 @@ var sim = new Vue({
                         ],
                         AIDA: {
                             AIDAType: [false, false, false],
-                            ETServiceTime: 0,
-                            ETErrorRate: 0,
-                            ETFailThreshold: 0,
+                            ETServiceTimeQ: 'E',
+							ETErrorRateQ: 'E',
+                            ETFailThresholdQ: 'E',
+                            ETServiceTime: 1,
+                            ETErrorRate: 1,
+                            ETFailThreshold: 1,
                             IATasks: [],
                             IALevel: 'S',
                             TCALevel: 'S'
@@ -768,10 +774,13 @@ var sim = new Vue({
         ETServiceTime() {
             var st = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                if (this.operatorSettings.teams[i].AIDA.ETServiceTime) {
-                    st.push(this.operatorSettings.teams[i].AIDA.ETServiceTime / 100);
-                } else
-                    st.push(0); // whether it's not defined or 0
+				var speed = this.operatorSettings.teams[i].AIDA.ETServiceTimeQ;
+                if (speed === 'F') {			// faster
+                    st.push(1.0 / this.operatorSettings.teams[i].AIDA.ETServiceTime);
+                } else if (speed === 'S') {  // slower
+                    st.push(1.0 * this.operatorSettings.teams[i].AIDA.ETServiceTime);
+				} else
+					st.push(1.0);
             }
             return st;
         },
@@ -779,10 +788,14 @@ var sim = new Vue({
         ETErrorRate() {
             var er = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                if (this.operatorSettings.teams[i].AIDA.ETErrorRate) {
-                    er.push(this.operatorSettings.teams[i].AIDA.ETErrorRate / 100);
-                } else
-                    er.push(0);
+				var speed = this.operatorSettings.teams[i].AIDA.ETErrorRateQ;
+
+                if (speed === 'F') {	// faster
+                    er.push(1.0 / this.operatorSettings.teams[i].AIDA.ETErrorRate);
+                } else if (speed === 'S') {
+                    er.push(1.0 * this.operatorSettings.teams[i].AIDA.ETErrorRate);
+				} else
+					er.push(1.0);
             }
             return er;
         },
@@ -790,10 +803,13 @@ var sim = new Vue({
         ETFailThreshold() {
             var ft = [];
             for (i = 0; i < this.operatorSettings.teams.length; i++) {
-                if (this.operatorSettings.teams[i].AIDA.ETFailThreshold) {
-                    ft.push(this.operatorSettings.teams[i].AIDA.ETFailThreshold / 100);
-                } else
-                    ft.push(0);
+				var speed = this.operatorSettings.teams[i].AIDA.ETFailThresholdQ;
+                if (speed === 'F') {	// faster
+                    ft.push(1.0 / this.operatorSettings.teams[i].AIDA.ETFailThreshold);
+                } else if (speed === 'S') // slower
+                    ft.push(1.0 * this.operatorSettings.teams[i].AIDA.ETFailThreshold);
+				else
+                    ft.push(1.0);
             }
             return ft;
         },
@@ -1246,9 +1262,12 @@ var sim = new Vue({
                         priority: [tasks],
                         AIDA: {
                             AIDAType: [false, false, false],
-                            ETServiceTime: 0,
-                            ETErrorRate: 0,
-                            ETFailThreshold: 0,
+                            ETServiceTimeQ: 'E',
+							ETErrorRateQ: 'E',
+                            ETFailThresholdQ: 'E',
+                            ETServiceTime: 1,
+                            ETErrorRate: 1,
+                            ETFailThreshold: 1,
                             IATasks: [],
                             IALevel: 'S',
                             TCALevel: 'S'
@@ -2020,6 +2039,20 @@ var sim = new Vue({
 
                 sim.textStrings.nextTab = sim.textStrings.mainMenu[index+1] || "";
                 sim.textStrings.previousTab = (index>=1) ? sim.textStrings.mainMenu[index-1] : "";
+
+				// scroll top...some bootstrap bug related with result page...
+//				console.log("Tab scroll", window.innerHeight, window.scrollX, window.scrollY);
+//				console.log(document.body.scrollHeight, document.documentElement.scrollHeight);
+//				console.log(document.body.clientHeight, document.body.offsetHeight);
+				setTimeout(function() {
+//					console.log("Tab scroll", window.innerHeight, window.scrollX, window.scrollY);
+//					console.log(document.body.scrollHeight, document.documentElement.scrollHeight);
+//					console.log(document.body.clientHeight, document.body.offsetHeight);
+					if (document.body.scrollHeight < document.documentElement.scrollHeight) {
+						window.scrollTo(0,0);
+					}
+//					console.log("After Tab scroll", window.scrollX, window.scrollY);
+				}, 200);
             });
         }.bind(this))
     }
