@@ -277,7 +277,7 @@ Vue.component('number-input', {
 			if (!this.float) {
 				val = parseInt(val);
 			} else {
-				val = val.toFixed(this.fixed);
+				val = val.toFixed(this.fixed) / 1;
 			}
             if (val < this.min) val = this.min;
             if (val > this.max) val = this.max;

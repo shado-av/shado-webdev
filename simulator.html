@@ -761,7 +761,7 @@
 								</select>
 								<div v-show="team.AIDA.ETServiceTimeQ !== 'E'">
 									<div> How many times?</div>
-									<number-input float :min=1 :max=100 :step=1 text-end="times" margin v-bind:value.sync="team.AIDA.ETServiceTime"></number-input>
+									<number-input float :min=1 :max=100 :step=1 :text-end="team.AIDA.ETServiceTimeQ === 'F' ? 'x faster' : 'x slower'" margin v-bind:value.sync="team.AIDA.ETServiceTime"></number-input>
 								</div>
 								<hr/>
                                 <div>Does this AI more or less likely fail a task than a human {{textStrings.operator.toLowerCase()}}?</div>
@@ -772,7 +772,7 @@
 								</select>
 								<div v-show="team.AIDA.ETErrorRateQ !== 'E'">
 									<div>How many times?</div>
-                                	<number-input float :min=1 :max=100 :step=1 text-end="times" margin v-bind:value.sync="team.AIDA.ETErrorRate"></number-input>
+                                	<number-input float :min=1 :max=100 :step=1 :text-end="team.AIDA.ETErrorRateQ === 'S' ? 'x more likely' : 'x less likely'" margin v-bind:value.sync="team.AIDA.ETErrorRate"></number-input>
 								</div>
 								<hr/>
                                 <div>Does this AI more or less likely catch an error than a human {{textStrings.operator.toLowerCase()}}?</div>
@@ -783,7 +783,7 @@
 								</select>
 								<div v-show="team.AIDA.ETFailThresholdQ !== 'E'">
 									<div>How many times?</div>
-                                	<number-input float :min=1 :max=100 :step=1 text-end="times" margin v-bind:value.sync="team.AIDA.ETFailThreshold"></number-input>
+                                	<number-input float :min=1 :max=100 :step=1 :text-end="team.AIDA.ETFailThresholdQ === 'S' ? 'x more likely' : 'x less likely'" margin v-bind:value.sync="team.AIDA.ETFailThreshold"></number-input>
 								</div>
                             </div>
                         </div>
