@@ -760,8 +760,14 @@
 									<option value="E">Exactly Same</option>
 								</select>
 								<div v-show="team.AIDA.ETServiceTimeQ !== 'E'">
-									<div> How many times?</div>
-									<number-input float :min=1 :max=100 :step=1 :text-end="team.AIDA.ETServiceTimeQ === 'F' ? 'x faster' : 'x slower'" margin v-bind:value.sync="team.AIDA.ETServiceTime"></number-input>
+									<div class="form-inline">
+										<span class="mr-2">
+											<number-input float :min=1.01 :max=100 :step=0.5 text-end="times" :value.sync="team.AIDA.ETServiceTime"></number-input>
+										</span>
+										<span v-if="team.AIDA.ETServiceTimeQ === 'F'">faster</span>
+										<span v-else>slower</span>
+									</div>
+									<small class="form-text text-muted mb-3">How many times?</small>
 								</div>
 								<hr/>
                                 <div>Does this AI more or less likely fail a task than a human {{textStrings.operator.toLowerCase()}}?</div>
@@ -771,8 +777,14 @@
 									<option value="E">Exactly Same</option>
 								</select>
 								<div v-show="team.AIDA.ETErrorRateQ !== 'E'">
-									<div>How many times?</div>
-                                	<number-input float :min=1 :max=100 :step=1 :text-end="team.AIDA.ETErrorRateQ === 'S' ? 'x more likely' : 'x less likely'" margin v-bind:value.sync="team.AIDA.ETErrorRate"></number-input>
+									<div class="form-inline">
+										<span class="mr-2">
+											<number-input float :min=1.01 :max=100 :step=0.5 text-end="times" :value.sync="team.AIDA.ETErrorRate"></number-input>
+										</span>
+										<span v-if="team.AIDA.ETErrorRateQ === 'S'">more likely</span>
+										<span v-else>less likely</span>
+									</div>
+									<small class="form-text text-muted mb-3">How many times?</small>
 								</div>
 								<hr/>
                                 <div>Does this AI more or less likely catch an error than a human {{textStrings.operator.toLowerCase()}}?</div>
@@ -782,8 +794,14 @@
 									<option value="E">Exactly Same</option>
 								</select>
 								<div v-show="team.AIDA.ETFailThresholdQ !== 'E'">
-									<div>How many times?</div>
-                                	<number-input float :min=1 :max=100 :step=1 :text-end="team.AIDA.ETFailThresholdQ === 'S' ? 'x more likely' : 'x less likely'" margin v-bind:value.sync="team.AIDA.ETFailThreshold"></number-input>
+									<div class="form-inline">
+										<span class="mr-2">
+											<number-input float :min=1.01 :max=100 :step=0.5 text-end="times" :value.sync="team.AIDA.ETFailThreshold"></number-input>
+										</span>
+										<span v-if="team.AIDA.ETFailThresholdQ === 'S'">more likely</span>
+										<span v-else>less likely</span>
+									</div>
+									<small class="form-text text-muted mb-3">How many times?</small>
 								</div>
                             </div>
                         </div>
@@ -806,8 +824,7 @@
                                     <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
                                 </div>
                                 <div class="mb-3 mt-3">What is the level of this AI?</div>
-                                <div class="custom-control custom-control-inline custom-radio">
-                                    <input class="custom-control-input" type="radio" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
+                                <div class="custom-control custom-control-inline custom-radio">                                    <input class="custom-control-input" type="radio" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
                                     <label class="custom-control-label" :for="'assist-indi-levels-some-'+index">Some</label>
                                 </div>
                                 <div class="custom-control custom-control-inline custom-radio mr-0">

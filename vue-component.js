@@ -277,7 +277,7 @@ Vue.component('number-input', {
 			if (!this.float) {
 				val = parseInt(val);
 			} else {
-				val = val.toFixed(this.fixed) / 1;
+				val = 1 * val.toFixed(this.fixed);
 			}
             if (val < this.min) val = this.min;
             if (val > this.max) val = this.max;
@@ -293,7 +293,7 @@ Vue.component('number-input', {
                     :value="value">
                 <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : textEnd!=='' }]"></button>
                 <div class="input-group-append" v-if="textEnd!==''">
-                        <span class="input-group-text">{{textEnd}}</span>
+                        <span class="input-group-text"><span v-html="textEnd"></span></span>
                 </div>
             </div>`
 });

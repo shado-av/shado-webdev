@@ -145,12 +145,12 @@ var sim = new Vue({
                         ],
                         AIDA: {
                             AIDAType: [false, false, false],
-                            ETServiceTimeQ: 'E',
-							ETErrorRateQ: 'E',
-                            ETFailThresholdQ: 'E',
-                            ETServiceTime: 1,
-                            ETErrorRate: 1,
-                            ETFailThreshold: 1,
+                            ETServiceTimeQ: "E",
+							ETErrorRateQ: "E",
+                            ETFailThresholdQ: "E",
+                            ETServiceTime: 2,
+                            ETErrorRate: 2,
+                            ETFailThreshold: 2,
                             IATasks: [],
                             IALevel: 'S',
                             TCALevel: 'S'
@@ -172,12 +172,12 @@ var sim = new Vue({
                         ],
                         AIDA: {
                             AIDAType: [false, false, false],
-                            ETServiceTimeQ: 'E',
-							ETErrorRateQ: 'E',
-                            ETFailThresholdQ: 'E',
-                            ETServiceTime: 1,
-                            ETErrorRate: 1,
-                            ETFailThreshold: 1,
+                            ETServiceTimeQ: "E",
+							ETErrorRateQ: "E",
+                            ETFailThresholdQ: "E",
+                            ETServiceTime: 2,
+                            ETErrorRate: 2,
+                            ETFailThreshold: 2,
                             IATasks: [],
                             IALevel: 'S',
                             TCALevel: 'S'
@@ -1265,9 +1265,9 @@ var sim = new Vue({
                             ETServiceTimeQ: 'E',
 							ETErrorRateQ: 'E',
                             ETFailThresholdQ: 'E',
-                            ETServiceTime: 1,
-                            ETErrorRate: 1,
-                            ETFailThreshold: 1,
+                            ETServiceTime: 2,
+                            ETErrorRate: 2,
+                            ETFailThreshold: 2,
                             IATasks: [],
                             IALevel: 'S',
                             TCALevel: 'S'
@@ -1404,17 +1404,18 @@ var sim = new Vue({
             axios.get('data/' + str + '.json')
               .then((response) => {
                 // handle success
-                console.log(response.data, str);
-                var data = response.data; // if same version!!!
-                if (this.version === data.version) {
-                    this.numReps = data.numReps;
-                    this.globalSettings = data.globalSettings;
-                    this.taskSettings = data.taskSettings;
-                    this.operatorSettings = data.operatorSettings;
-                    this.fleetSettings = data.fleetSettings;
-                } else {
-                    console.log("Data version is different.")
-                }
+				console.log(response.data, str);
+				var data = response.data; // if same version!!!
+				if (this.version === data.version) {
+					this.numReps = data.numReps;
+					this.globalSettings = data.globalSettings;
+					this.taskSettings = data.taskSettings;
+					this.operatorSettings = data.operatorSettings;
+					this.fleetSettings = data.fleetSettings;
+				} else {
+					console.log("Data", data, data.version);
+					console.log("Data version is different.", this.version, data.version);
+				}
               })
               .catch((error) => {
                 // handle error
@@ -1546,18 +1547,18 @@ var sim = new Vue({
 		checkValues() {
 			for (var team of this.operatorSettings.teams) {
 				if (!team.AIDA.ETErrorRateQ) {
-					team.AIDA.ETErrorRateQ = 'E';
+					team.AIDA.ETErrorRateQ = "E";
 				}
 				if (!team.AIDA.ETFailThresholdQ) {
-					team.AIDA.ETFailThresholdQ = 'E';
+					team.AIDA.ETFailThresholdQ = "E";
 				}
 				if (!team.AIDA.ETServiceTimeQ) {
-					team.AIDA.ETServiceTimeQ = 'E';
+					team.AIDA.ETServiceTimeQ = "E";
 				}
 
-				team.AIDA.ETErrorRate = this.valueBetween( team.AIDA.ETErrorRate, 1, 100);
-				team.AIDA.ETFailThreshold = this.valueBetween( team.AIDA.ETFailThreshold, 1, 100);
-				team.AIDA.ETServiceTime = this.valueBetween( team.AIDA.ETServiceTime, 1, 100);
+				team.AIDA.ETErrorRate = this.valueBetween( team.AIDA.ETErrorRate, 1.01, 100);
+				team.AIDA.ETFailThreshold = this.valueBetween( team.AIDA.ETFailThreshold, 1.01, 100);
+				team.AIDA.ETServiceTime = this.valueBetween( team.AIDA.ETServiceTime, 1.01, 100);
 			}
 		},
 
