@@ -766,8 +766,8 @@
 								<hr/>
                                 <div>Does this AI more or less likely fail a task than a human {{textStrings.operator.toLowerCase()}}?</div>
 								<select class="mt-3 mb-3 custom-select width-small" v-model="team.AIDA.ETErrorRateQ">
-									<option value="F">More Likely</option>
-									<option value="S">Less Likely</option>
+									<option value="S">More Likely</option>
+									<option value="F">Less Likely</option>
 									<option value="E">Exactly Same</option>
 								</select>
 								<div v-show="team.AIDA.ETErrorRateQ !== 'E'">
@@ -777,8 +777,8 @@
 								<hr/>
                                 <div>Does this AI more or less likely catch an error than a human {{textStrings.operator.toLowerCase()}}?</div>
 								<select class="mt-3 mb-3 custom-select width-small" v-model="team.AIDA.ETFailThresholdQ">
-									<option value="F">More Likely</option>
-									<option value="S">Less Likely</option>
+									<option value="S">More Likely</option>
+									<option value="F">Less Likely</option>
 									<option value="E">Exactly Same</option>
 								</select>
 								<div v-show="team.AIDA.ETFailThresholdQ !== 'E'">

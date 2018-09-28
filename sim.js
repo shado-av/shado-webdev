@@ -1487,6 +1487,8 @@ var sim = new Vue({
                                 sim.fleetSettings = data.fleetSettings;
                                 sim.loadStrings(sim.globalSettings.simType, textStrings);
 
+								sim.checkValues();
+
                                 alert(files[0].name + " is loaded successfully!");
                             } else if (data.version) {
                                 alert("Your data file version is " + data.version + ". Please use current version!");
@@ -1522,6 +1524,8 @@ var sim = new Vue({
                     this.fleetSettings = data.fleetSettings;
                     console.log(this.globalSettings.simType);
                     this.loadStrings(this.globalSettings.simType, textStrings);
+
+					this.checkValues();
                     setTimeout(function() {NProgress.done(); sim.miscSettings.isLoading = false; }, 1000);
                 } else {
                     //alert("No previous setting is found.");
@@ -1530,6 +1534,32 @@ var sim = new Vue({
                 //alert("No previous setting is found.")
             }
         },
+
+		valueBetween(val, min, max) {
+			if (val < min) val = min;
+			if (val > max) val = max;
+
+			return val;
+		},
+
+		// solve some discrepancy between load data and current data
+		checkValues() {
+			for (var team of this.operatorSettings.teams) {
+				if (!team.AIDA.ETErrorRateQ) {
+					team.AIDA.ETErrorRateQ = 'E';
+				}
+				if (!team.AIDA.ETFailThresholdQ) {
+					team.AIDA.ETFailThresholdQ = 'E';
+				}
+				if (!team.AIDA.ETServiceTimeQ) {
+					team.AIDA.ETServiceTimeQ = 'E';
+				}
+
+				team.AIDA.ETErrorRate = this.valueBetween( team.AIDA.ETErrorRate, 1, 100);
+				team.AIDA.ETFailThreshold = this.valueBetween( team.AIDA.ETFailThreshold, 1, 100);
+				team.AIDA.ETServiceTime = this.valueBetween( team.AIDA.ETServiceTime, 1, 100);
+			}
+		},
 
         // check whether the params is numbers and greater than zero
         checkNumbers(params, length) {

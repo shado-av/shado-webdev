@@ -17,14 +17,8 @@
 
     <!-- Vue.js libraries -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
-    <!-- CDNJS :: Sortable (https://cdnjs.com/) -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
-    <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
     <!-- vue tooltip library -->
     <script src="script/v-tooltip.min.js"></script>
-    <!-- vue validation library -->
-    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
     <!-- axios library for ajax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
@@ -37,19 +31,11 @@
 
     <!--Data Table Libraries-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/b-1.5.2/b-html5-1.5.2/datatables.min.css"/>
-
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/b-1.5.2/b-html5-1.5.2/datatables.min.js"></script>
-
-
 
     <!--nProgress Libraries-->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
-
-    <!--noUIiSlider library-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.js"></script>
 
     <!-- custom CSS and JavaScript -->
     <link rel="stylesheet" href="css/simulator.css">
@@ -173,7 +159,7 @@
                     </li>
                 </ul>
             </div>
-            <div>
+            <div class="">
                 <!-- Download Buttons -->
                 <div class="form-row justify-content-center">
                     <div>
@@ -499,9 +485,10 @@
 -->
 
                         <!-- arrival time distribution (task.arrivalDistribution) -->
-                        <div>6. How frequently does this task occur for a dispatcher?</div>
+                        <div v-if="task.leadTask === - 1">6. How frequently does this task occur for a {{textStrings.operator.toLowerCase()}}?</div>
+											  <div v-else>6. After {{ taskSettings.tasks[task.leadTask].name }} task arrives, when does this task follow?</div>
                         <div class="options mt-3">
-                            <distribution-params :n-option=0 params-label="Interarrival Time Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
+                            <distribution-params :lead-task=task.leadTask :n-option=0 params-label="Interarrival Time Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
                         </div>
 
                         <!-- expiration time distribution (task.expireDistribution) -->
@@ -511,7 +498,7 @@
                         </div>
 
                         <!-- service time distribution (task.serviceDistribution) -->
-                        <div>8. How long does it take a dispatcher to complete this task?</div>
+                        <div>8. How long does it take a {{textStrings.operator.toLowerCase()}} to complete this task?</div>
                         <div class="options mt-3">
                             <distribution-params params-label="Service Time Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
                         </div>
@@ -766,12 +753,38 @@
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[0]}">
                             <div class="form-group" v-show="team.AIDA.AIDAType[0]">
-                                <div class="">What percentage of the Service Time is affected by this AI?</div>
-                                <number-input text-end="%" margin v-bind:value.sync="team.AIDA.ETServiceTime"></number-input>
-                                <div class="">What percentage of the Error Rate is affected by this AI?</div>
-                                <number-input text-end="%" margin v-bind:value.sync="team.AIDA.ETErrorRate"></number-input>
-                                <div class="">What percentage of the Error Catching Chance is affected by this AI?</div>
-                                <number-input text-end="%" margin v-bind:value.sync="team.AIDA.ETFailThreshold"></number-input>
+                                <div>Is this AI faster or slower than a human {{textStrings.operator.toLowerCase()}} to complete a task?</div>
+								<select class="mt-3 mb-3 custom-select width-small" v-model="team.AIDA.ETServiceTimeQ">
+									<option value="F">Faster</option>
+									<option value="S">Slower</option>
+									<option value="E">Exactly Same</option>
+								</select>
+								<div v-show="team.AIDA.ETServiceTimeQ !== 'E'">
+									<div> How many times?</div>
+									<number-input float :min=1 :max=100 :step=1 text-end="times" margin v-bind:value.sync="team.AIDA.ETServiceTime"></number-input>
+								</div>
+								<hr/>
+                                <div>Does this AI more or less likely fail a task than a human {{textStrings.operator.toLowerCase()}}?</div>
+								<select class="mt-3 mb-3 custom-select width-small" v-model="team.AIDA.ETErrorRateQ">
+									<option value="S">More Likely</option>
+									<option value="F">Less Likely</option>
+									<option value="E">Exactly Same</option>
+								</select>
+								<div v-show="team.AIDA.ETErrorRateQ !== 'E'">
+									<div>How many times?</div>
+                                	<number-input float :min=1 :max=100 :step=1 text-end="times" margin v-bind:value.sync="team.AIDA.ETErrorRate"></number-input>
+								</div>
+								<hr/>
+                                <div>Does this AI more or less likely catch an error than a human {{textStrings.operator.toLowerCase()}}?</div>
+								<select class="mt-3 mb-3 custom-select width-small" v-model="team.AIDA.ETFailThresholdQ">
+									<option value="S">More Likely</option>
+									<option value="F">Less Likely</option>
+									<option value="E">Exactly Same</option>
+								</select>
+								<div v-show="team.AIDA.ETFailThresholdQ !== 'E'">
+									<div>How many times?</div>
+                                	<number-input float :min=1 :max=100 :step=1 text-end="times" margin v-bind:value.sync="team.AIDA.ETFailThreshold"></number-input>
+								</div>
                             </div>
                         </div>
 
