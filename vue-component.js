@@ -288,10 +288,10 @@ Vue.component('number-input', {
         }
     },
     template: `<div :class="['number-input', {'mt-3' : margin}, {'mb-3' : margin}]">
-                <button @click="stepNumberInput(-step)" class="minus"></button>
+                <button @click="stepNumberInput(-step)" class="minus"><i class="fas fa-minus fa-lg"></i></button>
                 <input type="number" @change="validateInput(parseFloat($event.target.value))"
                     :value="value">
-                <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : textEnd!=='' }]"></button>
+                <button @click="stepNumberInput(step)" :class="['plus', {'number-only' : textEnd==='' }]"><i class="fas fa-plus fa-lg"></i></button>
                 <div class="input-group-append" v-if="textEnd!==''">
                         <span class="input-group-text"><span v-html="textEnd"></span></span>
                 </div>

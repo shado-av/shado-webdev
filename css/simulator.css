@@ -435,6 +435,7 @@ div.modal-dialog.modal-lg {
   margin: 0;
   position: relative;
   border: 1px solid #ddd;
+  color: #212121;
 }
 
 .number-input button.minus {
@@ -449,24 +450,8 @@ div.modal-dialog.modal-lg {
   border-radius: 0 .25rem .25rem 0;
 }
 
-.number-input button:before,
-.number-input button:after {
-  display: inline-block;
-  position: absolute;
-  content: "";
-  width: 1rem;
-  height: 2px;
-  background-color: #212121;
-  transform: translate(-50%, -50%);
-}
-
-footer .number-input button:before,
-footer .number-input button:after {
- background-color: #ddd;
-}
-
-.number-input button.plus:after {
-  transform: translate(-50%, -50%) rotate(90deg);
+footer .number-input button {
+ color: #ddd;
 }
 
 .number-input input[type="number"] {
