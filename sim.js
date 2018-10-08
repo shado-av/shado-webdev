@@ -1844,6 +1844,7 @@ var sim = new Vue({
                 this.miscSettings.viewResultsClass = "";
                 this.$nextTick( function() {
                     this.$refs.viewResultsTab.click();
+					FailedTaskAnalysis.refreshPie();
                     if (this.textStrings.mainMenu.length <= 5)
                         this.textStrings.mainMenu.push("View Results");
                 });
