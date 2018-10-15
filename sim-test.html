@@ -164,7 +164,7 @@
 			});
 
 			$("#downloadJSON").click(function() {
-				window.location.href = "http://apps.hal.pratt.duke.edu:8080/shado/getUtilizationJSON";
+				window.location.href = env.serverUrl + "/shado/getUtilizationJSON" + sessionQuery;
 				console.log("GET request 'getUtilizationJSON' sent");
 			});
 			$(function() {
