@@ -733,7 +733,7 @@
                             <div class="col">
                                 <div class="item mb-2" v-for="(task, i) in taskSettings.tasks" v-show="taskSettings.tasks[i].include">
                                     <div>{{task.name}}</div>
-                                    <number-input :min=1 :max=10 :step=1 text-end="out of every 10" margin :value.sync="team.failThresh[0][i]"></number-input>
+                                    <number-input :min=0 :max=10 :step=1 text-end="out of every 10" margin :value.sync="team.failThresh[0][i]"></number-input>
                                 </div>
                             </div>
                         </div>
