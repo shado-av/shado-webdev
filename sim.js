@@ -1896,10 +1896,19 @@ var sim = new Vue({
 
         changeInputString(text, obj) {
             //console.log("ChangeInputString", obj.name);
+			obj.name = obj.name.replace(/  +/g, ' ').trim();	// replace multiple spaces into one and trim
             if (0 === obj.name.length || !obj.name.trim()) {
                 obj.name = this.miscSettings.inputString;
-                alert(text + "name should contain at least 1 characters. It reverts to " + obj.name + ".");
+                alert(text + " name should contain at least 1 characters. It reverts to " + obj.name + ".");
+				return;
             }
+
+			// Only allow 0~9, a-z, A-Z, -, _, ' '.
+			if (!/^[\w -]+$/.test(obj.name)) {	// if test not passed
+				obj.name = obj.name.replace(/[^\w -]/g, ' ');		// replace any special chars into space
+				obj.name = obj.name.replace(/  +/g, ' ').trim();	// replace multiple spaces into one and trim
+				alert(text + " name should not contain other than 0-9, A-Z, a-z, space, -, and _. Special characters are stripped.");
+			}
         },
 
         // download links...
