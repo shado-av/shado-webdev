@@ -1587,13 +1587,13 @@ var sim = new Vue({
                 switch(dists[i]) {
                     case 'U':
                         if (params[i][0] > params[i][1]) {
-                            this.miscSettings.warningMessage = "X should be smaller than Y.";
+                            this.miscSettings.warningMessage = "X should be smaller than or equal to Y.";
                             return false;
                         }
                         break;
                     case 'T':
                         if (params[i][0] > params[i][1] || params[i][0] > params[i][2] || params[i][1] > params[i][2]) {
-                            this.miscSettings.warningMessage = "X < Z < Y";
+                            this.miscSettings.warningMessage = "X <= Z <= Y";
                             return false;
                         }
                         break;
@@ -1645,6 +1645,8 @@ var sim = new Vue({
             EventBus.$emit('validateInput', true);
 
             var count = [0,0];
+			var i,j,k;
+			var firstSource;
 
             // remove all warnings
             var warningNode = document.getElementById('warnings');
@@ -1665,7 +1667,7 @@ var sim = new Vue({
 			}
 
             // check task params
-            for(var i=0;i<this.taskSettings.tasks.length;i++) {
+            for(i=0;i<this.taskSettings.tasks.length;i++) {
                 var task = this.taskSettings.tasks[i];
                 if (task.include) {
                     if (!this.checkDistribution(task.arrivalDistribution, task.arrivalParam, 1)) {
@@ -1687,7 +1689,36 @@ var sim = new Vue({
                         this.addReviewError("Fix the task, " + task.name + " human error probability parameters. " + this.miscSettings.warningMessage, "tasks-" + i + "-settings-tab", 2);
                         count[1]++;
                     }
-                }
+
+					// Check at least one fleet is selectd for the active task
+					firstSource = -1;
+					for(j=0;j<this.fleetSettings.fleetTypes;j++) {
+						var fleet = this.fleetSettings.fleets[j];
+
+						if (fleet.tasks.includes(i)) {
+							firstSource = j;
+							break;
+						}
+					}
+   				    // if Task is not coming from any of the sources
+					if (firstSource<0) {
+			 	    	this.addReviewError("At least one source should be selected for the task, " + task.name + ".", "fleet-0-settings-tab");
+						count[0]++;
+						firstSource = 0;
+					}
+
+					// Alert user if Task is not handled by any operators
+					for(j=0,k=0;j<this.operatorSettings.numTeams;j++) {
+                		var opteam = this.operatorSettings.teams[j];
+
+						if (this.checkIfTaskSelected(opteam, i)) k++;
+					}
+
+					if (k===0) {
+			 	    	this.addReviewError("At least one active " + this.textStrings.operator.toLowerCase() + " should be selected for the task, " + task.name + ".", "opteam-" + firstSource +"-settings-tab");
+						count[0]++;
+					}
+				}
             }
 
             // check fleet params
@@ -1696,7 +1727,8 @@ var sim = new Vue({
                 this.addReviewError("Check the number of " + this.textStrings.fleets.toLowerCase() + " settings.", "fleets-global-settings-tab");
                 count[0]++;
             }
-            for(var i=0;i<this.fleetSettings.fleetTypes;i++) {
+
+            for(i=0;i<this.fleetSettings.fleetTypes;i++) {
                 var fleet = this.fleetSettings.fleets[i];
 
                 if (!this.checkFleetTask(fleet)) {
@@ -1706,7 +1738,7 @@ var sim = new Vue({
             }
 
             // check opteam params
-            for(var i=0;i<this.operatorSettings.numTeams;i++) {
+            for(i=0;i<this.operatorSettings.numTeams;i++) {
                 var opteam = this.operatorSettings.teams[i];
 
                 // at least one expertise is selected, warning
