@@ -38,7 +38,7 @@ footer .btn-file {
   line-height: 30px !important;
 }
 
-footer span {
+footer > span {
   margin-bottom:16px;
 /*  line-height: 30px !important;*/
 }
