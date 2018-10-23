@@ -230,6 +230,9 @@ var sim = new Vue({
             downloadJsonData: "",
             downloadJsonVisible: false,
 
+			// default simulation shift
+			simShift: "Morning",
+
             // Checking busy status
             onSubmit: false,
             isSaving: false,
@@ -1398,10 +1401,11 @@ var sim = new Vue({
         },
 
         setSimType(str) {
+			//alert(this.miscSettings.simShift);
             this.globalSettings.simType = str;
 
             // retrieve each default configuration and set
-            axios.get('data/' + str + '.json')
+            axios.get('data/' + str + this.miscSettings.simShift + '.json')
               .then((response) => {
                 // handle success
 				console.log(response.data, str);
@@ -1701,7 +1705,7 @@ var sim = new Vue({
 						}
 					}
    				    // if Task is not coming from any of the sources
-					if (firstSource<0) {
+					if (firstSource<0 && !this.fleetSettings.otherSources.tasks.includes(i)) {
 			 	    	this.addReviewError("At least one source should be selected for the task, " + task.name + ".", "fleet-0-settings-tab");
 						count[0]++;
 						firstSource = 0;

@@ -197,12 +197,37 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="col-sm">
-                                    <h3 id="sim-type-title">Choose a simulation type:</h3>
+                                    <h3 id="sim-type-title">Simulation shift &amp; type:</h3>
                                 </div>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body">
+          						<div class="row mb-4">
+									<div class="col-12 mb-2">
+									  <span>1. Choose shift:</span>
+									</div>
+									<div class="col-12">
+										<div class="custom-control custom-control-inline custom-radio">
+											<input class="custom-control-input" type="radio" name="simulation-shift" id="task-simulation-shift-morning"
+												value="Morning" checked  v-model="miscSettings.simShift">
+											<label class="custom-control-label" for="task-simulation-shift-morning">Morning</label>
+										</div>
+										<div class="custom-control custom-control-inline custom-radio">
+											<input class="custom-control-input" type="radio" name="simulation-shift" id="task-simulation-shift-afternoon"
+												value="Afternoon"  v-model="miscSettings.simShift">
+											<label class="custom-control-label" for="task-simulation-shift-afternoon">Afternoon</label>
+										</div>
+										<div class="custom-control custom-control-inline custom-radio">
+											<input class="custom-control-input" type="radio" name="simulation-shift" id="task-simulation-shift-night"
+												value="Night"  v-model="miscSettings.simShift">
+											<label class="custom-control-label" for="task-simulation-shift-night">Night</label>
+										</div>
+									</div>
+								</div>
                                 <div class="row">
+									<div class="col-12 mb-2">
+									  <span>2. Choose type:</span>
+									</div>
                                     <div class="col-12 col-sm-6 col-lg-4 image-card">
                                         <a href="javascript:void(0)" @click="setSimType('Aviation')">
                                             <img src="images/airport.jpg" class="img-responsive" alt="">
