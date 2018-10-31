@@ -281,9 +281,13 @@
                     </div>
                 </div>
 
-                <!-- different traffic levels (diffTrafficLevels) -->
+                <!-- transitioning periods (transfer of duty) -->
                 <div class="form-group">
-                    <label class="col-form-label">{{textStrings.questionTransition}}</label>
+                    <label class="col-form-label">{{textStrings.questionTransition}}
+			<span v-tooltip.bottom="textStrings.tooltipTransition">
+                            <span class="fas fa-info-circle"></span>
+                        </span>
+			</label>
                     <div v-show="globalSettings.isTransition === 'y'">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-beginning" class="custom-control-input" v-model="globalSettings.hasTransition[0]">
