@@ -272,10 +272,7 @@
                 <!-- hours in shift (numHours) -->
                 <div class="form-group">
                     <label for="num-hours">
-                        {{textStrings.questionHours}}
-                        <span v-tooltip.bottom="textStrings.tooltipHours">
-                            <span class="fas fa-info-circle"></span>
-                        </span>
+                        {{textStrings.questionHours}}            
                     </label>
                     <div class="mb-3">
                         <number-input :min=1 :max=12 :step=1
