@@ -273,9 +273,6 @@
                 <div class="form-group">
                     <label for="num-hours">
                         {{textStrings.questionHours}}
-                        <span v-tooltip.bottom="textStrings.tooltipHours">
-                            <span class="fas fa-info-circle"></span>
-                        </span>
                     </label>
                     <div class="mb-3">
                         <number-input :min=1 :max=12 :step=1
@@ -286,7 +283,11 @@
 
                 <!-- different traffic levels (diffTrafficLevels) -->
                 <div class="form-group">
-                    <label class="col-form-label">{{textStrings.questionTransition}}</label>
+                    <label class="col-form-label">{{textStrings.questionTransition}}
+			            <span v-tooltip.bottom="textStrings.tooltipTransition">
+                            <span class="fas fa-info-circle"></span>
+                        </span>
+            		</label>
                     <div v-show="globalSettings.isTransition === 'y'">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" id="transition-beginning" class="custom-control-input" v-model="globalSettings.hasTransition[0]">
