@@ -4,7 +4,7 @@ var textStrings = {
         //basic: "Basic Settings",
         questionHours: "1. How many hours are in this shift?",        
         questionTransition: "2. Check if there is a transitioning period at the beginning or ending of this shift.",
-	tooltipTransition: "Transitioning period is defined as the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
+	tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
         optionTransition: [ "Beginning of shift", "Ending of shift" ],
         questionTransitionDuration: [
             "How long does the beginning of shift transition last?",
@@ -50,7 +50,7 @@ var textStrings = {
         nextTab: "Tasks",
     },
     Aviation: {
-	    tooltipTransition: "Transitioning period is defined as the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
+	    tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
         
 
     },
@@ -58,7 +58,7 @@ var textStrings = {
         // basic settings
         questionHours: "1. How many hours are your train dispatchers working this shift?",
         questionTransition: "2. If your dispatchers have transfer-of-duty periods, when do they occur?",
-	    tooltipTransition: "Transitioning period is defined as the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
+	tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
         questionTransitionDuration: [
             "At the beginning of their shifts, how long does this transfer-of-duty last?",
             "At the ending of their shifts, how long does this transfer-of-duty last?",
