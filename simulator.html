@@ -372,7 +372,10 @@
                     <!-- TASK GLOBAL SETTINGS -->
                     <div class="tab-pane fade show active" id="tasks-global-settings" role="tabpanel" aria-labelledby="tasks-global-settings-tab">
 
-                        <h3 class="mb-4">Task Settings</h3>
+                        <h3 class="mb-4">Task Settings
+			    <span v-tooltip.bottom="textStrings.tooltipTask">
+                            <span class="fas fa-info-circle"></span>
+                        </span></h3>
 
                         <!-- tasks assigned to operators (task.include) -->
                         <h5>Which tasks are assigned to the operators?</h5>
@@ -997,7 +1000,10 @@
 
 								<!-- fleet communications (fleet.comms) -->
 								<div v-show="fleet.numVehicles > 1">
-									<label class="mt-3 mb-3">Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?</label>
+									<label class="mt-3 mb-3">Does this {{ textStrings.fleet.toLowerCase() }} have some level of vehicle-to-vehicle communication?
+									<span v-tooltip.bottom="textStrings.tooltipFleetComm">
+                            							<span class="fas fa-info-circle"></span>
+                        						</span></label>
 									<br/>
 									<select class="custom-select width-small" v-model="fleet.comms">
 										<option value="N">None</option>
@@ -1014,7 +1020,10 @@
 
                         <!-- fleet task checklist (fleet.tasks) -->
                         <div class="form-group">
-                            <label class="mb-3">3. Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <label class="mb-3">3. Which tasks are associated with this {{ textStrings.fleet.toLowerCase() }}?
+				<span v-tooltip.bottom="textStrings.tooltipFleetTask">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             <div class="alert alert-info" v-if="!checkFleetTask(fleet)">
                                 At least one task needs to be selected for the fleet.
                             </div>
@@ -1028,7 +1037,10 @@
                         <!-- <h5 class="mb-3">Traffic</h5>-->
                         <!-- different traffic levels (diffTrafficLevels) -->
                         <div class="form-group">
-                            <label class="col-form-label">4. Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?</label>
+                            <label class="col-form-label">4. Are there different traffic levels for during this shift for this {{ textStrings.fleet.toLowerCase() }}?
+				<span v-tooltip.bottom="textStrings.tooltipFleetTraffic">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
@@ -1070,7 +1082,10 @@
                     <!-- OTHER SOURCES -->
                     <div class="tab-pane fade" id="fleets-other-sources-settings" role="tabpanel" aria-labelledby="fleets-other-sources-settings-tab">
 
-                        <h3 class="mb-4">{{textStrings.otherSources}}</h3>
+                        <h3 class="mb-4">{{textStrings.otherSources}}
+			    <span v-tooltip.bottom="textStrings.tooltipFleetOther">
+                            <span class="fas fa-info-circle"></span>
+                        </span></h3>
 
                         <!-- FLEET TASKS -->
 
@@ -1087,7 +1102,10 @@
                         <!-- <h5 class="mb-3">Traffic</h5>-->
                         <!-- different traffic levels (diffTrafficLevels) -->
                         <div class="form-group">
-                            <label class="col-form-label">2. Are there different traffic levels for during this shift for {{textStrings.otherSources.toLowerCase()}}?</label>
+                            <label class="col-form-label">2. Are there different traffic levels for during this shift for {{textStrings.otherSources.toLowerCase()}}?
+				<span v-tooltip.bottom="textStrings.tooltipFleetOtherTraffic">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
