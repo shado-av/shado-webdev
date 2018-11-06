@@ -81,6 +81,7 @@ var textStrings = {
 
         // Tasks
         tasks: "Task",
+	tooltipTask: "Tasks given to the operator(s) during their shift(s).",
         qWeather: "2. Is this task affected by weather?",
 	tooltipTaskWeather: "Yes means the task will arrive 10% more frequently.",
         qTraffic: "3. Is this task affected by traffic?",
@@ -102,6 +103,11 @@ var textStrings = {
         vehicle: "Subdivision",
         qFleets: "How many different railroads do the dispatchers manage?",
         qNumVeh: "How many subdivisions are on this railroad?",
+	tooltipFleetComm: "Subdivision-to-subdivision Radio Communications: A railroad with some level of local communications demands less from a dispatcher. Some: reduces rate of task arrivals by 30%. Full: reduces rate of task arrivals by 70%.",
+	tooltipFleetTask: "These tasks arrive from the railroads.",
+	tooltipFleetTraffic: "Traffic levels affect the arrival rate of certain tasks. Low: tasks arrive half as often. Medium: tasks arrive as normal. High: Tasks arrive twice as often.",
+	tooltipFleetOther: "Tasks from other sources do not arrive from the railroads. E.g. Miscellaneous (Dispatcher break time)",
+	tooltipFleetOtherTraffic: "Traffic levels affect the arrival rate of certain tasks. Low: tasks arrive half as often. Medium: tasks arrive as normal. High: Tasks arrive twice as often.",
 
         // Operator Teams
         operator: "Dispatcher",
