@@ -14,20 +14,26 @@ var textStrings = {
 	tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
 	//tooltipCondition0: "Essential task that lasts 20 to 40 minutes, arrives once every 8 hours of a shift on average.",
-	//tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
+	tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
 
 
         // Tasks
         tasks: "Task",
+	tooltipTask: "Tasks given to the operator(s) during their shift(s).",
         qWeather: "2. Is the dispatcher's work on this task influenced by weather conditions?",
-	//tooltipTaskWeather: "",
+	tooltipTaskWeather: "Yes means the task will arrive 10% more frequently.",
         qTraffic: "3. Is the dispatcher's work on this task influenced by hourly traffic levels of railroad(s)?",
-	//tooltipTaskTraffic: "",
+	tooltipTaskTraffic: "Yes means the arrival rate of this task will be affected by traffic levels.",
         qTeamCoordination: "4. Do dispatchers need to coordinate with other dispatchers here to complete this task?",
-        //tooltipTaskCoord: "",
+        tooltipTaskCoord: "Yes means the task is affected by level of team communication",
 	qEssential: "5. Must a dispatcher prioritize this task over other tasks?",
         qInterruptible: "Is it OK for a dispatcher to be interrupted while working on this task?",
         tooltipInterruptible: "Yes means the dispatcher can put this task on hold to complete other tasks and return to this one later.",
+	tooltipTaskFreq: "This determines arrival time, or the time at which the task enters the system.",
+	tooltipTaskWait: "This determines expiration time, the time at which a task will expire or the time by which it must exit the system.",
+	tooltipTaskComplete: "This determines service time, the total time required for an operator to process the task.",
+	tooltipTaskFollowTime: "This determines the dependent inter-arrival time",
+	tooltipTaskFollow: "'Add Following Task' creates a new task with an arrival rate that is dependent on this original task’s arrival.",
 
 
         // Fleets
@@ -37,7 +43,12 @@ var textStrings = {
         vehicle: "Vehicle",
         qFleets: "How many different fleets do the operators manage?",
         qNumVeh: "How many vehicles are in this fleet?",
-		otherSources: "Other Sources",
+	otherSources: "Other Sources",
+	tooltipFleetComm: "Vehicle-to-vehicle Communications: A vehicle with some level of local communications demands less from a dispatcher. Some: reduces rate of task arrivals by 30%. Full: reduces rate of task arrivals by 70%.",
+	tooltipFleetTask: "These tasks arrive from the vehicle.",
+	tooltipFleetTraffic: "Traffic levels affect the arrival rate of certain tasks. Low: tasks arrive half as often. Medium: tasks arrive as normal. High: Tasks arrive twice as often.",
+	tooltipFleetOther: "Tasks from other sources do not arrive from the vehicles. E.g. Miscellaneous (Dispatcher break time)",
+	tooltipFleetOtherTraffic: "Traffic levels affect the arrival rate of certain tasks. Low: tasks arrive half as often. Medium: tasks arrive as normal. High: Tasks arrive twice as often.",
 
         // Operator Teams
         operator: "Operator",
@@ -46,8 +57,25 @@ var textStrings = {
         operatorSettings: "Operator Settings",
 
         AIDATypeStr: ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
+	    
+	tooltipOperatorFlex: "Flex team assists all types of operators whenever their workload is above 70%.",
+	tooltipOperatorFlexNum: "How many of these chief operators are on duty this shift?",
+	tooltipOperatorTeam: "Does the operator share the same desk with other operators?",
+	tooltipOperatorSize: "How many operators are on the team?",
+	tooltipOperatorComm: "Partial: Communicate with team once every 10 minutes, lasting an average of 10 seconds; 30% more likely to catch a human error. Full: Communicate with team once every 5 minutes, lasting an average of 10 seconds ; 70% more likely to catch a human error.",
+	tooltipOperatorTask: "What task types for which vehicles/sources are these operators expected to execute?",
+	tooltipOperatorStrat: "Which strategy does the operator employ to handle tasks? First In First Out: In chronological order of arrival. Shortest Task First: In order from lowest service time. Priority: Based on order of importance.",
+	//tooltipOperatorPriority: "Essential tasks: highest priority, rise to the top of the queue, can interrupt any interruptible task that an operator is busy with, cannot be interrupted.",
+	tooltipOperatorError: "Error: a task completed incorrectly.",
+	tooltipOperatorAI: "Three types of artificial intelligence (AI) agents: Equal Operator, Assisting Individual, Assisting Team Coordination (must have some level of team communication).",
+	tooltipOperatorAIequal: "AI that can handle any task that the operator handles. Employed when the human operators are unavailable, and a task arrives.",
+	tooltipOperatorAIindiv: "AI that directly supports operators by reducing human error probability as well as how long it takes them to complete selected tasks.",
+	tooltipOperatorAIindivLevel: "Level determines human performance speed. Partial: Human performance is 1.4 times faster. Service time decreases by 30% on each task that the AI assists. High: Human performance is 3.3 times faster. Service time decreases by 70% on each task that the AI assists.",
+	tooltipOperatorAIteam: "AI that is available when there is some level of team coordination (more than one operator in a team during the same shift).",
+	tooltipOperatorAIteamLevel: "Level determines team communication speed. Partial: Team communication is 1.4 times faster, reduces team communication time by 30%. High: Team communication is 3.3 times faster, reduces team communication time by 70%.",
 
         // Reviews
+	//tooltipRunWarnings: "Run simulation with warnings. Results may not be as accurate. Fix blue warnings above to run simulation without warnings.",
 
         // Results
 
@@ -57,11 +85,53 @@ var textStrings = {
         nextTab: "Tasks",
     },
     Aviation: {
+	//Basic Settings
 	tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
         tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
 	//tooltipCondition0: "Essential task that lasts 20 to 40 minutes, arrives once every 8 hours of a shift on average.",
-	//tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
-
+	tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
+	
+	//Tasks
+	tooltipTask: "Tasks given to the operator(s) during their shift(s).",
+	tooltipTaskWeather: "Yes means the task will arrive 10% more frequently.",
+	tooltipTaskCoord: "Yes means the task is affected by level of team communication",
+	tooltipTaskFreq: "This determines arrival time, or the time at which the task enters the system.",
+	tooltipTaskWait: "This determines expiration time, the time at which a task will expire or the time by which it must exit the system.",
+	tooltipTaskComplete: "This determines service time, the total time required for an operator to process the task.",
+	tooltipTaskFollowTime: "This determines the dependent inter-arrival time",
+	tooltipTaskFollow: "'Add Following Task' creates a new task with an arrival rate that is dependent on this original task’s arrival.",
+	//Fleets
+	tooltipFleetComm: "Vehicle-to-vehicle Communications: Aircraft with some level of local communications demands less from a dispatcher. Some: reduces rate of task arrivals by 30%. Full: reduces rate of task arrivals by 70%.",
+	tooltipFleetTask: "These tasks arrive from the aircraft.",
+	tooltipFleetTraffic: "Traffic levels affect the arrival rate of certain tasks. Low: tasks arrive half as often. Medium: tasks arrive as normal. High: Tasks arrive twice as often.",
+	tooltipFleetOther: "Tasks from other sources do not arrive from the aircraft. E.g. Miscellaneous (Dispatcher break time)",
+	tooltipFleetOtherTraffic: "Traffic levels affect the arrival rate of certain tasks. Low: tasks arrive half as often. Medium: tasks arrive as normal. High: Tasks arrive twice as often.",
+	    
+	    
+	    
+	    
+	//Operator Teams
+	tooltipOperatorFlex: "Flex team assists all types of dispatchers whenever their workload is above 70%.",
+	tooltipOperatorFlexNum: "How many of these chief dispatchers are on duty this shift?",
+	tooltipOperatorTeam: "Does the dispatcher share the same desk with other dispatchers?",
+	tooltipOperatorSize: "How many dispatchers are on the team?",
+	tooltipOperatorComm: "Partial: Communicate with team once every 10 minutes, lasting an average of 10 seconds; 30% more likely to catch a human error. Full: Communicate with team once every 5 minutes, lasting an average of 10 seconds ; 70% more likely to catch a human error.",
+	tooltipOperatorTask: "What task types for which aircraft/sources are these dispatchers expected to execute?",
+	tooltipOperatorStrat: "Which strategy does the dispatcher employ to handle tasks? First In First Out: In chronological order of arrival. Shortest Task First: In order from lowest service time. Priority: Based on order of importance.",
+	//tooltipOperatorPriority: "Essential tasks: highest priority, rise to the top of the queue, can interrupt any interruptible task that a dispatcher is busy with, cannot be interrupted.",
+	tooltipOperatorError: "Error: a task completed incorrectly.",
+	tooltipOperatorAI: "Three types of artificial intelligence (AI) agents: Equal Operator, Assisting Individual, Assisting Team Coordination (must have some level of team communication).",
+	tooltipOperatorAIequal: "AI that can handle any task that the dispatcher handles. Employed when the human dispatchers are unavailable, and a task arrives.",
+	tooltipOperatorAIindiv: "AI that directly supports dispatchers by reducing human error probability as well as how long it takes them to complete selected tasks.",
+	tooltipOperatorAIindivLevel: "Level determines human performance speed. Partial: Human performance is 1.4 times faster. Service time decreases by 30% on each task that the AI assists. High: Human performance is 3.3 times faster. Service time decreases by 70% on each task that the AI assists.",
+	tooltipOperatorAIteam: "AI that is available when there is some level of team coordination (more than one dispatcher in a team during the same shift).",
+	tooltipOperatorAIteamLevel: "Level determines team communication speed. Partial: Team communication is 1.4 times faster, reduces team communication time by 30%. High: Team communication is 3.3 times faster, reduces team communication time by 70%.",
+	
+	    
+	//Review
+	//tooltipRunWarnings: "Run simulation with warnings. Results may not be as accurate. Fix blue warnings above to run simulation without warnings.",
+	    
+	    
 
     },
     Rail: {
@@ -124,14 +194,15 @@ var textStrings = {
 	//tooltipOperatorPriority: "Essential tasks: highest priority, rise to the top of the queue, can interrupt any interruptible task that a dispatcher is busy with, cannot be interrupted.",
 	tooltipOperatorError: "Error: a task completed incorrectly.",
 	tooltipOperatorAI: "Three types of artificial intelligence (AI) agents: Equal Operator, Assisting Individual, Assisting Team Coordination (must have some level of team communication).",
-	tooltipOperatorAIequal: "AI that can handle any task that the dispatcher handles. Employed when the humans are unavailable, and a task arrives.",
-	tooltipOperatorAIindiv: "AI that directly supports dispatchers by reducing how long it takes them to complete selected tasks as well as human error probability.",
+	tooltipOperatorAIequal: "AI that can handle any task that the dispatcher handles. Employed when the human dispatchers are unavailable, and a task arrives.",
+	tooltipOperatorAIindiv: "AI that directly supports dispatchers by reducing human error probability as well as how long it takes them to complete selected tasks.",
 	tooltipOperatorAIindivLevel: "Level determines human performance speed. Partial: Human performance is 1.4 times faster. Service time decreases by 30% on each task that the AI assists. High: Human performance is 3.3 times faster. Service time decreases by 70% on each task that the AI assists.",
 	tooltipOperatorAIteam: "AI that is available when there is some level of team coordination (more than one dispatcher in a team during the same shift).",
 	tooltipOperatorAIteamLevel: "Level determines team communication speed. Partial: Team communication is 1.4 times faster, reduces team communication time by 30%. High: Team communication is 3.3 times faster, reduces team communication time by 70%.",
 
 
         // Reviews
+	//tooltipRunWarnings: "Run simulation with warnings. Results may not be as accurate. Fix blue warnings above to run simulation without warnings.",
 
         // Results
 
