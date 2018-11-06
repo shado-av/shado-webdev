@@ -778,10 +778,7 @@
                                 <table class="form-group table">
                                     <thead class="thead-light">
                                         <th>Task</th>
-                                        <th>Priority
-					    <span v-tooltip.bottom="textStrings.tooltipOperatorPriority">
-                            <span class="fas fa-info-circle"></span>
-                        </span></th>
+                                        <th>Priority</th>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
