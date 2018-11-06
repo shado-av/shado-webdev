@@ -11,6 +11,7 @@ var textStrings = {
             "How long does the ending of shift transition last?",
         ],
         questionExtremeCondition: "3. Are there any extreme conditions?",
+	tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
 
         // Tasks
@@ -50,8 +51,8 @@ var textStrings = {
         nextTab: "Tasks",
     },
     Aviation: {
-	    tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
-        
+	tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
+        tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
 
     },
     Rail: {
@@ -64,7 +65,10 @@ var textStrings = {
             "At the ending of their shifts, how long does this transfer-of-duty last?",
         ],
         questionExtremeCondition: "3. Will there be any extreme conditions during this shift?",
+	tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
         optionExtremeCondition: [ "Derailment", "Poor Weather"],
+	tooltipCondition0: "Essential task that lasts anywhere from 20 to 40 minutes will appear, arriving once every 8 hours of a shift on average.",
+	tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
 
         // Tasks
         tasks: "Task",
