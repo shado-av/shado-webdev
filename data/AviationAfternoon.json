@@ -1,0 +1,197 @@
+{
+	"version": "0.9.5",
+	"numReps": 100,
+	"globalSettings": {
+		"simType": "Aviation",
+		"numHours": 8,
+		"diffTrafficLevels": "n",
+		"trafficLevels": ["m", "m", "m", "m", "m", "m", "m", "m"],
+		"isTransition": "y",
+		"transitionDesc": ["Beginning", "Ending"],
+		"hasTransition": [true, true],
+		"transitionDists": ["U", "U"],
+		"transitionPms": [[5, 10], [12, 15]],
+		"exoFactorsType": [false, true]
+	},
+	"taskSettings": {
+		"numNameTask": 1,
+		"tasks": [{
+			"name": "Communicating",
+			"include": true,
+			"isCustom": false,
+			"essential": "n",
+			"exoType2Aff": "n",
+			"interruptable": "n",
+			"affTeamCoord": "n",
+			"arrivalDistribution": ["E"],
+			"arrivalParam": [[60]],
+			"serviceDistribution": ["U"],
+			"serviceParam": [[0.5, 2]],
+			"expireDistribution": ["N"],
+			"expireParam": [[1440]],
+			"affectByIROPS": [0],
+			"humanErrorSelect": "0",
+			"humanErrorProb": [[0.00008, 0.0004, 0.007]],
+			"leadTask": -1
+		}, {
+			"name": "Actuation",
+			"include": true,
+			"isCustom": false,
+			"essential": "n",
+			"exoType2Aff": "n",
+			"interruptable": "n",
+			"affTeamCoord": "n",
+			"arrivalDistribution": ["E"],
+			"arrivalParam": [[60]],
+			"serviceDistribution": ["U"],
+			"serviceParam": [[0.5, 2]],
+			"expireDistribution": ["N"],
+			"expireParam": [[1440]],
+			"affectByIROPS": [0],
+			"humanErrorSelect": "0",
+			"humanErrorProb": [[0.00008, 0.0004, 0.007]],
+			"leadTask": -1
+		}, {
+			"name": "Directive Mandatory",
+			"include": true,
+			"isCustom": false,
+			"essential": "n",
+			"exoType2Aff": "n",
+			"interruptable": "n",
+			"affTeamCoord": "n",
+			"arrivalDistribution": ["E"],
+			"arrivalParam": [[60]],
+			"serviceDistribution": ["U"],
+			"serviceParam": [[0.5, 2]],
+			"expireDistribution": ["N"],
+			"expireParam": [[1440]],
+			"affectByIROPS": [0],
+			"humanErrorSelect": "0",
+			"humanErrorProb": [[0.00008, 0.0004, 0.007]],
+			"leadTask": -1
+		}]
+	},
+	"operatorSettings": {
+		"numTeams": 2,
+		"numNameTeam": 3,
+		"hasFlexPosition": "n",
+		"flexTeamSize": 1,
+		"teams": [{
+			"name": "Operator Team 1",
+			"size": 1,
+			"strategy": "FIFO",
+			"comms": "N",
+			"tasks": [0, 1],
+			"expertise": [[1, 1], [1, 1], [0, 1]],
+			"expertiseOS": [0,0,0],
+			"priority": [[1, 4, 6]],
+			"AIDA": {
+				"AIDAType": [false, false, false],
+				"ETServiceTimeQ": "E",
+				"ETErrorRateQ": "E",
+				"ETFailThresholdQ": "E",
+				"ETServiceTime": 2,
+				"ETErrorRate": 2,
+				"ETFailThreshold": 2,
+				"IATasks": [],
+				"IALevel": "S",
+				"TCALevel": "S"
+			},
+			"failThresh": [[1, 2, 3]]
+		}, {
+			"name": "Operator Team 2",
+			"size": 1,
+			"strategy": "FIFO",
+			"comms": "N",
+			"tasks": [1, 2],
+			"expertise": [[0, 1], [1, 1], [1, 1]],
+			"expertiseOS": [0,0,0],
+			"priority": [[1, 1, 1]],
+			"AIDA": {
+				"AIDAType": [false, false, false],
+				"ETServiceTimeQ": "E",
+				"ETErrorRateQ": "E",
+				"ETFailThresholdQ": "E",
+				"ETServiceTime": 2,
+				"ETErrorRate": 2,
+				"ETFailThreshold": 2,
+				"IATasks": [],
+				"IALevel": "S",
+				"TCALevel": "S"
+			},
+			"failThresh": [[1, 2, 3]]
+		}]
+	},
+	"fleetSettings": {
+		"fleetTypes": 3,
+		"numNameFleet": 4,
+		"fleets": [{
+			"name": "Fleet 1",
+			"numVehicles": 1,
+			"comms": "N",
+			"tasks": [0, 1],
+			"diffTrafficLevels": "n",
+			"trafficLevels": ["m", "m", "m", "m", "m", "m", "m", "m"]
+		}, {
+			"name": "Fleet 2",
+			"numVehicles": 1,
+			"comms": "N",
+			"tasks": [1, 2],
+			"diffTrafficLevels": "n",
+			"trafficLevels": ["m", "m", "m", "m", "m", "m", "m", "m"]
+		}, {
+			"name": "Fleet 3",
+			"numVehicles": 1,
+			"comms": "N",
+			"tasks": [],
+			"diffTrafficLevels": "n",
+			"trafficLevels": ["m", "m", "m", "m", "m", "m", "m", "m"]
+		}],
+		"otherSources": {
+				"name": "Other Sources",
+				"numVehicles": 1,
+				"comms": "N",
+				"tasks": [],
+				"diffTrafficLevels": "n",
+				"trafficLevels": ["m", "m", "m", "m", "m", "m", "m", "m"]
+			}
+	},
+	"miscSettings": {
+		"downloadJsonData": "",
+		"downloadJsonVisible": false,
+		"onSubmit": false,
+		"isSaving": false,
+		"isLoading": false,
+		"showGoButton": true,
+		"showGoText": "Run Simulation with Warnings",
+		"showGoClass": "btn-warning",
+		"viewResultsClass": "d-none",
+		"inputString": "",
+		"warningMessage": "",
+		"sessionId": "",
+		"sessionQuery": "",
+		"exoFactorsName": ["Medical Emergency", "Weather"],
+		"AIDATypeStr": ["Equal Operator", "Assisting Individual", "Assisting Team Coordination"],
+		"comms": {
+			"N": "None",
+			"S": "Some",
+			"F": "Full"
+		}
+	},
+	"textStrings": {
+		"questionHours": "1. How many hours are in this shift?",
+		"tooltipHours": "This is an example tooltip",
+		"questionTransition": "2. Check if there is a transitioning period at the beginning or ending of this shift.",
+		"optionTransition": ["Beginning of shift", "Ending of shift"],
+		"questionTransitionDuration": ["How long does the beginning of shift transition last?", "How long does the ending of shift transition last?"],
+		"questionExtremeCondition": "3. Are there any extreme conditions?",
+		"optionExtremeCondition": ["Medical Emergency", "Weather"],
+		"qWeather": "2. Is this task affected by weather?",
+		"qTraffic": "3. Is this task affected by traffic?",
+		"qTeamCoordination": "4. Is this task affected by team coordination?",
+		"qEssential": "5. Is this task essential?",
+		"qInterruptable": "Is this task interruptable?",
+		"fleets": "Fleets",
+		"operators": "Operators"
+	}
+}

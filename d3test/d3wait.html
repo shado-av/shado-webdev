@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div.tooltipBox {
+    position: absolute;
+    text-align: left;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+h3.subtitle {
+    padding: 20px 80px 0px;
+}
+
+#boxSVG, #boxSVG2, #boxSVG3,#waitTimeSVG {
+    padding-left: 50px;
+}
+</style>
+    <!-- Bootstrap 4.1.1 libraries -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h3 class='subtitle mb-5'>WaitTime per Operator</h3>
+    <svg id="waitTimeSVG" width="960" height="450"></svg>
+
+    <div id="barWaitTimePerTask" role="tabpanel" class="ml-5">
+        <ul class="nav nav-tabs">
+        </ul>
+
+        <div class="tab-content">
+        </div>
+    </div>
+
+    <div id="barWaitTimePerFleet" role="tabpanel" class="mt-5 ml-5">
+        <ul class="nav nav-tabs">
+        </ul>
+
+        <div class="tab-content ">
+        </div>
+    </div>
+
+    <script src='../result.js'></script>
+    <script src='../wait-time.js'></script>
+    <script>
+        var sim = {
+            textStrings: {
+                fleet: "Fleet",
+                operator: "Operator",
+            },
+			resultSettings: {
+				numReps: 100,
+				hours: 8,
+				exoFactors: [],
+				busyTimePerFleet: "",
+				busyTimePerTask: "",
+				waitTimePerFleet: "",
+				waitTimePerTask: "",
+				busyTimePerOp: "",
+				lowWorkloadTeams: "",
+				highWorkloadTeams: "",
+			},
+        };
+
+        $(function() {
+            WaitTime.visualize('WaitTime.json', '#waitTimeSVG', '1');
+        });
+    </script>
+</body>
+</html>

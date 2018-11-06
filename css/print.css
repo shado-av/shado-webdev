@@ -1,0 +1,118 @@
+/*
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ *
+ * This file contains only the print styles from the HTML5 Boilerplate
+ * project. See <https://github.com/h5bp/html5-boilerplate> for more
+ * information on the main project.
+ */
+
+/* ==========================================================================
+   Print styles.
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster:
+                                   http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* remove navigation */
+    nav, #sim-sidebar,footer {
+        display: none !important;
+    }
+    #shado-sim {
+        margin: 50px;
+    }
+    .spacer {
+        height: 0;
+    }
+
+    #sim-sidebar {
+        width: 0;
+    }
+
+    #sim-content {
+        margin: 0;
+    }
+
+    #view-results .nav-tabs {
+        display: none;
+    }
+
+    #view-results-content > .tab-pane {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    @page {
+        margin-top: 0.5in;
+        margin-bottom: 0.5in;
+        margin-left: 0in;
+        margin-right: 0in;
+    }
+/*
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+*/
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+    thead {
+        display: table-header-group;
+    }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    img {
+        max-width: 100% !important;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+
+    #view-results-content > .tab-pane#results-download { display: none !important; }
+
+    div.dt-buttons { display: none; }
+}
