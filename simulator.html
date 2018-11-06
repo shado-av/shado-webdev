@@ -558,7 +558,7 @@
                         <!-- HUMAN ERROR PROBABILITY -->
                         <!--<h5 class="mb-3">Human Error Probability</h5>-->
                         <!-- human error probability numbers (task.humanErrorProb) -->
-                        <label>9. How would you describe this task?<span v-tooltip.bottom="{ content: 'This determines chance of human error, whether the task generally is more automated and based on skills or more effortful and based on rules or involves thinking outside procedures, based on knowledge.'}"><span class="fas fa-info-circle"></span></span></label>
+                        <label>9. How would you describe this task? <span v-tooltip.bottom="{ content: 'This determines chance of human error, whether the task generally is more automated and based on skills or more effortful and based on rules or involves thinking outside procedures, based on knowledge.'}"><span class="fas fa-info-circle"></span></span></label>
                         <div class="form-group">
                             <select class="custom-select width-small" v-model="task.humanErrorSelect"
                                     @change="updateHumanErrorProb(task)">
@@ -568,7 +568,10 @@
 
                         <div class="form-group" v-if="task.leadTask === -1">
                             <!-- tasks assigned to operators (task.include) -->
-                            <h5 class="mb-3">Which tasks are following this task?</h5>
+                            <h5 class="mb-3">Which tasks are following this task?
+				<span v-tooltip.bottom="textStrings.tooltipTaskFollow">
+                            <span class="fas fa-info-circle"></span>
+                        </span></h5>
                             <p class="text-muted small">Include up to
                             <b>10</b> following task types from the list of provided tasks or add following custom tasks.</p>
 
