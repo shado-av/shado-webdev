@@ -13,13 +13,19 @@ var textStrings = {
         questionExtremeCondition: "3. Are there any extreme conditions?",
 	tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
         optionExtremeCondition: [ "Medical Emergency", "Weather"],
+	//tooltipCondition0: "Essential task that lasts 20 to 40 minutes, arrives once every 8 hours of a shift on average.",
+	//tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
+
 
         // Tasks
         tasks: "Task",
         qWeather: "2. Is the dispatcher's work on this task influenced by weather conditions?",
+	//tooltipTaskWeather: "",
         qTraffic: "3. Is the dispatcher's work on this task influenced by hourly traffic levels of railroad(s)?",
+	//tooltipTaskTraffic: "",
         qTeamCoordination: "4. Do dispatchers need to coordinate with other dispatchers here to complete this task?",
-        qEssential: "5. Must a dispatcher prioritize this task over other tasks?",
+        //tooltipTaskCoord: "",
+	qEssential: "5. Must a dispatcher prioritize this task over other tasks?",
         qInterruptible: "Is it OK for a dispatcher to be interrupted while working on this task?",
         tooltipInterruptible: "Yes means the dispatcher can put this task on hold to complete other tasks and return to this one later.",
 
@@ -53,6 +59,9 @@ var textStrings = {
     Aviation: {
 	tooltipTransition: "Transitioning period is the period where the incoming and outgoing operators discuss relevant issues from the prior shift.",
         tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
+	//tooltipCondition0: "Essential task that lasts 20 to 40 minutes, arrives once every 8 hours of a shift on average.",
+	//tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
+
 
     },
     Rail: {
@@ -67,16 +76,23 @@ var textStrings = {
         questionExtremeCondition: "3. Will there be any extreme conditions during this shift?",
 	tooltipExtremeCondition: "Abnormal issues that would increase dispatcher workload.",
         optionExtremeCondition: [ "Derailment", "Poor Weather"],
-	tooltipCondition0: "Essential task that lasts anywhere from 20 to 40 minutes will appear, arriving once every 8 hours of a shift on average.",
+	tooltipCondition0: "Essential task that lasts 20 to 40 minutes, arrives once every 8 hours of a shift on average.",
 	tooltipCondition1: "All tasks affected by weather will arrive 10% more frequently.",
 
         // Tasks
         tasks: "Task",
         qWeather: "2. Is this task affected by weather?",
+	tooltipTaskWeather: "Yes means the task will arrive 10% more frequently.",
         qTraffic: "3. Is this task affected by traffic?",
+	tooltipTaskTraffic: "Yes means the arrival rate of this task will be affected by traffic levels.",
         qTeamCoordination: "4. Is this task affected by team coordination?",
+	tooltipTaskCoord: "Yes means the task is affected by level of team communication",
         qEssential: "5. Is this task essential?",
         qInterruptible: "Is this task interruptible?",
+	tooltipTaskFreq: "This determines arrival time, or the time at which the task enters the system.",
+	tooltipTaskWait: "This determines expiration time, the time at which a task will expire or the time by which it must exit the system.",
+	tooltipTaskComplete: "This determines service time, the total time required for an operator to process the task.",
+	tooltipTaskFollowTime: "This determines the dependent inter-arrival time",
 
         // Fleets
         fleet: "Railroad",
