@@ -421,7 +421,11 @@
 
                         <!-- task affected by type 2 condition (task.exoType2Aff) -->
                         <div class="form-group">
-                            <label class="col-form-label">2. Is this task affected by weather?</label>
+                            <label class="col-form-label">2. Is this task affected by weather?
+				<span v-tooltip.bottom="textStrings.tooltipTaskWeather">
+                            <span class="fas fa-info-circle"></span>
+                        </span>
+				</label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'exo-type2-affects'" :id="'task-' + index + 'exo-type2-affects-y'"
@@ -439,7 +443,10 @@
                         <!-- TASK TRAFFIC -->
                         <!-- traffic different (task.affectByIROPS) -->
                         <div class="form-group">
-                            <label class="col-form-label">3. Is this task affected by traffic?</label>
+                            <label class="col-form-label">3. Is this task affected by traffic?
+				<span v-tooltip.bottom="textStrings.tooltipTaskTraffic">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                              <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio"
@@ -458,7 +465,10 @@
 
                         <!-- task affected by team coordination (task.affTeamCoord) -->
                         <div class="form-group">
-                            <label class="col-form-label">4. Is this task affected by team coordination?</label>
+                            <label class="col-form-label">4. Is this task affected by team coordination?
+				<span v-tooltip.bottom="textStrings.tooltipTaskCoord">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             <div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :name="'task-' + index + 'team-coord-affects'" :id="'task-' + index + 'team-coord-affects-y'"
@@ -515,20 +525,33 @@
 -->
 
                         <!-- arrival time distribution (task.arrivalDistribution) -->
-                        <div v-if="task.leadTask === - 1">6. How frequently does this task occur for a {{textStrings.operator.toLowerCase()}}?</div>
-											  <div v-else>6. After {{ taskSettings.tasks[task.leadTask].name }} task arrives, when does this task follow?</div>
+                        <div v-if="task.leadTask === - 1">6. How frequently does this task occur for a {{textStrings.operator.toLowerCase()}}?
+			    <span v-tooltip.bottom="textStrings.tooltipTaskFreq">
+                            <span class="fas fa-info-circle"></span>
+                        </span>
+			    </div>
+				<div v-else>6. After {{ taskSettings.tasks[task.leadTask].name }} task arrives, when does this task follow?
+			    <span v-tooltip.bottom="textStrings.tooltipTaskFollowTime">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
                         <div class="options mt-3">
                             <distribution-params :lead-task=task.leadTask :n-option=0 params-label="Interarrival Time Parameters" :dist.sync=task.arrivalDistribution[0] :params.sync=task.arrivalParam[0]></distribution-params>
                         </div>
 
                         <!-- expiration time distribution (task.expireDistribution) -->
-                        <div>7. When this task appears, how much time can it wait to be completed before it becomes invalid?</div>
+                        <div>7. When this task appears, how much time can it wait to be completed before it becomes invalid?
+				<span v-tooltip.bottom="textStrings.tooltipTaskWait">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
                         <div class="options mt-3">
                             <distribution-params :n-option=2 params-label="Expiration Time Parameters" :dist.sync=task.expireDistribution[0] :params.sync=task.expireParam[0]></distribution-params>
                         </div>
 
                         <!-- service time distribution (task.serviceDistribution) -->
-                        <div>8. How long does it take a {{textStrings.operator.toLowerCase()}} to complete this task?</div>
+                        <div>8. How long does it take a {{textStrings.operator.toLowerCase()}} to complete this task?
+			    <span v-tooltip.bottom="textStrings.tooltipTaskComplete">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
                         <div class="options mt-3">
                             <distribution-params params-label="Service Time Parameters" :dist.sync=task.serviceDistribution[0] :params.sync=task.serviceParam[0]></distribution-params>
                         </div>
