@@ -114,6 +114,21 @@ var textStrings = {
         operators: "Dispatchers", // for operators menu
         operatorList: "Dispatcher List",
         operatorSettings: "Dispatcher Settings",
+	tooltipOperatorFlex: "Flex team assists all types of dispatchers whenever their workload is above 70%.",
+	tooltipOperatorFlexNum: "How many of these chief dispatchers are on duty this shift?",
+	tooltipOperatorTeam: "Does the dispatcher share the same desk with other dispatchers?",
+	tooltipOperatorSize: "How many dispatchers are on the team?",
+	tooltipOperatorComm: "Partial: Communicate with team once every 10 minutes, lasting an average of 10 seconds; 30% more likely to catch a human error. Full: Communicate with team once every 5 minutes, lasting an average of 10 seconds ; 70% more likely to catch a human error.",
+	tooltipOperatorTask: "What task types for which railroads/sources are these dispatchers expected to execute?",
+	tooltipOperatorStrat: "Which strategy does the dispatcher employ to handle tasks? First In First Out: In chronological order of arrival. Shortest Task First: In order from lowest service time. Priority: Based on order of importance.",
+	tooltipOperatorPriority: "Essential tasks: highest priority, rise to the top of the queue, can interrupt any interruptible task that a dispatcher is busy with, cannot be interrupted.",
+	tooltipOperatorError: "Error: a task completed incorrectly.",
+	tooltipOperatorAI: "Three types of artificial intelligence (AI) agents: Equal Operator, Assisting Individual, Assisting Team Coordination (must have some level of team communication).",
+	tooltipOperatorAIequal: "AI that can handle any task that the dispatcher handles. Employed when the humans are unavailable, and a task arrives.",
+	tooltipOperatorAIindiv: "AI that directly supports dispatchers by reducing how long it takes them to complete selected tasks as well as human error probability.",
+	tooltipOperatorAIindivLevel: "Level determines human performance speed. Partial: Human performance is 1.4 times faster. Service time decreases by 30% on each task that the AI assists. High: Human performance is 3.3 times faster. Service time decreases by 70% on each task that the AI assists.",
+	tooltipOperatorAIteam: "AI that is available when there is some level of team coordination (more than one dispatcher in a team during the same shift).",
+	tooltipOperatorAIteamLevel: "Level determines team communication speed. Partial: Team communication is 1.4 times faster, reduces team communication time by 30%. High: Team communication is 3.3 times faster, reduces team communication time by 70%.",
 
 
         // Reviews
