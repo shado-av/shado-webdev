@@ -121,7 +121,7 @@ var textStrings = {
 	tooltipOperatorComm: "Partial: Communicate with team once every 10 minutes, lasting an average of 10 seconds; 30% more likely to catch a human error. Full: Communicate with team once every 5 minutes, lasting an average of 10 seconds ; 70% more likely to catch a human error.",
 	tooltipOperatorTask: "What task types for which railroads/sources are these dispatchers expected to execute?",
 	tooltipOperatorStrat: "Which strategy does the dispatcher employ to handle tasks? First In First Out: In chronological order of arrival. Shortest Task First: In order from lowest service time. Priority: Based on order of importance.",
-	tooltipOperatorPriority: "Essential tasks: highest priority, rise to the top of the queue, can interrupt any interruptible task that a dispatcher is busy with, cannot be interrupted.",
+	//tooltipOperatorPriority: "Essential tasks: highest priority, rise to the top of the queue, can interrupt any interruptible task that a dispatcher is busy with, cannot be interrupted.",
 	tooltipOperatorError: "Error: a task completed incorrectly.",
 	tooltipOperatorAI: "Three types of artificial intelligence (AI) agents: Equal Operator, Assisting Individual, Assisting Team Coordination (must have some level of team communication).",
 	tooltipOperatorAIequal: "AI that can handle any task that the dispatcher handles. Employed when the humans are unavailable, and a task arrives.",
