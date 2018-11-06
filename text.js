@@ -93,6 +93,7 @@ var textStrings = {
 	tooltipTaskWait: "This determines expiration time, the time at which a task will expire or the time by which it must exit the system.",
 	tooltipTaskComplete: "This determines service time, the total time required for an operator to process the task.",
 	tooltipTaskFollowTime: "This determines the dependent inter-arrival time",
+	tooltipTaskFollow: "'Add Following Task' creates a new task with an arrival rate that is dependent on this original task’s arrival.",
 
         // Fleets
         fleet: "Railroad",
