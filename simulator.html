@@ -644,7 +644,10 @@
 
                             <!-- Is this operator flexible? -->
                             <div class="form-group">
-                                <label class="col-form-label">Is there a flex team who can handle any tasks/{{textStrings.fleets.toLowerCase()}}?</label>
+                                <label class="col-form-label">Is there a flex team who can handle any tasks/{{textStrings.fleets.toLowerCase()}}?
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorFlex">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                                 <div>
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input class="custom-control-input" type="radio" name="opteam-flexible"
@@ -661,7 +664,10 @@
                             </div>
                             <!-- How many operators are in the flex team? -->
                             <div class="form-group" v-show="operatorSettings.hasFlexPosition === 'y'">
-                                <div class="mb-3">How many {{textStrings.operators.toLowerCase()}} are in the flex team?</div>
+                                <div class="mb-3">How many {{textStrings.operators.toLowerCase()}} are in the flex team?
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorFlexNum">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
                                 <number-input :min=1 :max=99 :step=1
                                     :value.sync="operatorSettings.flexTeamSize"></number-input>
                             </div>
@@ -688,17 +694,26 @@
                                 </div>
                             </div>
 
-							<div class="mb-3">2. Team Size / Communication</div>
+							<div class="mb-3">2. Team Size / Communication
+			    				<span v-tooltip.bottom="textStrings.tooltipOperatorTeam">
+                            					<span class="fas fa-info-circle"></span>
+                        				</span></div>
 						    <div class="options">
 								<div class="form-group">
 									<!-- team size (team.size) -->
-									<div class="mb-3">How large is the team?</div>
+									<div class="mb-3">How large is the team?
+									<span v-tooltip.bottom="textStrings.tooltipOperatorSize">
+                            							<span class="fas fa-info-circle"></span>
+                        						</span></div>
 									<div>
 										<number-input :min=1 :max=99 :step=1 :value.sync="team.size"></number-input>
 									</div>
 									<!-- team communications (team.comms) -->
 									<div v-show="team.size>1">
-										<label class="mt-3 mb-3">Does this team have some level of communications?</label>
+										<label class="mt-3 mb-3">Does this team have some level of communications?
+										<span v-tooltip.bottom="textStrings.tooltipOperatorComm">
+											<span class="fas fa-info-circle"></span>
+                        							</span></label>
 										<br/>
 										<select class="custom-select width-small" v-model="team.comms">
 											<option value="N">None</option>
@@ -714,7 +729,10 @@
 
                             <!-- operator expertise checklist (team.expertise) -->
                             <div class="form-group">
-                                <label class="mb-3">3. What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?</label>
+                                <label class="mb-3">3. What tasks/{{textStrings.fleets.toLowerCase()}} are these {{textStrings.operators.toLowerCase()}} responsible for?
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorTask">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                                 <!-- adjust task/fleet operators are responsible for (team.expertise) -->
                                 <div class="alert alert-info" v-if="!checkExpertise(team)">
                                     At least one active task/{{textStrings.fleet.toLowerCase()}} combo needs to be selected for this operator.
@@ -745,7 +763,10 @@
 
                             <!-- operator strategies (team.strategy) -->
                             <div class="form-group">
-                                <label>4. {{textStrings.operator}} Strategies</label>
+                                <label>4. {{textStrings.operator}} Strategies
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorStrat">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                                 <select class="custom-select" v-model="team.strategy">
                                     <option value="FIFO">First In First Out</option>
                                     <option value="STF">Shortest Task First</option>
@@ -757,7 +778,10 @@
                                 <table class="form-group table">
                                     <thead class="thead-light">
                                         <th>Task</th>
-                                        <th>Priority</th>
+                                        <th>Priority
+					    <span v-tooltip.bottom="textStrings.tooltipOperatorPriority">
+                            <span class="fas fa-info-circle"></span>
+                        </span></th>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(task,i) in taskSettings.tasks" v-show="task.include && checkIfTaskSelected(team,i)">
@@ -783,7 +807,10 @@
 <!--                        <h5 class="mb-3">Error Catching Chance</h5>-->
 
                         <!-- fail threshold (team.failThresh) -->
-                        <div class="mb-3">5. For every error, what is the chance that the team will catch it for each task?</div>
+                        <div class="mb-3">5. For every error, what is the chance that the team will catch it for each task?
+			    <span v-tooltip.bottom="textStrings.tooltipOperatorError">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
 
                         <div class="form-group row">
                             <div class="col">
@@ -798,13 +825,19 @@
 <!--                        <h5 class="mb-3">Artificial Intelligence Decision Aid</h5>-->
 
                         <!-- team AIDA (team.AIDA) -->
-                        <label class="mb-3">6. What level of AI does this team have?</label>
+                        <label class="mb-3">6. What level of AI does this team have?
+			    <span v-tooltip.bottom="textStrings.tooltipOperatorAI">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
 
                         <!-- equal operator (AIDA.equalOperator) -->
                         <div class="mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-1'" v-model="team.AIDA.AIDAType[0]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">{{textStrings.AIDATypeStr[0]}}</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-1'">{{textStrings.AIDATypeStr[0]}}
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorAIequal">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             </div>
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[0]}">
@@ -866,7 +899,10 @@
                         <div class="mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-2'" v-model="team.AIDA.AIDAType[1]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">{{textStrings.AIDATypeStr[1]}}</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-2'">{{textStrings.AIDATypeStr[1]}}
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorAIindiv">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             </div>
                         </div>
                         <div :class="{options: team.AIDA.AIDAType[1]}">
@@ -879,7 +915,10 @@
                                     <input class="custom-control-input" type="checkbox" :id="'opteam-ia-' + index + '-task-' + i" :value="i" v-model="team.AIDA.IATasks">
                                     <label class="custom-control-label" :for="'opteam-ia-' + index + '-task-' + i">{{ taskSettings.tasks[i].name }}</label>
                                 </div>
-                                <div class="mb-3 mt-3">What is the level of this AI?</div>
+                                <div class="mb-3 mt-3">What is the level of this AI?
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorAIindivLevel">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
                                 <div class="custom-control custom-control-inline custom-radio">                                    <input class="custom-control-input" type="radio" :id="'assist-indi-levels-some-' + index" value="S" v-model="team.AIDA.IALevel">
                                     <label class="custom-control-label" :for="'assist-indi-levels-some-'+index">Some</label>
                                 </div>
@@ -894,12 +933,18 @@
                         <div class="mb-3" v-show="team.comms !== 'N'">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" :id="'opteam-' + index + '-AIDA-3'" v-model="team.AIDA.AIDAType[2]">
-                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">{{textStrings.AIDATypeStr[2]}}</label>
+                                <label class="custom-control-label" :for="'opteam-' + index + '-AIDA-3'">{{textStrings.AIDATypeStr[2]}}
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorAIteam">
+                            <span class="fas fa-info-circle"></span>
+                        </span></label>
                             </div>
                         </div>
                         <div :class="{options:team.AIDA.AIDAType[2]}">
                             <div class="form-group" v-show="team.AIDA.AIDAType[2]">
-                                <div class="mb-3">What is the level of this AI?</div>
+                                <div class="mb-3">What is the level of this AI?
+				    <span v-tooltip.bottom="textStrings.tooltipOperatorAIteamLevel">
+                            <span class="fas fa-info-circle"></span>
+                        </span></div>
                                 <div class="custom-control custom-control-inline custom-radio">
                                     <input class="custom-control-input" type="radio" :id="'assist-team-levels-some-'+index" value="S" v-model="team.AIDA.TCALevel">
                                     <label class="custom-control-label" :for="'assist-team-levels-some-'+index">Some</label>
