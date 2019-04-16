@@ -1463,7 +1463,7 @@
 
                     <!-- Results Utilization -->
                     <div class="tab-pane fade show active" id="results-utilization" role="tabpanel" aria-labelledby="results-utilization-tab">
-                        <div class="mt-3">We simulated {{resultSettings.numReps}} days of dispatch operations during this {{resultSettings.hours}} hour shift {{resultSettings.exoFactors}}. Here are your results on how each {{textStrings.operator.toLowerCase()}} and team spent their time at work, including a breakdown by task(s) and {{textStrings.fleet.toLowerCase()}}(s). In the next tabs, you should find results on errors and delays in performance.</div>
+                        <div class="mt-3">We simulated {{resultSettings.numReps}} days of dispatch operations during this {{resultSettings.hours}}-hour shift {{resultSettings.exoFactors}}. Here are your results on how each {{textStrings.operator.toLowerCase()}} and team spent their time at work, including a breakdown by task(s) and {{textStrings.fleet.toLowerCase()}}(s). In the next tabs, you should find results on errors and delays in performance.</div>
 
                         <h3 class='subtitle'>{{ textStrings.operator }} Workload</h3>
 
@@ -1476,10 +1476,7 @@
                                 Utilization (% busyness) represents workload. When an operator spends too much of their shift below 30% or too much time above 70% utilization, <a target="_blank" href="background.html">research</a> has shown that they begin to underperform.
                             </p>
                             <p>
-                                We found that {{ resultSettings.lowWorkloadTeams }} spent, on average, more than half of each shift with low workload. {{ resultSettings.highWorkloadTeams }} spent, on average, more than half of each shift with high workload.
-                            </p>
-                            <p>
-                                Most of the time, {{ resultSettings.busyTimePerOp }}. Continue below here to see is contributing to your operators' busyness.
+                                Most of the time, {{ resultSettings.busyTimePerOp }}. Continue below here to see what is contributing to your operators' busyness.
                             </p>
                         </div>
 
@@ -1516,7 +1513,7 @@
                         <div id="pieChart" class="table-responsive"></div>
 
 
-                        <div class="form-group">Placeholder for explanation</div>
+                        
                         <div class="mb-5 mt-5 table-responsive">
                             <table id="taskRecordTable" class="display d-none" width="100%">
                                 <thead>
@@ -1547,8 +1544,7 @@
                                 </thead>
                             </table>
                         </div>
-                        <div class="form-group">Placeholder for explanation</div>
-                    </div>
+                                       </div>
 
                     <!-- WaitTime Section -->
                     <div class="tab-pane fade show" id="results-wait-time" role="tabpanel" aria-labelledby="results-wait-time-tab">
@@ -1558,7 +1554,7 @@
                             <svg id="waitTimeSVG" width="960" height="450"></svg>
                         </div>
 
-                        <div class="form-group mt-5">Placeholder for explanation -----------------.</div>
+                        
 
                         <h3 class='subtitle'>Breakdown of Time by By Tasks Per Team</h3>
                         <div id="barWaitTimePerTask" class="mt-5 mb-5">
@@ -1585,7 +1581,7 @@
                     <!-- Download Section -->
                     <div class="tab-pane fade show" id="results-download" role="tabpanel" aria-labelledby="results-download-tab">
                         <button @click="downloadCSV" class="mt-3 mb-3 btn btn-secondary"><i class="fas fa-file-download"></i> Download Utilization Data</button>
-                        <div>Placeholder for explanation - This includes utilization raw data for each {{textStrings.operator}}.</div>
+                        <div>Raw results of workload per day across all tasks over ten-minute intervals of each {{textStrings.operator}}'s shift.</div>
                             <!--
                             <button @click="downloadJSON" class="btn btn-secondary btn-sm" title="">Download
                                 <br> Output JSON</button>
@@ -1593,12 +1589,12 @@
                             -->
                         <button @click="downloadSummary" class="mt-3 mb-3 btn btn-secondary"><i class="fas fa-file-download"></i> Download Summary</button>
                         <div>
-                            Placeholder for explanation - This includes failed task raw data and its summary.
+                           Human error (failed tasks) by type per day, including a summary file across all days simulated.
                         </div>
 
                         <button @click="printResults" class="mt-3 mb-3 btn btn-secondary"><i class="fas fa-print"></i> Print Results</button>
                         <div>
-                            This will print out the current result page.
+                            A PDF of the three results pages.
                         </div>
                     </div>
                 </div>
