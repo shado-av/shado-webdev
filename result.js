@@ -446,7 +446,10 @@ var BoxPlot = (function () {
 						temp[k] /= numFactors;
 					}
 
-					groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(temp);
+		   			// Average Utilization of whole work instead of 1 hour work
+					//groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(temp);
+					groupCounts[key + "_" + i] = groupCounts[key + "_" + i].concat(json.averageTaskUtilization[i][j]);
+					  
 					lowUtilMinutes[i][j] = 0;
 					highUtilMinutes[i][j] = 0;
 
@@ -456,7 +459,6 @@ var BoxPlot = (function () {
 					}
 				}
 			}
-
 			// average over each team for high/low util minutes
 			var avg = 0;
 			for (i = 0, j = 0; i < groupLength.length; i++) {
